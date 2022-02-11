@@ -1,7 +1,21 @@
 import '../styles/globals.css'
 import Link from 'next/link'
+import {ClaimTokens, GetNumberTokens} from '../Utils/web3HelperFunctions'
+
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }) {
+
+  const [honeyBalance, updateBalance] = useState("0")
+
+  useEffect(() => {
+
+    GetNumberTokens().then((result) => {
+      updateBalance(result);
+    })
+
+  }, [])  
+
   return (
 
     <div>
@@ -25,10 +39,29 @@ function MyApp({ Component, pageProps }) {
           <a className='mr-8 text-pink-500'>Gallery</a>
         </Link>
         <button className='mr-8 text-amber-400' 
-          onClick={() => console.log("GET clicked")}>
+            onClick={() => {
+                ClaimTokens(10).then(() => {
+
+                  GetNumberTokens().then((result) => {
+                    updateBalance(result)
+                  })
+
+                })
+
+                
+                console.log("hi")
+              }
+          
+            }>
         Get</button>
         
       </nav>
+
+      <div className='rounded'>
+        <text className='text-yellow-500'>
+          {honeyBalance}
+        </text>
+      </div>
       <Component {...pageProps}/>
 
     </div> 
