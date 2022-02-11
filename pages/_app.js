@@ -24,9 +24,10 @@ function MyApp({ Component, pageProps }) {
         <Link href="/gallery">
           <a className='mr-8 text-pink-500'>Gallery</a>
         </Link>
-        <button className='mr-8 text-amber-400'>Get</button>
+        <button className='mr-8 text-amber-400' 
+          onClick={() => console.log("GET clicked")}>
+        Get</button>
         
-
       </nav>
       <Component {...pageProps}/>
 

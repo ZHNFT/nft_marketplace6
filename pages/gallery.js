@@ -1,382 +1,69 @@
 import Image from 'next/image'
-import placeholder from "../images/nftObject.png";
+
+import yellowph from "../images/nftObject.png";
+import redph from "../images/nftph.png";
+import AddGalleryObjects from './addGalleryObject';
+import SearchBar from './searchbar';
+
+function createItem(name, collection, price) {
+    
+
+}
 
 
 export default function Gallery() {
 
-    let testArray = [1, 2, 3, 4, 5, 6, 7]
+    let test1 = {
+        name: "nft 1",
+        collection: "collection 1",
+        price: 0.5, 
+        image: redph
+      };
+      let test2 = {
+        name: "nft 2",
+        collection: "collection 1",
+        price: 0.2, 
+        image: redph
+      };
+      let test3 = {
+        name: "nft 3",
+        collection: "collection 1",
+        price: 0.7, 
+        image: redph
+      };
+      let test4 = {
+        name: "nft 1",
+        collection: "collection 2",
+        price: 0.8, 
+        image: yellowph
+      };
+      let test5 = {
+        name: "nft 2",
+        collection: "collection 2",
+        price: 0.1, 
+        image: yellowph
+      };
+      let test6 = {
+        name: "nft 3",
+        collection: "collection 2",
+        price: 0.2, 
+        image: yellowph
+      };
+
+      let nfts = [test1, test2, test3, test4, test5, test6];
 
     return(
         <div className="bg-white">
-  <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-    <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Collection Gallery</h2>
+            <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+                <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Collection Gallery</h2>
+                {SearchBar()}
 
-    <div className="flex justify-left">
-        <div className="mb-3 w-3/4">
-            <input
-            type="search"
-            class="
-                form-control
-                block
-                w-full
-                px-3
-                py-1.5
-                text-base
-                font-normal
-                text-gray-700
-                bg-white bg-clip-padding
-                border border-solid border-gray-300
-                rounded
-                transition
-                ease-in-out
-                m-0
-                focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none"
-            id="exampleSearch"
-            placeholder="Type query"
-            />
-        </div>
-        <button className="mb-3 w-1/4 text-center text-amber-400 hover:text-amber-600"> Sort
+                <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                    {AddGalleryObjects(nfts)}
 
-        </button>
-    </div>
-
-    <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
+                </div>
+            </div>
         </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-      <div className="group relative">
-        <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-        <Image
-            src={placeholder}
-            alt="NFT Image"  
-            className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-        />
-        </div>
-        <div className="mt-4 flex justify-between">
-          <div>
-            <h3 className="text-sm text-gray-700">
-              <a href="#">
-                <span aria-hidden="true" className="absolute inset-0"></span>
-                NFT Name
-              </a>
-            </h3>
-            <p className="mt-1 text-sm text-gray-500">Collection Name</p>
-          </div>
-          <p className="text-sm font-medium text-gray-900">0.05 hny</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
 
     )
 }
