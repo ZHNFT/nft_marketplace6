@@ -21,6 +21,10 @@ function MyApp({ Component, pageProps }) {
         <Link href="/creator-dashboard">
           <a className='mr-8 text-pink-500'>Creator Dashboard</a>
         </Link>
+        <Link href="/gallery">
+          <a className='mr-8 text-pink-500'>Gallery</a>
+        </Link>
+        
 
       </nav>
       <Component {...pageProps}/>
