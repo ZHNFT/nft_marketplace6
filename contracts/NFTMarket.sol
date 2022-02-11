@@ -60,8 +60,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
 
         idMarketItem[itemId] = MarketItem(itemId, nftContract, tokenId, payable(msg.sender), payable(address(0)), price, false);
 
-        
-
         //TODO: probably dont want to do it this way
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
@@ -77,8 +75,6 @@ contract NFTMarket is ReentrancyGuard, Ownable {
         MarketItem memory item = idMarketItem[itemId];
 
         require(msg.value == item.price, "Value must equal asking price");
-
-        
 
         IERC721(item.nftContract).transferFrom(address(this), msg.sender, item.tokenId);
 

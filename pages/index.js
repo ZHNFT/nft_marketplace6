@@ -22,7 +22,7 @@ export default function Home() {
 
   }, []);
   async function loadNFTS() {
-    const provider = new ethers.providers.JsonRpcProvider();
+    const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/6b2231f7f9ab46b7a9e63b08489d305b");
     const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
     const marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, provider);
 
@@ -60,10 +60,10 @@ export default function Home() {
 
     const signer = provider.getSigner();
 
-    const contract = ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
+    const contract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
 
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
-    const transaction = await contract.createMarketSale(nftAddress, nft, tokenId, {
+    const transaction = await contract.createMarketSale(nftAddress, nft, nft.tokenId, {
       value : price
     });
 
@@ -85,15 +85,22 @@ export default function Home() {
 
       <div className='px-4' style={{ maxWidth :'1600px'}}>
 
-        <div className='grid grid-cols-1 sm: grid-cols-2 lg: grid-cols-4 gap-4 pt-4'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
 
           {
-            nfts.map((nft, i) => {
+            nfts.map((nft, i) => (
+
+             
               <div key={i} className="border shadow rounded-xl overflow-hidden">
                 <Image
                   src={nft.image}
-                  alt="NFT Image"  
+                  alt="image"
+                  width={500}
+                  height={600} 
+
                 />
+
+                {console.log(nft)}
                 <div className='p-4'>
                   <p style={{ height : '64px'}} className='text-2xl font-semibold'>
                     {nft.name}
@@ -114,7 +121,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-            })
+            ))
           }
 
         </div>

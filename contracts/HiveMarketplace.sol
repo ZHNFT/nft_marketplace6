@@ -47,11 +47,11 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
     event UpdateFee(uint256 fee);
     event UpdateFeeRecipient(address feeRecipient);
-    event UpdateOracle(address oracle);
+    
     event UpdatePaymentToken(address paymentToken);
 
-    event CollectionWhitelisted(address nft, address royaltyRecipient, uint royaltyFee);
-    event CollectionRemoved(address nft);
+    event CollectionWhitelisted(address nftAddress, address royaltyRecipient, uint royaltyFee);
+    event CollectionRemoved(address nftAddress);
     event CollectionUpdated(address nftAddress, address royaltyRecipient, uint royaltyFee);
 
     event ItemListed(

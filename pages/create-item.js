@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
-import { Web3Modal } from "web3modal";
+import Web3Modal from "web3modal";
 import Image from "next/image";
 
 
@@ -25,7 +25,7 @@ export default function CreateItem() {
     const router = useRouter();
 
     async function onChange(e) {
-        const file = e.target.file[0]
+        const file = e.target.files[0]
         try {
 
             //try upload file
@@ -81,7 +81,7 @@ export default function CreateItem() {
     
         const signer = provider.getSigner();
     
-        let contract = ethers.Contract(nftAddress, NFT.abi, signer);
+        let contract = new ethers.Contract(nftAddress, NFT.abi, signer);
 
         let transaction = await contract.mint(url);
 
@@ -97,7 +97,7 @@ export default function CreateItem() {
         //get a reference to the price entered in the form 
         const price = ethers.utils.parseUnits(formInput.price, "ether");
 
-        contract = ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
+        contract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
 
         //get the listing price
         let listingPrice = await contract.getListingPrice();
@@ -119,7 +119,7 @@ export default function CreateItem() {
                 <input
                     placeholder="Item Name"
                     className="mt-8 border rounded p-4"
-                    onChanged={e => updateFormInput({...formInput, name : e.target.value})}
+                    onChange={e => updateFormInput({...formInput, name : e.target.value})}
                 />
 
                 <textarea
@@ -132,19 +132,19 @@ export default function CreateItem() {
                     placeholder="Item Price in ETH"
                     className="mt-8 border rounded p-4"
                     type="number"
-                    onChanged={e => updateFormInput({...formInput, price : e.target.value})}
+                    onChange={e => updateFormInput({...formInput, price : e.target.value})}
                 />
 
                 <input
                     type="file"
                     name="Asset"
                     className="my-4"
-                    onChanged={onChange}
+                    onChange={e => onChange(e)}
                 />
 
                 {
                     fileURL && (
-                        <Image className="rounded mt-4" width={350} src={fileURL} />
+                        <Image className="rounded mt-4" width={350} height={500} src={fileURL} />
                     )
                 }
 

@@ -19,11 +19,25 @@ async function main() {
 
   await market.deployed();
 
+  console.log("market deployed at address:")
+  console.log(market.address);
+
   // We get the contract to deploy
   const NFT = await hre.ethers.getContractFactory("NFT");
   const nft = await NFT.deploy(market.address);
 
   await nft.deployed();
+
+  console.log("nft deployed at address:")
+  console.log(nft.address);
+
+  const HiveMarket = await hre.ethers.getContractFactory("HiveMarketplace");
+  const hive = await HiveMarket.deploy();
+
+  await hive.deployed();
+
+  console.log("hive deployed at address:")
+  console.log(hive.address);
 
   
 }
