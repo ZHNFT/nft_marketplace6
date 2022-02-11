@@ -24,6 +24,7 @@ function MyApp({ Component, pageProps }) {
         <Link href="/gallery">
           <a className='mr-8 text-pink-500'>Gallery</a>
         </Link>
+        <button className='mr-8 text-amber-400'>Get</button>
         
 
       </nav>
