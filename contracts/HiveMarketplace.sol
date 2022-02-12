@@ -15,18 +15,20 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
     bytes4 private constant INTERFACE_ID_ERC721 = 0x80ac58cd;
     bytes4 private constant INTERFACE_ID_ERC1155 = 0xd9b67a26;
-    uint256 public constant BASIS_POINTS = 10000;
+    uint public constant BASIS_POINTS = 10000;
 
     address public paymentToken;
 
     uint256 public fee;
     address public feeReceipient;
 
+    uint public minBidTime;
+
 
     struct Listing {
-        uint256 quantity;
-        uint256 pricePerItem;
-        uint256 expirationTime;
+        uint quantity;
+        uint pricePerItem;
+        uint expirationTime;
     }
 
     struct Collection {
@@ -42,10 +44,19 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         uint pricePerItem;
     }
 
-    mapping(address => mapping(uint256 => mapping(address => Listing))) public listings;
+    struct Bid {
+        uint quantity;
+        uint pricePerItem;
+        uint expirationTime;
+        address bidder;
+    }
+
+    mapping(address => mapping(uint => mapping(address => Listing))) public listings;
     mapping(address => Collection) public whitelistedCollections;
 
-    event UpdateFee(uint256 fee);
+    mapping(address => mapping(uint => Bid)) public bids;
+
+    event UpdateFee(uint fee);
     event UpdateFeeRecipient(address feeRecipient);
     
     event UpdatePaymentToken(address paymentToken);
@@ -57,28 +68,37 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
     event ItemListed(
         address seller,
         address nftAddress,
-        uint256 tokenId,
-        uint256 quantity,
-        uint256 pricePerItem,
-        uint256 expirationTime
+        uint tokenId,
+        uint quantity,
+        uint pricePerItem,
+        uint expirationTime
     );
 
     event ItemUpdated(
         address seller,
         address nftAddress,
-        uint256 tokenId,
-        uint256 quantity,
-        uint256 pricePerItem,
-        uint256 expirationTime
+        uint tokenId,
+        uint quantity,
+        uint pricePerItem,
+        uint expirationTime
     );
 
     event ItemSold(
         address seller,
         address buyer,
         address nftAddress,
-        uint256 tokenId,
-        uint256 quantity,
-        uint256 pricePerItem
+        uint tokenId,
+        uint quantity,
+        uint pricePerItem
+    );
+
+    event ItemBid(
+        address nftAddress,
+        address bidder,
+        address buyer,
+        uint quantity,
+        uint tokenId,
+        uint pricePerItem
     );
 
     event ItemCanceled(address seller, address nftAddress, uint256 tokenId);
@@ -301,6 +321,33 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
         }
     }
+
+    // function BidOnItem(Bid memory _bid, address _nftAddress, uint _tokenId, address _owner) public onlyWhitelisted(_nftAddress) {
+
+    //     require(_bid.expirationTime > block.timestamp && _bid.expirationTime - block.timestamp >= minBidTime, "Minimum bid time not reached");
+    //     require(_bid.quantity > 0, "Amount not set");
+    //     if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+    //         IERC721 nft = IERC721(_nftAddress);
+    //         require(nft.ownerOf(_tokenId) != _msgSender(), "Already owns item");
+    //         require(nft.isApprovedForAll(_msgSender(), address(this)), "item not approved");
+    //     } else if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC1155)) {
+    //         IERC1155 nft = IERC1155(_nftAddress);
+    //         require(nft.balanceOf(_msgSender(), _tokenId) >= _bid.quantity, "must hold enough nfts");
+    //         require(nft.isApprovedForAll(_msgSender(), address(this)), "item not approved");
+    //     } else {
+    //         revert("invalid nft address");
+    //     }
+
+    //     Bid memory previousBid = bids[_nftAddress][_tokenId];
+
+    //     if(previousBid.quantity > 0) {
+    //         // there is an existing bid, let check if the bid is greator than the previous bid
+
+    //     }
+        
+
+
+    // }
 
     function setFee(uint256 _fee) public onlyOwner {
         require(_fee < BASIS_POINTS, "max fee");

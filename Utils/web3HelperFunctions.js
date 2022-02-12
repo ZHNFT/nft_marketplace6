@@ -57,3 +57,27 @@ export async function GetNumberTokens() {
     return numberTokens.toString();
 
 }
+
+export async function ListItem(listing) {
+
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+
+    const signer = provider.getSigner();
+
+    let address = await signer.getAddress();
+
+    const contract = new ethers.Contract(hiveMarketplaceAddress, HiveMarketplace.abi, signer);
+
+    await contract.createListing(
+        listing.nftAddress,
+        listing.tokenId,
+        listing.quantity,
+        listing.pricePerItem,
+        listing.expirationTime
+    )
+
+
+
+}

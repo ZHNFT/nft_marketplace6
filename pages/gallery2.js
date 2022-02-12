@@ -77,7 +77,8 @@ export default function Gallery2() {
                 tokenId : index,
                 image : meta.data.image,
                 name : meta.data.name,
-                collection : "Test Collection"
+                collection : "Test Collection",
+                collectionAddress : nftContract.address
             }
 
             return item;
