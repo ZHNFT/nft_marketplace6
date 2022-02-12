@@ -4,7 +4,7 @@ export default function SearchBar() {
             <div className="mb-3 w-3/4">
                 <input
                 type="search"
-                class="
+                className="
                     form-control
                     block
                     w-full

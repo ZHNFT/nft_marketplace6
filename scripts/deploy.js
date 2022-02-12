@@ -28,16 +28,16 @@ async function main() {
 
   await nft.deployed();
 
-  console.log("nft deployed at address:")
-  console.log(nft.address);
+  // console.log("nft deployed at address:")
+  // console.log(nft.address);
 
-  const HiveMarket = await hre.ethers.getContractFactory("HiveMarketplace");
-  const hive = await HiveMarket.deploy();
+  // const HiveMarket = await hre.ethers.getContractFactory("HiveMarketplace");
+  // const hive = await HiveMarket.deploy();
 
-  await hive.deployed();
+  // await hive.deployed();
 
-  console.log("hive deployed at address:")
-  console.log(hive.address);
+  // console.log("hive deployed at address:")
+  // console.log(hive.address);
 
   
 }

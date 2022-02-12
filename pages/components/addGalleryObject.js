@@ -15,7 +15,11 @@ export default function AddGalleryObjects(nfts) {
                         className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                         
                         src={item.image}
-                        alt="NFT Image"  
+                        alt="NFT Image"
+                        //layout="fill"
+                        width={300}
+                        height={370}  
+                        priority={true}
                     />
                 </div>
                 <div className="mt-4 flex justify-between">

@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     <div>
       <nav className="border-b p-6">
 
-        <p className='text-4xl font-bold'>Hive Marketplace</p>
+        <p className='text-4xl font-bold'>Hexagon</p>
         <div className='flex mt-4'></div>
         <Link href="/">
           <a className='mr-4 text-pink-500'>Home</a>
@@ -38,10 +38,12 @@ function MyApp({ Component, pageProps }) {
         <Link href="/gallery">
           <a className='mr-8 text-pink-500'>Gallery</a>
         </Link>
+        <Link href="/gallery2">
+          <a className='mr-8 text-pink-500'>Gallery 2</a>
+        </Link>
         <button className='mr-8 text-amber-400' 
             onClick={() => {
                 ClaimTokens(10).then(() => {
-
                   GetNumberTokens().then((result) => {
                     updateBalance(result)
                   })
