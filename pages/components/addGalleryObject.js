@@ -10,15 +10,15 @@ export default function AddGalleryObjects(nfts) {
            
             <div key={i} className="group relative">
                 {console.log(item)}
-                <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                <div className="w-full h-auto aspect-square rounded-lg overflow-hidden group-hover:opacity-75">
                     <Image
-                        className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+                        className="w-full h-full object-center object-cover"
                         
                         src={item.image}
                         alt="NFT Image"
                         //layout="fill"
-                        width={300}
-                        height={370}  
+                        width={280}
+                        height={280}  
                         priority={true}
                     />
                 </div>

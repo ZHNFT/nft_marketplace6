@@ -41,6 +41,9 @@ function MyApp({ Component, pageProps }) {
         <Link href="/gallery2">
           <a className='mr-8 text-pink-500'>Gallery 2</a>
         </Link>
+        <Link href="/nftPage">
+          <a className='mr-8 text-pink-500'>nft</a>
+        </Link>
         <button className='mr-8 text-amber-400' 
             onClick={() => {
                 ClaimTokens(10).then(() => {
