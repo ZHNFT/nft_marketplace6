@@ -7,10 +7,10 @@ export default function nftPage() {
 
             <div>
                 <div>
-
+                    
                 </div>
                 <div>
-                    
+
                 </div>
             </div>
         </div>

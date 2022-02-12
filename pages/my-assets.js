@@ -34,32 +34,57 @@ export default function MyAssets() {
 
         const signer = provider.getSigner()
 
-        let marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
+        //let marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
         let nftContract = new ethers.Contract(nftAddress, NFT.abi, signer);
 
-        const data = await marketContract.fetchMyNFTS();
+        let totalSupply = await nftContract.totalSupply();
 
-        const items = await Promise.all(data.map(async i => {
+        console.log("total supply = ")
+        console.log(totalSupply.toString())
 
-            const tokenUri = await nftContract.tokenURI(i.tokenId);
+        let owner = await nftContract.ownerOf(0);
+
+        console.log("owner of token 1 = ")
+        console.log(owner)
+
+        //const data = await marketContract.fetchMyNFTS();
+
+        const address = await signer.getAddress();
+
+        const balance = await nftContract.balanceOf(address);
+
+        console.log(balance.toString());
+
+        let promises = [];
+
+        for(let i = 0; i < balance; i++) {
+
+            promises.push(nftContract.tokenOfOwnerByIndex(address, i));
+
+        }
+
+        let result = await Promise.all(promises);
+
+        const items = await Promise.all(result.map(async i => {
+
+            const tokenUri = await nftContract.tokenURI(i)
             const meta = await axios.get(tokenUri);
-            let price = ethers.utils.formatUnits(i.price.toString(), 'ether');
+            let price = 0;
 
             let item = {
                 price,
-                tokenId : i.tokenId.toNumber(),
-                seller : i.seller,
-                owner : i.owner,
-                image : meta.data,image
+                tokenId : i.toNumber(),
+                image : meta.data.image
             }
 
             return item;
-
 
         }))
 
         setNfts(items)
         setLoadingState('loaded')
+
+        console.log(result);
 
     }
 
