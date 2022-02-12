@@ -2,13 +2,8 @@ import Image from 'next/image'
 
 import yellowph from "../images/nftObject.png";
 import redph from "../images/nftph.png";
-import AddGalleryObjects from './addGalleryObject';
-import SearchBar from './searchbar';
-
-function createItem(name, collection, price) {
-    
-
-}
+import AddGalleryObjects from './components/addGalleryObject';
+import SearchBar from './components/searchbar';
 
 
 export default function Gallery() {
