@@ -3,7 +3,7 @@ const fs = require("fs");
 const privateKey = fs.readFileSync(".secret").toString();
 const projectID = "6b2231f7f9ab46b7a9e63b08489d305b";
 
-require('hardhat-deploy');
+//require('hardhat-deploy');
 //import 'hardhat-deploy-ethers';
 //require('hardhat-deploy-ethers')
 
