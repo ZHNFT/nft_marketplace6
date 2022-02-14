@@ -24,8 +24,6 @@ contract RandomTokenIdContract is ERC721Enumerable, Ownable {
         uint128 amount;
     }
 
-
-
     /// @notice Mapping is used to keep track of the unminted token ids
     mapping(uint => uint) tokenIdMapping;
 

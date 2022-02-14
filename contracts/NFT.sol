@@ -11,9 +11,9 @@ contract NFT is ERC721Enumerable {
 
     mapping(uint => string) tokenURIS;
 
-    constructor(address marketplaceAddress) ERC721("Nft", "NFT") {
+    constructor() ERC721("Nft", "NFT") {
 
-        contractAddress = marketplaceAddress;
+        //contractAddress = marketplaceAddress;
 
     }
 

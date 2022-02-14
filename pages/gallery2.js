@@ -11,6 +11,8 @@ import Web3Modal from "web3modal";
 import axios from "axios"
 import { useEffect, useState } from "react";
 
+
+
 import {
     nftAddress
 } from '../config';
@@ -22,75 +24,116 @@ export default function Gallery2() {
     const [nfts, setNfts] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded');
 
+    const Moralis = require('moralis');
+
+    /* Moralis init code */
+    const serverUrl = "https://ochj92qshsgk.usemoralis.com:2053/server";
+    const appId = "HoaLN2xfpxKDWvfHE6Vph4I32g9kWZ8lDfZnvzBD";
 
     useEffect(() => {
 
-        loadNfts()
+        Moralis.start({ serverUrl, appId });
+        loadNfts("0x80F216E24A73203e94aEbd9ca01899F97dFf5E2F", 0)
+        
 
     }, [])
 
-    async function loadNfts() {
+    async function fetchIPFSDoc(ipfsHash) {
 
-        const web3Modal = new Web3Modal();
+        const url = setIpfsAddress(ipfsHash);
+        
+        const response = await fetch(url);
+        return await response.json();
+    }
 
-        const connection = await web3Modal.connect();
+    function setIpfsAddress(ipfsHash) {
+        let hash = ipfsHash.split("://")[1]
+        console.log(hash);
+        const url = `https://ipfs.io/ipfs/${hash}`;
+        return url;
+    }
 
-        const provider = new ethers.providers.Web3Provider(connection);
+    async function loadNfts(contractAddress, skip) {
 
-        const signer = provider.getSigner()
+        contractAddress = contractAddress.toLowerCase();
 
-        //let marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
-        let nftContract = new ethers.Contract(nftAddress, NFT.abi, signer);
+        const NFT = Moralis.Object.extend("NFT");
+        const query = new Moralis.Query(NFT);
+        query.equalTo("contractAddress", contractAddress);
 
-        let totalSupply = await nftContract.totalSupply();
+        query.limit(20);
+        query.skip(skip);
+        const results = await query.find();
 
-        const address = await signer.getAddress();
+        const items = await Promise.all(results.map(async (i, index) => {
+            const object = i.attributes;
 
-        let promises = [];
+            const tokenUri = object.uri;
 
-        for(let i = 0; i < totalSupply; i++) {
+            let data = await fetchIPFSDoc(tokenUri);
 
-            promises.push(nftContract.tokenURI(i));
+            let image = setIpfsAddress(data.image);
 
-        }
-
-        let result = await Promise.all(promises);
-
-        console.log(result)
-
-        const items = await Promise.all(result.map(async (i, index) => {
-
-            console.log("i = ")
-            console.log(i);
-
-            console.log("index =")
-            console.log(index)
-
-            //const tokenUri = i.toString();
-            const meta = await axios.get(i);
-
-            console.log(meta);
             let price = 0.3;
 
             let item = {
                 price,
-                tokenId : index,
-                image : meta.data.image,
-                name : meta.data.name,
+                tokenId : object.tokenId,
+                image : image,
+                name : data.name,
                 collection : "Test Collection",
-                collectionAddress : nftContract.address
+                collectionAddress : object.contractAddress
             }
 
             return item;
-
         }))
 
-        console.log(items);
+
+        // let promises = [];
+
+        // for(let i = 0; i < totalSupply; i++) {
+
+        //     promises.push(nftContract.tokenURI(i));
+
+        // }
+
+        // let result = await Promise.all(promises);
+
+        // console.log(result)
+
+        // const items = await Promise.all(result.map(async (i, index) => {
+
+        //     console.log("i = ")
+        //     console.log(i);
+
+        //     console.log("index =")
+        //     console.log(index)
+
+        //     //const tokenUri = i.toString();
+        //     const meta = await axios.get(i);
+
+        //     console.log(meta);
+        //     let price = 0.3;
+
+        //     let item = {
+        //         price,
+        //         tokenId : index,
+        //         image : meta.data.image,
+        //         name : meta.data.name,
+        //         collection : "Test Collection",
+        //         collectionAddress : nftContract.address
+        //     }
+
+        //     return item;
+
+        // }))
+
+        // console.log(items);
 
         setNfts(items)
         setLoadingState('loaded')
 
-        console.log(result);
+        //console.log(result);
 
     }
 
