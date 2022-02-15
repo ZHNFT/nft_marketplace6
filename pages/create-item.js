@@ -71,6 +71,10 @@ export default function CreateItem() {
 
     }
 
+    async function mintNft(url) {
+        
+    }
+
 
     //2. List item for sale
     async function createSale(url) {

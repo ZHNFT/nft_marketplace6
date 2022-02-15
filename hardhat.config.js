@@ -24,6 +24,12 @@ const projectID = "6b2231f7f9ab46b7a9e63b08489d305b";
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+
+//require("dotenv").config();
+require("@nomiclabs/hardhat-etherscan");
+
+//const {POLYGONSCAN_API_KEY } = process.env;
+
 module.exports = {
 
   networks : {
@@ -40,6 +46,10 @@ module.exports = {
       accounts: [privateKey]
       
     }
+  },
+
+  etherscan: {
+    apiKey: "23TTJA3YVBMN572QJ3ANNJAGH78NC564YB",
   },
   solidity: "0.8.4",
 };
