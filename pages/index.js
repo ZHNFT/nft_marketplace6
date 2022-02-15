@@ -1,133 +1,227 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import {ethers} from "ethers"
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import Web3Modal from 'web3modal'
-import { nftAddress, nftMarketAddress } from '../config'
-//import styles from '../styles/Home.module.css'
+import { useState } from 'react';
+import { FireIcon, HomeIcon, TrendingUpIcon, UserGroupIcon } from '@heroicons/react/outline'
 
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-import Marketplace from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// Components
+import Header from './components/header';
+import Sidebar from './components/sidebar';
+import List from './components/list';
+import Filters from './components/Filters';
 
+const user = {
+  name: 'Chelsea Hagon',
+  email: 'chelseahagon@example.com',
+  imageUrl:
+    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+}
 
-export default function Home() {
+const navigation = [
+  { name: 'Home', href: '#', icon: HomeIcon, current: true },
+  { name: 'Popular', href: '#', icon: FireIcon, current: false },
+  { name: 'Communities', href: '#', icon: UserGroupIcon, current: false },
+  { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
+]
+const userNavigation = [
+  { name: 'Your Profile', href: '#' },
+  { name: 'Settings', href: '#' },
+  { name: 'Sign out', href: '#' },
+]
 
-  const [nfts, setNfts] = useState([]);
-  const [loadingState, setLoadingState] = useState('not-loaded');
+const communities = [
+  { name: 'Movies', href: '#' },
+  { name: 'Food', href: '#' },
+  { name: 'Sports', href: '#' },
+  { name: 'Animals', href: '#' },
+  { name: 'Science', href: '#' },
+  { name: 'Dinosaurs', href: '#' },
+  { name: 'Talents', href: '#' },
+  { name: 'Gaming', href: '#' },
+]
 
+const items = [
+  {
+    id: 1,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 2,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjFyPVEAAYf3o?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 3,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjImbVgAEIISU?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 4,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 5,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 6,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjFyPVEAAYf3o?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 7,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjImbVgAEIISU?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+  {
+    id: 8,
+    name: 'Fusion',
+    category: 'UI Kit',
+    href: '#',
+    price: '$49',
+    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
+    imageAlt:
+      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
+  },
+]
 
-  useEffect(() => {
-    loadNFTS();
+const subCategories = [
+  { name: 'Totes', href: '#' },
+  { name: 'Backpacks', href: '#' },
+  { name: 'Travel Bags', href: '#' },
+  { name: 'Hip Bags', href: '#' },
+  { name: 'Laptop Sleeves', href: '#' },
+]
 
-  }, []);
-  async function loadNFTS() {
-    const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/6b2231f7f9ab46b7a9e63b08489d305b");
-    const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
-    const marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, provider);
+const filters = [
+  {
+    id: 'color',
+    name: 'Color',
+    options: [
+      { value: 'white', label: 'White', checked: false },
+      { value: 'beige', label: 'Beige', checked: false },
+      { value: 'blue', label: 'Blue', checked: true },
+      { value: 'brown', label: 'Brown', checked: false },
+      { value: 'green', label: 'Green', checked: false },
+      { value: 'purple', label: 'Purple', checked: false },
+    ],
+  },
+  {
+    id: 'category',
+    name: 'Category',
+    options: [
+      { value: 'new-arrivals', label: 'New Arrivals', checked: false },
+      { value: 'sale', label: 'Sale', checked: false },
+      { value: 'travel', label: 'Travel', checked: true },
+      { value: 'organization', label: 'Organization', checked: false },
+      { value: 'accessories', label: 'Accessories', checked: false },
+    ],
+  },
+  {
+    id: 'size',
+    name: 'Size',
+    options: [
+      { value: '2l', label: '2L', checked: false },
+      { value: '6l', label: '6L', checked: false },
+      { value: '12l', label: '12L', checked: false },
+      { value: '18l', label: '18L', checked: false },
+      { value: '20l', label: '20L', checked: false },
+      { value: '40l', label: '40L', checked: true },
+    ],
+  },
+]
 
-    const data = await marketContract.fetchMarketItems();
-    const items = await Promise.all(data.map(async i => {
+const sortOptions = [
+  { name: 'Most Popular', href: '#', current: true },
+  { name: 'Best Rating', href: '#', current: false },
+  { name: 'Newest', href: '#', current: false },
+  { name: 'Price: Low to High', href: '#', current: false },
+  { name: 'Price: High to Low', href: '#', current: false },
+]
 
-      const tokenURI = await tokenContract.tokenURI(i.tokenId);
-      const meta = await axios.get(tokenURI);
-      let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+const openSeaApi = 'https://api.opensea.io/api/v1/collection/boredapeyachtclub';
 
-      let item = {
-        price,
-        tokenId : i.tokenId.toString(),
-        seller : i.seller,
-        owner : i.owner,
-        image : meta.data.image,
-        name : meta.data.name,
-        description : meta.data.description
-      }
+export default function Home(props) {
+  const { traits } = props;
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
-      return item;
-
-    }))
-
-    setNfts(items);
-    setLoadingState('loaded');
-
-  }
-
-  async function buyNft(nft) {
-
-    const web3Modal = new Web3Modal();
-    const connection = await web3Modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
-
-    const signer = provider.getSigner();
-
-    const contract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
-
-    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether');
-    const transaction = await contract.createMarketSale(nftAddress, nft, nft.tokenId, {
-      value : price
-    });
-
-    await transaction.wait();
-
-    loadNFTS();
-
-  }
-
-
-  if(loadingState === 'loaded' && !nfts.length) return  (
-
-    <h1 className='px-20 py-10 text-3xl'>No items in Marketplace</h1>
-
-  )
-
+  console.log(`traits`, traits)
   return (
-    <div className='flex justify-center'>
-
-      <div className='px-4' style={{ maxWidth :'1600px'}}>
-
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
-
-          {
-            nfts.map((nft, i) => (
-
-             
-              <div key={i} className="border shadow rounded-xl overflow-hidden">
-                <Image
-                  src={nft.image}
-                  alt="image"
-                  width={500}
-                  height={600} 
-
-                />
-
-                {console.log(nft)}
-                <div className='p-4'>
-                  <p style={{ height : '64px'}} className='text-2xl font-semibold'>
-                    {nft.name}
-                  </p>
-                  <div style={{ height : '70px', overflow : 'hidden'}}>
-                    <p className="text-gray-400">
-                      {nft.description}
-                    </p>
-                  </div>
-                </div>
-                <div className='p-4 bg-black'>
-                  <p className='text-2xl mb-4 font-bold text-white'>
-                    {nft.price} ETH
-                  </p>
-                  <button className='w-full bg-pink-500 text-white font-bold py-2 px-12 rounded'
-                    onClick={() => buyNft(nft)}> 
-                    Buy NFT 
-                  </button>
-                </div>
-              </div>
-            ))
-          }
-
+    <div className="min-h-full">
+      <Header
+        user={user}
+        navigation={navigation}
+        userNavigation={userNavigation}
+      />
+      <div className="py-10">
+        <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
+          {/* Sidebar menu filters for desktop */}
+          <Sidebar
+            navigation={navigation}
+            communities={communities}
+            subCategories={subCategories}
+            filters={filters}
+          />
+          <main className="lg:col-span-9 xl:col-span-10">
+            <List
+              items={items}
+              sortOptions={sortOptions}
+              setMobileFiltersOpen={setMobileFiltersOpen}
+            />
+            {/* Sidemenu filters for mobile */}
+            <Filters
+              subCategories={subCategories}
+              filters={filters}
+              setMobileFiltersOpen={setMobileFiltersOpen}
+              mobileFiltersOpen={mobileFiltersOpen}
+            />
+          </main>
         </div>
-
       </div>
-
     </div>
-  )
+  );
+}
+
+export async function getStaticProps() {
+  const res = await fetch(openSeaApi);
+  const data = await res?.json();
+
+  const traits = data?.collection?.traits;
+  
+  return { props: { traits }, revalidate: 30 };
 }

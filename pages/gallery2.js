@@ -42,7 +42,7 @@ export default function Gallery2() {
         //let marketContract = new ethers.Contract(nftMarketAddress, Marketplace.abi, signer);
         let nftContract = new ethers.Contract(nftAddress, NFT.abi, signer);
 
-        let totalSupply = await nftContract.totalSupply();
+        let totalSupply = await nftContract?.totalSupply();
 
         const address = await signer.getAddress();
 
