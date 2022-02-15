@@ -1,7 +1,5 @@
 import '../styles/globals.css'
-import Link from 'next/link'
 import Layout from './components/layout';
-import {ClaimTokens, GetNumberTokens} from '../Utils/web3HelperFunctions'
 
 import { useEffect, useState } from "react";
 
