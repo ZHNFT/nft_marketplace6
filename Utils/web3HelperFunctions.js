@@ -43,7 +43,7 @@ export async function GetNumberTokens() {
 
     const contract = new ethers.Contract(honeyTokenAddress, HoneyToken.abi, provider);
 
-    let numberTokens = await contract.balanceOf(address)
+    let numberTokens = await contract?.balanceOf(address)
 
     numberTokens = ethers.utils.formatEther(numberTokens.toString());
 
