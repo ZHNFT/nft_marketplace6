@@ -3,9 +3,9 @@ import clsx from "clsx";
 import Image from 'next/image';
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, FilterIcon, ViewGridIcon } from '@heroicons/react/solid';
+import ListItem from './listItem';
 
 export default function List({ items, sortOptions, setMobileFiltersOpen }) {
-
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">
@@ -74,28 +74,11 @@ export default function List({ items, sortOptions, setMobileFiltersOpen }) {
           </div>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-          {items.map((item) => (
-            <div key={item.id} className="relative group">
-              <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                <Image
-                  src={item.imageSrc}
-                  alt={item.imageAlt}
-                  className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-                  width={"280"}
-                  height={"365"}
-                />
-              </div>
-              <div className="mt-4 flex items-center justify-between text-base font-medium text-gray-900 space-x-8">
-                <h3>
-                  <a href={item.href}>
-                    <span aria-hidden="true" className="absolute inset-0" />
-                    {item.name}
-                  </a>
-                </h3>
-                <p>{item.price}</p>
-              </div>
-              <p className="mt-1 text-sm text-gray-500">{item.category}</p>
-            </div>
+          {items?.map((item) => (
+            <ListItem
+              key={item.token_id}
+              item={item}
+            />
           ))}
         </div>
       </div>

@@ -10,6 +10,7 @@ import Web3Modal from "web3modal";
 
 import axios from "axios"
 import { useEffect, useState } from "react";
+import { useMoralis } from 'react-moralis';
 
 
 
@@ -20,15 +21,9 @@ import {
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 
 export default function Gallery2() {
-
+    const { Moralis } = useMoralis();
     const [nfts, setNfts] = useState([])
     const [loadingState, setLoadingState] = useState('not-loaded');
-
-    const Moralis = require('moralis');
-
-    /* Moralis init code */
-    const serverUrl = "https://ochj92qshsgk.usemoralis.com:2053/server";
-    const appId = "HoaLN2xfpxKDWvfHE6Vph4I32g9kWZ8lDfZnvzBD";
 
     useEffect(() => {
 
@@ -61,13 +56,11 @@ export default function Gallery2() {
         const query = new Moralis.Query(NFT);
         query.equalTo("contractAddress", contractAddress);
 
-<<<<<<< HEAD
         let totalSupply = await nftContract?.totalSupply();
-=======
+
         query.limit(20);
         query.skip(skip);
         const results = await query.find();
->>>>>>> main
 
         const items = await Promise.all(results.map(async (i, index) => {
             const object = i.attributes;

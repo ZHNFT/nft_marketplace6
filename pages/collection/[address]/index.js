@@ -38,89 +38,6 @@ const communities = [
   { name: 'Gaming', href: '#' },
 ]
 
-const items = [
-  {
-    id: 1,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 2,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjFyPVEAAYf3o?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 3,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjImbVgAEIISU?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 4,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 5,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 6,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjFyPVEAAYf3o?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 7,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjImbVgAEIISU?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-  {
-    id: 8,
-    name: 'Fusion',
-    category: 'UI Kit',
-    href: '#',
-    price: '$49',
-    imageSrc: 'https://pbs.twimg.com/media/FKyjEh4VkAAKgYV?format=jpg&name=large',
-    imageAlt:
-      'Payment application dashboard screenshot with transaction table, financial highlights, and main clients on colorful purple background.',
-  },
-]
-
 const subCategories = [
   { name: 'Totes', href: '#' },
   { name: 'Backpacks', href: '#' },
@@ -176,16 +93,13 @@ const sortOptions = [
 ]
 
 // This will be the Single collection page (NFT collection)
-// Route: http://localhost:3000/collection/[slug]
-// Example: http://localhost:3000/collection/hive
+// Route: http://localhost:3000/collection/[address]
+// Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { traits } = props;
+  const { data } = props;
   const router = useRouter()
-  const { slug } = router.query
+  const { address } = router.query
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-
-  console.log(`slug`, slug)
-  console.log(`traits`, traits)
 
   return (
     <div className="min-h-full">
@@ -205,7 +119,7 @@ export default function Collection(props) {
           />
           <main className="lg:col-span-9 xl:col-span-10">
             <List
-              items={items}
+              items={data?.result}
               sortOptions={sortOptions}
               setMobileFiltersOpen={setMobileFiltersOpen}
             />
@@ -224,13 +138,9 @@ export default function Collection(props) {
 }
 
 export async function getServerSideProps(context) {
-  const { params: { slug } } = context;
-  const openSeaApi = `https://api.opensea.io/api/v1/collection/${slug}`;
-
-  const res = await fetch(openSeaApi);
+  const { params: { address } } = context;
+  const res = await fetch(`http://localhost:3000/api/collection/${address}`);
   const data = await res?.json();
-
-  const traits = data?.collection?.traits;
   
-  return { props: { traits } };
+  return { props: { data: data?.data } };
 }
