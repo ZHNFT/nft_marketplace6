@@ -1,28 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 const Moralis = require('moralis/node');
 
-const serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL;
-const appId = process.env.REACT_APP_MORALIS_APPLICATION_ID;
+const serverUrl = process.env.REACT_APP_MORALIS_SERVER_URL_BEN;
+const appId = process.env.REACT_APP_MORALIS_APPLICATION_ID_BEN;
 
 // opensea address uses capitals for some letters;
 const NftProjects = [
   {
     chain: 'matic',
-    name: 'Space Game - Marines & Aliens',
-    address: '0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35',
-    opensea: '0xdbe147fc80b49871e2a8D60cc89D51b11bc88b35'
-  },
-  {
-    chain: 'matic',
-    name: 'Chumbi Valley Official',
-    address: '0x5492ef6aeeba1a3896357359ef039a8b11621b45',
-    opensea: '0x5492Ef6aEebA1A3896357359eF039a8B11621b45'
-  },
-  {
-    chain: 'matic',
-    name: 'Evaverse Hoverboards',
-    address: '0x9d29e9fb9622f098a3d64eba7d2ce2e8d9e7a46b',
-    opensea: '0x9D29E9fb9622f098A3d64EBa7D2Ce2e8d9e7a46b'
+    name: 'YOCOnauts',
+    address: '0x5f73f4d79580d855dee138557d1c1fb0bbb3af95',
   }
 ];
 
@@ -33,7 +20,7 @@ export default async function handler(req, res) {
   let data = null;
 
   try {
-    const options = { chain: NftProjects[2].chain, address: NftProjects[2].address };
+    const options = { chain: NftProjects[0].chain, address: NftProjects[0].address };
     const metaData = await Moralis.Web3API.token.getNFTMetadata(options);
     data = metaData;
 
