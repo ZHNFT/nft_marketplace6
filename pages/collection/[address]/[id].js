@@ -184,7 +184,7 @@ export default function Nft({ data, rarity }) {
                   {reviews.featured.map((review, reviewIdx) => (
                     <div key={review.id} className="flex text-sm text-gray-500 space-x-4">
                       <div className="flex-none py-10">
-                        <Image src={review.avatarSrc} alt="" className="w-10 h-10 bg-gray-100 rounded-full" width={"10"} height="10" />
+                        <Image src={review.avatarSrc} alt="" className="w-10 h-10 bg-gray-100 rounded-full" width={"40"} height="40" />
                       </div>
                       <div className={clsx(reviewIdx === 0 ? '' : 'border-t border-gray-200', 'py-10')}>
                         <h3 className="font-medium text-gray-900">{review.author}</h3>
