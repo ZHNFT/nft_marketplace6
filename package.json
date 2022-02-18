@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chainlink/contracts": "^0.4.0",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.2",

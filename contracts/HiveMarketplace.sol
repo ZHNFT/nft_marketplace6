@@ -147,10 +147,11 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         _;
     }
 
-    constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
-        setFee(_fee);
-        setFeeRecipient(_feeRecipient);
-        setPaymentToken(_paymentToken);
+    // constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
+    constructor() {
+        // setFee(_fee);
+        // setFeeRecipient(_feeRecipient);
+        // setPaymentToken(_paymentToken);
     }
 
     function createListing(
@@ -174,8 +175,6 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         } else {
             revert("invalid nft address");
         }
-
-        
 
         listings[_nftAddress][_tokenId][_msgSender()] = Listing(
             _quantity,
@@ -326,6 +325,7 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
     //     require(_bid.expirationTime > block.timestamp && _bid.expirationTime - block.timestamp >= minBidTime, "Minimum bid time not reached");
     //     require(_bid.quantity > 0, "Amount not set");
+
     //     if (IERC165(_nftAddress).supportsInterface(INTERFACE_ID_ERC721)) {
     //         IERC721 nft = IERC721(_nftAddress);
     //         require(nft.ownerOf(_tokenId) != _msgSender(), "Already owns item");
@@ -340,10 +340,21 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
     //     Bid memory previousBid = bids[_nftAddress][_tokenId];
 
-    //     if(previousBid.quantity > 0) {
-    //         // there is an existing bid, let check if the bid is greator than the previous bid
+    //     //Check if previous bid is valid
+    //     if(previousBid.quantity > 0 && previousBid.expirationTime > block.timestamp) {
+
+    //         uint previousBidsBalance = IERC20(paymentToken).balanceOf(previousBid.bidder);
+    //         uint allowance = IERC20(paymentToken).allowance(previousBid.bidder, address(this));
+
+    //         if(previousBidsBalance >= (previousBid.pricePerItem * previousBid.quantity)) {
+
+    //             // there is an existing bid, let check if the bid is greator than the previous bid
+    //             require(_bid.pricePerItem > previousBid.pricePerItem, "Current bid is less than previous");
+    //         }
 
     //     }
+
+
         
 
 

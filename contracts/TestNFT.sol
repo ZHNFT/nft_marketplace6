@@ -18,8 +18,8 @@ contract TestNFT is ERC721Enumerable {
 
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
+    function _baseURI() internal pure override returns (string memory) {
+        return "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/";
     }
     
     function mint(uint _amount) public {

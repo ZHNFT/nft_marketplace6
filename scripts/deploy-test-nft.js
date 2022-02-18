@@ -22,11 +22,6 @@ async function main() {
   console.log("test deployed at address:")
   console.log(test.address);
 
-  
-
-  // console.log("nft deployed at address:")
-  // console.log(nft.address);
-
   // const HiveMarket = await hre.ethers.getContractFactory("HiveMarketplace");
   // const hive = await HiveMarket.deploy();
 

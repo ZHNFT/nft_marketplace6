@@ -1,5 +1,6 @@
 export const nftAddress = "0x6a334a45164be765F1733101A08A4a41d0581FB7"
 export const nftMarketAddress = "0x832F92F785964899e043b85d9EEE5eA3699B65Cd"
-export const hiveMarketplaceAddress = "0xA9D6F9b78edf962fB8A7Ae083f552954AB87C8C3"
+export const hiveMarketplaceAddress = "0x801974E3d2A2f5c9e533E5AA663D7B09428D3093"
 export const honeyTokenAddress = "0x5CFB197753a01353c3AA11db332349bebDE649cC"
 export const testNFTAddress = "0x80F216E24A73203e94aEbd9ca01899F97dFf5E2F"
+export const AdditionalTestNFT = "0x06E65c70B752b996E3dC0C66c8424E14B52B8266"

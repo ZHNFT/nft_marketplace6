@@ -2,6 +2,7 @@ const Moralis = require("moralis/node");
 const fetch = require('node-fetch');
 const traitGenerator = require('./traitGenerator');
 
+
 const serverUrl = "https://b7gujvtadxrb.usemoralis.com:2053/server"; //Moralis Server Url here
 const appId = "LThR3x8bKUBMnn02S3qHu8pOe9d4EH0023cpkxdw"; //Moralis Server App ID here
 
@@ -12,6 +13,7 @@ const resolveLink = (url) => {
   return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
 };
 
+//TODO: make this part dynamic, or export this as a function and have these values as parameters
 const collectionAddress = "0x5f73f4d79580d855dee138557d1c1fb0bbb3af95"; //Collection Address Here
 const collectionName = "YOCOnauts"; //CollectionName Here
 
@@ -136,6 +138,14 @@ async function generateRarity() {
     }
   }
 
+  //Set the tally, this has all the info needed about trait info for the whole collection
+  collection.set("traits", tally);
+
+  //Set this total number of items in a collection
+  collection.set("total", totalNum);
+
+  collection.save();
+
   const collectionAttributes = Object.keys(tally);
 
   // Store traits in moralis Database
@@ -209,25 +219,23 @@ async function generateRarity() {
 
   const nftClass = Moralis.Object.extend(collection.tableName + "NFT");
   
-
   // Store rarity in moralis Database
   for (let i = 0; i < nftArr.length; i++) {
     nftArr[i].rank = i + 1;
 
     const nft = (nftMapping.hasOwnProperty(nftArr[i].token_id))? nftMapping[nftArr[i].token_id] : new nftClass();
 
-    const tokenId = nftArr[i].token_id;
+    let nftTraits = nftArr[i].attributes.map((e) => e.trait_type);
+    let nftValues = nftArr[i].attributes.map((e) => e.value);
 
-    let nftTraits = nftArr[j].map((e) => e.trait_type);
-    let nftValues = nftArr[j].map((e) => e.value);
-
+    //Todo, we will want to store each property individually to allow for ease of querying
     for(let i = 0; i < nftTraits.length; i++) {
 
         nft.set(nftTraits[i], nftValues[i]);
 
     }
+
     
-    //Todo, we will want to store each property individually to allow for ease of querying
     //nft.set("attributes", nftArr[i].attributes);
     nft.set("rarity", nftArr[i].rarity);
     nft.set("tokenId", nftArr[i].token_id);

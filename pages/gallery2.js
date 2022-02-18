@@ -43,7 +43,6 @@ export default function Gallery2() {
 
     function setIpfsAddress(ipfsHash) {
         let hash = ipfsHash.split("://")[1]
-        console.log(hash);
         const url = `https://ipfs.io/ipfs/${hash}`;
         return url;
     }
