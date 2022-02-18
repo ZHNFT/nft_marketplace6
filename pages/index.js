@@ -134,6 +134,7 @@ export default function Home(props) {
                             <tr key={collection.token_address} className="hover:bg-gray-50 hover:cursor-pointer">
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.token_address}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLICK ME</td>
                             </tr>
                           </Link>
                       ))}
@@ -191,7 +192,7 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch('http://localhost:3000/api/collection');
+  const res = await fetch('http://localhost:3000/api/collections');
   const data = await res?.json();
   
   return { props: { collections: [ data?.data ] }, revalidate: 30 };

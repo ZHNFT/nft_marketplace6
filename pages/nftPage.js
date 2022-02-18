@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import yellowph from "../images/nftObject.png";
-import List from './components/list';
+import List from '../components/list';
 
 export default function nftPage() {
 

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 
 // Components
-import List from '../../components/list';
+import List from '../../../components/list';
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -33,5 +33,5 @@ export async function getServerSideProps(context) {
   const res = await fetch(`http://localhost:3000/api/collection/${address}`);
   const data = await res?.json();
   
-  return { props: { data: data?.data } };
+  return { props: { data: data?.data, traits: data?.traits } };
 }

@@ -1,5 +1,6 @@
 const Moralis = require("moralis/node");
 const fetch = require('node-fetch');
+const traitGenerator = require('./traitGenerator');
 
 const serverUrl = "https://b7gujvtadxrb.usemoralis.com:2053/server"; //Moralis Server Url here
 const appId = "LThR3x8bKUBMnn02S3qHu8pOe9d4EH0023cpkxdw"; //Moralis Server App ID here
@@ -15,11 +16,14 @@ const collectionAddress = "0x5f73f4d79580d855dee138557d1c1fb0bbb3af95"; //Collec
 const collectionName = "YOCOnauts"; //CollectionName Here
 
 async function generateRarity() {
+
+  const offset = 7;
+
   const NFTs = await Moralis.Web3API.token.getAllTokenIds({
     address: collectionAddress,
     chain: 'matic',
     limit: 400,
-    offset: 7
+    offset
   });
 
   const totalNum = NFTs.total;
@@ -30,7 +34,7 @@ async function generateRarity() {
 
   const timer = (ms) => new Promise((res) => setTimeout(res, ms));
 
-  for (let i = pageSize; i < totalNum; i = i + pageSize) {
+  for (let i = pageSize; i < (totalNum - offset); i = i + pageSize) {
     const NFTs = await Moralis.Web3API.token.getAllTokenIds({
       address: collectionAddress,
       chain: 'matic',
@@ -46,7 +50,6 @@ async function generateRarity() {
     if (e?.metadata) {
       return e;
     } else {
-      console.log('e', e);
       const res = await fetch(e?.token_uri || `https://bonez.mypinata.cloud/ipfs/QmXNZedQHgrGcVHcZnPo1qJxK7HPZAg78QAo773akhRVTD/${e?.token_id}.json`);
       const data = await res?.json();
       return {
@@ -95,6 +98,10 @@ async function generateRarity() {
   }
 
   const collectionAttributes = Object.keys(tally);
+
+  // Store traits in moralis Database
+  traitGenerator(tally, Moralis, collectionName);
+
   let nftArr = [];
   for (let j = 0; j < metadata.length; j++) {
     let current = metadata[j];
@@ -150,7 +157,6 @@ async function generateRarity() {
         console.log(error);
       }
     }
-    console.log('current', current)
 
     nftArr.push({
       attributes: current,  
@@ -162,6 +168,7 @@ async function generateRarity() {
 
   nftArr.sort((a, b) => b.rarity - a.rarity);
 
+  // Store rarity in moralis Database
   for (let i = 0; i < nftArr.length; i++) {
     nftArr[i].rank = i + 1;
     const newClass = Moralis.Object.extend(`${collectionName}Rarity`);
