@@ -45,16 +45,26 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
     }
 
     struct Bid {
+        address nftContractAddress;
+        address bidder;
+        address seller;
+        uint tokenId;
         uint quantity;
         uint pricePerItem;
-        uint expirationTime;
-        address bidder;
+        uint expiry;
+        uint nonce;
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
     }
 
     mapping(address => mapping(uint => mapping(address => Listing))) public listings;
     mapping(address => Collection) public whitelistedCollections;
 
+    //TODO: may get rid of
     mapping(address => mapping(uint => Bid)) public bids;
+
+    mapping(bytes32 => bool) invalidSignatures;
 
     event UpdateFee(uint fee);
     event UpdateFeeRecipient(address feeRecipient);
@@ -142,6 +152,65 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         _;
     }
 
+    /**
+    * @dev This is the domain used in EIP-712 signatures.
+    * It is not a constant so that the chainId can be determined dynamically.
+    * If multiple classes use EIP-712 signatures in the future this can move to a shared file.
+    */
+    bytes32 private DOMAIN_SEPARATOR;
+
+    event BidAccepted(
+        address indexed nftContract,
+        uint256 indexed tokenId,
+        address indexed seller,
+        address buyer,
+        uint256 marketplaceFee,
+        uint256 creatorFee,
+        uint256 ownerRevenue,
+        uint256 expiry
+    );
+
+    event BidCanceled(
+        address indexed nftContract,
+        uint256 indexed tokenId,
+        address indexed bidder,
+        address seller,
+        uint nonce
+    );
+
+    /**
+    * @dev This name is used in the EIP-712 domain.
+    * If multiple classes use EIP-712 signatures in the future this can move to the shared constants file.
+    */
+    string private constant NAME = "HIVENFTMarketplace";
+
+    /**
+    * @dev This is a hash of the method signature used in the EIP-712 signature for bids.
+    */
+    bytes32 private constant ACCEPT_BID_TYPEHASH =
+        keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address owner,address bidder,uint256 pricePerItem,uint256 quantity,uint256 deadline,uint nonce)");
+
+    /**
+    * @dev This function must be called at least once before signatures will work as expected.
+    * It's okay to call this function many times. Subsequent calls will have no impact.
+    */
+    function _initializeSignatures() internal {
+        uint256 chainId;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+        chainId := chainid()
+        }
+        DOMAIN_SEPARATOR = keccak256(
+        abi.encode(
+            keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+            keccak256(bytes(NAME)),
+            keccak256(bytes("1")),
+            chainId,
+            address(this)
+        )
+        );
+    }
+
     modifier onlyWhitelisted(address nft) {
         require(whitelistedCollections[nft].royaltyFee > 0, "nft not whitelisted");
         _;
@@ -152,7 +221,7 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         // setFee(_fee);
         // setFeeRecipient(_feeRecipient);
         // setPaymentToken(_paymentToken);
-        _initializeNFTBids();
+        _initializeSignatures();
     }
 
     function createListing(
@@ -323,57 +392,6 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         }
     }
 
-    /**
-   * @dev This is the domain used in EIP-712 signatures.
-   * It is not a constant so that the chainId can be determined dynamically.
-   * If multiple classes use EIP-712 signatures in the future this can move to a shared file.
-   */
-  bytes32 private DOMAIN_SEPARATOR;
-
-  event BidAccepted(
-    address indexed nftContract,
-    uint256 indexed tokenId,
-    address indexed seller,
-    address buyer,
-    uint256 marketplaceFee,
-    uint256 creatorFee,
-    uint256 ownerRevenue,
-    uint256 expiry
-  );
-
-  /**
-   * @dev This name is used in the EIP-712 domain.
-   * If multiple classes use EIP-712 signatures in the future this can move to the shared constants file.
-   */
-  string private constant NAME = "HIVENFTMarketplace";
-
-  /**
-   * @dev This is a hash of the method signature used in the EIP-712 signature for bids.
-   */
-  bytes32 private constant ACCEPT_BID_TYPEHASH =
-    keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address owner,address bidder,uint256 pricePerItem,uint256 quantity,uint256 deadline)");
-
-  /**
-   * @dev This function must be called at least once before signatures will work as expected.
-   * It's okay to call this function many times. Subsequent calls will have no impact.
-   */
-  function _initializeNFTBids() internal {
-    uint256 chainId;
-    // solhint-disable-next-line no-inline-assembly
-    assembly {
-      chainId := chainid()
-    }
-    DOMAIN_SEPARATOR = keccak256(
-      abi.encode(
-        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-        keccak256(bytes(NAME)),
-        keccak256(bytes("1")),
-        chainId,
-        address(this)
-      )
-    );
-  }
-
   /**
    * @notice Allow a bid for a NFT to be accepted by the owner.
    * @dev The buyer signs a message approving the purchase, and then the seller calls this function
@@ -381,62 +399,109 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
    * The sale is executed in this single on-chain call including the transfer of funds and the NFT.
    */
   function AcceptBid (
-    address nftContractAddress,
-    uint256 tokenId,
-    uint256 expiry,
-    address bidder,
-    uint256 pricePerItem,
-    uint256 quantity,
-    uint8 v,
-    bytes32 r,
-    bytes32 s
-  ) public payable nonReentrant {
+    Bid calldata bid
+    ) public nonReentrant {
 
-    IERC721 nftContract = IERC721(nftContractAddress);
+    bytes32 signature = keccak256(
+    abi.encodePacked(
+        "\x19\x01",
+        DOMAIN_SEPARATOR,
+        keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, msg.sender, bid.bidder, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
+    )
+    );
+
+    // Revert if the signature is invalid, the terms are not as expected, or if the seller transferred the NFT.
+    require(ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false, "AcceptBid: Invalid Signature");
+
+    //Invalidate signature so it cannot be used again
+    invalidSignatures[signature] = true;
+    
     // The signed message from the seller is only valid for a limited time.
-    require(expiry >= block.timestamp, "AcceptBid: EXPIRED");
-    // The seller must have the NFT in their wallet when this function is called.
-    address payable seller = payable(nftContract.ownerOf(tokenId));
+    require(bid.expiry >= block.timestamp, "AcceptBid: EXPIRED");
 
-    require(seller == msg.sender, "AcceptBid: NFT Not Owned");
 
-    // Scoping this block to avoid a stack too deep error
-    {
-      bytes32 digest = keccak256(
-        abi.encodePacked(
-          "\x19\x01",
-          DOMAIN_SEPARATOR,
-          keccak256(abi.encode(ACCEPT_BID_TYPEHASH, nftContractAddress, tokenId, seller, bidder, pricePerItem, quantity, expiry))
-        )
-      );
-      // Revert if the signature is invalid, the terms are not as expected, or if the seller transferred the NFT.
-      require(ecrecover(digest, v, r, s) == bidder, "AcceptBid: INVALID_SIGNATURE");
+    //Transfer the nft from the owner to the bidder
+    if (IERC165(bid.nftContractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+        IERC721(bid.nftContractAddress).safeTransferFrom(msg.sender, bid.bidder, bid.tokenId);
+    } else {
+        IERC1155(bid.nftContractAddress).safeTransferFrom(msg.sender, bid.bidder, bid.tokenId, bid.quantity, bytes(""));
     }
 
-    uint256 value = pricePerItem * quantity;
+    uint256 value = bid.pricePerItem * bid.quantity;
 
-    // This will revert if the seller has not given the market contract approval.
-    nftContract.transferFrom(seller, bidder, tokenId);
-
-    // Pay the seller, creator, and Foundation as appropriate.
+    // Pay the creator the marketplace, and seller
     // Will revert of the bidder doesn't have the funds
     (uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue) = _distributeFunds(
       value,
-      seller,
-      bidder,
-      nftContractAddress
+      msg.sender,
+      bid.bidder,
+      bid.nftContractAddress
     );
 
     emit BidAccepted(
-      nftContractAddress,
-      tokenId,
-      seller,
-      bidder,
+      bid.nftContractAddress,
+      bid.tokenId,
+      msg.sender,
+      bid.bidder,
       marketplaceFee,
       creatorFee,
       ownerRevenue,
-      expiry
+      bid.expiry
     );
+  }
+
+  function CancelBid(Bid calldata bid) public {
+
+    bytes32 signature = keccak256(
+    abi.encodePacked(
+        "\x19\x01",
+        DOMAIN_SEPARATOR,
+        keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, bid.seller, msg.sender, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
+    )
+    );
+
+    // Revert if the signature has not been signed by the sender
+    require(ecrecover(signature, bid.v, bid.r, bid.s) == msg.sender, "CancelBid: INVALID_SIGNATURE");
+
+    invalidSignatures[signature] = true;
+
+    emit BidCanceled(
+        bid.nftContractAddress,
+        bid.tokenId,
+        msg.sender,
+        bid.seller,
+        bid.nonce
+
+    );
+
+
+  }
+
+  function ValidBid(Bid calldata bid) public view returns (bool) {
+
+    bytes32 signature = keccak256(
+    abi.encodePacked(
+        "\x19\x01",
+        DOMAIN_SEPARATOR,
+        keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, bid.seller, bid.bidder, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
+    )
+    );
+
+     //Transfer the nft from the owner to the bidder
+    if (IERC165(bid.nftContractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+        if(IERC721(bid.nftContractAddress).ownerOf(bid.tokenId) != bid.seller){
+            return false;
+        }
+    } else {
+        if(IERC1155(bid.nftContractAddress).balanceOf(bid.seller, bid.tokenId) < bid.quantity) {
+            return false;
+        }
+    }
+
+    // Return if a valid bid
+    return (ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false);
+
+
   }
 
     // function BidOnItem(Bid memory _bid, address _nftAddress, uint _tokenId, address _owner) public onlyWhitelisted(_nftAddress) {
