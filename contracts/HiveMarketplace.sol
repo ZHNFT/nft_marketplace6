@@ -452,6 +452,7 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
 
   function CancelBid(Bid calldata bid) public {
 
+      /// @notice nonce is used so there may be multiple of the same requests, like for purchasing bunches of erc1155 tokens
     bytes32 signature = keccak256(
     abi.encodePacked(
         "\x19\x01",
@@ -498,8 +499,10 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         }
     }
 
+    uint balance = IERC20(paymentToken).balanceOf(bid.bidder);
+
     // Return if a valid bid
-    return (ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false);
+    return (ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false && balance >= bid.quantity * bid.pricePerItem);
 
 
   }
