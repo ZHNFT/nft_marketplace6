@@ -12,7 +12,7 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
 
     using SafeERC20 for IERC20;
 
-    uint public maxSupply = 40000;
+    uint public maxSupply = 20;
 
     uint constant maxMintPerTransaction = 5;
 
@@ -92,7 +92,7 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
 
     }
 
-    function mintRandom(uint _randomNumber, address _reciepient) internal {
+    function mintRandom(uint _randomNumber, address _reciepient) internal returns(uint){
 
         uint range = maxSupply - currentSupply;
 
@@ -100,11 +100,11 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
         /// @notice the initial index is added in case we want to release another collection
         uint index = ((_randomNumber % range) + 1) + intitialIndex;
 
-        mintInternal(index, range, _reciepient);
+        return mintInternal(index, range, _reciepient);
 
     }
 
-    function mintInternal(uint _index, uint _range, address _recipient) internal {
+    function mintInternal(uint _index, uint _range, address _recipient) internal returns(uint) {
 
         //Retrieve value set in the token mapping, value can range from 0 - maxSupply, if value is not zero, the token id to mint is the value set 
         uint value = tokenIdMapping[_index];
@@ -135,6 +135,8 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
        //TODO: notify honey contract that a token has been minted
 
        currentSupply++;
+
+       return value;
 
     }
 
@@ -182,14 +184,17 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
        
     }
 
-    function mintTest(uint _amount, uint _randomness) external {
+    function mintTest(uint _randomness) external returns(uint) {
 
-        for(uint i = 0; i < _amount; i++) {
+       
+       
             
             //Call the function that mints the nft for the user, will shuffle the random number each time
-            mintRandom(uint(keccak256(abi.encode(_randomness, i))), msg.sender);
+            return mintRandom(uint(keccak256(abi.encode(_randomness))), msg.sender);
 
-        }
+        
+
+       
     }
     
 

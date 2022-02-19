@@ -1,7 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("NFTMarket", function () {
+describe("NFT Test", function () {
 
   it("Should recieve a gas estimation to mint 5 nfts", async function () {
 
@@ -13,14 +13,16 @@ describe("NFTMarket", function () {
     const nft = await NFT.deploy(honey.address);
     await nft.deployed();
 
-    for(let i = 0; i < 50; i++) {
+    for(let i = 0; i < 4; i++) {
 
-      let estimation = await nft.estimateGas.mintTest(2, 47382874);
+      let tokenId = await nft.mintTest(47382874);
 
-      estimation = estimation.toString();
+      console.log(tokenId);
+
+      tokenId = tokenId.toString();
 
 
-      console.log(estimation);
+      console.log(tokenId);
 
     }
    
