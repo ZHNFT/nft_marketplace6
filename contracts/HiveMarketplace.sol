@@ -152,6 +152,7 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
         // setFee(_fee);
         // setFeeRecipient(_feeRecipient);
         // setPaymentToken(_paymentToken);
+        _initializeNFTBids();
     }
 
     function createListing(
@@ -288,38 +289,155 @@ contract HiveMarketplace is Ownable, ReentrancyGuard {
             listedItem.pricePerItem
         );
 
-        _buyItem(listedItem.pricePerItem, _buyOrder.quantity, _buyOrder.owner, _buyOrder.nftAddress);
+        _distributeFunds(listedItem.pricePerItem * listedItem.quantity, _buyOrder.owner, msg.sender, _buyOrder.nftAddress);
     }
 
-    function _buyItem(
-        uint256 _pricePerItem,
-        uint256 _quantity,
+    function _distributeFunds(
+        uint256 _value,
         address _owner,
+        address _buyer,
         address _nftAddress
-    ) internal {
+       
+    ) internal returns(uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue){
 
-        uint256 totalPrice = _pricePerItem * _quantity;
+        if(_value > 0) {
 
-        if(totalPrice > 0) {
-
-            uint256 feeAmount = totalPrice * fee / BASIS_POINTS;
+            marketplaceFee = _value * fee / BASIS_POINTS;
 
             Collection memory collection = whitelistedCollections[_nftAddress];
 
-            uint256 royalty = totalPrice * collection.royaltyFee / BASIS_POINTS;
+            creatorFee = _value * collection.royaltyFee / BASIS_POINTS;
 
-            IERC20(paymentToken).safeTransferFrom(_msgSender(), feeReceipient, feeAmount);
+            IERC20(paymentToken).safeTransferFrom(_buyer, feeReceipient, marketplaceFee);
 
-            if(royalty > 0) {
+            if(creatorFee > 0) {
             
-                IERC20(paymentToken).safeTransferFrom(_msgSender(), collection.royaltyRecipient, royalty);
+                IERC20(paymentToken).safeTransferFrom(_buyer, collection.royaltyRecipient, creatorFee);
 
             }
 
-            IERC20(paymentToken).safeTransferFrom(_msgSender(), _owner, (totalPrice - feeAmount) - royalty);
+            ownerRevenue = (_value - marketplaceFee) - creatorFee;
+
+            IERC20(paymentToken).safeTransferFrom(_buyer, _owner, ownerRevenue);
 
         }
     }
+
+    /**
+   * @dev This is the domain used in EIP-712 signatures.
+   * It is not a constant so that the chainId can be determined dynamically.
+   * If multiple classes use EIP-712 signatures in the future this can move to a shared file.
+   */
+  bytes32 private DOMAIN_SEPARATOR;
+
+  event BidAccepted(
+    address indexed nftContract,
+    uint256 indexed tokenId,
+    address indexed seller,
+    address buyer,
+    uint256 marketplaceFee,
+    uint256 creatorFee,
+    uint256 ownerRevenue,
+    uint256 expiry
+  );
+
+  /**
+   * @dev This name is used in the EIP-712 domain.
+   * If multiple classes use EIP-712 signatures in the future this can move to the shared constants file.
+   */
+  string private constant NAME = "HIVENFTMarketplace";
+
+  /**
+   * @dev This is a hash of the method signature used in the EIP-712 signature for bids.
+   */
+  bytes32 private constant ACCEPT_BID_TYPEHASH =
+    keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address owner,address bidder,uint256 pricePerItem,uint256 quantity,uint256 deadline)");
+
+  /**
+   * @dev This function must be called at least once before signatures will work as expected.
+   * It's okay to call this function many times. Subsequent calls will have no impact.
+   */
+  function _initializeNFTBids() internal {
+    uint256 chainId;
+    // solhint-disable-next-line no-inline-assembly
+    assembly {
+      chainId := chainid()
+    }
+    DOMAIN_SEPARATOR = keccak256(
+      abi.encode(
+        keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+        keccak256(bytes(NAME)),
+        keccak256(bytes("1")),
+        chainId,
+        address(this)
+      )
+    );
+  }
+
+  /**
+   * @notice Allow a bid for a NFT to be accepted by the owner.
+   * @dev The buyer signs a message approving the purchase, and then the seller calls this function
+   * with the msg.value equal to the agreed upon price.
+   * The sale is executed in this single on-chain call including the transfer of funds and the NFT.
+   */
+  function AcceptBid (
+    address nftContractAddress,
+    uint256 tokenId,
+    uint256 expiry,
+    address bidder,
+    uint256 pricePerItem,
+    uint256 quantity,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+  ) public payable nonReentrant {
+
+    IERC721 nftContract = IERC721(nftContractAddress);
+    // The signed message from the seller is only valid for a limited time.
+    require(expiry >= block.timestamp, "AcceptBid: EXPIRED");
+    // The seller must have the NFT in their wallet when this function is called.
+    address payable seller = payable(nftContract.ownerOf(tokenId));
+
+    require(seller == msg.sender, "AcceptBid: NFT Not Owned");
+
+    // Scoping this block to avoid a stack too deep error
+    {
+      bytes32 digest = keccak256(
+        abi.encodePacked(
+          "\x19\x01",
+          DOMAIN_SEPARATOR,
+          keccak256(abi.encode(ACCEPT_BID_TYPEHASH, nftContractAddress, tokenId, seller, bidder, pricePerItem, quantity, expiry))
+        )
+      );
+      // Revert if the signature is invalid, the terms are not as expected, or if the seller transferred the NFT.
+      require(ecrecover(digest, v, r, s) == bidder, "AcceptBid: INVALID_SIGNATURE");
+    }
+
+    uint256 value = pricePerItem * quantity;
+
+    // This will revert if the seller has not given the market contract approval.
+    nftContract.transferFrom(seller, bidder, tokenId);
+
+    // Pay the seller, creator, and Foundation as appropriate.
+    // Will revert of the bidder doesn't have the funds
+    (uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue) = _distributeFunds(
+      value,
+      seller,
+      bidder,
+      nftContractAddress
+    );
+
+    emit BidAccepted(
+      nftContractAddress,
+      tokenId,
+      seller,
+      bidder,
+      marketplaceFee,
+      creatorFee,
+      ownerRevenue,
+      expiry
+    );
+  }
 
     // function BidOnItem(Bid memory _bid, address _nftAddress, uint _tokenId, address _owner) public onlyWhitelisted(_nftAddress) {
 

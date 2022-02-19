@@ -4,3 +4,5 @@ export const hiveMarketplaceAddress = "0x801974E3d2A2f5c9e533E5AA663D7B09428D309
 export const honeyTokenAddress = "0x5CFB197753a01353c3AA11db332349bebDE649cC"
 export const testNFTAddress = "0x80F216E24A73203e94aEbd9ca01899F97dFf5E2F"
 export const AdditionalTestNFT = "0x06E65c70B752b996E3dC0C66c8424E14B52B8266"
+export const LargeTestcollection = "0xcBce509f9d84EDe4A1477985e71B35Ee77641988"
+export const LargeTest = "0xAf326762057F5B7EEd46b08eB12694150cb37bca"

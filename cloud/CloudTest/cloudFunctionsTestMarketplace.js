@@ -152,6 +152,33 @@
     
   });
 
+  Moralis.Cloud.beforeSave("LargeTestTransfersNew", async (request) => {
+
+    const logger = Moralis.Cloud.getLogger();
+    const from = request.object.get("from")
+
+    const confirmed = request.object.get("confirmed");
+
+    let contractAddress = request.object.get("address");
+    contractAddress = contractAddress.toString();
+
+    contractAddress = contractAddress.toLowerCase();
+
+    let params = {};
+    params["contractAddress"] = contractAddress;
+    params["from"] = from;
+    params["tokenId"] = request.object.get("tokenId");
+    params["to"] = request.object.get("to");
+    //params["object"] = request.object;
+
+    await Moralis.Cloud.run("HandleTransfer", params);
+
+
+    //return request;
+
+
+  });  
+
 
   Moralis.Cloud.define("HandleTransfer", async (request) => {
 
@@ -162,7 +189,29 @@
     logger.info("contract address = ");
     logger.info(request.params.contractAddress);
 
-    const tokenId = request.params.tokenId;
+    let tokenId = request.params.tokenId;
+
+    let contractAddress = request.params.contractAddress;
+
+       
+    //Grab the collection this is from
+    const Collection = Moralis.Object.extend("WhitelistedCollection");
+
+    const query = new Moralis.Query(Collection);
+
+    query.equalTo("contractAddress", contractAddress);
+
+    const collectionResult = await query.find();
+
+    let collection;
+    if(collectionResult.length == 1) {
+        collection = collectionResult[0];
+    } else {
+        logger.error("Collection length should be 1");
+    }
+
+    logger.info("collection found");
+    logger.info(collection.get("collectionName"));
 
     //Get the table name that this nft saved to
     const tableName = collection.get("tableName");
@@ -170,42 +219,23 @@
     const NFT = Moralis.Object.extend(tableName + "NFT");
     const nftQuery = new Moralis.Query(NFT);
 
-    query.equalTo("tokenId", tokenId);
+    nftQuery.equalTo("tokenId", tokenId);
 
     const nftResult = await nftQuery.find();
 
-    //Initialize a new nft if one doesnt exist
-    let nft = (nftResult.length == 0) ? new nft() : nftResult[0]; 
+     //Initialize a new nft if one doesnt exist
+    let nft;
+    if(nftResult.length == 0) {
+        nft = new NFT();
+        logger.info("new nft created");
+    } else {
+        nft = nftResult[0];
+        logger.info("using nfts result");
+    }
+
+    
 
     if (request.params.from == "0x0000000000000000000000000000000000000000") {
-
-        //This is from the zero address, so it is minted
-
-       let contractAddress = request.params.contractAddress;
-
-       
-       //Grab the collection this is from
-       const Collection = Moralis.Object.extend("WhitelistedCollection");
-
-       const lowerCaseCollection = contractAddress.toLowerCase();
-
-       const query = new Moralis.Query(Collection);
-
-       query.equalTo("contractAddress", lowerCaseCollection);
-
-       const collectionResult = await query.find();
-
-       let collection;
-       if(collectionResult.length == 1) {
-           collection = collectionResult[0];
-       } else {
-           logger.error("Collection length should be 1");
-       }
-
-       
-       //Save the nft to the tableName + "NFT", this is where the site will retrieve the data from
-       const NFT = Moralis.Object.extend(tableName + "NFT");
-       const nft = new NFT();
        
        
        nft.set("tokenId", tokenId);
@@ -249,7 +279,7 @@
        logger.info(uri);
 
        //TODO: not everything will be using ipfs 
-       let hash = uri.split("://")[1]
+       const hash = uri.split("://")[1]
        uri = `https://ipfs.io/ipfs/${hash}`;
 
        let traits = collection.get("traits");
@@ -257,11 +287,10 @@
        let httpResponse = await Moralis.Cloud.httpRequest({url: uri})
         // success
         //logger.info(httpResponse)
-        let data = JSON.parse(httpResponse.text)
-        
-        let attributesLength = data.attributes.length;
+        const data = JSON.parse(httpResponse.text)
 
-        logger.info(attributesLength)
+        nft.set("image", data.image);
+        logger.info("poo");
 
         for(index in data.attributes) {
 
@@ -318,7 +347,6 @@
         //save the collection
         collection.save();
 
-        nft.set("traits", traits);
         nft.set("uri", uri.toString());
           
    } else {

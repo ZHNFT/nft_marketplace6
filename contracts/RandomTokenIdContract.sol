@@ -138,6 +138,7 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
 
     }
 
+
     //TODO: add modifier to make only callable when the auction is going
     function auctionMint(uint tokenId, uint emissionRate, address _reciepient) external onlyOwner {
 
@@ -190,6 +191,7 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
 
         }
     }
+    
 
     /// @notice Returns the token's daily rate of honey generation
     function getTokensEmissionRate(uint _tokenId) public view returns(uint) {
