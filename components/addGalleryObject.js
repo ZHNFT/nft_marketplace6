@@ -9,7 +9,6 @@ export default function AddGalleryObjects(nfts) {
         nfts.map((item, i) => (
            
             <div key={i} className="group relative">
-                {console.log(item)}
                 <div className="w-full h-auto aspect-square rounded-lg overflow-hidden group-hover:opacity-75">
                     <Image
                         className="w-full h-full object-center object-cover"
