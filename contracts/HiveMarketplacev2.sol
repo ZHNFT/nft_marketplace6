@@ -54,11 +54,11 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
     struct Listing {
         address nftContractAddress;
         address owner;
-        uint tokenId;
-        uint quantity;
-        uint pricePerItem;
-        uint expiry;
-        uint nonce;
+        uint256 tokenId;
+        uint256 quantity;
+        uint256 pricePerItem;
+        uint256 expiry;
+        uint256 nonce;
         bytes32 r;
         bytes32 s;
         uint8 v;
@@ -187,13 +187,13 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
     * @dev This is a hash of the method signature used in the EIP-712 signature for bids.
     */
     bytes32 private constant ACCEPT_BID_TYPEHASH =
-        keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address bidder,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint nonce)");
+        keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address bidder,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
 
      /**
     * @dev This is a hash of the method signature used in the EIP-712 signature for listings.
     */
     bytes32 private constant ACCEPT_LISTING_TYPEHASH =
-        keccak256("AcceptListing(address nftContractAddress,uint256 tokenId,address owner,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint nonce)");
+        keccak256("AcceptListing(address nftContractAddress,uint256 tokenId,address owner,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
 
     /**
     * @dev This function must be called at least once before signatures will work as expected.
@@ -227,10 +227,11 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
     /**
     * @dev Constructor initializing the fees, recipient of market fees, and the contract address of the payment token used in this marketplace
     */
-    constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
-        setFee(_fee);
-        setFeeRecipient(_feeRecipient);
-        setPaymentToken(_paymentToken);
+    //constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
+    constructor() {
+       // setFee(_fee);
+        //setFeeRecipient(_feeRecipient);
+        //setPaymentToken(_paymentToken);
         _initializeSignatures();
     }
 

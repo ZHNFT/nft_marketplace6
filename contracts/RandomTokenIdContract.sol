@@ -186,15 +186,9 @@ contract RandomTokenIdContract is ERC721, Ownable, VRFConsumerBase {
 
     function mintTest(uint _randomness) external returns(uint) {
 
-       
-       
-            
-            //Call the function that mints the nft for the user, will shuffle the random number each time
-            return mintRandom(uint(keccak256(abi.encode(_randomness))), msg.sender);
+        //Call the function that mints the nft for the user, will shuffle the random number each time
+        return mintRandom(uint(keccak256(abi.encode(_randomness))), msg.sender);
 
-        
-
-       
     }
     
 
