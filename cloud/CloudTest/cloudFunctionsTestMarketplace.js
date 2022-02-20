@@ -139,7 +139,6 @@
         params["from"] = from;
         params["tokenId"] = request.object.get("tokenId");
         params["to"] = request.object.get("to");
-        //params["object"] = request.object;
 
         await Moralis.Cloud.run("HandleTransfer", params);
 
@@ -169,7 +168,6 @@
         params["from"] = from;
         params["tokenId"] = request.object.get("tokenId");
         params["to"] = request.object.get("to");
-        //params["object"] = request.object;
 
         await Moralis.Cloud.run("HandleTransfer", params);
 
@@ -199,7 +197,6 @@
         params["from"] = from;
         params["tokenId"] = request.object.get("tokenId");
         params["to"] = request.object.get("to");
-        //params["object"] = request.object;
 
         await Moralis.Cloud.run("HandleTransfer", params);
 
