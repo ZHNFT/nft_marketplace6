@@ -139,15 +139,12 @@
         params["from"] = from;
         params["tokenId"] = request.object.get("tokenId");
         params["to"] = request.object.get("to");
-        //params["object"] = request.object;
 
         await Moralis.Cloud.run("HandleTransfer", params);
 
     } else {
         logger.info("not confirmed");
     }
-
-    return request;
 
     
   });
@@ -159,23 +156,53 @@
 
     const confirmed = request.object.get("confirmed");
 
-    let contractAddress = request.object.get("address");
-    contractAddress = contractAddress.toString();
+    if(confirmed) {
+        
+        let contractAddress = request.object.get("address");
+        contractAddress = contractAddress.toString();
 
-    contractAddress = contractAddress.toLowerCase();
+        contractAddress = contractAddress.toLowerCase();
 
-    let params = {};
-    params["contractAddress"] = contractAddress;
-    params["from"] = from;
-    params["tokenId"] = request.object.get("tokenId");
-    params["to"] = request.object.get("to");
-    //params["object"] = request.object;
+        let params = {};
+        params["contractAddress"] = contractAddress;
+        params["from"] = from;
+        params["tokenId"] = request.object.get("tokenId");
+        params["to"] = request.object.get("to");
 
-    await Moralis.Cloud.run("HandleTransfer", params);
+        await Moralis.Cloud.run("HandleTransfer", params);
+
+    } else {
+        logger.info("not confirmed");
+    }
 
 
-    //return request;
+  }); 
+  
+  Moralis.Cloud.beforeSave("TestCollectionTransfers", async (request) => {
 
+    const logger = Moralis.Cloud.getLogger();
+    const from = request.object.get("from")
+
+    const confirmed = request.object.get("confirmed");
+
+    if(confirmed) {
+        
+        let contractAddress = request.object.get("address");
+        contractAddress = contractAddress.toString();
+
+        contractAddress = contractAddress.toLowerCase();
+
+        let params = {};
+        params["contractAddress"] = contractAddress;
+        params["from"] = from;
+        params["tokenId"] = request.object.get("tokenId");
+        params["to"] = request.object.get("to");
+
+        await Moralis.Cloud.run("HandleTransfer", params);
+
+    } else {
+        
+    }
 
   });  
 
@@ -193,7 +220,6 @@
 
     let contractAddress = request.params.contractAddress;
 
-       
     //Grab the collection this is from
     const Collection = Moralis.Object.extend("WhitelistedCollection");
 
@@ -232,8 +258,6 @@
         nft = nftResult[0];
         logger.info("using nfts result");
     }
-
-    
 
     if (request.params.from == "0x0000000000000000000000000000000000000000") {
        
