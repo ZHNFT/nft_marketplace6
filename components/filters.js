@@ -1,9 +1,21 @@
 import { Fragment } from 'react'
+import { useRouter } from 'next/router'
 import { Dialog, Disclosure, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid'
 
-export default function Filters({ mobileFiltersOpen, setMobileFiltersOpen, filters, subCategories }) {
+export default function Filters({ mobileFiltersOpen, setMobileFiltersOpen, filters }) {
+  const router = useRouter()
+
+  function handleFilterChange(e) {
+    const { name, value } = e.target
+    const newFilters = { ...filters, [name]: value }
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, filters: JSON.stringify(newFilters) }
+    });
+  }
+
   return (
     <Transition.Root show={mobileFiltersOpen} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={setMobileFiltersOpen}>
@@ -43,13 +55,13 @@ export default function Filters({ mobileFiltersOpen, setMobileFiltersOpen, filte
 
             {/* Filters */}
             <form className="mt-4 border-t border-gray-200">
-              {filters?.map((filter, id) => (
-                <Disclosure as="div" key={`filter-mobile-${filter.traitType}-${id}`} className="border-t border-gray-200 px-4 py-6">
+              {filters && Object.keys(filters)?.map((filter, id) => (
+                <Disclosure as="div" key={`filter-mobile-${filter}-${id}`} className="border-t border-gray-200 px-4 py-6">
                   {({ open }) => (
                     <>
                       <h3 className="-mx-2 -my-3 flow-root">
                         <Disclosure.Button className="px-2 py-3 bg-white w-full flex items-center justify-between text-gray-400 hover:text-gray-500">
-                          <span className="font-medium text-gray-900">{filter.traitType}</span>
+                          <span className="font-medium text-gray-900">{filter}</span>
                           <span className="ml-6 flex items-center">
                             {open ? (
                               <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
@@ -68,7 +80,7 @@ export default function Filters({ mobileFiltersOpen, setMobileFiltersOpen, filte
                                 name={`${key}[]`}
                                 defaultValue={value}
                                 type="checkbox"
-                                // defaultChecked={option.checked}
+                                onClick={handleFilterChange}
                                 className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
                               />
                               <label

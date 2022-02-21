@@ -6,7 +6,7 @@ import Layout from '../components/layout';
 function MyApp({ Component, pageProps }) {
 
   return (
-    <MoralisProvider appId={process.env.REACT_APP_MORALIS_APPLICATION_ID} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}>
+    <MoralisProvider appId={process.env.REACT_APP_MORALIS_APPLICATION_ID_TESTNET} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL_TESTNET}>
       <Layout pageProps={pageProps}>
         {/* 
           Component here is the page, for example index.js

@@ -8,6 +8,7 @@ import Web3Modal from 'web3modal'
 import { nftAddress, nftMarketAddress } from '../config'
 //import styles from '../styles/Home.module.css'
 import { useMoralis } from 'react-moralis';
+import getMoralisNode from '../middleware/getMoralisNode';
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Marketplace from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
@@ -18,7 +19,12 @@ const NftProjects = [
     chain: 'matic',
     name: 'YOCOnauts',
     address: '0x5f73f4d79580d855dee138557d1c1fb0bbb3af95',
-  }
+  },
+  {
+    chain: 'matic',
+    name: 'TestNet',
+    address: '0xaf326762057f5b7eed46b08eb12694150cb37bca',
+  },
 ];
 
 export default function Home(props) {
@@ -27,6 +33,7 @@ export default function Home(props) {
   const [loadingState, setLoadingState] = useState('not-loaded');
   const { Moralis, isInitialized, isInitializing } = useMoralis();
   const [metaData, setMetaData] = useState([]);
+  console.log(`collections`, collections)
 
   useEffect(() => {
     loadNFTS();
@@ -126,14 +133,21 @@ export default function Home(props) {
                         >
                           Address
                         </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Total
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {collections.map((collection) => (
-                          <Link href="/collection/[address]" as={`collection/${collection.token_address}`} key={collection.token_address}>
-                            <tr key={collection.token_address} className="hover:bg-gray-50 hover:cursor-pointer">
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.token_address}</td>
+                      {collections?.map((collection) => (
+                          <Link href="/collection/[address]/[tableName]" as={`/collection/${collection.contractAddress}/${collection.tableName}`} key={collection.contractAddress} passHref>
+                            <tr key={collection.contractAddress} className="hover:bg-gray-50 hover:cursor-pointer">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.collectionName}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.contractAddress}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.total}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLICK ME</td>
                             </tr>
                           </Link>
@@ -192,8 +206,11 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch('http://localhost:3000/api/collections');
-  const data = await res?.json();
-  
-  return { props: { collections: [ data?.data ] }, revalidate: 30 };
+  const moralis = getMoralisNode();
+  const collection = moralis.Object.extend("WhitelistedCollection");
+  const collectionQuery = new moralis.Query(collection);
+  const result = await collectionQuery.find();
+  const data = JSON.parse(JSON.stringify(result));
+
+  return { props: { collections: data }, revalidate: 30 };
 }

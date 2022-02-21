@@ -2,7 +2,6 @@ const Moralis = require("moralis/node");
 const fetch = require('node-fetch');
 const traitGenerator = require('./traitGenerator');
 
-
 const serverUrl = "https://b7gujvtadxrb.usemoralis.com:2053/server"; //Moralis Server Url here
 const appId = "LThR3x8bKUBMnn02S3qHu8pOe9d4EH0023cpkxdw"; //Moralis Server App ID here
 
@@ -51,7 +50,7 @@ async function generateRarity() {
       nftMapping[nft.tokenId] = nft;
   }
 
-  const offset = 7;
+  const offset = 0;
 
     //Change the chain to mainnet when we go live
     //Why is this called when it is just called later in the loop
@@ -91,15 +90,15 @@ async function generateRarity() {
     if (e?.metadata) {
       return e;
     } else {
-      const res = await fetch(e?.token_uri || `https://bonez.mypinata.cloud/ipfs/QmXNZedQHgrGcVHcZnPo1qJxK7HPZAg78QAo773akhRVTD/${e?.token_id}.json`);
+      const res = await fetch(e?.token_uri || e?.uri || `https://bonez.mypinata.cloud/ipfs/QmXNZedQHgrGcVHcZnPo1qJxK7HPZAg78QAo773akhRVTD/${e?.token_id}.json`);
       const data = await res?.json();
       return {
         ...e,
         metadata: JSON.stringify({
-          name: data.name,
-          description: data.description,
-          image: data.image,
-          attributes: data.attributes
+          name: data?.name,
+          description: data?.description,
+          image: data?.image,
+          attributes: data?.attributes
         })
       }
     }

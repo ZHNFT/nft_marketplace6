@@ -28,7 +28,7 @@ const userNavigation = [
 
 export default function Layout({ children, pageProps }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-
+  console.log(`pageProps`, pageProps)
   return (
     <>
       <Seo />
@@ -43,8 +43,13 @@ export default function Layout({ children, pageProps }) {
             {/* Sidebar menu filters for desktop */}
             <Sidebar
               navigation={navigation}
-              filters={pageProps?.traits}
-            />
+              filters={pageProps?.collection?.traits}
+            >
+              {/* 
+              <Filters
+                place="desktop"
+              /> */}
+            </Sidebar>
             <main className="lg:col-span-9 xl:col-span-10">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
@@ -58,9 +63,10 @@ export default function Layout({ children, pageProps }) {
               })}
               {/* Sidemenu filters for mobile */}
               <Filters
-                filters={pageProps?.traits}
+                filters={pageProps?.collection?.traits}
                 setMobileFiltersOpen={setMobileFiltersOpen}
                 mobileFiltersOpen={mobileFiltersOpen}
+                place="mobile"
               />
             </main>
           </div>

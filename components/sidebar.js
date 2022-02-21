@@ -1,8 +1,23 @@
 import clsx from "clsx";
+import { useRouter } from 'next/router'
 import { Disclosure } from '@headlessui/react'
 import { MinusSmIcon, PlusSmIcon } from '@heroicons/react/solid'
 
 export default function Sidebar({ navigation, filters }) {
+  const router = useRouter()
+  const { tableName, address } = router.query
+
+  function handleFilterChange(e) {
+    const { name, value } = e.target
+    console.log(`name`, name)
+    console.log(`value`, value)
+    const newFilters = { tableName, address, [value]: name };
+
+    router.push({
+      pathname: router.pathname,
+      query: newFilters,
+    });
+  }
   return (
     <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
       <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
@@ -29,13 +44,13 @@ export default function Sidebar({ navigation, filters }) {
           ))}
         </div>
         <form className="hidden lg:block">
-          {filters?.map((filter, id) => (
-            <Disclosure as="div" key={`${filter.traitType}-${id}`} className="border-b border-gray-200 py-6">
+          {filters && Object.keys(filters)?.map((filter, id) => (
+            <Disclosure as="div" key={`${filter}-${id}`} className="border-b border-gray-200 py-6">
               {({ open }) => (
                 <>
                   <h3 className="-my-3 flow-root">
                     <Disclosure.Button className="py-3 w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500">
-                      <span className="font-medium text-gray-900">{filter.traitType}</span>
+                      <span className="font-medium text-gray-900">{filter}</span>
                       <span className="ml-6 flex items-center">
                         {open ? (
                           <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
@@ -47,14 +62,14 @@ export default function Sidebar({ navigation, filters }) {
                   </h3>
                   <Disclosure.Panel className="pt-6">
                     <div className="space-y-4">
-                      {Object.entries(filter?.traitValues).map(([key, value], optionIdx) => (
+                      {Object.entries(filters[filter]).map(([key, value], optionIdx) => (
                         <div key={key} className="flex items-center">
                           <input
                             id={`filter-${key}-${optionIdx}`}
                             name={`${key}[]`}
-                            defaultValue={value}
+                            defaultValue={filter}
                             type="checkbox"
-                            // defaultChecked={option.checked}
+                            onClick={handleFilterChange}
                             className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
                           />
                           <label
