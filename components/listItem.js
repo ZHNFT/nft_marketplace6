@@ -6,6 +6,7 @@ import { resolveLink } from '../Utils';
 export default function ListItem({ item }) {
   const router = useRouter()
   const { tableName, address } = router.query
+  
   return (
     <Link href="/collection/[address]/[tableName]/[id]" as={`/collection/${address}/${tableName}/${item?.tokenId}`} passHref>
       <div className="relative group hover:cursor-pointer">

@@ -70,8 +70,6 @@ const license = {
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data, rarity }) {
-  console.log(`data`, data)
-
   return (
     <div className='bg-white'>
       <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">

@@ -96,10 +96,10 @@ export default function List({ items, sortOptions, setMobileFiltersOpen, collect
           </div>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-          {items?.map((item) => (
+          {items?.map((item, index) => (
             <ListItem
-              key={item.tokenId}
-              item={item}
+              key={`item-${index}`}
+              item={item.toJSON()}
             />
           ))}
         </div>

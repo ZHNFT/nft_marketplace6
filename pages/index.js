@@ -33,7 +33,6 @@ export default function Home(props) {
   const [loadingState, setLoadingState] = useState('not-loaded');
   const { Moralis, isInitialized, isInitializing } = useMoralis();
   const [metaData, setMetaData] = useState([]);
-  console.log(`collections`, collections)
 
   useEffect(() => {
     loadNFTS();
