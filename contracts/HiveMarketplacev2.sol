@@ -216,6 +216,16 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
         );
     }
 
+    function getChainId() public view returns(uint256) {
+        uint256 chainId;
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+        chainId := chainid()
+        }
+
+        return chainId;
+    }
+
     /**
     * @dev Modifier ensuring the provided contract address has been whitelisted
     */
@@ -227,11 +237,10 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
     /**
     * @dev Constructor initializing the fees, recipient of market fees, and the contract address of the payment token used in this marketplace
     */
-    //constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
-    constructor() {
-       // setFee(_fee);
-        //setFeeRecipient(_feeRecipient);
-        //setPaymentToken(_paymentToken);
+    constructor(uint256 _fee, address _feeRecipient, address _paymentToken) {
+        setFee(_fee);
+        setFeeRecipient(_feeRecipient);
+        setPaymentToken(_paymentToken);
         _initializeSignatures();
     }
 
@@ -246,7 +255,7 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
         abi.encodePacked(
             "\x19\x01",
             DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_LISTING_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, msg.sender, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
+            keccak256(abi.encode(ACCEPT_LISTING_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
         )
         );
 
@@ -471,7 +480,7 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
         abi.encodePacked(
             "\x19\x01",
             DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_BID_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
+            keccak256(abi.encode(ACCEPT_LISTING_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
             )
         );
 
@@ -486,9 +495,13 @@ contract HiveMarketplaceV2 is Ownable, ReentrancyGuard {
             }
         }
 
-        // Return if a valid signature and not expired
-        return (ecrecover(signature, listing.v, listing.r, listing.s) == listing.owner && invalidSignatures[signature] == false && listing.expiry > block.timestamp);
+        //Return if a valid signature and not expired
+        return ((ecrecover(signature, listing.v, listing.r, listing.s) == listing.owner) && (invalidSignatures[signature] == false) && (listing.expiry > block.timestamp));
 
+    }
+
+    function getTimestamp() public view returns(uint) {
+        return block.timestamp;
     }
 
     //Owner functions
