@@ -33,7 +33,7 @@ export default function Layout({ children, pageProps }) {
   return (
     <>
       <Seo />
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-50 dark:bg-slate-600">
         <Header
           user={user}
           navigation={navigation}

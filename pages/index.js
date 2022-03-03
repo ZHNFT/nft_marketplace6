@@ -207,6 +207,8 @@ export default function Home(props) {
 export async function getStaticProps() {
   const moralis = getMoralisNode();
   const collection = moralis.Object.extend("WhitelistedCollection");
+  console.log(`moralis`, moralis)
+  console.log(`collection`, collection)
   const collectionQuery = new moralis.Query(collection);
   const result = await collectionQuery.find();
   const data = JSON.parse(JSON.stringify(result));

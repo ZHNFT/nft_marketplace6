@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/solid'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import DarkModeSwitch from './darkModeSwitch';
 
 export default function Header(props) {
   const { user, navigation, userNavigation } = props;
@@ -13,7 +14,7 @@ export default function Header(props) {
     <Popover
       as="header"
       className={({ open }) =>
-        clsx('bg-white shadow-sm lg:static lg:overflow-y-visible', {
+        clsx('bg-white dark:bg-slate-800 shadow-sm lg:static lg:overflow-y-visible', {
           'fixed inset-0 z-40 overflow-y-auto': open
         })
       }
@@ -70,7 +71,8 @@ export default function Header(props) {
                 </Popover.Button>
               </div>
               <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                <a href="#" className="text-sm font-medium text-gray-900 hover:underline">
+                <DarkModeSwitch />
+                <a href="#" className="text-sm font-medium dark:text-slate-200 text-slate-900 hover:underline">
                   Some Link
                 </a>
                 <a
@@ -183,6 +185,7 @@ export default function Header(props) {
               </a>
 
               <div className="mt-6 flex justify-center">
+                <DarkModeSwitch />
                 <a href="#" className="text-base font-medium text-gray-900 hover:underline">
                   Some Link
                 </a>

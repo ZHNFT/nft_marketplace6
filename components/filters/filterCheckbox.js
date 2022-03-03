@@ -39,15 +39,15 @@ export default function FilterCheckbox(props) {
       <label
         htmlFor={`filter-${placement}-${traitValue}`}
         className={clsx("ml-3", {
-          'text-sm text-gray-600': placement === 'desktop',
-          'min-w-0 flex-1 text-gray-500': placement === 'mobile',
+          'text-sm dark:text-slate-200 text-gray-600': placement === 'desktop',
+          'min-w-0 dark:text-slate-200 flex-1 text-gray-500': placement === 'mobile',
         })}
       >
         {traitValue}
       </label>
       <span className={clsx("ml-auto", {
-        'text-gray-500': placement === 'mobile',
-        'text-sm text-gray-600': placement === 'desktop',
+        'dark:text-slate-200 text-gray-500': placement === 'mobile',
+        'text-sm dark:text-slate-200 text-gray-600': placement === 'desktop',
       })}>
         {traitCount}
       </span>

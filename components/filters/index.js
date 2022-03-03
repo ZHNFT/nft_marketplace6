@@ -42,13 +42,13 @@ export default function Filters({ filters, placement }) {
                   <h3 className={clsx("-my-3 flow-root", { '-mx-2': placement === 'mobile' })}>
                     <Disclosure.Button 
                       className={
-                        clsx("py-3 w-full flex items-center justify-between text-gray-400 hover:text-gray-500",
+                        clsx("py-3 w-full flex items-center justify-between dark:text-slate-200 text-gray-400 hover:text-gray-500",
                           { 'text-sm': placement === 'desktop' },
                           { 'px-2 bg-white': placement === 'mobile' }
                         )
                       }
                     >
-                      <span className="font-medium text-gray-900">{traitType}</span>
+                      <span className="font-medium dark:text-slate-200 text-gray-900">{traitType}</span>
                       <span className="ml-6 flex items-center">
                         {open ? (
                           <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
