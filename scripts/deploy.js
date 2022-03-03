@@ -13,25 +13,25 @@ async function main() {
   // manually to make sure everything is compiled
   // await hre.run('compile');
 
+  //We get the contract to deploy
+  const Market = await hre.ethers.getContractFactory("HiveMarketplaceV2");
+  const market = await Market.deploy(750, "0xA01A05665B010b041199030115A502a9a32687a1", "0x5CFB197753a01353c3AA11db332349bebDE649cC");
+
+  await market.deployed();
+
+  console.log("market deployed at address:")
+  console.log(market.address);
+
   // We get the contract to deploy
-  // const Market = await hre.ethers.getContractFactory("NFTMarket");
-  // const market = await Market.deploy();
+  // const NFT = await hre.ethers.getContractFactory("TestCollection");
+  // const nft = await NFT.deploy();
 
-  // await market.deployed();
-
-  // console.log("market deployed at address:")
-  // console.log(market.address);
-
-  // We get the contract to deploy
-  const NFT = await hre.ethers.getContractFactory("TestCollection");
-  const nft = await NFT.deploy();
-
-  await nft.deployed();
+  // await nft.deployed();
 
 
 
-  console.log("nft deployed at address:")
-  console.log(nft.address);
+  // console.log("nft deployed at address:")
+  // console.log(nft.address);
 
   // const HiveMarket = await hre.ethers.getContractFactory("HiveMarketplace");
   // const hive = await HiveMarket.deploy();
