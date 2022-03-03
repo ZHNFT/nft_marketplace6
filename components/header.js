@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import clsx from 'clsx';
+import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/solid'
@@ -23,15 +24,17 @@ export default function Header(props) {
             <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
               <div className="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
                 <div className="flex-shrink-0 flex items-center">
-                  <a href="#" className='flex items-center'>
-                    <Image
-                      className="block h-8 w-auto"
-                      src="	https://pbs.twimg.com/profile_images/1475959367904026626/UpAIa4T5_400x400.jpg"
-                      alt="Workflow"
-                      width="32"
-                      height="32"
-                    />
-                  </a>
+                  <Link href="/">
+                    <a className='flex items-center'>
+                      <Image
+                        className="block h-8 w-auto"
+                        src="	https://pbs.twimg.com/profile_images/1475959367904026626/UpAIa4T5_400x400.jpg"
+                        alt="Workflow"
+                        width="32"
+                        height="32"
+                      />
+                    </a>
+                  </Link>
                 </div>
               </div>
               <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">

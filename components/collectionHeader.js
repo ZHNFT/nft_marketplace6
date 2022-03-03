@@ -1,6 +1,9 @@
 
-export default function CollectionHeader() {
+export default function CollectionHeader({ total, collectionName }) {
   return (
-    <span></span>
+    <div className="flex flex-col">
+      <span>name: {collectionName}</span>
+      <span>Total: {total}</span>
+    </div>
   )
 }

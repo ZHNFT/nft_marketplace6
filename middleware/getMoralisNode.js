@@ -5,11 +5,6 @@ const appId = process.env.REACT_APP_MORALIS_APPLICATION_ID_TESTNET // REACT_APP_
 
 Moralis.start({ serverUrl, appId });
 
-export default function withMoralis(handler) {
-  return async function (req, res) {
-    res.Moralis = Moralis;
-    res.moralisOptions = {};
-
-    return handler(req, res);
-  }
+export default function useMoralis() {
+  return Moralis;
 }

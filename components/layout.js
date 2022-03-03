@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import Seo from './seo';
 import Header from './header';
 import Sidebar from './sidebar';
+import MobileFilters from './filters/mobileFilters';
 import Filters from './filters';
 import { FireIcon, HomeIcon, TrendingUpIcon, UserGroupIcon } from '@heroicons/react/outline'
+
 
 const user = {
   name: 'Chelsea Hagon',
@@ -28,7 +30,6 @@ const userNavigation = [
 
 export default function Layout({ children, pageProps }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-
   return (
     <>
       <Seo />
@@ -43,8 +44,12 @@ export default function Layout({ children, pageProps }) {
             {/* Sidebar menu filters for desktop */}
             <Sidebar
               navigation={navigation}
-              filters={pageProps?.traits}
-            />
+            >
+              <Filters
+                placement="desktop"
+                filters={pageProps?.collection?.traits}
+              />
+            </Sidebar>
             <main className="lg:col-span-9 xl:col-span-10">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
@@ -57,10 +62,11 @@ export default function Layout({ children, pageProps }) {
                 });
               })}
               {/* Sidemenu filters for mobile */}
-              <Filters
-                filters={pageProps?.traits}
+              <MobileFilters
+                filters={pageProps?.collection?.traits}
                 setMobileFiltersOpen={setMobileFiltersOpen}
                 mobileFiltersOpen={mobileFiltersOpen}
+                placement="mobile"
               />
             </main>
           </div>
