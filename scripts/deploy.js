@@ -25,10 +25,12 @@ async function main() {
 
   await market.deployed();
 
-  await market.setFeeAllocations(feeAllocations);
+  
 
   //set test honey token as payment method
   await market.setPaymentToken("0x7c4Fcdc9263620c57958b309633C5d42b7c3502D", 0, 0);
+
+  await market.setFeeAllocations(feeAllocations);
 
   await market.addToWhitelist("0xcBce509f9d84EDe4A1477985e71B35Ee77641988", "0xA01A05665B010b041199030115A502a9a32687a1", 300, 0);
 
