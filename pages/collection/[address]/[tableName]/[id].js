@@ -131,7 +131,8 @@ export default function Nft({ data, rarity }) {
                 Product information
               </h2>
               <p className="text-sm text-gray-500 mt-2">
-                Owned by: <a href={`${getExplorer(chainId)}/address/${data?.owner}`} className="hover:text-indigo-600">{data?.owner === account ? 'You' : data?.owner}</a>
+                {/* Could also link to profile/account within the market place instead of blockexplorer */}
+                Owned by: <a href={chainId ? `${getExplorer(chainId)}/address/${data?.owner}` : `https://polygon-rpc.com/address/${data?.owner}`} className="hover:text-indigo-600">{data?.owner === account ? 'You' : data?.owner}</a>
               </p>
             </div>
 

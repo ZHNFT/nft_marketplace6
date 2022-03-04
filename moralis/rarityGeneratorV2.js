@@ -52,8 +52,8 @@ async function generateRarity() {
 
   const offset = 0;
 
-    //Change the chain to mainnet when we go live
-    //Why is this called when it is just called later in the loop
+  // Change the chain to mainnet when we go live
+  // fetches the first page (400) and in the loop we fetch all other pages
   const NFTs = await Moralis.Web3API.token.getAllTokenIds({
     address: collectionAddress,
     chain: 'mumbai',
@@ -217,7 +217,7 @@ async function generateRarity() {
   nftArr.sort((a, b) => b.rarity - a.rarity);
 
   const nftClass = Moralis.Object.extend(collection.tableName + "NFT");
-  
+
   // Store rarity in moralis Database
   for (let i = 0; i < nftArr.length; i++) {
     nftArr[i].rank = i + 1;
@@ -234,8 +234,8 @@ async function generateRarity() {
 
     }
 
-    
-    //nft.set("attributes", nftArr[i].attributes);
+
+    // nft.set("attributes", nftArr[i].attributes);
     nft.set("rarity", nftArr[i].rarity);
     nft.set("tokenId", nftArr[i].token_id);
     nft.set("rank", nftArr[i].rank);
@@ -246,7 +246,7 @@ async function generateRarity() {
     await nft.save();
     console.log(i);
   }
-  
+
   return true
 }
 
