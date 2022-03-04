@@ -25,7 +25,7 @@ export default function FilterCheckbox(props) {
       : arrayHelpers.replace(traitTypeIndex, { name: traitType, values });
     submitForm();
   };
-
+  console.log(`traitValue`, traitValue)
   return (
     <div className="flex items-center">
       <input

@@ -21,12 +21,14 @@ export default function Filters({ filters, placement }) {
     });
   }
 
+  console.log(`parse(search)`, parse(search))
+
   return (
     <Formik
       initialValues={parse(search)}
       onSubmit={handleSubmit}
     >
-      {({ submitForm }) => (
+      {({ submitForm, values }) => (
         <form className={clsx(placement === 'desktop' ? "hidden lg:block" : 'mt-4 border-t border-gray-200')}>
           {filters && Object.keys(filters)?.map((traitType, index) => (
             <Disclosure
