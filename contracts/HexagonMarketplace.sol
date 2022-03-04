@@ -42,7 +42,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     /**
     * @dev Addresses of the payment tokens this marketplace accepts
     */
-    PaymentToken[] public paymentTokens;
+    PaymentToken[] paymentTokens;
 
 
     /**
@@ -68,34 +68,17 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     }
 
     /**
-    * @dev A Struct containing all the info for a nft listing, this data is also used to generate a signature that checked to see if the owner of the nft signed it,
+    * @dev A Struct containing all the info for a nft listing or bid, this data is also used to generate a signature that checked to see if the owner of the nft signed it,
     * authorizing the sale of the nft with these parameters if a buyer accepts.
     */
-    struct Listing {
-        address nftContractAddress;
-        address owner;
+    struct Signature {
+        address contractAddress;
+        address userAddress;
         uint256 tokenId;
         uint256 quantity;
         uint256 pricePerItem;
         uint256 expiry;
         uint256 nonce;
-        bytes32 r;
-        bytes32 s;
-        uint8 v;
-    }
-
-    /**
-    * @dev A Struct containing all the info for a nft bid/offer, this data is also used to generate a signature that checked to see if the buyer of the nft signed it,
-    * authorizing the purchase of this nft with the given parameters if the owner accepts the offer
-    */
-    struct Bid {
-        address nftContractAddress;
-        address bidder;
-        uint tokenId;
-        uint quantity;
-        uint pricePerItem;
-        uint expiry;
-        uint nonce;
         bytes32 r;
         bytes32 s;
         uint8 v;
@@ -125,7 +108,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     /**
     * @dev A mapping of nft collection addresses of whitelisted collection, and the data corrisponding to it (royalty fee, wallet address)
     */
-    mapping(address => Collection) public whitelistedCollections;
+    mapping(address => Collection) whitelistedCollections;
 
     /**
     * @dev A mapping of signatures and their validity. Signatures are signed messages from people offering bids on nfts they want to buy,
@@ -238,13 +221,13 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     * @dev This is a hash of the method signature used in the EIP-712 signature for bids.
     */
     bytes32 private constant ACCEPT_BID_TYPEHASH =
-        keccak256("AcceptBid(address nftContractAddress,uint256 tokenId,address bidder,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
+        keccak256("AcceptBid(address contractAddress,uint256 tokenId,address userAddress,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
 
      /**
     * @dev This is a hash of the method signature used in the EIP-712 signature for listings.
     */
     bytes32 private constant ACCEPT_LISTING_TYPEHASH =
-        keccak256("AcceptListing(address nftContractAddress,uint256 tokenId,address owner,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
+        keccak256("AcceptListing(address contractAddress,uint256 tokenId,address userAddress,uint256 pricePerItem,uint256 quantity,uint256 expiry,uint256 nonce)");
 
     /**
     * @dev This function must be called at least once before signatures will work as expected.
@@ -288,8 +271,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     /**
     * @dev Constructor initializing the fees, recipient of market fees, and the contract address of the payment token used in this marketplace
     */
-    constructor(FeeAllocation[] memory _feeAllocations) {
-        setFeeAllocations(_feeAllocations);
+    constructor() {
         _initializeSignatures();
     }
 
@@ -298,18 +280,12 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     * @dev The seller signs a message approving the price, and then the buyer calls this function
     * and transfers the agreed upon tokens
     */
-    function AcceptListing(Listing calldata listing) public nonReentrant onlyWhitelisted(listing.nftContractAddress) {
+    function AcceptListing(Signature calldata listing) public nonReentrant onlyWhitelisted(listing.contractAddress) {
 
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_LISTING_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
-        )
-        );
+        bytes32 signature = getSignature(ACCEPT_LISTING_TYPEHASH, listing);
 
         // Revert if the signature is invalid, the terms are not as expected, or if the seller transferred the NFT.
-        require(ecrecover(signature, listing.v, listing.r, listing.s) == listing.owner && invalidSignatures[signature] == false, "AcceptListing: Invalid Signature");
+        require(ecrecover(signature, listing.v, listing.r, listing.s) == listing.userAddress && invalidSignatures[signature] == false, "AcceptListing: Invalid Signature");
 
         //Invalidate signature so it cannot be used again
         invalidSignatures[signature] = true;
@@ -319,10 +295,10 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
         // Transfer the nft(s) from the owner to the bidder
         // Will revert if the seller doesn't have the nfts
-        if (IERC165(listing.nftContractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            IERC721(listing.nftContractAddress).safeTransferFrom(listing.owner, msg.sender, listing.tokenId);
+        if (IERC165(listing.contractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721(listing.contractAddress).safeTransferFrom(listing.userAddress, msg.sender, listing.tokenId);
         } else {
-            IERC1155(listing.nftContractAddress).safeTransferFrom(listing.owner, msg.sender, listing.tokenId, listing.quantity, bytes(""));
+            IERC1155(listing.contractAddress).safeTransferFrom(listing.userAddress, msg.sender, listing.tokenId, listing.quantity, bytes(""));
         }
 
         uint256 value = listing.pricePerItem * listing.quantity;
@@ -331,15 +307,15 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
         // Will revert if the buyer doesn't have the funds
         (uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue) = _distributeFunds(
             value,
-            listing.owner,
+            listing.userAddress,
             msg.sender,
-            listing.nftContractAddress
+            listing.contractAddress
         );
 
         emit ListingAccepted(
-            listing.nftContractAddress,
+            listing.contractAddress,
             listing.tokenId,
-            listing.owner,
+            listing.userAddress,
             msg.sender,
             marketplaceFee,
             creatorFee,
@@ -351,16 +327,9 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     /**
     * @dev The seller cancels the listing they previously approved by providing the listing data they wish to cancel
     */
-    function CancelListing(Listing calldata listing) public {
+    function CancelListing(Signature calldata listing) public {
 
-        /// @notice nonce is used so there may be multiple of the same requests, like for purchasing bunches of erc1155 tokens
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_BID_TYPEHASH, listing.nftContractAddress, listing.tokenId, msg.sender, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
-        )
-        );
+        bytes32 signature = getSignature(ACCEPT_LISTING_TYPEHASH, listing);
 
         // Revert if the signature has not been signed by the sender
         require(ecrecover(signature, listing.v, listing.r, listing.s) == msg.sender, "CancelBid: INVALID_SIGNATURE");
@@ -369,7 +338,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
         invalidSignatures[signature] = true;
 
         emit ListingCanceled(
-            listing.nftContractAddress,
+            listing.contractAddress,
             listing.tokenId,
             msg.sender,
             listing.nonce
@@ -382,18 +351,12 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     * @dev The buyer signs a message approving the purchase, and then the seller calls this function
     * with the msg.value equal to the agreed upon price.
     */
-    function AcceptBid (Bid calldata bid) public nonReentrant onlyWhitelisted(bid.nftContractAddress) {
+    function AcceptBid (Signature calldata bid) public nonReentrant onlyWhitelisted(bid.contractAddress) {
 
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, bid.bidder, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
-        )
-        );
+        bytes32 signature = getSignature(ACCEPT_BID_TYPEHASH, bid);
 
         // Revert if the signature is invalid, the terms are not as expected, or if the seller transferred the NFT.
-        require(ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false, "AcceptBid: Invalid Signature");
+        require(ecrecover(signature, bid.v, bid.r, bid.s) == bid.userAddress && invalidSignatures[signature] == false, "AcceptBid: Invalid Signature");
 
         //Invalidate signature so it cannot be used again
         invalidSignatures[signature] = true;
@@ -403,10 +366,10 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
 
         //Transfer the nft from the owner to the bidder
-        if (IERC165(bid.nftContractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            IERC721(bid.nftContractAddress).safeTransferFrom(msg.sender, bid.bidder, bid.tokenId);
+        if (IERC165(bid.contractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
+            IERC721(bid.contractAddress).safeTransferFrom(msg.sender, bid.userAddress, bid.tokenId);
         } else {
-            IERC1155(bid.nftContractAddress).safeTransferFrom(msg.sender, bid.bidder, bid.tokenId, bid.quantity, bytes(""));
+            IERC1155(bid.contractAddress).safeTransferFrom(msg.sender, bid.userAddress, bid.tokenId, bid.quantity, bytes(""));
         }
 
         uint256 value = bid.pricePerItem * bid.quantity;
@@ -416,15 +379,15 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
         (uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue) = _distributeFunds(
             value,
             msg.sender,
-            bid.bidder,
-            bid.nftContractAddress
+            bid.userAddress,
+            bid.contractAddress
         );
 
         emit BidAccepted(
-            bid.nftContractAddress,
+            bid.contractAddress,
             bid.tokenId,
             msg.sender,
-            bid.bidder,
+            bid.userAddress,
             marketplaceFee,
             creatorFee,
             ownerRevenue,
@@ -435,16 +398,9 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     /**
     * @dev The buyer cancels the bid they previously approved by providing the bid data they wish to cancel
     */
-    function CancelBid(Bid calldata bid) public {
+    function CancelBid(Signature calldata bid) public {
 
-        /// @notice nonce is used so there may be multiple of the same requests, like for purchasing bunches of erc1155 tokens
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, msg.sender, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
-            )
-        );
+        bytes32 signature = getSignature(ACCEPT_BID_TYPEHASH, bid);
 
         // Revert if the signature has not been signed by the sender
         require(ecrecover(signature, bid.v, bid.r, bid.s) == msg.sender, "CancelBid: INVALID_SIGNATURE");
@@ -453,7 +409,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
         invalidSignatures[signature] = true;
 
         emit BidCanceled(
-            bid.nftContractAddress,
+            bid.contractAddress,
             bid.tokenId,
             msg.sender,
             bid.nonce
@@ -467,7 +423,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
     function _distributeFunds(
         uint256 _value,
         address _owner,
-        address _buyer,
+        address _sender,
         address _nftAddress
        
     ) internal returns(uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue){
@@ -489,8 +445,13 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
             if(marketplaceFee > 0) {
 
-                //send tokens to the marketplace wallet
-                token.safeTransferFrom(_buyer, address(this), marketplaceFee);
+                ///@notice buyer can be 
+                if(_sender != address(this)) {
+
+                    //send tokens to the marketplace wallet
+                    token.safeTransferFrom(_sender, address(this), marketplaceFee);
+
+                }
 
                 claimableAmount[collection.currencyType] += marketplaceFee;
 
@@ -501,7 +462,7 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
                 whitelistedCollections[_nftAddress].royaltiesEarned += creatorFee;
                 
                 //send tokens to the creator wallet
-                token.safeTransferFrom(_buyer, collection.royaltyRecipient, creatorFee);
+                token.safeTransferFrom(_sender, collection.royaltyRecipient, creatorFee);
 
                
 
@@ -510,115 +471,11 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
             ownerRevenue = (_value - marketplaceFee) - creatorFee;
 
             //send remaining tokens to the seller/owner
-            token.safeTransferFrom(_buyer, _owner, ownerRevenue);
+            token.safeTransferFrom(_sender, _owner, ownerRevenue);
 
         }
     }
-
-
-     /**
-    * @dev Destributes the funds from the buyer to the seller/owner, with a percentage of the sale price distributed to the marketplace,
-    * and potentially the creator of the collection
-    */
-    function _auctionDistributeFunds(
-        uint256 _value,
-        address _owner,
-        address _nftAddress
-       
-    ) internal returns(uint256 marketplaceFee, uint256 creatorFee, uint256 ownerRevenue){
-
-        if(_value > 0) {
-
-            Collection memory collection = whitelistedCollections[_nftAddress];
-
-            PaymentToken memory paymentToken = paymentTokens[collection.currencyType];
-
-            IERC20 token = IERC20(paymentToken.contractAddress); 
-
-            //calculate fee for the marketplace
-            marketplaceFee = _value * paymentToken.fee / BASIS_POINTS;
-
-            //calculate the creator fee
-            creatorFee = _value * collection.royaltyFee / BASIS_POINTS;
-
-
-            if(marketplaceFee > 0) {
-
-                //send tokens to the marketplace wallet
-                claimableAmount[collection.currencyType] += marketplaceFee;
-
-            }
-
-            if(creatorFee > 0) {
-
-                whitelistedCollections[_nftAddress].royaltiesEarned += creatorFee;
-                
-                //send tokens to the creator wallet
-                token.safeTransfer(collection.royaltyRecipient, creatorFee);
-
-
-            }
-
-            ownerRevenue = (_value - marketplaceFee) - creatorFee;
-
-            //send remaining tokens to the seller/owner
-            token.safeTransfer(_owner, ownerRevenue);
-
-        }
-    }
-
-    /**
-    * @dev Checks if a bid is valid by checking the payment token balance, expiry date, and validates the signature was signed by the bidder
-    */
-    function ValidBid(Bid calldata bid) public view returns (bool) {
-
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_BID_TYPEHASH, bid.nftContractAddress, bid.tokenId, bid.bidder, bid.pricePerItem, bid.quantity, bid.expiry, bid.nonce))
-            )
-        );
-
-        Collection memory collection = whitelistedCollections[bid.nftContractAddress];
-
-        PaymentToken memory paymentToken = paymentTokens[collection.currencyType];
-
-        uint balance = IERC20(paymentToken.contractAddress).balanceOf(bid.bidder);
-
-        // Return if a valid signature, and bidder has enough of a token balance to make the trade if accepted, and not expired
-        return (ecrecover(signature, bid.v, bid.r, bid.s) == bid.bidder && invalidSignatures[signature] == false && balance >= bid.quantity * bid.pricePerItem && bid.expiry > block.timestamp);
-
-    }
-
-    /**
-    * @dev Checks if a listing is valid by checking the expiry date, nft balance, and validates the signature was signed by the bidder
-    */
-    function ValidListing(Listing calldata listing) public view returns (bool) {
-
-        bytes32 signature = keccak256(
-        abi.encodePacked(
-            "\x19\x01",
-            DOMAIN_SEPARATOR,
-            keccak256(abi.encode(ACCEPT_LISTING_TYPEHASH, listing.nftContractAddress, listing.tokenId, listing.owner, listing.pricePerItem, listing.quantity, listing.expiry, listing.nonce))
-            )
-        );
-
-        //Check if the owner has the nft
-        if (IERC165(listing.nftContractAddress).supportsInterface(INTERFACE_ID_ERC721)) {
-            if(IERC721(listing.nftContractAddress).ownerOf(listing.tokenId) != listing.owner){
-                return false;
-            }
-        } else {
-            if(IERC1155(listing.nftContractAddress).balanceOf(listing.owner, listing.tokenId) < listing.quantity) {
-                return false;
-            }
-        }
-
-        //Return if a valid signature and not expired
-        return ((ecrecover(signature, listing.v, listing.r, listing.s) == listing.owner) && (invalidSignatures[signature] == false) && (listing.expiry > block.timestamp));
-
-    }
+    
 
     /**
     * @dev Place a bid an nft up for auction
@@ -675,7 +532,10 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
         token.safeTransferFrom(msg.sender, address(this), _amount);
 
 
+
+
         emit AuctionBid(_collectionAddress, _tokenId, msg.sender, _amount);
+
 
     }
 
@@ -735,7 +595,8 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
             ///@notice there was a bid, so we can send the funds from this contract to the appropriate people, and send the nft to the bidder
             nftReciever = auctionData.highestBidder;
 
-            _auctionDistributeFunds(auctionData.highestBid, _owner, auctionData.collectionAddress);
+            //send funds from this address
+            _distributeFunds(auctionData.highestBid, _owner, address(this), auctionData.collectionAddress);
 
         } else {
 
@@ -772,6 +633,18 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
     function getTimestamp() public view returns(uint) {
         return block.timestamp;
+    }
+
+    function getSignature(bytes32 _TYPEHASH, Signature memory signature) internal view returns(bytes32) {
+
+        return keccak256(
+        abi.encodePacked(
+            "\x19\x01",
+            DOMAIN_SEPARATOR,
+            keccak256(abi.encode(_TYPEHASH, signature.contractAddress, signature.tokenId, signature.userAddress, signature.pricePerItem, signature.quantity, signature.expiry, signature.nonce))
+            )
+        );
+
     }
 
     function getCollectionInfo(address _collectionAddress) public view returns (Collection memory) {
@@ -816,7 +689,11 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
                 uint toClaim = (_claimableAmount * _feeAllocations[i].percent) / BASIS_POINTS;
 
-                token.safeTransfer(_feeAllocations[i].wallet, toClaim);
+                if(toClaim > 0) {
+
+                    token.safeTransfer(_feeAllocations[i].wallet, toClaim);
+
+                }
 
             }
 
@@ -830,6 +707,9 @@ contract HexagonMarketplace is Ownable, ReentrancyGuard {
 
         require(_index <= paymentTokens.length, "index out of range");
         require(_fee <= MAX_FEE, "Attempting to set too high of a fee");
+
+        //approve this contract to use transfer from to move funds
+        IERC20(_paymentAddress).approve(address(this), 2**256 - 1);
 
         if(_index == paymentTokens.length) {
 

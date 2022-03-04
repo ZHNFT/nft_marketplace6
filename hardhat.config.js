@@ -38,7 +38,8 @@ module.exports = {
     },
     mumbai: {
       url: `https://polygon-mumbai.infura.io/v3/6b2231f7f9ab46b7a9e63b08489d305b`,
-      accounts: [privateKey]
+      accounts: [privateKey],
+      gasPrice: 35000000000
 
     },
     mainnet: {
@@ -51,5 +52,12 @@ module.exports = {
   etherscan: {
     apiKey: "23TTJA3YVBMN572QJ3ANNJAGH78NC564YB",
   },
-  solidity: "0.8.4",
+
+  settings: {
+    optimizer: {
+      enabled: true,
+      runs: 200,
+    },
+  },
+  solidity: "0.8.10",
 };

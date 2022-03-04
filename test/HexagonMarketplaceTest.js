@@ -50,10 +50,12 @@ describe("Hexagon Marketplace Test", function () {
 
         feeAllocations = [{wallet : addr3.address, percent : 4000}, {wallet : addr4.address, percent : 5000}, {wallet : addr5.address, percent : 1000}];
 
-        //deploy the market with a fee of 7.5%, fee reciepient of addr3, and the honey token address
-        market = await MARKET.deploy(feeAllocations);
+        //deploy the market with fee allocations set to particular wallets at set percents
+        market = await MARKET.deploy();
 
         await market.deployed();
+
+        await market.setFeeAllocations(feeAllocations);
 
         nft = await NFT.deploy();
 
@@ -144,50 +146,7 @@ describe("Hexagon Marketplace Test", function () {
 
     })
 
-    it("can generate a valid listing signature", async function () {
 
-        await nft.setApprovalForAll(market.address, true);
-
-        expect(await nft.isApprovedForAll(owner.address, market.address)).to.equal(true);
-
-        let listing = getDefaultListing();
-
-        listing = await getSignatureListing(listing, domain, owner);
-
-        expect(await market.ValidListing(listing)).to.equal(true);
-
-    })
-
-    it("generates a invalid listing signature if nft not owned", async function () {
-
-        await nft.setApprovalForAll(market.address, true);
-
-        expect(await nft.isApprovedForAll(owner.address, market.address)).to.equal(true);
-
-        let listing = getDefaultListing();
-        //Token id is not owned by owner
-        listing.tokenId = 11;
-        
-        listing = await getSignatureListing(listing, domain, owner);
-
-        expect(await market.ValidListing(listing)).to.equal(false);
-
-    })
-
-    it("generates a invalid listing signature if expired", async function () {
-
-        await nft.setApprovalForAll(market.address, true);
-
-        expect(await nft.isApprovedForAll(owner.address, market.address)).to.equal(true);
-
-        let listing = getDefaultListing();
-        listing.expiry = Math.floor((Date.now() / 1000)) - 1000;
-
-        listing = await getSignatureListing(listing, domain, owner);
-
-        expect(await market.ValidListing(listing)).to.equal(false);
-
-    })
 
     it("fails to accept a listing unless the contract is whitelisted", async function () {
 
@@ -291,7 +250,7 @@ describe("Hexagon Marketplace Test", function () {
 
         let listing = getDefaultListing();
 
-        listing.nftContractAddress = erc1155.address;
+        listing.contractAddress = erc1155.address;
 
         listing.tokenId = 0;
 
@@ -316,7 +275,7 @@ describe("Hexagon Marketplace Test", function () {
 
         let listing = getDefaultListing();
 
-        listing.nftContractAddress = erc1155.address;
+        listing.contractAddress = erc1155.address;
 
         listing.quantity = 2;
 
@@ -345,7 +304,7 @@ describe("Hexagon Marketplace Test", function () {
 
         let listing = getDefaultListing();
 
-        listing.nftContractAddress = erc1155.address;
+        listing.contractAddress = erc1155.address;
 
         listing.quantity = 2;
 
@@ -372,7 +331,7 @@ describe("Hexagon Marketplace Test", function () {
 
         let listing = getDefaultListing();
 
-        listing.nftContractAddress = erc1155.address;
+        listing.contractAddress = erc1155.address;
 
         listing.quantity = 2;
 
@@ -388,45 +347,6 @@ describe("Hexagon Marketplace Test", function () {
         listing = await getSignatureListing(listing, domain, owner);
 
         await expect(market.connect(addr1).AcceptListing(listing)).to.be.revertedWith("ERC20: insufficient allowance")
-
-
-    })
-
-    it("can generate a valid offer signature", async function () {
-
-        //approve the market contract to use honey tokens
-        await honey.connect(addr1).approve(market.address, 1000)
-
-        let offer = getDefaultOffer();
-
-        offer = await getSignatureOffer(offer, domain, owner);
-
-        expect(await market.ValidBid(offer)).to.equal(true);
-
-    })
-
-    it("generates a invalid offer signature user doesn't have the balance", async function () {
-
-        let offer = getDefaultOffer();
-       
-        //send tokens away so owner doesnt have enough tokens
-        await honey.transfer(addr1.address, 1000000);
-        
-        offer = await getSignatureOffer(offer, domain, owner);
-
-        expect(await market.ValidBid(offer)).to.equal(false);
-
-    })
-
-    it("generates a invalid offer signature if expired", async function () {
-
-        let offer = getDefaultOffer();
-
-        offer.expiry = Math.floor((Date.now() / 1000)) - 1000;
-       
-        offer = await getSignatureOffer(offer, domain, owner);
-
-        expect(await market.ValidBid(offer)).to.equal(false);
 
 
     })
@@ -1061,9 +981,9 @@ describe("Hexagon Marketplace Test", function () {
 
     function getDefaultListing() {
         let listing = {}
-        listing.nftContractAddress = nft.address;
+        listing.contractAddress = nft.address;
         listing.tokenId = 1;
-        listing.owner = owner.address;
+        listing.userAddress = owner.address;
         listing.pricePerItem = 1000;
         listing.quantity = 1;
         listing.expiry = Math.floor((Date.now() / 1000)) * 2;
@@ -1074,9 +994,9 @@ describe("Hexagon Marketplace Test", function () {
 
     function getDefaultOffer() {
         let offer = {}
-        offer.nftContractAddress = nft.address;
+        offer.contractAddress = nft.address;
         offer.tokenId = 1;
-        offer.bidder = owner.address;
+        offer.userAddress = owner.address;
         offer.pricePerItem = 1000;
         offer.quantity = 1;
         offer.expiry = Math.floor((Date.now() / 1000)) * 2;
@@ -1104,7 +1024,7 @@ describe("Hexagon Marketplace Test", function () {
         const types = {
     
             "AcceptListing": [{
-                "name": "nftContractAddress",
+                "name": "contractAddress",
                 "type": "address"
                 },
                 {
@@ -1112,7 +1032,7 @@ describe("Hexagon Marketplace Test", function () {
                     "type": "uint256"
                 },
                 {
-                    "name": "owner",
+                    "name": "userAddress",
                     "type": "address"
                 },
                 {
@@ -1137,9 +1057,9 @@ describe("Hexagon Marketplace Test", function () {
     
         // The data to sign
         const value = {
-            nftContractAddress: listing.nftContractAddress,
+            contractAddress: listing.contractAddress,
             tokenId : listing.tokenId,
-            owner : listing.owner,
+            userAddress : listing.userAddress,
             pricePerItem : listing.pricePerItem,
             quantity : listing.quantity,
             expiry : listing.expiry,
@@ -1170,7 +1090,7 @@ describe("Hexagon Marketplace Test", function () {
         const types = {
     
             "AcceptBid": [{
-                "name": "nftContractAddress",
+                "name": "contractAddress",
                 "type": "address"
                 },
                 {
@@ -1178,7 +1098,7 @@ describe("Hexagon Marketplace Test", function () {
                     "type": "uint256"
                 },
                 {
-                    "name": "bidder",
+                    "name": "userAddress",
                     "type": "address"
                 },
                 {
@@ -1203,9 +1123,9 @@ describe("Hexagon Marketplace Test", function () {
     
         // The data to sign
         const value = {
-            nftContractAddress: offer.nftContractAddress,
+            contractAddress: offer.contractAddress,
             tokenId : offer.tokenId,
-            bidder : offer.bidder,
+            userAddress : offer.userAddress,
             pricePerItem : offer.pricePerItem,
             quantity : offer.quantity,
             expiry : offer.expiry,
