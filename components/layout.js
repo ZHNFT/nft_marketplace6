@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useMoralis } from 'react-moralis';
 
 // Components
@@ -20,7 +20,6 @@ const user = {
 const navigation = [
   { name: 'Home', href: '#', icon: HomeIcon, current: true },
   { name: 'Popular', href: '#', icon: FireIcon, current: false },
-  { name: 'Communities', href: '#', icon: UserGroupIcon, current: false },
   { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
 ]
 const userNavigation = [
