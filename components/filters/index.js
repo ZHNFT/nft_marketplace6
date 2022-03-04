@@ -79,8 +79,6 @@ export default function Filters({ filters, placement }) {
                                   arrayHelpers={arrayHelpers}
                                   value={traitValue}
                                   submitForm={submitForm}
-                                  traitTypeIndex={index}
-                                  traitValueIndex={optionIdx}
                                 />
                             ))}
                           </>

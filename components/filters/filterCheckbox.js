@@ -1,12 +1,13 @@
 import clsx from "clsx";
 
 export default function FilterCheckbox(props) {
-  const { field, form, traitType, traitValue, traitCount, placement, arrayHelpers, traitTypeIndex, traitValueIndex, submitForm, ...rest } = props;
+  const { field, form, traitType, traitValue, traitCount, placement, arrayHelpers, submitForm, ...rest } = props;
   const { name, value: formikValue } = field;
+  const traitTypeIndex = form?.values && form?.values?.stringTraits && form?.values?.stringTraits?.findIndex(element => element?.name == traitType);
+  const valueIndex = form?.values && form?.values?.stringTraits && form?.values?.stringTraits[traitTypeIndex]?.values.indexOf(rest.value);
 
   const handleChange = event => {
     const { value } = event.target;
-    const traitTypeIndex = form?.values?.stringTraits?.findIndex(element => element?.name == traitType);
 
     if (!form?.values?.stringTraits || traitTypeIndex === -1) {
       arrayHelpers.push({ name: traitType, values: [value] });
@@ -27,6 +28,7 @@ export default function FilterCheckbox(props) {
     submitForm();
   };
 
+  const checked = (valueIndex !== -1 && valueIndex !== undefined) || false;
   return (
     <div className="flex items-center">
       <input
@@ -35,6 +37,7 @@ export default function FilterCheckbox(props) {
         type="checkbox"
         onChange={handleChange}
         className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+        checked={checked}
         {...rest}
       />
       <label
