@@ -23,6 +23,8 @@ export default function Filters({ filters, placement }) {
 
   console.log(`parse(search)`, parse(search))
 
+  console.log(`filters`, filters)
+
   return (
     <Formik
       initialValues={parse(search)}
@@ -69,7 +71,7 @@ export default function Filters({ filters, placement }) {
                                 <Field
                                   key={`filter-${placement}-${traitType}-${traitValue}-${optionIdx}`}
                                   component={FilterCheckbox}
-                                  name={`stringTraits`}
+                                  name={`stringTraits.${index}.values.${optionIdx}`}
                                   traitValue={traitValue}
                                   traitCount={traitCount}
                                   traitType={traitType}
@@ -77,6 +79,8 @@ export default function Filters({ filters, placement }) {
                                   arrayHelpers={arrayHelpers}
                                   value={traitValue}
                                   submitForm={submitForm}
+                                  traitTypeIndex={index}
+                                  traitValueIndex={optionIdx}
                                 />
                             ))}
                           </>
