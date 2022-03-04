@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useMoralis } from 'react-moralis';
 
 // Components
 import Seo from './seo';
-import Header from './header';
+import Header from './Header';
 import Sidebar from './sidebar';
 import MobileFilters from './filters/mobileFilters';
 import Filters from './filters';
@@ -30,6 +31,15 @@ const userNavigation = [
 
 export default function Layout({ children, pageProps }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } = useMoralis();
+
+  useEffect(() => {
+    const connectorId = window.localStorage.getItem("connectorId");
+    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
+      enableWeb3({ provider: connectorId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, isWeb3Enabled]);
+
   return (
     <>
       <Seo />
