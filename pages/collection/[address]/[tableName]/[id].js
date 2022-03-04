@@ -1,12 +1,14 @@
 import { Fragment } from 'react'
 import Image from 'next/image'
 import clsx from "clsx";
+import { useMoralis } from 'react-moralis';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import getMoralisNode from '../../../../middleware/getMoralisNode';
+import { getExplorer } from '../../../../config';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -70,6 +72,7 @@ const license = {
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data, rarity }) {
+  const { authenticate, isAuthenticated, user: moralisUser, account, chainId, logout } = useMoralis();
   return (
     <div className='bg-white'>
       <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">
@@ -128,7 +131,7 @@ export default function Nft({ data, rarity }) {
                 Product information
               </h2>
               <p className="text-sm text-gray-500 mt-2">
-                Owned by: <a href={`https://polygonscan.com/address/${data?.owner}`} className="hover:text-indigo-600">{data?.owner}</a>
+                Owned by: <a href={`${getExplorer(chainId)}/address/${data?.owner}`} className="hover:text-indigo-600">{data?.owner === account ? 'You' : data?.owner}</a>
               </p>
             </div>
 

@@ -21,10 +21,6 @@ export default function Filters({ filters, placement }) {
     });
   }
 
-  console.log(`parse(search)`, parse(search))
-
-  console.log(`filters`, filters)
-
   return (
     <Formik
       initialValues={parse(search)}
