@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -5,6 +7,15 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      sans: ['Poppins', 'sans-serif'],
+    },
+    colors: {
+      ...colors,
+      malibu: '#5095ff',
+      cornflower: '#6e85ff',
+      blade: '#1f2225'
+    },
     extend: {
       borderRadius: {
         large: '75px'

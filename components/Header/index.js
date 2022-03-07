@@ -4,11 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useMoralis } from 'react-moralis';
 import { Menu, Popover, Transition } from '@headlessui/react'
-import { SearchIcon } from '@heroicons/react/solid'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { ChevronDownIcon, BellIcon } from '../icons';
 import DarkModeSwitch from '../darkModeSwitch';
 import MobileMenu from './MobileMenu';
 import AuthModal from './AuthModal';
+import Logo from '../../images/hive-logo.png';
 
 export default function Header(props) {
   const { user, navigation, userNavigation } = props;
@@ -36,7 +37,7 @@ export default function Header(props) {
       <Popover
         as="header"
         className={({ open }) =>
-          clsx('bg-white dark:bg-slate-800 shadow-sm lg:static lg:overflow-y-visible', {
+          clsx('relative bg-gradient-to-b from-[#4e7283] to-[#517687] border-b border-[#bac8cf] lg:overflow-y-visible', {
             'fixed inset-0 z-40 overflow-y-auto': open
           })
         }
@@ -45,45 +46,59 @@ export default function Header(props) {
           <>
             <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
-                <div className="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
-                  <div className="flex-shrink-0 flex items-center">
+                <div className="flex md:inset-y-0 lg:static col-span-4">
+                  <div className="flex-shrink-0 flex items-center w-full">
                     <Link href="/">
-                      <a className='flex items-center'>
+                      <a className='flex items-center mr-[25px]'>
                         <Image
                           className="block h-8 w-auto"
-                          src="	https://pbs.twimg.com/profile_images/1475959367904026626/UpAIa4T5_400x400.jpg"
-                          alt="Workflow"
-                          width="32"
-                          height="32"
+                          src={Logo}
+                          alt="Hive Investments"
+                          width="34"
+                          height="38"
                         />
                       </a>
                     </Link>
-                  </div>
-                </div>
-                <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
-                  <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <div className="w-full">
                       <label htmlFor="search" className="sr-only">
                         Search
                       </label>
                       <div className="relative">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                          <SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                        </div>
                         <input
                           id="search"
                           name="search"
-                          className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 sm:text-sm"
-                          placeholder="Search"
+                          className="block w-full bg-gradient-to-r from-[#608293] to-[#748e9b] lg:max-w-[268px] rounded-full py-2 pl-4 pr-3 border-transparent text-sm placeholder-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu sm:text-sm"
+                          placeholder="Explore"
                           type="search"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden">
+                <div className="min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
+                  <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+                    <ul className="flex flex-1 justify-around">
+                      <li>
+                        <a href="#" className="text-base text-white hover:underline">
+                          Collections
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" className="text-base text-white hover:underline">
+                          Marketplace
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" className="text-base text-white hover:underline">
+                          Drops
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden xl:col-span-4">
                   {/* Mobile menu button */}
-                  <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-rose-500">
+                  <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-malibu">
                     <span className="sr-only">Open menu</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -94,23 +109,22 @@ export default function Header(props) {
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
                   <DarkModeSwitch />
-                  <a href="#" className="text-sm font-medium dark:text-slate-200 text-slate-900 hover:underline">
-                    Some Link
-                  </a>
                   <a
                     href="#"
-                    className="ml-5 flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+                    className="ml-5 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-malibu"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <BellIcon className="text-white w-[25px] pb-1.5" />
                   </a>
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="flex-shrink-0 relative ml-5">
                     <div>
-                      <Menu.Button className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+                      <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
                         <span className="sr-only">Open user menu</span>
-                        <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"32"} height={"32"} />
+                        <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
+                        <span className="text-xs text-white pr-2 pl-2">{ user.name }</span>
+                        <ChevronDownIcon className="w-[16px] text-white pr-1" />
                       </Menu.Button>
                     </div>
                     <Transition
@@ -123,6 +137,19 @@ export default function Header(props) {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                        <Menu.Item key="wallet">
+                          {isAuthenticated ? (
+                            <span>{account}</span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={handleOpenAuthModal}
+                              className="w-full text-left block py-2 px-4 text-sm text-gray-700"
+                            >
+                              Connect
+                            </button>
+                          )}
+                        </Menu.Item>
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
@@ -141,17 +168,6 @@ export default function Header(props) {
                       </Menu.Items>
                     </Transition>
                   </Menu>
-                  {isAuthenticated ? (
-                    <div>{account}</div>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={handleOpenAuthModal}
-                      className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-                    >
-                      Connect
-                    </button>
-                  )}
                 </div>
               </div>
             </div>

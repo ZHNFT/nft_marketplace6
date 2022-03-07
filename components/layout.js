@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useMoralis } from 'react-moralis';
+import { useRouter } from 'next/router'
 
 // Components
 import Seo from './seo';
@@ -23,7 +24,7 @@ const navigation = [
   { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
+  { name: 'Your Profile', href: '/profile' },
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
@@ -31,6 +32,7 @@ const userNavigation = [
 export default function Layout({ children, pageProps }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } = useMoralis();
+  const { pathname } = useRouter();
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem("connectorId");
@@ -42,7 +44,8 @@ export default function Layout({ children, pageProps }) {
   return (
     <>
       <Seo />
-      <div className="min-h-full bg-slate-50 dark:bg-slate-600">
+      <div className="w-full h-[400px] -z-10 absolute top-[56px] left-0 bg-gradient-to-b from-[#517687] via-[#507381] to-[#fff] dark:to-[#1f2225]" />
+      <div className="min-h-full">
         <Header
           user={user}
           navigation={navigation}
@@ -50,16 +53,20 @@ export default function Layout({ children, pageProps }) {
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
-            {/* Sidebar menu filters for desktop */}
-            <Sidebar
-              navigation={navigation}
-            >
-              <Filters
-                placement="desktop"
-                filters={pageProps?.collection?.traits}
-              />
-            </Sidebar>
-            <main className="lg:col-span-9 xl:col-span-10">
+            {
+              // Sidebar menu filters for desktop
+              pathname !== '/profile' && (
+                  <Sidebar
+                  navigation={navigation}
+                >
+                  <Filters
+                    placement="desktop"
+                    filters={pageProps?.collection?.traits}
+                  />
+                </Sidebar>
+              )
+            }
+            <main className="lg:col-start-2 lg:col-span-10">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
                   return null;
