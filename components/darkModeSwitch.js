@@ -61,8 +61,8 @@ export default function DarkModeSwitch() {
       className={clsx(
         'relative inline-flex items-center py-1.5 px-2 rounded-full transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white focus:outline-none',
         enabled
-          ? 'bg-slate-700 text-slate-400 focus-visible:ring-slate-500'
-          : 'bg-cyan-500 text-cyan-200 focus-visible:ring-cyan-600'
+          ? 'bg-[#6f8996] text-slate-400 focus-visible:ring-slate-500'
+          : 'bg-[#6f8996] text-slate-400 focus-visible:ring-cyan-600'
       )}
     >
       <span className="sr-only">{enabled ? 'Enable' : 'Disable'} dark mode</span>
@@ -86,7 +86,7 @@ export default function DarkModeSwitch() {
       >
         <Sun
           className={clsx(
-            'flex-none transition duration-500 transform text-cyan-500',
+            'flex-none transition duration-500 transform text-malibu',
             enabled ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
           )}
         />
