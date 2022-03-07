@@ -4,12 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useMoralis } from 'react-moralis';
 import { Menu, Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon, ChevronDownIcon } from '@heroicons/react/outline'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { ChevronDownIcon, BellIcon } from '../icons';
 import DarkModeSwitch from '../darkModeSwitch';
 import MobileMenu from './MobileMenu';
 import AuthModal from './AuthModal';
 import Logo from '../../images/hive-logo.png';
-import BellIcon from '../../images/icon-bell.png';
 
 export default function Header(props) {
   const { user, navigation, userNavigation } = props;
@@ -114,13 +114,7 @@ export default function Header(props) {
                     className="ml-5 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-malibu"
                   >
                     <span className="sr-only">View notifications</span>
-                    <Image
-                      className="block h-8 w-auto"
-                      src={BellIcon}
-                      alt="Notifications"
-                      width="24"
-                      height="29"
-                    />
+                    <BellIcon className="text-white w-[25px] pb-1.5" />
                   </a>
 
                   {/* Profile dropdown */}
@@ -129,8 +123,8 @@ export default function Header(props) {
                       <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
                         <span className="sr-only">Open user menu</span>
                         <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
-                        <span className="text-xs text-white pr-1 pl-2">{ user.name }</span>
-                        <ChevronDownIcon className="w-[21px] text-white pr-1" />
+                        <span className="text-xs text-white pr-2 pl-2">{ user.name }</span>
+                        <ChevronDownIcon className="w-[16px] text-white pr-1" />
                       </Menu.Button>
                     </div>
                     <Transition

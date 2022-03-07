@@ -9,7 +9,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
         </Head>
-        <body className='h-full'>
+        <body className='h-full bg-white dark:bg-blade'>
           <Main />
           <NextScript />
         </body>

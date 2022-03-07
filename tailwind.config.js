@@ -13,7 +13,8 @@ module.exports = {
     colors: {
       ...colors,
       malibu: '#5095ff',
-      cornflower: '#6e85ff'
+      cornflower: '#6e85ff',
+      blade: '#1f2225'
     },
     extend: {
       borderRadius: {

@@ -44,7 +44,7 @@ export default function Layout({ children, pageProps }) {
   return (
     <>
       <Seo />
-      <div className="w-full h-[400px] -z-10 absolute top-[56px] left-0 bg-gradient-to-b from-[#517687] to-[#fff] dark:to-[#000]" />
+      <div className="w-full h-[400px] -z-10 absolute top-[56px] left-0 bg-gradient-to-b from-[#517687] via-[#507381] to-[#fff] dark:to-[#1f2225]" />
       <div className="min-h-full">
         <Header
           user={user}
@@ -66,7 +66,7 @@ export default function Layout({ children, pageProps }) {
                 </Sidebar>
               )
             }
-            <main className="lg:col-span-9 xl:col-span-10">
+            <main className="lg:col-start-2 lg:col-span-10">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
                   return null;
