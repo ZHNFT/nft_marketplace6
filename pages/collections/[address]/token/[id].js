@@ -69,7 +69,7 @@ const license = {
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data, rarity, chainId, account }) {
+export default function Nft({ data, chainId, account }) {
   console.log(`data`, data)
 
   return (
@@ -213,12 +213,12 @@ export default function Nft({ data, rarity, chainId, account }) {
                               </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                              {rarity?.attributes?.map((attribute) => attribute?.trait_type === 'TraitCount' ? null : (
+                              {data?.traits?.map((attribute) => (
                                 <tr key={attribute?.trait_type}>
                                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{attribute?.trait_type}</td>
                                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.value}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.percentage}%</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.rarityScore}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.rarityPercent.toFixed(2)}%</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.rarityScore.toFixed(2)}</td>
                                 </tr>
                               ))}
                             </tbody>

@@ -142,7 +142,7 @@ export default function Home(props) {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {collections?.map((collection) => (
                           <Link href="/collections/[address]" as={`/collections/${collection.address}`} key={collection.address} passHref>
-                            <tr key={collection.address} className="hover:bg-gray-50 hover:cursor-pointer">
+                            <tr key={collection.address} className="hover:bg-gray-50 cursor-pointer">
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.address}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.slug}</td>
