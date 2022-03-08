@@ -14,7 +14,14 @@ module.exports = {
       ...colors,
       malibu: '#5095ff',
       cornflower: '#6e85ff',
-      blade: '#1f2225'
+      blade: '#1f2225',
+      ink: '#4a4a4a',
+      rhino: '#c8c8c8',
+      pitch: '#262b31',
+      gunmetal: '#282d34',
+      manatee: '#969eab',
+      whiteLilac: '#f7f9fc',
+      silver: '#77808b'
     },
     extend: {
       borderRadius: {
