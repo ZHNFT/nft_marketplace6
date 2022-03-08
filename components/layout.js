@@ -61,7 +61,7 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
               )
             }
             <main className={clsx("",
-              { "lg:col-start-2 lg:col-span-10": pathname === '/profile' },
+              { "lg:col-start-2 lg:col-span-10 text-ink dark:text-white": pathname === '/profile' },
               { "lg:col-span-9 xl:col-span-10": pathname !== '/profile' }
             )}>
               {React.Children.map(children, child => {

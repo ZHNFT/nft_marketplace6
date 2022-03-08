@@ -1,0 +1,9 @@
+const NFT_LISTING_STATE = {
+  NOT_LISTED: 'NOT_LISTED',
+  FOR_SALE: 'FOR_SALE',
+  IN_AUCTION: 'IN_AUCTION'
+};
+
+export {
+  NFT_LISTING_STATE
+};
