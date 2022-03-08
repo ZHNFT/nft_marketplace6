@@ -35,11 +35,11 @@ export default function ItemMain({ name, imageUrl }) {
         >
           <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full bg-black/[0.3]">
             <div className="flex justify-center items-center absolute h-[23px] w-[23px] top-[12px] right-[13px] rounded-full bg-white/[0.1]">
-              <PulseIcon className="w-[15px]" />
+              <PulseIcon className="w-[15px] text-white" />
             </div>
             <div className="w-full mx-[14px] flex justify-between">
-              <button type="button" className="flex-1 bg-malibu rounded-lg p-2 border-[0.5px] border-malibu mr-[6px]">Buy now</button>
-              <button type="button" className="flex-1 bg-white/[0.1] border-[0.5px] rounded-lg p-2 ml-[6px]">Make offer</button>
+              <button type="button" className="flex-1 text-white bg-malibu rounded-lg p-2 border-[0.5px] border-malibu mr-[6px]">Buy now</button>
+              <button type="button" className="flex-1 text-white bg-white/[0.1] border-[0.5px] rounded-lg p-2 ml-[6px]">Make offer</button>
             </div>
           </div>
         </Transition>
