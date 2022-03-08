@@ -5,6 +5,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon, FilterIcon, SearchIcon } from '@heroicons/react/solid';
 import ListItem from './listItem';
 import CollectionHeader from './collectionHeader';
+import Pagination from './pagination';
 
 export default function List({ items, sortOptions, setMobileFiltersOpen, collection }) {
   console.log(`collection`, collection)
@@ -105,6 +106,10 @@ export default function List({ items, sortOptions, setMobileFiltersOpen, collect
           ))}
         </div>
       </div>
+      <Pagination
+        total={collection?.totalSupply}
+        showing={items?.length}
+      />
     </div>
   )
 }

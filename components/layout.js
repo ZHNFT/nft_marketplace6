@@ -25,11 +25,10 @@ const navigation = [
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '/profile' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Settings', href: '#' }
 ]
 
-export default function Layout({ children, pageProps, connect, disconnect }) {
+export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
 
@@ -44,6 +43,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
           userNavigation={userNavigation}
           connect={connect}
           disconnect={disconnect}
+          address={address}
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">

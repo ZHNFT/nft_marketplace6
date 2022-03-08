@@ -4,4 +4,11 @@ const resolveLink = (url) => {
   return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
 };
 
-export { resolveLink };
+function ellipseAddress(address = '', width = 10) {
+  if (!address) {
+    return ''
+  }
+  return `${address.slice(0, width)}...${address.slice(-width)}`
+}
+
+export { resolveLink, ellipseAddress };

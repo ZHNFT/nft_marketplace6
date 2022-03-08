@@ -6,19 +6,26 @@ import NotFoundImage from "../images/No-Image-Placeholder.png";
 
 export default function ListItem({ item }) {
   const router = useRouter()
-  const { tableName, address } = router.query
+  const { address } = router.query
 
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${item?.tokenId}`} passHref>
-      <div className="relative group hover:cursor-pointer">
+      <div className="relative group cursor-pointer">
         {item?.image ? (
-          <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+          <div className="block w-full min-h-80 bg-gray-200 aspect-w-1 lg:aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+             {/* https://nextjs.org/docs/api-reference/next/image */}
             <Image
               src={resolveLink(item?.image)}
               alt={item?.tokenId}
               className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+              // layout="fill"
+              layout="responsive"
               width={"280"}
               height={"365"}
+              // https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
+              objectFit=""
+              // https://developer.mozilla.org/en-US/docs/Web/CSS/object-position
+              objectPosition=""
             />
           </div>
         ) : (

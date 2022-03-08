@@ -4,9 +4,10 @@ import Image from 'next/image'
 import { Popover } from '@headlessui/react'
 import { BellIcon } from '@heroicons/react/outline'
 import DarkModeSwitch from '../darkModeSwitch';
+import { ellipseAddress } from '../../Utils';
 
 export default function MobileMenu(props) {
-  const { navigation, user, userNavigation, connect } = props;
+  const { navigation, user, userNavigation, connect, address, disconnect } = props;
 
   return (
     <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
@@ -31,7 +32,7 @@ export default function MobileMenu(props) {
             <Image className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" width={"40"} height={"40"} />
           </div>
           <div className="ml-3">
-            <div className="text-base font-medium text-gray-800">{user.name}</div>
+            <div className="text-base font-medium text-gray-800">{ellipseAddress(address)}</div>
             <div className="text-sm font-medium text-gray-500">{user.email}</div>
           </div>
           <button
@@ -56,6 +57,15 @@ export default function MobileMenu(props) {
       </div>
 
       <div className="mt-6 max-w-3xl mx-auto px-4 sm:px-6">
+      {address ? (
+        <button
+          type="button"
+          onClick={disconnect}
+          className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
+        >
+          Disconnect
+        </button>
+      ) : (
         <button
           type="button"
           onClick={connect}
@@ -63,6 +73,7 @@ export default function MobileMenu(props) {
         >
           Connect
         </button>
+      )}
 
         <div className="mt-6 flex justify-center">
           <DarkModeSwitch />

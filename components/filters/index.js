@@ -9,11 +9,14 @@ import FilterCheckbox from './filterCheckbox';
 
 export default function Filters({ filters, placement }) {
   const { push, query, pathname } = useRouter()
-  const { tableName, address, search } = query;
+  const { address, search } = query;
 
   function handleSubmit(values) {
     const stringifiedSearch = stringify(values, { encode: false, arrayFormat: 'indices' });
-    const newQuery = { tableName, address, search: stringifiedSearch };
+    const newQuery = {
+      address,
+      ...(stringifiedSearch?.length ? { search: stringifiedSearch } : {})
+    };
 
     push({
       pathname: `${pathname}`,
@@ -61,22 +64,34 @@ export default function Filters({ filters, placement }) {
                   <Disclosure.Panel className="pt-6">
                     <div className={clsx(placement === 'desktop' ? "space-y-4" : 'space-y-6')}>
                       <FieldArray name={`stringTraits`}>
-                        {(arrayHelpers) => (
+                        {(traitTypeArrayHelpers) => (
                           <>
-                            {traitType?.attributes.map((traitValue, optionIdx) => (
-                                <Field
-                                  key={`filter-${placement}-${traitType?.type}-${traitValue?.value}-${optionIdx}`}
-                                  component={FilterCheckbox}
-                                  name={`stringTraits.${index}.values.${optionIdx}`}
-                                  traitValue={traitValue?.value}
-                                  traitCount={traitValue?.count}
-                                  traitType={traitType?.type}
-                                  placement={placement}
-                                  arrayHelpers={arrayHelpers}
-                                  value={traitValue?.value}
-                                  submitForm={submitForm}
-                                />
-                            ))}
+                            <Field 
+                              name={`stringTraits.${index}.name`}
+                              hidden
+                              value={traitType?.type}
+                            />
+                            <FieldArray name={`stringTraits.${index}.values`}>
+                              {(traitValueArrayHelpers) => (
+                                <>
+                                  {traitType?.attributes.map((traitValue, optionIdx) => (
+                                    <Field
+                                      key={`filter-${placement}-${traitType?.type}-${traitValue?.value}-${optionIdx}`}
+                                      component={FilterCheckbox}
+                                      name={`stringTraits.${index}.values.${optionIdx}`}
+                                      traitValue={traitValue?.value}
+                                      traitCount={traitValue?.count}
+                                      traitType={traitType?.type}
+                                      placement={placement}
+                                      traitValueArrayHelpers={traitValueArrayHelpers}
+                                      traitTypeArrayHelpers={traitTypeArrayHelpers}
+                                      value={traitValue?.value}
+                                      submitForm={submitForm}
+                                    />
+                                  ))}
+                                </>
+                              )}
+                            </FieldArray>
                           </>
                         )}
                       </FieldArray>

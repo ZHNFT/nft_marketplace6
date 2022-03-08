@@ -97,16 +97,16 @@ function MyApp({ Component, pageProps }) {
     const ethersProvider = new ethers.providers.Web3Provider(provider)
     const ethersSigner = ethersProvider.getSigner();
 
-    let erc20TokenContract;
-    let queensAuctionContract;
+    // let erc20TokenContract;
+    // let queensAuctionContract;
 
-    if (pageProps?.ENVIRONMENT === 'testnet') {
-      erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
-      queensAuctionContract = new ethers.Contract(TestAuctionAddress, QueenAuctionABI, ethersSigner);
-    } else {
-      erc20TokenContract = new ethers.Contract(DaiContractAddress, DaiTokenAbi, ethersSigner);
-      queensAuctionContract = new ethers.Contract(MainnetAuctionAddress, QueenAuctionABIMainnet, ethersSigner);
-    }
+    // if (pageProps?.ENVIRONMENT === 'testnet') {
+    //   erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
+    //   queensAuctionContract = new ethers.Contract(TestAuctionAddress, QueenAuctionABI, ethersSigner);
+    // } else {
+    //   erc20TokenContract = new ethers.Contract(DaiContractAddress, DaiTokenAbi, ethersSigner);
+    //   queensAuctionContract = new ethers.Contract(MainnetAuctionAddress, QueenAuctionABIMainnet, ethersSigner);
+    // }
     
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -114,8 +114,8 @@ function MyApp({ Component, pageProps }) {
       web3Provider,
       address,
       chainId: network.chainId,
-      tokenContract: erc20TokenContract,
-      auctionContract: queensAuctionContract
+      // tokenContract: erc20TokenContract,
+      // auctionContract: queensAuctionContract
     })
   }, [pageProps?.ENVIRONMENT]);
 
@@ -189,10 +189,10 @@ function MyApp({ Component, pageProps }) {
 
   // Will ask the user to switch chains if they are connected to the wrong chain
   useEffect(() => {
-    if (provider && chainId !== 137) {
+    if (provider && chainId !== 80001) {
       provider?.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: mainnetChainId }],
+        params: [{ chainId: testnetChainId }],
       });
       return
     }

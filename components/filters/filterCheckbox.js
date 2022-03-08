@@ -1,34 +1,39 @@
 import clsx from "clsx";
 
 export default function FilterCheckbox(props) {
-  const { field, form, traitType, traitValue, traitCount, placement, arrayHelpers, submitForm, ...rest } = props;
+  const { field, form, traitType, traitValue, traitCount, placement, traitValueArrayHelpers, traitTypeArrayHelpers, submitForm, ...rest } = props;
   const { name, value: formikValue } = field;
-  const traitTypeIndex = form?.values && form?.values?.stringTraits && form?.values?.stringTraits?.findIndex(element => element?.name == traitType);
-  const valueIndex = form?.values && form?.values?.stringTraits && form?.values?.stringTraits[traitTypeIndex]?.values.indexOf(rest.value);
+  const traitTypeIndex = form?.values?.stringTraits?.findIndex(trait => {
+    return trait?.name === traitType
+  });
+  const values = form?.values?.stringTraits && form?.values?.stringTraits[traitTypeIndex]?.values;
 
   const handleChange = event => {
-    const { value } = event.target;
+    const { value, checked } = event.target;
+    const currentValueIndex = values?.indexOf(rest.value);
 
-    if (!form?.values?.stringTraits || traitTypeIndex === -1) {
-      arrayHelpers.push({ name: traitType, values: [value] });
+    if (!form?.values?.stringTraits || form?.values?.stringTraits?.length === 0 || !form?.values?.stringTraits[traitTypeIndex]) {
+      traitTypeArrayHelpers.push({ name: traitType, values: [ value ] });
       submitForm();
       return;
     }
 
-    const values = form?.values?.stringTraits[traitTypeIndex]?.values;
-    const traitValueIndex = values?.indexOf(rest.value);
-    if (traitValueIndex === -1) {
-      values.push(traitValue);
-    } else {
-      values.splice(traitValueIndex, 1);
+    if (traitTypeIndex !== -1 && checked) {
+      traitValueArrayHelpers.push(value)
+      submitForm();
+      return;
     }
-    values?.length === 0 
-      ? arrayHelpers.remove(traitTypeIndex) 
-      : arrayHelpers.replace(traitTypeIndex, { name: traitType, values });
-    submitForm();
+
+    if (traitTypeIndex !== -1 && !checked) {
+      traitValueArrayHelpers.remove(currentValueIndex);
+      if (values?.length -1 === 0) {
+        traitTypeArrayHelpers.remove(traitTypeIndex);
+      }
+      submitForm();
+      return;
+    }
   };
 
-  const checked = (valueIndex !== -1 && valueIndex !== undefined) || false;
   return (
     <div className="flex items-center">
       <input
@@ -37,7 +42,7 @@ export default function FilterCheckbox(props) {
         type="checkbox"
         onChange={handleChange}
         className="h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-        checked={checked}
+        checked={values && values?.indexOf(rest.value) !== -1}
         {...rest}
       />
       <label

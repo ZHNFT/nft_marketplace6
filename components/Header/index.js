@@ -8,12 +8,11 @@ import { ChevronDownIcon, BellIcon } from '../icons';
 import DarkModeSwitch from '../darkModeSwitch';
 import MobileMenu from './MobileMenu';
 import Logo from '../../images/hive-logo.png';
+import { ellipseAddress } from '../../Utils';
 
 export default function Header(props) {
-  const { user, navigation, userNavigation, account, connect, disconnect } = props;
+  const { user, navigation, userNavigation, connect, disconnect, address } = props;
 
-  console.log(`connect`, connect)
-  
   return (
       <Popover
         as="header"
@@ -56,7 +55,7 @@ export default function Header(props) {
                     </div>
                   </div>
                 </div>
-                <div className="min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
+                <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <ul className="flex flex-1 justify-around">
                       <li>
@@ -104,7 +103,7 @@ export default function Header(props) {
                       <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
                         <span className="sr-only">Open user menu</span>
                         <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
-                        <span className="text-xs text-white pr-2 pl-2">{ user.name }</span>
+                        <span className="text-xs text-white pr-2 pl-2">{ ellipseAddress(address) }</span>
                         <ChevronDownIcon className="w-[16px] text-white pr-1" />
                       </Menu.Button>
                     </div>
@@ -119,8 +118,14 @@ export default function Header(props) {
                     >
                       <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
                         <Menu.Item key="wallet">
-                          {account ? (
-                            <span>{account}</span>
+                          {address ? (
+                            <button
+                               type="button"
+                               onClick={disconnect}
+                               className="w-full text-left block py-2 px-4 text-sm text-gray-700"
+                             >
+                               Disconnect
+                             </button>
                           ) : (
                             <button
                               type="button"
@@ -157,6 +162,8 @@ export default function Header(props) {
               userNavigation={userNavigation}
               user={user}
               connect={connect}
+              address={address}
+              disconnect={disconnect}
             />
           </>
         )}
