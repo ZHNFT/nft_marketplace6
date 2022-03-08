@@ -28,10 +28,10 @@ export default function Filters({ filters, placement }) {
     >
       {({ submitForm, values }) => (
         <form className={clsx(placement === 'desktop' ? "hidden lg:block" : 'mt-4 border-t border-gray-200')}>
-          {filters && Object.keys(filters)?.map((traitType, index) => (
+          {filters?.length && filters?.map((traitType, index) => (
             <Disclosure
               as="div"
-              key={`filter-${placement}-${traitType}-${index}`}
+              key={`filter-${placement}-${traitType?.type}-${index}`}
               className={clsx("border-gray-200 py-6", {
                 'border-b': placement === 'desktop',
                 'border-t px-4': placement === 'mobile',
@@ -48,7 +48,7 @@ export default function Filters({ filters, placement }) {
                         )
                       }
                     >
-                      <span className="font-medium dark:text-slate-200 text-gray-900">{traitType}</span>
+                      <span className="font-medium dark:text-slate-200 text-gray-900">{traitType?.type}</span>
                       <span className="ml-6 flex items-center">
                         {open ? (
                           <MinusSmIcon className="h-5 w-5" aria-hidden="true" />
@@ -63,17 +63,17 @@ export default function Filters({ filters, placement }) {
                       <FieldArray name={`stringTraits`}>
                         {(arrayHelpers) => (
                           <>
-                            {Object.entries(filters[traitType]).map(([traitValue, traitCount], optionIdx) => (
+                            {traitType?.attributes.map((traitValue, optionIdx) => (
                                 <Field
-                                  key={`filter-${placement}-${traitType}-${traitValue}-${optionIdx}`}
+                                  key={`filter-${placement}-${traitType?.type}-${traitValue?.value}-${optionIdx}`}
                                   component={FilterCheckbox}
                                   name={`stringTraits.${index}.values.${optionIdx}`}
-                                  traitValue={traitValue}
-                                  traitCount={traitCount}
-                                  traitType={traitType}
+                                  traitValue={traitValue?.value}
+                                  traitCount={traitValue?.count}
+                                  traitType={traitType?.type}
                                   placement={placement}
                                   arrayHelpers={arrayHelpers}
-                                  value={traitValue}
+                                  value={traitValue?.value}
                                   submitForm={submitForm}
                                 />
                             ))}

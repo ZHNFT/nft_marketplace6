@@ -7,8 +7,6 @@ import axios from 'axios'
 import Web3Modal from 'web3modal'
 import { nftAddress, nftMarketAddress } from '../config'
 //import styles from '../styles/Home.module.css'
-import { useMoralis } from 'react-moralis';
-import getMoralisNode from '../middleware/getMoralisNode';
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Marketplace from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
@@ -29,26 +27,15 @@ const NftProjects = [
 
 export default function Home(props) {
   const { collections } = props;
+
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
-  const { Moralis, isInitialized, isInitializing } = useMoralis();
   const [metaData, setMetaData] = useState([]);
 
   useEffect(() => {
     loadNFTS();
     
   }, []);
-
-  useEffect(() => {
-    const options = { chain: NftProjects[0].chain, address: NftProjects[0].address };
-    async function fetchData() {
-      if (isInitialized) {
-        const metaData = await Moralis.Web3API.token.getNFTMetadata(options);
-        setMetaData(metaData);
-      }
-    }
-    fetchData();
-  }, [isInitialized]);
 
   async function loadNFTS() {
     const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.infura.io/v3/6b2231f7f9ab46b7a9e63b08489d305b");
@@ -136,18 +123,31 @@ export default function Home(props) {
                           scope="col"
                           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
+                          Slug
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          Chain
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
                           Total
                         </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {collections?.map((collection) => (
-                          <Link href="/collection/[address]/[tableName]" as={`/collection/${collection.contractAddress}/${collection.tableName}`} key={collection.contractAddress} passHref>
-                            <tr key={collection.contractAddress} className="hover:bg-gray-50 hover:cursor-pointer">
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.collectionName}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.contractAddress}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.total}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CLICK ME</td>
+                          <Link href="/collections/[address]" as={`/collections/${collection.address}`} key={collection.address} passHref>
+                            <tr key={collection.address} className="hover:bg-gray-50 hover:cursor-pointer">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.address}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.slug}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.chain}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.totalSupply}</td>
                             </tr>
                           </Link>
                       ))}
@@ -205,13 +205,9 @@ export default function Home(props) {
 }
 
 export async function getStaticProps() {
-  const moralis = getMoralisNode();
-  const collection = moralis.Object.extend("WhitelistedCollection");
-  console.log(`moralis`, moralis)
-  console.log(`collection`, collection)
-  const collectionQuery = new moralis.Query(collection);
-  const result = await collectionQuery.find();
-  const data = JSON.parse(JSON.stringify(result));
+  const url = "https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=mumbai"
+  const res = await fetch(url)
+  const data = await res?.json()
 
   return { props: { collections: data }, revalidate: 30 };
 }

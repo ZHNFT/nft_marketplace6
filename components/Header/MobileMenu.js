@@ -6,7 +6,7 @@ import { BellIcon } from '@heroicons/react/outline'
 import DarkModeSwitch from '../darkModeSwitch';
 
 export default function MobileMenu(props) {
-  const { navigation, user, userNavigation, onClick, isAuthenticated } = props;
+  const { navigation, user, userNavigation, connect } = props;
 
   return (
     <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
@@ -58,7 +58,7 @@ export default function MobileMenu(props) {
       <div className="mt-6 max-w-3xl mx-auto px-4 sm:px-6">
         <button
           type="button"
-          onClick={onClick}
+          onClick={connect}
           className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
         >
           Connect

@@ -1,13 +1,11 @@
 import { Fragment } from 'react'
 import Image from 'next/image'
 import clsx from "clsx";
-import { useMoralis } from 'react-moralis';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
-import getMoralisNode from '../../../../middleware/getMoralisNode';
 import { getExplorer } from '../../../../config';
 
 const product = {
@@ -71,8 +69,9 @@ const license = {
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data, rarity }) {
-  const { authenticate, isAuthenticated, user: moralisUser, account, chainId, logout } = useMoralis();
+export default function Nft({ data, rarity, chainId, account }) {
+  console.log(`data`, data)
+
   return (
     <div className='bg-white'>
       <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">
@@ -125,10 +124,10 @@ export default function Nft({ data, rarity }) {
           {/* Product details */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-4">
             <div className="flex flex-col">
-              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">#{data?.tokenId}</h1>
+              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{data?.name}</h1>
 
               <h2 id="information-heading" className="sr-only">
-                Product information
+                NFT information
               </h2>
               <p className="text-sm text-gray-500 mt-2">
                 {/* Could also link to profile/account within the market place instead of blockexplorer */}
@@ -209,7 +208,7 @@ export default function Nft({ data, rarity }) {
                                   scope="col"
                                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-                                  Rarity rank #{rarity?.rank}
+                                  Rarity rank #{data?.rarityRank}
                                 </th>
                               </tr>
                             </thead>
@@ -283,7 +282,7 @@ export default function Nft({ data, rarity }) {
                     p: ({node, ...props}) => <p {...props} className="text-gray-500" />
                   }}
                 >
-                  {"description"}
+                  {data?.metadata?.description}
                 </ReactMarkdown>
               </div>
             </div>
@@ -296,13 +295,10 @@ export default function Nft({ data, rarity }) {
 };
 
 export async function getServerSideProps(context) {
-  const { params: { tableName, id } } = context;
-  const moralis = getMoralisNode();
-  const NFT = moralis.Object.extend(`${tableName}NFT`);
-  const nftQuery = new moralis.Query(NFT);
-  nftQuery.equalTo("tokenId", id)
-  const nftResults = await nftQuery.find();
-  const data = JSON.parse(JSON.stringify(nftResults[0]));
+  const { params: { address, id } } = context;
+  const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
+  const res = await fetch(url)
+  const data = await res?.json()
 
   return { props: { data } };
 }

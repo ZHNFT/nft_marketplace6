@@ -82,9 +82,6 @@ async function generateRarity() {
     await timer(6000);
   }
 
-  //Lets get the data for all the nfts currently in the database
-
-
   // some nfts are missing metadata when fetched from moralis, syncing is behind or something so we fetch from token_uri
   allNFTs = await Promise.all(allNFTs.map(async (e) => {
     if (e?.metadata) {

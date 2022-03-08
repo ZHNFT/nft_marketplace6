@@ -9,7 +9,7 @@ export default function ListItem({ item }) {
   const { tableName, address } = router.query
 
   return (
-    <Link href="/collection/[address]/[tableName]/[id]" as={`/collection/${address}/${tableName}/${item?.tokenId}`} passHref>
+    <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${item?.tokenId}`} passHref>
       <div className="relative group hover:cursor-pointer">
         {item?.image ? (
           <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">

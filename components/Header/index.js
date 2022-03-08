@@ -2,38 +2,19 @@ import { Fragment, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link'
 import Image from 'next/image'
-import { useMoralis } from 'react-moralis';
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon, BellIcon } from '../icons';
 import DarkModeSwitch from '../darkModeSwitch';
 import MobileMenu from './MobileMenu';
-import AuthModal from './AuthModal';
 import Logo from '../../images/hive-logo.png';
 
 export default function Header(props) {
-  const { user, navigation, userNavigation } = props;
-  const { authenticate, isAuthenticated, user: moralisUser, account, chainId, logout } = useMoralis();
-  const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
+  const { user, navigation, userNavigation, account, connect, disconnect } = props;
 
-  console.log(`account`, account)
-  console.log(`chainId`, chainId)
-
-  function handleOpenAuthModal() {
-    setIsAuthModalVisible(true)
-  }
-
-  function handleCloseAuthModal() {
-    setIsAuthModalVisible(false)
-  }
-
+  console.log(`connect`, connect)
+  
   return (
-    <>
-      <AuthModal
-        handleClose={handleCloseAuthModal}
-        open={isAuthModalVisible}
-        authenticate={authenticate}
-      />
       <Popover
         as="header"
         className={({ open }) =>
@@ -138,12 +119,12 @@ export default function Header(props) {
                     >
                       <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
                         <Menu.Item key="wallet">
-                          {isAuthenticated ? (
+                          {account ? (
                             <span>{account}</span>
                           ) : (
                             <button
                               type="button"
-                              onClick={handleOpenAuthModal}
+                              onClick={connect}
                               className="w-full text-left block py-2 px-4 text-sm text-gray-700"
                             >
                               Connect
@@ -173,14 +154,12 @@ export default function Header(props) {
             </div>
             <MobileMenu
               navigation={navigation}
-              user={user}
               userNavigation={userNavigation}
-              onClick={handleOpenAuthModal}
-              isAuthenticated={isAuthenticated}
+              user={user}
+              connect={connect}
             />
           </>
         )}
       </Popover>
-    </>
   );
 }

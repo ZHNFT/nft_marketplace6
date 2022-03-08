@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useMoralis } from 'react-moralis';
+import clsx from 'clsx';
 import { useRouter } from 'next/router'
 
 // Components
@@ -29,17 +29,9 @@ const userNavigation = [
   { name: 'Sign out', href: '#' },
 ]
 
-export default function Layout({ children, pageProps }) {
+export default function Layout({ children, pageProps, connect, disconnect }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } = useMoralis();
   const { pathname } = useRouter();
-
-  useEffect(() => {
-    const connectorId = window.localStorage.getItem("connectorId");
-    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-      enableWeb3({ provider: connectorId });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isWeb3Enabled]);
 
   return (
     <>
@@ -50,6 +42,8 @@ export default function Layout({ children, pageProps }) {
           user={user}
           navigation={navigation}
           userNavigation={userNavigation}
+          connect={connect}
+          disconnect={disconnect}
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
@@ -57,16 +51,19 @@ export default function Layout({ children, pageProps }) {
               // Sidebar menu filters for desktop
               pathname !== '/profile' && (
                   <Sidebar
-                  navigation={navigation}
-                >
-                  <Filters
-                    placement="desktop"
-                    filters={pageProps?.collection?.traits}
-                  />
+                    navigation={navigation}
+                  >
+                    <Filters
+                      placement="desktop"
+                      filters={pageProps?.collection?.traits}
+                    />
                 </Sidebar>
               )
             }
-            <main className="lg:col-start-2 lg:col-span-10">
+            <main className={clsx("",
+              { "lg:col-start-2 lg:col-span-10": pathname === '/profile' },
+              { "lg:col-span-9 xl:col-span-10": pathname !== '/profile' }
+            )}>
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
                   return null;

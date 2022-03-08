@@ -7,12 +7,13 @@ import ListItem from './listItem';
 import CollectionHeader from './collectionHeader';
 
 export default function List({ items, sortOptions, setMobileFiltersOpen, collection }) {
+  console.log(`collection`, collection)
   return (
     <div className="bg-white">
       <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">
         <CollectionHeader 
-          total={collection?.total}
-          collectionName={collection?.collectionName}
+          total={collection?.totalSupply}
+          collectionName={collection?.name}
         />
         <div className="flex items-center justify-between space-x-4">
           <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
@@ -99,7 +100,7 @@ export default function List({ items, sortOptions, setMobileFiltersOpen, collect
           {items?.map((item, index) => (
             <ListItem
               key={`item-${index}`}
-              item={item.toJSON()}
+              item={item}
             />
           ))}
         </div>
