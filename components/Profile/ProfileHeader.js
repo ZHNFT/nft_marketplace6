@@ -63,14 +63,14 @@ export default function ProfileHeader({ user }) {
               <li>
                   <h4 className="text-xs mb-1.5">Volume</h4>
                   <span className="text-xl font-medium">
-                    <BeeIcon className="w-[19px] mr-2" />
+                    <BeeIcon className="w-[31px] relative -top-[3px]" />
                     16.7K
                   </span>
               </li>
               <li>
                   <h4 className="text-xs mb-1.5">Est. Value</h4>
                   <span className="text-xl font-medium">
-                    <BeeIcon className="w-[19px] mr-2" />
+                    <BeeIcon className="w-[31px] relative -top-[3px]" />
                     16.7K
                   </span>
               </li>

@@ -4,10 +4,10 @@ import Tab from './Tab';
 export default function Tabs({ list }) {
   const { asPath } = useRouter();
   return (
-    <ul className="flex text-center text-base justify-between">
+    <ul className="w-full flex text-center text-base">
       {
         list.map(({ href, name }) => (
-          <li>
+          <li key={href} className="mr-10 last:mr-0">
             <Tab href={href} name={name} isActive={asPath === href} />
           </li>
         ))
