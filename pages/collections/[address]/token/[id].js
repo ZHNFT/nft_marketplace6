@@ -108,7 +108,8 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
       contractAddress: data.collectionId,
       tokenId: data.tokenId,
       userAddress: data?.owner,
-      pricePerItem: price,
+      // TODO fix this in correct formatting in combination with the input value
+      pricePerItem: (Number(price) * 1000000000).toString(),
       quantity: 1,
       expiry: expirationDate,
       nonce: nonce
