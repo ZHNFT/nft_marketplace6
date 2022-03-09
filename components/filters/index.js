@@ -15,6 +15,7 @@ export default function Filters({ filters, placement }) {
     const stringifiedSearch = stringify(values, { encode: false, arrayFormat: 'indices' });
     const newQuery = {
       address,
+      ...(query?.sort ? { sort: query.sort } : {}),
       ...(stringifiedSearch?.length ? { search: stringifiedSearch } : {})
     };
 

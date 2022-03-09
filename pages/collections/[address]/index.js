@@ -5,17 +5,9 @@ import { stringify, parse } from 'qs';
 // Components
 import List from '../../../components/list';
 
-const sortOptions = [
-  { name: 'Most Popular', href: '#', current: true },
-  { name: 'Best Rating', href: '#', current: false },
-  { name: 'Newest', href: '#', current: false },
-  { name: 'Price: Low to High', href: '#', current: false },
-  { name: 'Price: High to Low', href: '#', current: false },
-]
-
 const url = `https://hexagon-api.onrender.com/collections/`;
 
-async function fetchData(address, query) {
+async function fetchData(address, query, sort) {
   const activeFilters = parse(query);
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
@@ -27,9 +19,8 @@ async function fetchData(address, query) {
     }
   ));
 
-  console.log(`traits`, traits)
   const res = await fetch(
-    `${url}${address}/tokens`,
+    `${url}${address}/tokens${sort ? `?${stringify({ sort })}` : ''}`,
     {
       method: 'POST',
       headers: {
@@ -48,14 +39,14 @@ async function fetchData(address, query) {
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data } = props;
   const router = useRouter()
-  const { search, address } = router.query
+  const { search, address, sort } = router.query
   const [collectionData, setData] = useState(data);
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData(address, search);
+    const json = await fetchData(address, search, sort);
     setData(json);
   // eslint-disable-next-line
-  }, [address, search]);
+  }, [address, search, sort]);
 
   useEffect(() => {
     fetchCollection();
@@ -64,7 +55,6 @@ export default function Collection(props) {
   return (
     <List
       items={collectionData}
-      sortOptions={sortOptions}
       setMobileFiltersOpen={setMobileFiltersOpen}
       collection={collection}
     />
