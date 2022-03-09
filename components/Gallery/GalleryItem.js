@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { HexagonBeeIcon } from '../icons';
+import ItemPrice from '../ItemPrice/ItemPrice';
 import ItemMain from './ItemMain';
-import ItemPrice from './ItemPrice';
 import ItemListingState from './ItemListingState';
 
 export default function GalleryItem({ item }) {

@@ -1,6 +1,6 @@
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { AuctionIcon, CartIcon } from '../icons';
-import ItemPrice from './ItemPrice';
+import ItemPrice from '../ItemPrice/ItemPrice';
 
 export default function ItemListingState({ listingState, price, auctionEndDate }) {
   if (listingState === NFT_LISTING_STATE.NOT_LISTED) {

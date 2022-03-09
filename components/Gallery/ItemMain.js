@@ -6,7 +6,7 @@ import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import ProgressCircle from '../ProgressCircle/ProgressCircle';
-import ItemPrice from './ItemPrice';
+import ItemPrice from '../ItemPrice/ItemPrice';
 
 export default function ItemMain({ isActive, name, listingState, auctionEndDate, topOffer, imageUrl }) {
   return (

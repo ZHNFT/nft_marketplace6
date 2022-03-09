@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import Gallery from '../Gallery/Gallery';
+import Activity from './Activity';
 
 // test data
 const nftItems = [
@@ -23,7 +24,7 @@ export default function ProfileContent() {
   const { query: { tab } } = useRouter();
   
   if (tab === 'activity') {
-    return <div>Activity content here</div>;
+    return <Activity />;
   }
 
   if (tab === 'offers') {
