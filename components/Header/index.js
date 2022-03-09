@@ -139,15 +139,16 @@ export default function Header(props) {
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <a
-                                href={item.href}
-                                className={clsx(
-                                  'block py-2 px-4 text-sm text-gray-700',
-                                  { 'bg-gray-100': active }
-                                )}
-                              >
-                                {item.name}
-                              </a>
+                              <Link href={item.href} passHref>
+                                <a
+                                  className={clsx(
+                                    'block py-2 px-4 text-sm text-gray-700',
+                                    { 'bg-gray-100': active }
+                                  )}
+                                >
+                                  {item.name}
+                                </a>
+                              </Link>
                             )}
                           </Menu.Item>
                         ))}

@@ -1,4 +1,6 @@
-import { Fragment } from 'react'
+import { Fragment, useCallback, useState } from 'react'
+import { ethers } from "ethers";
+import Web3Token from 'web3-token';
 import Image from 'next/image'
 import clsx from "clsx";
 import ReactMarkdown from 'react-markdown'
@@ -7,6 +9,7 @@ import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getExplorer } from '../../../../config';
+import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -69,8 +72,64 @@ const license = {
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data, chainId, account }) {
+export default function Nft({ data, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract }) {
+  const isOwner = data?.owner === address;
   console.log(`data`, data)
+  const marketplaceAddress = marketplaceContract?.address;
+  const [price, setPrice] = useState(0);
+  const [expirationDate, setExpirationDate] = useState(0);
+
+  function handlePriceChange(e) {
+    const value = e.target.value;
+    console.log(`value`, value)
+    setPrice(value)
+  }
+
+  function handleDateChange(e) {
+    const value = e.target.value;
+    console.log(`value.valueOf()`, new Date(value).valueOf())
+    console.log(`value.getTime()`, new Date(value).getTime())
+
+    // const unixTime = Math.floor(new Date(value).getTime() / 1000);
+    const unixTime = parseInt((new Date(value).getTime() / 1000).toFixed(0));
+    setExpirationDate(unixTime)
+
+  }
+
+  const handleListItem = useCallback(async function() {
+    if (!isOwner) {
+      alert("You are not the ower of this item");
+      return;
+    }
+    const signer = ethersProvider.getSigner();
+    const nonce = await signer.getTransactionCount();
+
+    let listing = {
+      contractAddress: data.collectionId,
+      tokenId: data.tokenId,
+      userAddress: data?.owner,
+      pricePerItem: price,
+      quantity: 1,
+      expiry: expirationDate,
+      nonce: nonce
+    }
+
+    listing = getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId);
+    const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
+
+    const response = await fetch('https://hexagon-api.onrender.com/listings', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ listing })
+    });
+
+    console.log(`response`, response)
+
+  }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, isOwner, marketplaceAddress, price, expirationDate])
 
   return (
     <div className='bg-white'>
@@ -131,10 +190,27 @@ export default function Nft({ data, chainId, account }) {
               </h2>
               <p className="text-sm text-gray-500 mt-2">
                 {/* Could also link to profile/account within the market place instead of blockexplorer */}
-                Owned by: <a href={chainId ? `${getExplorer(chainId)}/address/${data?.owner}` : `https://polygon-rpc.com/address/${data?.owner}`} className="hover:text-indigo-600">{data?.owner === account ? 'You' : data?.owner}</a>
+                Owned by:
+                <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${data?.owner}` : `https://polygon-rpc.com/address/${data?.owner}`} className="hover:text-indigo-600">
+                  {isOwner ? ' You' : ` ${data?.owner}`}
+                </a>
               </p>
             </div>
-
+            <div className="border-t border-gray-200 mt-10 pt-10">
+              <h3 className="text-sm font-medium text-gray-900">Description</h3>
+              <div className="mt-4 prose prose-sm text-gray-500">
+                <ReactMarkdown
+                  className='mt-6 whitespace-pre-line'
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
+                    p: ({node, ...props}) => <p {...props} className="text-gray-500" />
+                  }}
+                >
+                  {data?.metadata?.description}
+                </ReactMarkdown>
+              </div>
+            </div>
             <Tab.Group as="div">
               <div className="border-b border-gray-200 border-t border-gray-200 mt-10 ">
                 <Tab.List className="-mb-px flex space-x-8">
@@ -208,7 +284,7 @@ export default function Nft({ data, chainId, account }) {
                                   scope="col"
                                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-                                  Rarity rank #{data?.rarityRank}
+                                  Rarity rank <b className='text-black'>#{data?.rarityRank}</b>
                                 </th>
                               </tr>
                             </thead>
@@ -255,22 +331,27 @@ export default function Nft({ data, chainId, account }) {
           </div>
 
           <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-
-              <button
-                type="button"
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-              >
-                Pay {product.price}
-              </button>
-              <button
-                type="button"
-                className="w-full bg-indigo-50 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-indigo-700 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-              >
-                Preview
-              </button>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">
+              <div className='col-span-2'>
+                <label htmlFor="price" className='block text-black'>Price</label>
+                <input id="price" type="text" name="price" className="w-full block text-black" onChange={handlePriceChange} />
+              </div>
+              <div className='col-span-3'>
+                <label htmlFor="date" className='block text-black'>Expiration Date</label>
+                <input id="date" type="datetime-local" name="date" className="w-full block text-black" onChange={handleDateChange} />
+              </div>
+              {/* <input type="time" className="text-black col-span-1">
+              </input> */}
             </div>
-
+            <div className="grid grid-cols-1 pt-6">
+              <button
+                  onClick={address ? handleListItem : connect}
+                  type="button"
+                  className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                >
+                  List
+                </button>
+            </div>
             <div className="border-t border-gray-200 mt-10 pt-10">
               <h3 className="text-sm font-medium text-gray-900">Description</h3>
               <div className="mt-4 prose prose-sm text-gray-500">
@@ -286,7 +367,6 @@ export default function Nft({ data, chainId, account }) {
                 </ReactMarkdown>
               </div>
             </div>
-          
           </div>
         </div>
       </div>

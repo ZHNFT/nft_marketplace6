@@ -9,16 +9,16 @@ import Web3Modal from "web3modal";
 import Layout from '../components/layout';
 
 // Config
-import { networkConfigs, getChainById } from '../config';
+import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI } from '../config';
 
-const getProviderOptions = (REACT_APP_INFURA_ID) => ({
+const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: process.env.REACT_APP_INFURA_ID || REACT_APP_INFURA_ID, // required
+      infuraId: process.env.REACT_APP_INFURA_ID, // required
     },
   },
-});
+};
 
 const initialState = {
   provider: null,
@@ -36,8 +36,9 @@ function reducer(state, action) {
         web3Provider: action.web3Provider,
         address: action.address,
         chainId: action.chainId,
-        tokenContract: action.tokenContract,
-        auctionContract: action.auctionContract
+        chainIdHex: action.chainIdHex,
+        ethersProvider: action.ethersProvider,
+        marketplaceContract: action.marketplaceContract,
       }
     case 'SET_ADDRESS':
       return {
@@ -64,12 +65,11 @@ function MyApp({ Component, pageProps }) {
   const contextValue = useMemo(() => {
     return { state, dispatch };
   }, [state, dispatch]);
-  const { provider, web3Provider, address, chainId, contract, gasGwei } = state;
+  const { provider, web3Provider, address, chainId } = state;
   const mainnetChainId = "0x89";
   const testnetChainId = "0x13881";
 
   useEffect(() => {
-    const providerOptions = getProviderOptions(pageProps.REACT_APP_INFURA_ID);
     if (typeof window !== 'undefined') {
       web3Modal = new Web3Modal({
         network: 'mainnet', // optional
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }) {
         providerOptions, // required
       })
     }
-  }, [pageProps.REACT_APP_INFURA_ID]);
+  }, []);
 
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
@@ -96,28 +96,23 @@ function MyApp({ Component, pageProps }) {
 
     const ethersProvider = new ethers.providers.Web3Provider(provider)
     const ethersSigner = ethersProvider.getSigner();
+    const marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
 
-    // let erc20TokenContract;
-    // let queensAuctionContract;
-
-    // if (pageProps?.ENVIRONMENT === 'testnet') {
-    //   erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
-    //   queensAuctionContract = new ethers.Contract(TestAuctionAddress, QueenAuctionABI, ethersSigner);
-    // } else {
-    //   erc20TokenContract = new ethers.Contract(DaiContractAddress, DaiTokenAbi, ethersSigner);
-    //   queensAuctionContract = new ethers.Contract(MainnetAuctionAddress, QueenAuctionABIMainnet, ethersSigner);
-    // }
-    
     dispatch({
       type: 'SET_WEB3_PROVIDER',
       provider,
       web3Provider,
+      ethersProvider,
       address,
       chainId: network.chainId,
-      // tokenContract: erc20TokenContract,
-      // auctionContract: queensAuctionContract
+      chainIdHex: network.chainId === 137 
+        ? mainnetChainId 
+        : network.chainId === 80001 
+          ? testnetChainId 
+          : null,
+      marketplaceContract: marketplaceTestContract
     })
-  }, [pageProps?.ENVIRONMENT]);
+  }, []);
 
   const disconnect = useCallback(
     async function () {
