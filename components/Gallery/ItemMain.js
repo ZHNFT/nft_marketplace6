@@ -10,7 +10,7 @@ import ItemPrice from '../ItemPrice/ItemPrice';
 
 export default function ItemMain({ isActive, name, listingState, auctionEndDate, topOffer, imageUrl }) {
   return (
-    <div className="relative rounded-xl overflow-hidden">
+    <div className="relative rounded-xl overflow-hidden w-[210px] h-[210px]">
       <Image
         className="block w-full"
         src={imageUrl}
@@ -29,8 +29,8 @@ export default function ItemMain({ isActive, name, listingState, auctionEndDate,
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <div className="flex items-center justify-center rounded-xl absolute top-0 left-0 w-full h-full bg-black/[0.3] backdrop-blur-md">
-            {
+          <div className="flex items-center justify-center rounded-xl absolute top-0 left-0 w-full h-full bg-black/[0.3] backdrop-blur-sm">
+            { 
               <>
                 <div className="flex justify-center items-center absolute h-[23px] w-[23px] top-[12px] right-[13px] rounded-full bg-white/[0.1]">
                   <PulseIcon className="w-[15px] text-white" />
