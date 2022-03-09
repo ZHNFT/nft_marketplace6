@@ -52,9 +52,11 @@ export default function Collection(props) {
     fetchCollection();
   }, [search, fetchCollection])
 
+  console.log(`collectionData`, collectionData)
+
   return (
     <List
-      items={collectionData}
+      items={collectionData?.results}
       setMobileFiltersOpen={setMobileFiltersOpen}
       collection={collection}
     />

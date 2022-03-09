@@ -27,6 +27,7 @@ const NftProjects = [
 
 export default function Home(props) {
   const { collections } = props;
+  console.log(`collections`, collections)
 
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');
@@ -140,7 +141,7 @@ export default function Home(props) {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {collections?.map((collection) => (
+                      {collections?.results?.map((collection) => (
                           <Link href="/collections/[address]" as={`/collections/${collection.address}`} key={collection.address} passHref>
                             <tr key={collection.address} className="hover:bg-gray-50 cursor-pointer">
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
