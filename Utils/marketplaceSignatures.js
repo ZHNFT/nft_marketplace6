@@ -76,7 +76,7 @@ export async function getSignatureListing(listing, signer, ethers, marketplaceAd
     listing.s = splitSignature.s;
     listing.r = splitSignature.r;
 
-    return listing;
+    return { listing, signature };
 
 }
 
@@ -144,7 +144,7 @@ export async function getSignatureOffer(offer, signer, ethers, marketplaceAddres
     offer.s = splitSignature.s;
     offer.r = splitSignature.r;
 
-    return offer;
+    return { offer, signature };
 
 }
 
