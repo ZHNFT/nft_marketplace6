@@ -54,7 +54,7 @@ async function fetchData(address, query, sort) {
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
   const { createdAt, name, description, images, totalSupply, traits } = collection;
   const router = useRouter();
   const { search, address, sort, tab } = router.query;
@@ -81,6 +81,7 @@ export default function Collection(props) {
   return (
     <>
       <CollectionHeader
+        chainIdHex={chainIdHex}
         address={address}
         createdAt={createdAt}
         name={name}

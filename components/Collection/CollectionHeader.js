@@ -2,9 +2,10 @@ import Image from 'next/image'
 import { ellipseAddress } from '../../Utils';
 import DefaultLogo from '../../images/default-collection-logo.png';
 import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon } from '../icons';
+import { getExplorer } from '../../config';
 
 export default function CollectionHeader(props) {
-  const { address, createdAt, name, description, logo, totalSupply, socials } = props;
+  const { address, createdAt, name, description, logo, totalSupply, socials, chainIdHex } = props;
   return (
     <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
       <div className="flex lg:col-span-7">
@@ -19,7 +20,7 @@ export default function CollectionHeader(props) {
           <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ name }</h1>
           <ul className="flex justify-start items-center text-xs">
               <li className="mr-6">
-                  <a href="#" className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
+                  <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
                     { ellipseAddress(address, 4) }
                     <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
                   </a>
