@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import ProfileHeader from '../components/Profile/ProfileHeader';
-import ProfileContent from '../components/Profile/ProfileContent';
-import Tabs from '../components/Tabs/Tabs';
-import FilterButton from '../components/FilterButton/FilterButton';
-import Dropdown from '../components/Dropdown/Dropdown';
+import { useRouter } from 'next/router'
+import ProfileHeader from '../../../components/Profile/ProfileHeader';
+import ProfileContent from '../../../components/Profile/ProfileContent';
+import Tabs from '../../../components/Tabs/Tabs';
+import FilterButton from '../../../components/FilterButton/FilterButton';
+import Dropdown from '../../../components/Dropdown/Dropdown';
 
 // test user
 const user = {
@@ -27,7 +28,11 @@ const sortList = [
   { label: 'Price: High to low' }
 ];
 
-export default function Profile() {
+export default function UserAssets(props) {
+  const { chainIdHex, data } = props;
+  const router = useRouter();
+  const { address } = router.query;
+
   const tabs = [
     { href: '/profile', name: 'NFTs (12)' },
     { href: '/profile?tab=activity', name: 'Activity' },
@@ -35,9 +40,11 @@ export default function Profile() {
   ];
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [selectedSort, setSelectedSort] = useState(sortList[0]);
+  const total = data?.results?.length;
+  
   return (
     <>
-      <ProfileHeader user={user} />
+      <ProfileHeader user={user} chainIdHex={chainIdHex} address={address} total={total} />
       <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
         <div className="flex col-span-12 lg:col-span-7 items-center">
           <Tabs list={tabs} />
@@ -49,8 +56,17 @@ export default function Profile() {
         </div>
       </section>
       <section className="mt-14">
-        <ProfileContent />
+        <ProfileContent data={data?.results} />
       </section>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { params: { address } } = context;
+  const url = `https://hexagon-api.onrender.com/users/${address}/tokens`;
+  const res = await fetch(url)
+  const data = await res?.json()
+
+  return { props: { data } };
 }

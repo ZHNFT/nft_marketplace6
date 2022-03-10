@@ -1,7 +1,7 @@
 function getDomain(marketplaceAddress, chainId) {
 
     //TODO: change the chain id, currently this is the development chainId
-    domain = {
+    return {
 
         name : "HEXAGONMarketplace",
         version : "1",

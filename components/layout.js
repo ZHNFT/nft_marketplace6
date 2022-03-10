@@ -23,15 +23,11 @@ const navigation = [
   { name: 'Popular', href: '#', icon: FireIcon, current: false },
   { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
 ]
-const userNavigation = [
-  { name: 'Your Profile', href: '/profile' },
-  { name: 'Settings', href: '#' }
-]
 
 export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
-  const isFullPageLayout = ['/profile', '/collections/[address]'].includes(pathname);
+  const isFullPageLayout = ['/profile', '/collections/[address]', '/users/[address]'].includes(pathname);
 
   return (
     <>
@@ -41,7 +37,6 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
         <Header
           user={user}
           navigation={navigation}
-          userNavigation={userNavigation}
           connect={connect}
           disconnect={disconnect}
           address={address}

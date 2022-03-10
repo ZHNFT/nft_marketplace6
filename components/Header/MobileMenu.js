@@ -45,17 +45,15 @@ export default function MobileMenu(props) {
           </button>
         </div>
         <div className="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
-          {userNavigation.map((item) => (
-            <Link href={item.href} passHref key={item.name}>
+          {address ? (
+            <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
               <a
-                key={item.name}
-                href={item.href}
                 className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
               >
-                {item.name}
+                {'Your Profile'}
               </a>
             </Link>
-          ))}
+          ) : null}
         </div>
       </div>
 

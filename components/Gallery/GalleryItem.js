@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { HexagonBeeIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
@@ -8,7 +10,9 @@ import ItemListingState from './ItemListingState';
 export default function GalleryItem({ item }) {
   const [isHovering, setIsHovering] = useState(false);
   const { name, collectionName, listingState, price, lastSalePrice, topOffer, auctionEndDate, imageUrl } = item;
+
   return (
+    <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
     <div 
       className="relative w-[210px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
       onMouseEnter={() => setIsHovering(true)}
@@ -44,5 +48,6 @@ export default function GalleryItem({ item }) {
         </div>
       </footer>
     </div>
+    </Link>
   );
 }

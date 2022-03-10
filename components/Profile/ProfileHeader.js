@@ -1,7 +1,9 @@
 import Image from 'next/image'
 import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon } from '../icons';
+import { getExplorer } from '../../config';
+import { ellipseAddress } from '../../Utils';
 
-export default function ProfileHeader({ user }) {
+export default function ProfileHeader({ user, chainIdHex, address, total }) {
   return (
     <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
       <div className="flex lg:col-span-7">
@@ -16,8 +18,8 @@ export default function ProfileHeader({ user }) {
           <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ user.name }</h1>
           <ul className="flex justify-start items-center text-xs">
               <li className="mr-6">
-                  <a href="#" className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
-                    { user.address }
+                  <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${user.address}`} className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
+                    { ellipseAddress(address) }
                     <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
                   </a>
               </li>
@@ -54,7 +56,7 @@ export default function ProfileHeader({ user }) {
           <ul className="flex text-center justify-between">
               <li>
                   <h4 className="text-xs mb-1.5">Items</h4>
-                  <span className="text-xl font-medium">12</span>
+                  <span className="text-xl font-medium">{total}</span>
               </li>
               <li>
                   <h4 className="text-xs mb-1.5">Transactions</h4>

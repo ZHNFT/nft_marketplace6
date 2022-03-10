@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useState } from 'react'
 import { ethers } from "ethers";
+import Link from 'next/link'
 import Web3Token from 'web3-token';
 import Image from 'next/image'
 import clsx from "clsx";
@@ -8,7 +9,6 @@ import remarkGfm from 'remark-gfm'
 import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
-import { getExplorer } from '../../../../config';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 
 const product = {
@@ -73,7 +73,7 @@ const license = {
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract }) {
-  const isOwner = data?.owner === address;
+  const isOwner = data?.owner === address?.toLowerCase() || false;
   console.log(`data`, data)
   const marketplaceAddress = marketplaceContract?.address;
   const [price, setPrice] = useState(0);
@@ -96,10 +96,13 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
   }
 
-  const handleListItem = useCallback(async function() {
+  const handleListOrBid = useCallback(async function() {
+    let route = 'listings';
+    let userAddress = data?.owner;
+
     if (!isOwner) {
-      alert("You are not the ower of this item");
-      return;
+      route = 'bids';
+      userAddress = address;
     }
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
@@ -107,30 +110,27 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
     let listing = {
       contractAddress: data.collectionId,
       tokenId: data.tokenId,
-      userAddress: data?.owner,
-      // TODO fix this in correct formatting in combination with the input value
+      userAddress: userAddress,
+      // TODO fix this in correct formatting wei/gwei/eth in combination with the input value (price)
       pricePerItem: (Number(price) * 1000000000).toString(),
       quantity: 1,
       expiry: expirationDate,
       nonce: nonce
     }
 
-    listing = getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId);
+    listing = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId);
     const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
 
-    const response = await fetch('https://hexagon-api.onrender.com/listings', {
+    const response = await fetch(`https://hexagon-api.onrender.com/${route}`, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ listing })
+      body: JSON.stringify(listing)
     });
 
-    console.log(`response`, response)
-
-  }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, isOwner, marketplaceAddress, price, expirationDate])
+  }, [ethersProvider, chainId, data.tokenId, address, data.collectionId, data.owner, isOwner, marketplaceAddress, price, expirationDate])
 
   return (
     <div className='bg-white'>
@@ -192,9 +192,11 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
               <p className="text-sm text-gray-500 mt-2">
                 {/* Could also link to profile/account within the market place instead of blockexplorer */}
                 Owned by:
-                <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${data?.owner}` : `https://polygon-rpc.com/address/${data?.owner}`} className="hover:text-indigo-600">
-                  {isOwner ? ' You' : ` ${data?.owner}`}
-                </a>
+                <Link href="/users/[address]" as={`/users/${data?.owner}`} passHref>
+                  <a className="hover:text-indigo-600">
+                    {isOwner ? ' You' : ` ${data?.owner}`}
+                  </a>
+                </Link>
               </p>
             </div>
             <div className="border-t border-gray-200 mt-10 pt-10">
@@ -332,26 +334,29 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
           </div>
 
           <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">
-              <div className='col-span-2'>
-                <label htmlFor="price" className='block text-black'>Price</label>
-                <input id="price" type="text" name="price" className="w-full block text-black" onChange={handlePriceChange} />
+            <div>
+              <h2 className='text-black'>{isOwner ? 'List Item' : 'Place Bid'}</h2>
+              <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">
+                <div className='col-span-2'>
+                  <label htmlFor="price" className='block text-black'>Price</label>
+                  <input id="price" type="text" name="price" className="w-full block text-black" onChange={handlePriceChange} />
+                </div>
+                <div className='col-span-3'>
+                  <label htmlFor="date" className='block text-black'>Expiration Date</label>
+                  <input id="date" type="datetime-local" name="date" className="w-full block text-black" onChange={handleDateChange} />
+                </div>
+                {/* <input type="time" className="text-black col-span-1">
+                </input> */}
               </div>
-              <div className='col-span-3'>
-                <label htmlFor="date" className='block text-black'>Expiration Date</label>
-                <input id="date" type="datetime-local" name="date" className="w-full block text-black" onChange={handleDateChange} />
+              <div className="grid grid-cols-1 pt-6">
+                <button
+                    onClick={address ? handleListOrBid : connect}
+                    type="button"
+                    className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                  >
+                    {isOwner ? 'List' : 'Place Bid'}
+                  </button>
               </div>
-              {/* <input type="time" className="text-black col-span-1">
-              </input> */}
-            </div>
-            <div className="grid grid-cols-1 pt-6">
-              <button
-                  onClick={address ? handleListItem : connect}
-                  type="button"
-                  className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                >
-                  List
-                </button>
             </div>
             <div className="border-t border-gray-200 mt-10 pt-10">
               <h3 className="text-sm font-medium text-gray-900">Description</h3>

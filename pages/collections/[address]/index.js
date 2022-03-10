@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
-import { ellipseAddress } from '../../../Utils';
-import { NFT_LISTING_STATE } from '../../../constants/nft';
 import Tabs from '../../../components/Tabs/Tabs';
 import FilterButton from '../../../components/FilterButton/FilterButton';
 import Dropdown from '../../../components/Dropdown/Dropdown';
@@ -11,8 +9,7 @@ import Activity from '../../../components/Collection/Activity';
 import Gallery from '../../../components/Gallery/Gallery';
 import SortOptions from '../../../components/sortOptions';
 
-// Components
-import List from '../../../components/list';
+import { transformGalleryItems } from '../../../Utils/helper';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
 
@@ -26,34 +23,6 @@ const sortList = [
   { label: 'Price: Low to high' },
   { label: 'Price: High to low' }
 ];
-
-const getListingData = (item) => {
-  // hardcoded values for testing
-  return {
-    listingState: NFT_LISTING_STATE.NOT_LISTED,
-    price: 0,
-    lastSalePrice: 2,
-    topOffer: null
-  };
-};
-
-const transformGalleryItems = (items) => (
-  items.map(item => {
-    const { name, collectionId, image } = item;
-    const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
-    
-    return {
-      name,
-      collectionName: ellipseAddress(collectionId, 4),
-      imageUrl: image,
-      auctionEndDate: null,
-      listingState,
-      price,
-      lastSalePrice,
-      topOffer
-    };
-  })
-);
 
 async function fetchData(address, query, sort) {
   const activeFilters = parse(query);

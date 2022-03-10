@@ -11,7 +11,7 @@ import Logo from '../../images/hive-logo.png';
 import { ellipseAddress } from '../../Utils';
 
 export default function Header(props) {
-  const { user, navigation, userNavigation, connect, disconnect, address } = props;
+  const { user, navigation, connect, disconnect, address } = props;
 
   return (
       <Popover
@@ -136,22 +136,21 @@ export default function Header(props) {
                             </button>
                           )}
                         </Menu.Item>
-                        {userNavigation.map((item) => (
-                          <Menu.Item key={item.name}>
-                            {({ active }) => (
-                              <Link href={item.href} passHref>
-                                <a
-                                  className={clsx(
-                                    'block py-2 px-4 text-sm text-gray-700',
-                                    { 'bg-gray-100': active }
-                                  )}
-                                >
-                                  {item.name}
-                                </a>
-                              </Link>
-                            )}
-                          </Menu.Item>
-                        ))}
+                        {address ? (
+                          <Menu.Item>
+                          {({ active }) => (
+                            <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
+                              <a
+                                className={clsx(
+                                  'block py-2 px-4 text-sm text-gray-700',
+                                  { 'bg-gray-100': active }
+                                )}
+                              >
+                                {'Your Profile'}
+                              </a>
+                            </Link>
+                          )}
+                        </Menu.Item>) : null}
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -160,7 +159,6 @@ export default function Header(props) {
             </div>
             <MobileMenu
               navigation={navigation}
-              userNavigation={userNavigation}
               user={user}
               connect={connect}
               address={address}
