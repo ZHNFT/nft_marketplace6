@@ -6,8 +6,8 @@ export default function Tabs({ list }) {
   return (
     <ul className="w-full flex text-center text-base">
       {
-        list.map(({ href, name }) => (
-          <li key={href} className="mr-10 last:mr-0">
+        list.map(({ href, name }, index) => (
+          <li key={index} className="mr-10 last:mr-0">
             <Tab href={href} name={name} isActive={asPath === href} />
           </li>
         ))

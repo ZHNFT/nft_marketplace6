@@ -1,19 +1,21 @@
 import { Fragment } from 'react';
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
+import { resolveLink } from '../../Utils';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import ProgressCircle from '../ProgressCircle/ProgressCircle';
 import ItemPrice from '../ItemPrice/ItemPrice';
+import DefaultImage from '../../images/No-Image-Placeholder.png';
 
 export default function ItemMain({ isActive, name, listingState, auctionEndDate, topOffer, imageUrl }) {
   return (
     <div className="relative rounded-xl overflow-hidden w-[210px] h-[210px]">
       <Image
         className="block w-full"
-        src={imageUrl}
+        src={imageUrl ? resolveLink(imageUrl) : DefaultImage}
         alt={name}
         width="210"
         height="210"

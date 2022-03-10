@@ -29,7 +29,7 @@ export default function GalleryItem({ item }) {
           <ItemListingState listingState={listingState} price={price} auctionEndDate={auctionEndDate} />
         </div>
         <div className="flex justify-between pt-[5px] items-baseline">
-          <span>{ lastSalePrice && <ItemPrice label="Last sale" value={lastSalePrice} /> }</span>
+          <span>{ !!lastSalePrice && <ItemPrice label="Last sale" value={lastSalePrice} /> }</span>
           <span>
             {
               // TODO: convert date to days/timer left
