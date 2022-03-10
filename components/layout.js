@@ -31,6 +31,7 @@ const userNavigation = [
 export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
+  const isFullPageLayout = ['/profile', '/collections/[address]'].includes(pathname);
 
   return (
     <>
@@ -49,7 +50,7 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
             {
               // Sidebar menu filters for desktop
-              pathname !== '/profile' && (
+              !isFullPageLayout && (
                   <Sidebar
                     navigation={navigation}
                   >
@@ -60,9 +61,8 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
                 </Sidebar>
               )
             }
-            <main className={clsx("",
-              { "lg:col-start-2 lg:col-span-10 text-ink dark:text-white": pathname === '/profile' },
-              { "lg:col-span-9 xl:col-span-10": pathname !== '/profile' }
+            <main className={clsx(
+              isFullPageLayout ? 'lg:col-start-2 lg:col-span-10 text-ink dark:text-white' : 'lg:col-span-9 xl:col-span-10'
             )}>
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {

@@ -1,11 +1,59 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
+import { ellipseAddress } from '../../../Utils';
+import { NFT_LISTING_STATE } from '../../../constants/nft';
+import Tabs from '../../../components/Tabs/Tabs';
+import FilterButton from '../../../components/FilterButton/FilterButton';
+import Dropdown from '../../../components/Dropdown/Dropdown';
+import CollectionHeader from '../../../components/Collection/CollectionHeader';
+import Activity from '../../../components/Collection/Activity';
+import Gallery from '../../../components/Gallery/Gallery';
+import SortOptions from '../../../components/sortOptions';
 
 // Components
 import List from '../../../components/list';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
+
+const itemsFilterList = [
+  { label: 'All items' },
+  { label: 'Single items' },
+  { label: 'Bundles' }
+];
+
+const sortList = [
+  { label: 'Price: Low to high' },
+  { label: 'Price: High to low' }
+];
+
+const getListingData = (item) => {
+  // hardcoded values for testing
+  return {
+    listingState: NFT_LISTING_STATE.NOT_LISTED,
+    price: 0,
+    lastSalePrice: 2,
+    topOffer: null
+  };
+};
+
+const transformGalleryItems = (items) => (
+  items.map(item => {
+    const { name, collectionId, image } = item;
+    const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
+    console.log(image);
+    return {
+      name,
+      collectionName: ellipseAddress(collectionId, 4),
+      imageUrl: image,
+      auctionEndDate: null,
+      listingState,
+      price,
+      lastSalePrice,
+      topOffer
+    };
+  })
+);
 
 async function fetchData(address, query, sort) {
   const activeFilters = parse(query);
@@ -38,9 +86,16 @@ async function fetchData(address, query, sort) {
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data } = props;
-  const router = useRouter()
-  const { search, address, sort } = router.query
+  const { createdAt, name, description, images, totalSupply, traits } = collection;
+  const router = useRouter();
+  const { search, address, sort, tab } = router.query;
   const [collectionData, setData] = useState(data);
+  const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
+  const [selectedSort, setSelectedSort] = useState(sortList[0]);
+  const tabs = [
+    { href: { pathname: router.pathname, query: { ...router.query, tab: 'items' } }, name: 'NFTs' },
+    { href: { pathname: router.pathname, query: { ...router.query, tab: 'activity' } }, name: 'Activity' }
+  ];
 
   const fetchCollection = useCallback(async function() {
     const json = await fetchData(address, search, sort);
@@ -55,11 +110,43 @@ export default function Collection(props) {
   console.log(`collectionData`, collectionData)
 
   return (
-    <List
-      items={collectionData?.results}
-      setMobileFiltersOpen={setMobileFiltersOpen}
-      collection={collection}
-    />
+    <>
+      <CollectionHeader
+        address={address}
+        createdAt={createdAt}
+        name={name}
+        description={description}
+        logo={images?.logo}
+        totalSupply={totalSupply}
+        socials={{ instagram: 'testInsta', twitter: 'testTwitter' }}
+      />
+      <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
+        <div className="flex col-span-12 lg:col-span-7 items-center">
+          <Tabs list={tabs} />
+        </div>
+        <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
+          <span className="mr-4"><FilterButton filters={traits} /></span>
+          <Dropdown className="mr-4 max-w-[128px]" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
+          <SortOptions className="max-w-[180px]" />
+        </div>
+      </section>
+      <section className="mt-14">
+        {
+          tab === 'activity'
+            ? <Activity />
+            : <Gallery items={transformGalleryItems(collectionData?.results)} />
+        }
+        {
+          /*
+          <List
+          items={collectionData?.results}
+          setMobileFiltersOpen={setMobileFiltersOpen}
+          collection={collection}
+          />
+          */
+        }
+      </section>
+    </>
   );
 }
 
