@@ -27,7 +27,10 @@ const navigation = [
 export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
-  const isFullPageLayout = ['/profile', '/collections/[address]', '/users/[address]'].includes(pathname);
+  const isFullPageLayout = [
+    '/profile',
+    // '/collections/[address]',
+    '/users/[address]'].includes(pathname);
 
   return (
     <>
