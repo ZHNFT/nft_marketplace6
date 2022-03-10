@@ -19,11 +19,6 @@ const itemsFilterList = [
   { label: 'Bundles' }
 ];
 
-const sortList = [
-  { label: 'Price: Low to high' },
-  { label: 'Price: High to low' }
-];
-
 async function fetchData(address, query, sort) {
   const activeFilters = parse(query);
   const traits = [];
@@ -60,7 +55,6 @@ export default function Collection(props) {
   const { search, address, sort, tab } = router.query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
-  const [selectedSort, setSelectedSort] = useState(sortList[0]);
   const tabs = [
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'items' } }, name: 'NFTs' },
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'activity' } }, name: 'Activity' }
