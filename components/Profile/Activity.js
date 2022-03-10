@@ -4,6 +4,7 @@ import { formatCurrency } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
+import Tooltip from '../Tooltip/Tooltip';
 
 const testActivities = [
   { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/1.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#1' },
@@ -27,7 +28,12 @@ export default function Activity() {
         <Cell className="w-[100px] text-center">Price</Cell>
         <Cell className="w-[100px] text-center">From</Cell>
         <Cell className="w-[100px] text-center">To</Cell>
-        <Cell className="w-[100px] text-center">Date</Cell>
+        <Cell className="w-[100px] text-center">
+          <button type="button">
+            Date
+            <span className="inline-block w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-manatee mb-[1px] ml-1"></span>
+          </button>
+        </Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
       {
@@ -74,8 +80,14 @@ export default function Activity() {
                 { to ? <a href="#">{ to }</a> : '-'}
               </Cell>
               <Cell className="w-[100px] text-center">
-                { /*TODO convert date to time ago */ }
-                23 minutes ago
+                <div className="group relative">
+                  { /*TODO convert date to time ago */ }
+                  23 minutes ago
+                  <Tooltip position="bottom">
+                    <span className="block">13:01 UTC</span>
+                    <span>March 12th 2022</span>
+                  </Tooltip>
+                </div>
               </Cell>
               <Cell className="w-[50px] text-right">
                 <a href="#">
