@@ -41,7 +41,7 @@ const transformGalleryItems = (items) => (
   items.map(item => {
     const { name, collectionId, image } = item;
     const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
-    console.log(image);
+    
     return {
       name,
       collectionName: ellipseAddress(collectionId, 4),
