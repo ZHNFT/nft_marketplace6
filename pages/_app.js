@@ -9,7 +9,7 @@ import Web3Modal from "web3modal";
 import Layout from '../components/layout';
 
 // Config
-import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI } from '../config';
+import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
 
 const providerOptions = {
   walletconnect: {
@@ -39,6 +39,7 @@ function reducer(state, action) {
         chainIdHex: action.chainIdHex,
         ethersProvider: action.ethersProvider,
         marketplaceContract: action.marketplaceContract,
+        tokenContract: action.tokenContract,
       }
     case 'SET_ADDRESS':
       return {
@@ -97,6 +98,7 @@ function MyApp({ Component, pageProps }) {
     const ethersProvider = new ethers.providers.Web3Provider(provider)
     const ethersSigner = ethersProvider.getSigner();
     const marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
+    const erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -110,7 +112,8 @@ function MyApp({ Component, pageProps }) {
         : network.chainId === 80001 
           ? testnetChainId 
           : null,
-      marketplaceContract: marketplaceTestContract
+      marketplaceContract: marketplaceTestContract,
+      tokenContract: erc20TokenContract,
     })
   }, []);
 

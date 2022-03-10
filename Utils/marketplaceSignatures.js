@@ -80,7 +80,7 @@ export async function getSignatureListing(listing, signer, ethers, marketplaceAd
 
 }
 
-export async function getSignatureOffer(offer, signer, ethers, marketplaceAddress, ) {
+export async function getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId) {
 
     const domain = getDomain(marketplaceAddress, chainId)
 
