@@ -8,7 +8,7 @@ const sortOptions = [
   { label: 'Most Popular', sortBy: '#', current: true },
   { label: 'Best Rating', sortBy: '#', current: false },
   { label: 'Newest', sortBy: '#', current: false },
-  { label: 'Price: Low to High', sortBy: '-lowestPrice', current: false },
+  { label: 'Price: Low to High', sortBy: 'lowestPrice', current: false },
   { label: 'Price: High to Low', sortBy: '-highestPrice', current: false },
   { label: 'Bids: High to Low', sortBy: '-highestBid', current: false },
 ]
