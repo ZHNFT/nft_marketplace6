@@ -51,8 +51,8 @@ export default function UserAssets(props) {
         </div>
         <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
           <span className="mr-4"><FilterButton /></span>
-          <Dropdown className="mr-4 max-w-[128px]" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
-          <Dropdown className="max-w-[180px]" selected={selectedSort} onSelect={setSelectedSort} list={sortList} />
+          <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
+          <Dropdown className="max-w-[180px]" size="sml" selected={selectedSort} onSelect={setSelectedSort} list={sortList} />
         </div>
       </section>
       <section className="mt-14">

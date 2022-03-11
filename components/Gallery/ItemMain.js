@@ -42,7 +42,7 @@ export default function ItemMain({ isActive, name, listingState, auctionEndDate,
                     <div className="w-full mx-[14px] flex justify-center">
                       {
                         listingState === NFT_LISTING_STATE.FOR_SALE && (
-                          <PrimaryButton className="w-[85px] h-[30px]" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
+                          <PrimaryButton className="w-[85px] h-[30px] mr-[6px]" size="sml" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
                         )
                       }
                       <div className="relative flex flex-col ml-[6px]">

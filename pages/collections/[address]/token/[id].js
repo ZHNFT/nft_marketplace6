@@ -10,6 +10,7 @@ import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
+import ListButton from '../../../../components/ListButton/ListButton';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -393,10 +394,11 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   <button
                       onClick={address ? handleList : connect}
                       type="button"
-                      className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                      className="w-full mb-4 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
                     >
                       {'List'}
                     </button>
+                    <ListButton name={data?.name} imageUrl={resolveLink(data?.image)} collection={data.collectionId}/>
                 </div>
               </div>
             ) : (

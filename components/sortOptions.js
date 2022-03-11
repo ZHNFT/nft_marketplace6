@@ -35,6 +35,7 @@ export default function SortOptions({ className }) {
     <Dropdown
       className={className}
       selected={selectedSort}
+      size="sml"
       onSelect={option => {
         setSelectedSort(option);
         handleSubmit(option.sortBy);
