@@ -3,14 +3,16 @@ import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { ChevronDownIcon } from '../icons';
 
-export default function Dropdown({ className, buttonClassName, list, selected, onSelect }) {
+export default function Dropdown({ className, buttonClassName, label, isDisabled = false, size, list, selected, onSelect }) {
   return (
     <div className={clsx('w-full', className ? className : '' )}>
-      <Listbox value={selected} onChange={onSelect}>
+      <Listbox value={selected} disabled={isDisabled} label={label} onChange={onSelect}>
         <div className="relative">
           <Listbox.Button className={clsx(
-            'cursor-pointer relative w-full py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none focus-visible:ring-1 focus-visible:ring-opacity-75 focus-visible:ring-malibu text-xs font-medium border-[0.5px] border-rhino',
-            buttonClassName ? buttonClassName : ''
+            'cursor-pointer relative w-full py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none focus-visible:ring-1 focus-visible:ring-opacity-75 focus-visible:ring-malibu font-medium border-[0.5px] border-rhino',
+            isDisabled ? 'opacity-50' : '',
+            size === 'sml' ? 'text-xs' : 'text-base',
+            buttonClassName
           )}>
             <span className="block truncate">{selected.label}</span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
