@@ -10,7 +10,9 @@ import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
+import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import ListButton from '../../../../components/ListButton/ListButton';
+import PlaceBidModal from '../../../../components/Modals/PlaceBidModal';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -79,6 +81,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const marketplaceAddress = marketplaceContract?.address;
   const [price, setPrice] = useState(0);
   const [expirationDate, setExpirationDate] = useState(0);
+  const [showPlaceBidModal, setShowPlaceBidModal] = useState(false);
 
   function handlePriceChange(e) {
     const value = e.target.value;
@@ -424,6 +427,15 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                     >
                       {'Place Bid'}
                     </button>
+
+                    <PrimaryButton className="mt-4" onClick={() => setShowPlaceBidModal(true)}>
+                      Place Bid
+                    </PrimaryButton>
+                    <PlaceBidModal
+                      isOpen={showPlaceBidModal}
+                      onClose={() => setShowPlaceBidModal(false)}
+                      onConfirm={price => console.log(price)}
+                    />
                 </div>
               </div>
             )}
