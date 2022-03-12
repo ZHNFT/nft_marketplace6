@@ -13,6 +13,9 @@ import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import ListButton from '../../../../components/ListButton/ListButton';
 import PlaceBidModal from '../../../../components/Modals/PlaceBidModal';
+import MakeOfferModal from '../../../../components/Modals/MakeOfferModal';
+import BuyNowModal from '../../../../components/Modals/BuyNowModal';
+import ChangePriceModal from '../../../../components/Modals/ChangePriceModal';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -82,6 +85,9 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const [price, setPrice] = useState(0);
   const [expirationDate, setExpirationDate] = useState(0);
   const [showPlaceBidModal, setShowPlaceBidModal] = useState(false);
+  const [showMakeOfferModal, setShowMakeOfferModal] = useState(false);
+  const [showBuyNowModal, setShowBuyNowModal] = useState(false);
+  const [showChangePricewModal, setShowChangePricewModal] = useState(false);
 
   function handlePriceChange(e) {
     const value = e.target.value;
@@ -428,6 +434,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                       {'Place Bid'}
                     </button>
 
+                    <p className="text-ink mt-5">Test modals</p>
                     <PrimaryButton className="mt-4" onClick={() => setShowPlaceBidModal(true)}>
                       Place Bid
                     </PrimaryButton>
@@ -435,6 +442,37 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                       isOpen={showPlaceBidModal}
                       onClose={() => setShowPlaceBidModal(false)}
                       onConfirm={price => console.log(price)}
+                    />
+
+                    <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
+                      Make Offer
+                    </PrimaryButton>
+                    <MakeOfferModal
+                      isOpen={showMakeOfferModal}
+                      onClose={() => setShowMakeOfferModal(false)}
+                      onConfirm={data => console.log(data)}
+                    />
+
+                    <PrimaryButton className="mt-4" onClick={() => setShowBuyNowModal(true)}>
+                      Buy Now
+                    </PrimaryButton>
+                    <BuyNowModal
+                      isOpen={showBuyNowModal}
+                      onClose={() => setShowBuyNowModal(false)}
+                      onConfirm={data => console.log(data)}
+                      name={data?.name}
+                      imageUrl={resolveLink(data?.image)}
+                      price={20}
+                      collection={data.collectionId}
+                    />
+
+                    <PrimaryButton className="mt-4" onClick={() => setShowChangePricewModal(true)}>
+                      Change Price
+                    </PrimaryButton>
+                    <ChangePriceModal
+                      isOpen={showChangePricewModal}
+                      onClose={() => setShowChangePricewModal(false)}
+                      onConfirm={data => console.log(data)}
                     />
                 </div>
               </div>
