@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { useForm } from '../../hooks/useForm';
 import Dropdown from '../Dropdown/Dropdown';
@@ -33,31 +32,31 @@ export default function Listing({ onSuccess }) {
         },
       },
     },
-    onSubmit: () => onSuccess(data),
+    onSubmit: () => {
+      onSuccess({
+        ...data,
+        type: data.type?.value,
+        currency: data.currency?.value,
+        auctionMethod: data.auctionMethods?.value
+      });
+    },
     initialValues: { // used to initialize the data
-      type: listTypes[0].value,
-      currency: currencies[0].value,
+      type: listTypes[0],
+      currency: currencies[0],
       price: '',
       duration: '',
-      auctionMethod: auctionMethods[0].value
+      auctionMethod: auctionMethods[0]
     },
   });
-
-  const [selectedType, setSelectedType] = useState(listTypes[0]);
-  const [currency, setCurrency] = useState(currencies[0]);
-  const [price, setPrice] = useState(null);
-  const [duration, setDuration] = useState(null);
-  const [auctionMethod, setAuctionMethod] = useState(auctionMethods[0]);
 
   return (
     <div className="max-w-lg ">
       <div className="my-6">
         { /* List type */ }
         <RadioGroup
-          value={selectedType}
+          value={data.type}
           onChange={selected => {
-            setSelectedType(selected);
-            handleChange('type')({ target: { value: selected.value }});
+            handleChange('type')({ target: { value: selected }});
           }}
         >
           <RadioGroup.Label>Type</RadioGroup.Label>
@@ -102,17 +101,16 @@ export default function Listing({ onSuccess }) {
         </RadioGroup>
 
         {
-          selectedType.value === 'auction' && (
+          data.type.value === 'auction' && (
             <div className="my-10">
               { /* Method */ }
               <p>Method</p>
               <Dropdown 
                 label="Method"
                 className="mt-1 text-left text-base"
-                selected={auctionMethod}
+                selected={data.auctionMethod}
                 onSelect={selected => {
-                  setAuctionMethod(selected);
-                  handleChange('auctionMethod')({ target: { value: selected.value }});
+                  handleChange('auctionMethod')({ target: { value: selected }});
                 }}
                 list={auctionMethods}
               />
@@ -131,8 +129,10 @@ export default function Listing({ onSuccess }) {
                 label={ data.type === 'fixed' ? 'Price' : 'Starting price' }
                 className="mr-4 max-w-[128px] text-base"
                 isDisabled
-                selected={currency}
-                onSelect={setCurrency}
+                selected={data.currency}
+                onSelect={selected => {
+                  handleChange('currency')({ target: { value: selected }});
+                }}
                 list={currencies}
               />
               <input
@@ -158,7 +158,7 @@ export default function Listing({ onSuccess }) {
               id="duration"
               name="duration"
               className="text-ink rounded-xl flex flex-1"
-              value={duration || ''}
+              value={data.duration || ''}
               placeholder="7 days"
               onChange={handleChange('duration')}
             />
