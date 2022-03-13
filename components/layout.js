@@ -19,18 +19,14 @@ const user = {
 }
 
 const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'Popular', href: '#', icon: FireIcon, current: false },
-  { name: 'Trending', href: '#', icon: TrendingUpIcon, current: false },
+  { name: 'Collections', href: '#', icon: HomeIcon, current: true },
+  { name: 'Marketplace', href: '#', icon: FireIcon, current: false },
+  { name: 'Drops', href: '#', icon: TrendingUpIcon, current: false },
 ]
 
 export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
-  const isFullPageLayout = [
-    '/profile',
-    // '/collections/[address]',
-    '/users/[address]'].includes(pathname);
 
   return (
     <>
@@ -45,23 +41,8 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
           address={address}
         />
         <div className="py-10">
-          <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
-            {
-              // Sidebar menu filters for desktop
-              !isFullPageLayout && (
-                  <Sidebar
-                    navigation={navigation}
-                  >
-                    <Filters
-                      placement="desktop"
-                      filters={pageProps?.collection?.traits}
-                    />
-                </Sidebar>
-              )
-            }
-            <main className={clsx(
-              isFullPageLayout ? 'lg:col-start-2 lg:col-span-10 text-ink dark:text-white' : 'lg:col-span-9 xl:col-span-10'
-            )}>
+          <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
+            <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
                   return null;

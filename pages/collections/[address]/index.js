@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
+import Sidebar from '../../../components/sidebar';
+import Filters from '../../../components/filters';
 import Tabs from '../../../components/Tabs/Tabs';
 import FilterButton from '../../../components/FilterButton/FilterButton';
 import Dropdown from '../../../components/Dropdown/Dropdown';
@@ -74,41 +76,53 @@ export default function Collection(props) {
 
   return (
     <>
-      <CollectionHeader
-        chainIdHex={chainIdHex}
-        address={address}
-        createdAt={createdAt}
-        name={name}
-        description={description}
-        logo={images?.logo}
-        totalSupply={totalSupply}
-        socials={{ instagram: 'testInsta', twitter: 'testTwitter' }}
-      />
-      <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
-        <div className="flex col-span-12 lg:col-span-7 items-center">
-          <Tabs list={tabs} />
-        </div>
-        <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-          <span className="mr-4"><FilterButton filters={traits} /></span>
-          <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
-          <SortOptions className="max-w-[180px]" />
-        </div>
-      </section>
-      <section className="mt-14">
-        {
-          tab === 'activity'
-            ? <Activity />
-            : <Gallery items={transformGalleryItems(collectionData?.results)} />
-        }
-        {
-          /*
-          <List
-          items={collectionData?.results}
-          setMobileFiltersOpen={setMobileFiltersOpen}
-          collection={collection}
-          />
-          */
-        }
+      <div className="lg:max-w-6xl mx-auto">
+        <CollectionHeader
+          chainIdHex={chainIdHex}
+          address={address}
+          createdAt={createdAt}
+          name={name}
+          description={description}
+          logo={images?.logo}
+          totalSupply={totalSupply}
+          socials={{ instagram: 'testInsta', twitter: 'testTwitter' }}
+        />
+      </div>
+      <section className="mt-14 lg:grid lg:grid-cols-12 lg:gap-8">
+        <>
+          <Sidebar className="max-w-[200px]">
+            <Filters
+              placement="desktop"
+              filters={collection?.traits}
+            />
+          </Sidebar>
+          <div className="lg:col-span-9 xl:col-span-10">
+            <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
+              <div className="flex col-span-12 lg:col-span-7 items-center">
+                <Tabs list={tabs} />
+              </div>
+              <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
+                <span className="mr-4"><FilterButton filters={traits} /></span>
+                <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
+                <SortOptions className="max-w-[180px]" />
+              </div>
+            </section>
+            {
+              tab === 'activity'
+                ? <Activity />
+                : <Gallery items={transformGalleryItems(collectionData?.results)} />
+            }
+            {
+              /*
+              <List
+              items={collectionData?.results}
+              setMobileFiltersOpen={setMobileFiltersOpen}
+              collection={collection}
+              />
+              */
+            }
+          </div>
+        </>
       </section>
     </>
   );

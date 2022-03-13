@@ -44,20 +44,22 @@ export default function UserAssets(props) {
   
   return (
     <>
-      <ProfileHeader user={user} chainIdHex={chainIdHex} address={address} total={total} />
-      <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
-        <div className="flex col-span-12 lg:col-span-7 items-center">
-          <Tabs list={tabs} />
-        </div>
-        <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-          <span className="mr-4"><FilterButton /></span>
-          <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
-          <Dropdown className="max-w-[180px]" size="sml" selected={selectedSort} onSelect={setSelectedSort} list={sortList} />
-        </div>
-      </section>
-      <section className="mt-14">
-        <ProfileContent data={data?.results} />
-      </section>
+      <div className="lg:max-w-6xl mx-auto">
+        <ProfileHeader user={user} chainIdHex={chainIdHex} address={address} total={total} />
+        <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
+          <div className="flex col-span-12 lg:col-span-7 items-center">
+            <Tabs list={tabs} />
+          </div>
+          <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
+            <span className="mr-4"><FilterButton /></span>
+            <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
+            <Dropdown className="max-w-[180px]" size="sml" selected={selectedSort} onSelect={setSelectedSort} list={sortList} />
+          </div>
+        </section>
+        <section className="mt-14">
+          <ProfileContent data={data?.results} />
+        </section>
+      </div>
     </>
   );
 }

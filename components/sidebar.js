@@ -6,7 +6,7 @@ export default function Sidebar({ navigation, children }) {
     <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
       <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
         <div className="pb-8 space-y-1">
-          {navigation.map((item) => (
+          {navigation?.map((item) => (
             <a
               key={item.name}
               href={item.href}
