@@ -98,62 +98,65 @@ export default function Header(props) {
                   </a>
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="flex-shrink-0 relative ml-5">
-                    <div>
-                      <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
-                        <span className="sr-only">Open user menu</span>
-                        <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
-                        <span className="text-xs text-white pr-2 pl-2">{ ellipseAddress(address) }</span>
-                        <ChevronDownIcon className="w-[16px] text-white pr-1" />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                        <Menu.Item key="wallet">
-                          {address ? (
-                            <button
-                               type="button"
-                               onClick={disconnect}
-                               className="w-full text-left block py-2 px-4 text-sm text-gray-700"
-                             >
-                               Disconnect
-                             </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={connect}
-                              className="w-full text-left block py-2 px-4 text-sm text-gray-700"
-                            >
-                              Connect
-                            </button>
-                          )}
-                        </Menu.Item>
-                        {address ? (
-                          <Menu.Item>
-                          {({ active }) => (
-                            <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-                              <a
-                                className={clsx(
-                                  'block py-2 px-4 text-sm text-gray-700',
-                                  { 'bg-gray-100': active }
+                  {
+                    address
+                      ? (
+                        <Menu as="div" className="flex-shrink-0 relative ml-5">
+                          <div>
+                            <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
+                              <span className="sr-only">Open user menu</span>
+                              <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
+                              <span className="text-xs text-white pr-2 pl-2">{ ellipseAddress(address, 4) }</span>
+                              <ChevronDownIcon className="w-[16px] text-white pr-1" />
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                              <Menu.Item key="wallet">
+                                <button
+                                  type="button"
+                                  onClick={disconnect}
+                                  className="w-full text-left block py-2 px-4 text-sm text-gray-700"
+                                >
+                                  Disconnect
+                                </button>
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
+                                    <a
+                                      className={clsx(
+                                        'block py-2 px-4 text-sm text-gray-700',
+                                        { 'bg-gray-100': active }
+                                      )}
+                                    >
+                                      {'Your Profile'}
+                                    </a>
+                                  </Link>
                                 )}
-                              >
-                                {'Your Profile'}
-                              </a>
-                            </Link>
-                          )}
-                        </Menu.Item>) : null}
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      )
+                      : (
+                        <button
+                          type="button"
+                          onClick={connect}
+                          className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm"
+                        >
+                          Connect
+                        </button>
+                      )
+                  }
                 </div>
               </div>
             </div>
