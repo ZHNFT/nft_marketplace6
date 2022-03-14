@@ -4,6 +4,7 @@ import { useCallback, useEffect, useReducer, createContext, useMemo} from 'react
 import { providers, ethers } from 'ethers'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3Modal from "web3modal";
+import Web3Context from '../contexts/Web3Context';
 
 // Components
 import Layout from '../components/layout';
@@ -58,7 +59,6 @@ function reducer(state, action) {
   }
 }
 
-const Web3Context = createContext();
 let web3Modal;
 
 function MyApp({ Component, pageProps }) {
@@ -210,7 +210,5 @@ function MyApp({ Component, pageProps }) {
     </ThemeProvider>
   )
 }
-
-export { Web3Context };
 
 export default MyApp

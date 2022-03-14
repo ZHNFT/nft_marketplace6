@@ -11,7 +11,7 @@ import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
-import ListButton from '../../../../components/ListButton/ListButton';
+import ListModal from '../../../../components/Modals/ListModal';
 import PlaceBidModal from '../../../../components/Modals/PlaceBidModal';
 import MakeOfferModal from '../../../../components/Modals/MakeOfferModal';
 import BuyNowModal from '../../../../components/Modals/BuyNowModal';
@@ -84,6 +84,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const marketplaceAddress = marketplaceContract?.address;
   const [price, setPrice] = useState(0);
   const [expirationDate, setExpirationDate] = useState(0);
+  const [showListModal, setShowListModal] = useState(false);
   const [showPlaceBidModal, setShowPlaceBidModal] = useState(false);
   const [showMakeOfferModal, setShowMakeOfferModal] = useState(false);
   const [showBuyNowModal, setShowBuyNowModal] = useState(false);
@@ -400,14 +401,33 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   </input> */}
                 </div>
                 <div className="grid grid-cols-1 pt-6">
+                  { 
                   <button
-                      onClick={address ? handleList : connect}
-                      type="button"
-                      className="w-full mb-4 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                    >
-                      {'List'}
-                    </button>
-                    <ListButton name={data?.name} imageUrl={resolveLink(data?.image)} collection={data.collectionId}/>
+                    onClick={address ? handleList : connect}
+                    type="button"
+                    className="w-full mb-4 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                  >
+                    {'List'}
+                  </button>
+                   }
+                  <PrimaryButton 
+                    onClick={() => {
+                      if (address) {
+                        setShowListModal(true);
+                      } else {
+                        connect();
+                      }
+                    }}
+                  >
+                    List
+                  </PrimaryButton>
+                  <ListModal
+                    name={data?.name}
+                    imageUrl={resolveLink(data?.image)}
+                    collection={data.collectionId} 
+                    isOpen={showListModal}
+                    onClose={() => setShowListModal(false)}
+                  />
                 </div>
               </div>
             ) : (
@@ -427,12 +447,21 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 </div>
                 <div className="grid grid-cols-1 pt-6">
                   <button
-                      onClick={address ? handleBid : connect}
-                      type="button"
-                      className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                    >
-                      {'Place Bid'}
-                    </button>
+                    onClick={address ? handleBid : connect}
+                    type="button"
+                    className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                  >
+                    {'Place Bid'}
+                  </button>
+
+                  <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
+                    Make Offer
+                  </PrimaryButton>
+                  <MakeOfferModal
+                    isOpen={showMakeOfferModal}
+                    onClose={() => setShowMakeOfferModal(false)}
+                    onConfirm={data => console.log(data)}
+                  />
                     
                     {
                       /*
@@ -445,15 +474,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                         onClose={() => setShowPlaceBidModal(false)}
                         onConfirm={price => console.log(price)}
                       />
-
-                      <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
-                        Make Offer
-                      </PrimaryButton>
-                      <MakeOfferModal
-                        isOpen={showMakeOfferModal}
-                        onClose={() => setShowMakeOfferModal(false)}
-                        onConfirm={data => console.log(data)}
-                      />
+                      
 
                       <PrimaryButton className="mt-4" onClick={() => setShowBuyNowModal(true)}>
                         Buy Now

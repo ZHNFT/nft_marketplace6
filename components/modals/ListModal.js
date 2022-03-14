@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from '../Modals/Modal';
+import Modal from './Modal';
 import Listing from '../Listing/Listing';
 import CompleteListing from '../Listing/CompleteListing';
 

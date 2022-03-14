@@ -27,7 +27,7 @@ const getListingData = (item) => {
 
 const transformGalleryItems = (items) => (
   items.map(item => {
-    const { name, collectionId, image, tokenId } = item;
+    const { name, collectionId, image, tokenId, owner } = item;
     const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
     
     return {
@@ -40,7 +40,8 @@ const transformGalleryItems = (items) => (
       listingState,
       price,
       lastSalePrice,
-      topOffer
+      topOffer,
+      owner
     };
   })
 );
