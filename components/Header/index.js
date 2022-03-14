@@ -151,7 +151,7 @@ export default function Header(props) {
                         <button
                           type="button"
                           onClick={connect}
-                          className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm"
+                          className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
                         >
                           Connect
                         </button>

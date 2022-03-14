@@ -1,8 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
+import GalleryContext from '../../contexts/GalleryContext';
 import { resolveLink } from '../../Utils';
 import { NFT_LISTING_STATE } from '../../constants/nft';
+import { GALLERY_MODALS } from '../../constants/gallery';
 import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
@@ -10,7 +12,8 @@ import ProgressCircle from '../ProgressCircle/ProgressCircle';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import DefaultImage from '../../images/No-Image-Placeholder.png';
 
-export default function ItemMain({ isActive, name, listingState, auctionEndDate, topOffer, imageUrl }) {
+export default function ItemMain({ isOwner, isActive, name, listingState, auctionEndDate, topOffer, imageUrl }) {
+  const { setActiveModal } = useContext(GalleryContext);
   return (
     <div className="relative rounded-xl overflow-hidden w-[210px] h-[210px]">
       <Image
@@ -46,7 +49,19 @@ export default function ItemMain({ isActive, name, listingState, auctionEndDate,
                         )
                       }
                       <div className="relative flex flex-col ml-[6px]">
-                        <SecondaryButton className="w-[85px] h-[30px]" onClick={() => console.log('make offer')}>Make offer</SecondaryButton>
+                        {
+                          !isOwner && (
+                            <SecondaryButton
+                              className="w-[85px] h-[30px]"
+                              onClick={event => {
+                                event.preventDefault();
+                                setActiveModal({ type: GALLERY_MODALS.MAKE_OFFER });
+                              }}
+                            >
+                              Make offer
+                            </SecondaryButton>
+                          )
+                        }
                         {
                           topOffer && (
                             <span className="text-center absolute left-0 right-0 -bottom-[28px]">

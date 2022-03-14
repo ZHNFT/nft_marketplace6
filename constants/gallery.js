@@ -1,0 +1,7 @@
+const GALLERY_MODALS = {
+  MAKE_OFFER: 'MAKE_OFFER'
+};
+
+export {
+  GALLERY_MODALS
+};
