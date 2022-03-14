@@ -11,11 +11,11 @@ import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
-import ListModal from '../../../../components/Modals/ListModal';
-import PlaceBidModal from '../../../../components/Modals/PlaceBidModal';
-import MakeOfferModal from '../../../../components/Modals/MakeOfferModal';
-import BuyNowModal from '../../../../components/Modals/BuyNowModal';
-import ChangePriceModal from '../../../../components/Modals/ChangePriceModal';
+import ListModal from '../../../../components/modals/ListModal';
+import PlaceBidModal from '../../../../components/modals/PlaceBidModal';
+import MakeOfferModal from '../../../../components/modals/MakeOfferModal';
+import BuyNowModal from '../../../../components/modals/BuyNowModal';
+import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 
 const product = {
   name: 'Application UI Icon Pack',
