@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import GalleryContext from '../../contexts/GalleryContext';
 import { GALLERY_MODALS } from '../../constants/gallery';
 import GalleryItem from './GalleryItem';
-import MakeOfferModal from '../Modals/MakeOfferModal';
+import MakeOfferModal from '../modals/MakeOfferModal';
 
 export default function Gallery({ items }) {
   const defaultActiveModal = { type: '' };
