@@ -433,47 +433,51 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                     >
                       {'Place Bid'}
                     </button>
+                    
+                    {
+                      /*
+                      <p className="text-ink mt-5">Test modals</p>
+                      <PrimaryButton className="mt-4" onClick={() => setShowPlaceBidModal(true)}>
+                        Place Bid
+                      </PrimaryButton>
+                      <PlaceBidModal
+                        isOpen={showPlaceBidModal}
+                        onClose={() => setShowPlaceBidModal(false)}
+                        onConfirm={price => console.log(price)}
+                      />
 
-                    <p className="text-ink mt-5">Test modals</p>
-                    <PrimaryButton className="mt-4" onClick={() => setShowPlaceBidModal(true)}>
-                      Place Bid
-                    </PrimaryButton>
-                    <PlaceBidModal
-                      isOpen={showPlaceBidModal}
-                      onClose={() => setShowPlaceBidModal(false)}
-                      onConfirm={price => console.log(price)}
-                    />
+                      <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
+                        Make Offer
+                      </PrimaryButton>
+                      <MakeOfferModal
+                        isOpen={showMakeOfferModal}
+                        onClose={() => setShowMakeOfferModal(false)}
+                        onConfirm={data => console.log(data)}
+                      />
 
-                    <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
-                      Make Offer
-                    </PrimaryButton>
-                    <MakeOfferModal
-                      isOpen={showMakeOfferModal}
-                      onClose={() => setShowMakeOfferModal(false)}
-                      onConfirm={data => console.log(data)}
-                    />
+                      <PrimaryButton className="mt-4" onClick={() => setShowBuyNowModal(true)}>
+                        Buy Now
+                      </PrimaryButton>
+                      <BuyNowModal
+                        isOpen={showBuyNowModal}
+                        onClose={() => setShowBuyNowModal(false)}
+                        onConfirm={data => console.log(data)}
+                        name={data?.name}
+                        imageUrl={resolveLink(data?.image)}
+                        price={20}
+                        collection={data.collectionId}
+                      />
 
-                    <PrimaryButton className="mt-4" onClick={() => setShowBuyNowModal(true)}>
-                      Buy Now
-                    </PrimaryButton>
-                    <BuyNowModal
-                      isOpen={showBuyNowModal}
-                      onClose={() => setShowBuyNowModal(false)}
-                      onConfirm={data => console.log(data)}
-                      name={data?.name}
-                      imageUrl={resolveLink(data?.image)}
-                      price={20}
-                      collection={data.collectionId}
-                    />
-
-                    <PrimaryButton className="mt-4" onClick={() => setShowChangePricewModal(true)}>
-                      Change Price
-                    </PrimaryButton>
-                    <ChangePriceModal
-                      isOpen={showChangePricewModal}
-                      onClose={() => setShowChangePricewModal(false)}
-                      onConfirm={data => console.log(data)}
-                    />
+                      <PrimaryButton className="mt-4" onClick={() => setShowChangePricewModal(true)}>
+                        Change Price
+                      </PrimaryButton>
+                      <ChangePriceModal
+                        isOpen={showChangePricewModal}
+                        onClose={() => setShowChangePricewModal(false)}
+                        onConfirm={data => console.log(data)}
+                      />
+                      */
+                    }
                 </div>
               </div>
             )}

@@ -11,21 +11,21 @@ export default function ListModal({ name, imageUrl, collection, isOpen, onClose 
     duration: null,
     auctionMethod: null
   };
-  const [isListingStarted, setIsListingStarted] = useState(initialData);
+  const [listingData, setListingData] = useState(initialData);
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isListingStarted.type ? 'Complete your listing' : 'List item for sale'}>
+    <Modal isOpen={isOpen} onClose={onClose} title={listingData.type ? `Listing ${listingData.type === 'fixed' ? 'a Purchase' : 'an Auction' }` : 'List item for sale'}>
       {
-        isListingStarted.type 
+        listingData.type 
           ? (
             <CompleteListing
-             {...isListingStarted}
+             {...listingData}
              name={name}
              imageUrl={imageUrl}
              collection={collection}
-             onCancel={() => setIsListingStarted(initialData)} // reset on cancel
+             onCancel={() => setListingData(initialData)} // reset on cancel
             />
           )
-          : <Listing onSuccess={values => setIsListingStarted(values)} />
+          : <Listing onSuccess={values => setListingData(values)} />
       }
     </Modal>
   );
