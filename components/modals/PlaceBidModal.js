@@ -1,6 +1,6 @@
 import { convertToUsd } from '../../Utils/helper';
 import { useForm } from '../../hooks/useForm';
-import Modal from '../Modals/Modal';
+import Modal from '../modals/Modal';
 import { BeeIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import PrimaryAltButton from '../Buttons/PrimaryAltButton';
