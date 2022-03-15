@@ -1,4 +1,5 @@
 import { RadioGroup } from '@headlessui/react';
+import { add, getUnixTime } from 'date-fns';
 import { useForm } from '../../hooks/useForm';
 import Dropdown from '../Dropdown/Dropdown';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -15,6 +16,15 @@ const currencies = [
 const auctionMethods = [
   { label: 'Sell to highest bidder', value: 'highestBidder' },
   { label: 'Sell with declining price', value: 'decliningPrice' }
+];
+
+const durations = [
+  { label: '1 day', value: { unit: 'days', number: 1 } },
+  { label: '3 days', value: { unit: 'days', number: 3 } },
+  { label: '7 days', value: { unit: 'days', number: 7 } },
+  { label: '1 month', value: { unit: 'months', number: 1 } },
+  { label: '3 months', value: { unit: 'months', number: 3 } },
+  { label: '6 months', value: { unit: 'months', number: 6 } }
 ];
 
 export default function Listing({ onSuccess }) {
@@ -37,6 +47,7 @@ export default function Listing({ onSuccess }) {
         ...data,
         type: data.type?.value,
         currency: data.currency?.value,
+        duration: getUnixTime(add(new Date(), { [data.duration?.value?.unit]: data.duration?.value?.number })),
         auctionMethod: data.auctionMethods?.value
       });
     },
@@ -44,7 +55,7 @@ export default function Listing({ onSuccess }) {
       type: listTypes[0],
       currency: currencies[0],
       price: '',
-      duration: '',
+      duration: durations[0],
       auctionMethod: auctionMethods[0]
     },
   });
@@ -151,16 +162,16 @@ export default function Listing({ onSuccess }) {
 
         <div className="my-10">
           { /* Duration */ }
-          <label htmlFor="duration">Duration</label>
+          <p>Duration</p>
           <div className="flex mt-1">
-            <input
-              type="text"
-              id="duration"
-              name="duration"
-              className="text-ink rounded-xl flex flex-1"
-              value={data.duration || ''}
-              placeholder="7 days"
-              onChange={handleChange('duration')}
+            <Dropdown 
+              label="Duration"
+              className="mt-1 text-left text-base"
+              selected={data.duration}
+              onSelect={selected => {
+                handleChange('duration')({ target: { value: selected }});
+              }}
+              list={durations}
             />
           </div>
         </div>

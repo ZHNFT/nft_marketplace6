@@ -84,30 +84,11 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const isOwner = data?.owner === address?.toLowerCase() || false;
   console.log(`data`, data)
   const marketplaceAddress = marketplaceContract?.address;
-  const [price, setPrice] = useState(0);
-  const [expirationDate, setExpirationDate] = useState(0);
   const [activeModal, setActiveModal] = useState(null);
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
-  function handlePriceChange(e) {
-    const value = e.target.value;
-    console.log(`value`, value)
-    setPrice(value)
-  }
-
-  function handleDateChange(e) {
-    const value = e.target.value;
-    console.log(`value.valueOf()`, new Date(value).valueOf())
-    console.log(`value.getTime()`, new Date(value).getTime())
-
-    // const unixTime = Math.floor(new Date(value).getTime() / 1000);
-    const unixTime = parseInt((new Date(value).getTime() / 1000).toFixed(0));
-    setExpirationDate(unixTime)
-
-  }
-
-  const handleList = useCallback(async function() {
+  const handleList = useCallback(async function({ price, expirationDate }) {
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
@@ -129,7 +110,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
     ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
     const token = await Web3Token.sign(() => signature, '1d');
-
+    console.log(token);
     const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
       method: 'POST',
       headers: {
@@ -139,9 +120,9 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
       body: JSON.stringify(listing)
     });
 
-  }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, marketplaceAddress, price, expirationDate])
+  }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, marketplaceAddress])
 
-  const handleBid = useCallback(async function() {
+  const handleBid = useCallback(async function({ price, expirationDate }) {
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
@@ -181,7 +162,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
       body: JSON.stringify(offer)
     });
 
-  }, [ethersProvider, chainId, data.tokenId, tokenContract, data.collectionId, address, marketplaceAddress, price, expirationDate])
+  }, [ethersProvider, chainId, data.tokenId, tokenContract, data.collectionId, address, marketplaceAddress])
 
   return (
     <div className='bg-white'>
@@ -387,19 +368,6 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
           <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
             {isOwner ? (
               <div>
-                <h2 className='text-black'>{'List Item'}</h2>
-                <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">
-                  <div className='col-span-2'>
-                    <label htmlFor="price" className='block text-black'>Price</label>
-                    <input id="price" type="text" name="price" className="w-full block text-black" onChange={handlePriceChange} />
-                  </div>
-                  <div className='col-span-3'>
-                    <label htmlFor="date" className='block text-black'>Expiration Date</label>
-                    <input id="date" type="datetime-local" name="date" className="w-full block text-black" onChange={handleDateChange} />
-                  </div>
-                  {/* <input type="time" className="text-black col-span-1">
-                  </input> */}
-                </div>
                 <div className="grid grid-cols-1 pt-6">
                   { /*
                   <button
@@ -419,6 +387,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                     collection={data.collectionId} 
                     isOpen={activeModal === NFT_MODALS.LIST}
                     onClose={() => setActiveModal(null)}
+                    onConfirm={handleList}
                   />
 
                   <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
@@ -442,19 +411,6 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
               </div>
             ) : (
               <div>
-                <h2 className='text-black'>{'Place Bid'}</h2>
-                <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">
-                  <div className='col-span-2'>
-                    <label htmlFor="price" className='block text-black'>Price</label>
-                    <input id="price" type="text" name="price" className="w-full block text-black" onChange={handlePriceChange} />
-                  </div>
-                  <div className='col-span-3'>
-                    <label htmlFor="date" className='block text-black'>Expiration Date</label>
-                    <input id="date" type="datetime-local" name="date" className="w-full block text-black" onChange={handleDateChange} />
-                  </div>
-                  {/* <input type="time" className="text-black col-span-1">
-                  </input> */}
-                </div>
                 <div className="grid grid-cols-1 pt-6">
                   <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
                     Buy Now
