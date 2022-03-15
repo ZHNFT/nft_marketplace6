@@ -64,7 +64,9 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
     ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
     const token = await Web3Token.sign(() => signature, '1d');
-    console.log(token);
+
+    console.log('token', token);
+    
     const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
       method: 'POST',
       headers: {
