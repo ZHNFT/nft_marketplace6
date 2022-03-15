@@ -10,12 +10,14 @@ import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
+import { NFT_MODALS } from '../../../../constants/nft';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import ListModal from '../../../../components/modals/ListModal';
 import PlaceBidModal from '../../../../components/modals/PlaceBidModal';
 import MakeOfferModal from '../../../../components/modals/MakeOfferModal';
 import BuyNowModal from '../../../../components/modals/BuyNowModal';
 import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
+import CancelListingModal from '../../../../components/modals/CancelListingModal';
 
 const product = {
   name: 'Application UI Icon Pack',
@@ -84,11 +86,9 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const marketplaceAddress = marketplaceContract?.address;
   const [price, setPrice] = useState(0);
   const [expirationDate, setExpirationDate] = useState(0);
-  const [showListModal, setShowListModal] = useState(false);
-  const [showPlaceBidModal, setShowPlaceBidModal] = useState(false);
-  const [showMakeOfferModal, setShowMakeOfferModal] = useState(false);
-  const [showBuyNowModal, setShowBuyNowModal] = useState(false);
-  const [showChangePricewModal, setShowChangePricewModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
+
+  const handleModal = modal => address ? setActiveModal(modal) : connect();
 
   function handlePriceChange(e) {
     const value = e.target.value;
@@ -401,7 +401,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   </input> */}
                 </div>
                 <div className="grid grid-cols-1 pt-6">
-                  { 
+                  { /*
                   <button
                     onClick={address ? handleList : connect}
                     type="button"
@@ -409,25 +409,35 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   >
                     {'List'}
                   </button>
-                   }
-                  <PrimaryButton 
-                    onClick={() => {
-                      if (address) {
-                        setShowListModal(true);
-                      } else {
-                        connect();
-                      }
-                    }}
-                  >
+                  */ }
+                  <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
                     List
                   </PrimaryButton>
                   <ListModal
                     name={data?.name}
                     imageUrl={resolveLink(data?.image)}
                     collection={data.collectionId} 
-                    isOpen={showListModal}
-                    onClose={() => setShowListModal(false)}
+                    isOpen={activeModal === NFT_MODALS.LIST}
+                    onClose={() => setActiveModal(null)}
                   />
+
+                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
+                    Change Price
+                  </PrimaryButton>
+                  <ChangePriceModal
+                    isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
+                    onClose={() => setActiveModal(null)}
+                    onConfirm={data => console.log(data)}
+                  />
+
+                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
+                    Cancel Listing
+                  </PrimaryButton>
+                  <CancelListingModal
+                    isOpen={activeModal === NFT_MODALS.UNLIST}
+                    onClose={() => setActiveModal(null)}
+                    onConfirm={data => console.log(data)}
+                  />    
                 </div>
               </div>
             ) : (
@@ -446,59 +456,36 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   </input> */}
                 </div>
                 <div className="grid grid-cols-1 pt-6">
-                  <button
-                    onClick={address ? handleBid : connect}
-                    type="button"
-                    className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                  >
-                    {'Place Bid'}
-                  </button>
+                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
+                    Buy Now
+                  </PrimaryButton>
+                  <BuyNowModal
+                    isOpen={activeModal === NFT_MODALS.BUY_NOW}
+                    onClose={() => setActiveModal(null)}
+                    onConfirm={data => console.log(data)}
+                    name={data?.name}
+                    imageUrl={resolveLink(data?.image)}
+                    price={20}
+                    collection={data.collectionId}
+                  />
 
-                  <PrimaryButton className="mt-4" onClick={() => setShowMakeOfferModal(true)}>
+                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
+                    Place Bid
+                  </PrimaryButton>
+                  <PlaceBidModal
+                    isOpen={activeModal === NFT_MODALS.PLACE_BID}
+                    onClose={() => setActiveModal(null)}
+                    onConfirm={price => handleBid(price)}
+                  />
+
+                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
                     Make Offer
                   </PrimaryButton>
                   <MakeOfferModal
-                    isOpen={showMakeOfferModal}
-                    onClose={() => setShowMakeOfferModal(false)}
+                    isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
+                    onClose={() => setActiveModal(null)}
                     onConfirm={data => console.log(data)}
                   />
-                    
-                    {
-                      /*
-                      <p className="text-ink mt-5">Test modals</p>
-                      <PrimaryButton className="mt-4" onClick={() => setShowPlaceBidModal(true)}>
-                        Place Bid
-                      </PrimaryButton>
-                      <PlaceBidModal
-                        isOpen={showPlaceBidModal}
-                        onClose={() => setShowPlaceBidModal(false)}
-                        onConfirm={price => console.log(price)}
-                      />
-                      
-
-                      <PrimaryButton className="mt-4" onClick={() => setShowBuyNowModal(true)}>
-                        Buy Now
-                      </PrimaryButton>
-                      <BuyNowModal
-                        isOpen={showBuyNowModal}
-                        onClose={() => setShowBuyNowModal(false)}
-                        onConfirm={data => console.log(data)}
-                        name={data?.name}
-                        imageUrl={resolveLink(data?.image)}
-                        price={20}
-                        collection={data.collectionId}
-                      />
-
-                      <PrimaryButton className="mt-4" onClick={() => setShowChangePricewModal(true)}>
-                        Change Price
-                      </PrimaryButton>
-                      <ChangePriceModal
-                        isOpen={showChangePricewModal}
-                        onClose={() => setShowChangePricewModal(false)}
-                        onConfirm={data => console.log(data)}
-                      />
-                      */
-                    }
                 </div>
               </div>
             )}

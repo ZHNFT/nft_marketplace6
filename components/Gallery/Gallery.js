@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
 import GalleryContext from '../../contexts/GalleryContext';
-import { GALLERY_MODALS } from '../../constants/gallery';
+import { NFT_MODALS } from '../../constants/nft';
 import GalleryItem from './GalleryItem';
 import MakeOfferModal from '../modals/MakeOfferModal';
+import PlaceBidModal from '../modals/PlaceBidModal';
 
 export default function Gallery({ items }) {
   const defaultActiveModal = { type: '' };
@@ -18,13 +19,16 @@ export default function Gallery({ items }) {
           items?.map((item, index) => <GalleryItem key={index} item={item} />)
         }
       </div>
-      {
-        <MakeOfferModal
-          isOpen={activeModal.type === GALLERY_MODALS.MAKE_OFFER}
-          onClose={() => setActiveModal(defaultActiveModal)}
-          onConfirm={data => console.log(data)}
-        />
-      }
+      <MakeOfferModal
+        isOpen={activeModal.type === NFT_MODALS.MAKE_OFFER}
+        onClose={() => setActiveModal(defaultActiveModal)}
+        onConfirm={data => console.log(data)}
+      />
+      <PlaceBidModal
+        isOpen={activeModal.type === NFT_MODALS.PLACE_BID}
+        onClose={() => setActiveModal(defaultActiveModal)}
+        onConfirm={data => console.log(data)}
+      />
     </GalleryContext.Provider>
   );
 }

@@ -3,8 +3,7 @@ import { Transition } from '@headlessui/react';
 import Image from 'next/image';
 import GalleryContext from '../../contexts/GalleryContext';
 import { resolveLink } from '../../Utils';
-import { NFT_LISTING_STATE } from '../../constants/nft';
-import { GALLERY_MODALS } from '../../constants/gallery';
+import { NFT_LISTING_STATE, NFT_MODALS } from '../../constants/nft';
 import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
@@ -55,7 +54,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, auctio
                               className="w-[85px] h-[30px]"
                               onClick={event => {
                                 event.preventDefault();
-                                setActiveModal({ type: GALLERY_MODALS.MAKE_OFFER });
+                                setActiveModal({ type: NFT_MODALS.MAKE_OFFER });
                               }}
                             >
                               Make offer
@@ -74,14 +73,22 @@ export default function ItemMain({ isOwner, isActive, name, listingState, auctio
                   )
                 }
                 {
-                  listingState === NFT_LISTING_STATE.IN_AUCTION && (
+                  listingState === NFT_LISTING_STATE.IN_AUCTION && !isOwner && (
                     <>
                       <div className="absolute top-[10px] left-[5px]">
                         <ProgressCircle width="210" height="210" percent="80" />
                       </div>
                       <div className="relative flex flex-col">
-                        <SecondaryButton className="w-[85px]" onClick={() => console.log('place bid')}>Place Bid</SecondaryButton>
-                        <span className="text-center absolute left-0 right-0 -bottom-[21px]">
+                        <SecondaryButton
+                          className="w-[85px]"
+                          onClick={event => {
+                            event.preventDefault();
+                            setActiveModal({ type: NFT_MODALS.PLACE_BID });
+                          }}
+                        >
+                          Place Bid
+                        </SecondaryButton>
+                        <span className="text-center absolute left-0 right-0 -bottom-[21px] text-white">
                           { /* TODO: time left */ }
                           12h 32m 12s
                         </span>

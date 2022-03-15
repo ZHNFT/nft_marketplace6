@@ -71,7 +71,7 @@ export default function ChangePriceModal({ isOpen, onClose, onConfirm }) {
 
       <div className="flex justify-center mt-10 my-4">
         <PrimaryButton className="max-w-[200px]" onClick={handleSubmit}>Set new price</PrimaryButton>
-        <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={() => console.log('cancel change price')}>Never mind</PrimaryAltButton>
+        <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={onClose}>Never mind</PrimaryAltButton>
       </div>
     </Modal>
   );
