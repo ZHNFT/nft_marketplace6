@@ -2,6 +2,7 @@ import { Fragment, useCallback, useState } from 'react'
 import { ethers } from "ethers";
 import Link from 'next/link'
 import Web3Token from 'web3-token';
+import { add, fromUnixTime } from 'date-fns';
 import Image from 'next/image'
 import clsx from "clsx";
 import ReactMarkdown from 'react-markdown'
@@ -19,75 +20,23 @@ import BuyNowModal from '../../../../components/modals/BuyNowModal';
 import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
 
-const product = {
-  name: 'Application UI Icon Pack',
-  version: { name: '1.0', date: 'June 5, 2021', datetime: '2021-06-05' },
-  price: '$220',
-  description:
-    'The Application UI Icon Pack comes with over 200 icons in 3 styles: outline, filled, and branded. This playful icon pack is tailored for complex application user interfaces with a friendly and legible look.',
-  highlights: [
-    '200+ SVG icons in 3 unique styles',
-    'Compatible with Figma, Sketch, and Adobe XD',
-    'Drawn on 24 x 24 pixel grid',
-  ],
-  imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-05-product-01.jpg',
-  imageAlt: 'Sample of 30 icons with friendly and fun details in outline, filled, and brand color styles.',
-}
-
-const faqs = [
-  {
-    question: 'What format are these icons?',
-    answer:
-      'The icons are in SVG (Scalable Vector Graphic) format. They can be imported into your design tool of choice and used directly in code.',
-  },
-  {
-    question: 'Can I use the icons at different sizes?',
-    answer:
-      "Yes. The icons are drawn on a 24 x 24 pixel grid, but the icons can be scaled to different sizes as needed. We don't recommend going smaller than 20 x 20 or larger than 64 x 64 to retain legibility and visual balance.",
-  },
-  // More FAQs...
-]
-const license = {
-  href: '#',
-  summary:
-    'For personal and professional use. You cannot resell or redistribute these icons in their original or modified state.',
-  content: `
-    <h4>Overview</h4>
-    
-    <p>For personal and professional use. You cannot resell or redistribute these icons in their original or modified state.</p>
-    
-    <ul role="list">
-    <li>You\'re allowed to use the icons in unlimited projects.</li>
-    <li>Attribution is not required to use the icons.</li>
-    </ul>
-    
-    <h4>What you can do with it</h4>
-    
-    <ul role="list">
-    <li>Use them freely in your personal and professional work.</li>
-    <li>Make them your own. Change the colors to suit your project or brand.</li>
-    </ul>
-    
-    <h4>What you can\'t do with it</h4>
-    
-    <ul role="list">
-    <li>Don\'t be greedy. Selling or distributing these icons in their original or modified state is prohibited.</li>
-    <li>Don\'t be evil. These icons cannot be used on websites or applications that promote illegal or immoral beliefs or activities.</li>
-    </ul>
-  `,
-}
-
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
   const isOwner = data?.owner === address?.toLowerCase() || false;
-  console.log(`data`, data)
+  // there can only be one active listing for a token at the same time
+  const activeListing = data?.listings?.find(listing => listing?.active);
+  // there can be multiple active bids on a token at the same time
+  const activeBids = data?.bids?.filter(bid => bid?.active);
   const marketplaceAddress = marketplaceContract?.address;
+  console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
+  console.log(`activeBids`, activeBids)
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
+  // For owner of an NFT to list the NFT
   const handleList = useCallback(async function({ price, expirationDate }) {
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
@@ -122,7 +71,8 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
   }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, marketplaceAddress])
 
-  const handleBid = useCallback(async function({ price, expirationDate }) {
+  // For non-owners to place a bid on an listing
+  const handlePlaceBid = useCallback(async function({ price, expirationDate }) {
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
@@ -163,6 +113,88 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
     });
 
   }, [ethersProvider, chainId, data.tokenId, tokenContract, data.collectionId, address, marketplaceAddress])
+
+  // For the owner of the NFT to accept a bid
+  const handleAcceptBid = useCallback(async function(offer) {
+    const tx = await marketplaceContract.AcceptBid(offer);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
+  }, [marketplaceContract])
+
+  // For non-owners to cancel their bid
+  const handleCancelBid = useCallback(async function(offer) {
+    const tx = await marketplaceContract.CancelBid(offer);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
+  }, [marketplaceContract])
+
+  // For the owner of the NFT to cancel their listing
+  const handleCancelListing = useCallback(async function(listing) {
+    const tx = await marketplaceContract.CancelListing(listing);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
+  }, [marketplaceContract])
+
+  // For the owner of the NFT to create an auction, its not possible to cancel an auction
+  const handleCreateAuction = useCallback(async function () {
+    const signer = ethersProvider.getSigner();
+    const nonce = await signer.getTransactionCount();
+
+    let auction = {
+      collectionAddress: data?.collectionId,
+      owner: data?.owner,
+      tokenId: data?.tokenId,
+      expiry: 1647868506, // get from modal
+      quantity: 1,
+      minBid: 500000000000000000, // get from modal
+      percentIncrement: 50 // get from modal
+    }
+
+    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
+    await nftContract.setApprovalForAll(marketplaceAddress, true);
+
+    const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
+    console.log(token);
+    const response = await fetch(`https://hexagon-api.onrender.com/auctions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(auction)
+    });
+
+    const tx = await marketplaceContract.placeAuction(auction);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
+
+  }, [data?.collectionId, data?.owner, data?.tokenId, ethersProvider, marketplaceAddress, marketplaceContract])
+
+  // For non-owners to place a bid on an auction
+  const handlePlaceAuctionBid = useCallback(async function(offer) {
+    const bid = Number(offer.price);
+    const bidAmount = ethers.utils.parseEther(bid.toString());
+    const allowance = await tokenContract.allowance(address, marketplaceAddress);
+    const allowanceString = ethers.utils.formatEther(allowance.toString())
+
+    if (Number(allowanceString) < offer.price) {
+      const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
+      const allowanceResult = await allow?.wait();
+      console.log(`allowanceResult`, allowanceResult)
+    }
+
+    const tx = await marketplaceContract.placeAuctionBid(offer);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
+
+  }, [marketplaceContract, address, tokenContract, marketplaceAddress])
+
+  // For the owner of the NFT to change the price of an listing
+  // we first cancel the current listing and then create a new listing
+  const handleChangePrice = useCallback(async function(listing, price, expirationDate) {
+    await handleCancelListing(listing);
+    await handleList({ price, expirationDate });
+  }, [handleCancelListing, handleList])
 
   return (
     <div className='bg-white'>
@@ -231,21 +263,6 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 </Link>
               </p>
             </div>
-            <div className="border-t border-gray-200 mt-10 pt-10">
-              <h3 className="text-sm font-medium text-gray-900">Description</h3>
-              <div className="mt-4 prose prose-sm text-gray-500">
-                <ReactMarkdown
-                  className='mt-6 whitespace-pre-line'
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
-                    p: ({node, ...props}) => <p {...props} className="text-gray-500" />
-                  }}
-                >
-                  {data?.metadata?.description}
-                </ReactMarkdown>
-              </div>
-            </div>
             <Tab.Group as="div">
               <div className="border-b border-gray-200 border-t border-gray-200 mt-10 ">
                 <Tab.List className="-mb-px flex space-x-8">
@@ -271,7 +288,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                       )
                     }
                   >
-                    Activity
+                    Bids
                   </Tab>
                   <Tab
                     className={({ selected }) =>
@@ -288,11 +305,10 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 </Tab.List>
               </div>
               <Tab.Panels as={Fragment}>
-                <Tab.Panel className="">
-                  <h3 className="sr-only">Traits</h3>
+                <Tab.Panel as="dl">
                   <div className="flex flex-col mt-10">
-                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                      <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div className="overflow-x-auto">
+                      <div className="align-middle inline-block min-w-full">
                         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                           <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
@@ -341,25 +357,48 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 </Tab.Panel>
 
                 <Tab.Panel as="dl" className="text-sm text-gray-500">
-                  <h3 className="sr-only">Frequently Asked Questions</h3>
-
-                  {faqs.map((faq) => (
-                    <Fragment key={faq.question}>
-                      <dt className="mt-10 font-medium text-gray-900">{faq.question}</dt>
+                  {activeBids?.map((bid) => (
+                    <Fragment key={bid._id}>
+                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
                       <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                        <p>{faq.answer}</p>
+                        <p>{bid.pricePerItem}</p>
                       </dd>
+                      {bid?.userAddress === address && (
+                        <button
+                          type="button"
+                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                          onClick={() => handleCancelBid(bid)}
+                        >
+                          Cancel Bid
+                        </button>
+                      )}
+                      {data?.owner === address && (
+                          <button
+                           type="button"
+                           className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                           onClick={() => handleAcceptBid(bid)}
+                         >
+                           Accept Bid
+                         </button>
+                      )}
                     </Fragment>
                   ))}
                 </Tab.Panel>
 
-                <Tab.Panel className="pt-10">
-                  <h3 className="sr-only">License</h3>
-
-                  <div
-                    className="prose prose-sm max-w-none text-gray-500"
-                    dangerouslySetInnerHTML={{ __html: license.content }}
-                  />
+                <Tab.Panel className="pt-10" as="dl">
+                    <h3 className="text-sm font-medium text-gray-900">Description</h3>
+                    <div className="mt-4 prose prose-sm text-gray-500">
+                      <ReactMarkdown
+                        className='mt-6 whitespace-pre-line'
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
+                          p: ({node, ...props}) => <p {...props} className="text-gray-500" />
+                        }}
+                      >
+                        {data?.metadata?.description}
+                      </ReactMarkdown>
+                    </div>
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
@@ -369,44 +408,45 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
             {isOwner ? (
               <div>
                 <div className="grid grid-cols-1 pt-6">
-                  { /*
-                  <button
-                    onClick={address ? handleList : connect}
-                    type="button"
-                    className="w-full mb-4 bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-                  >
-                    {'List'}
-                  </button>
-                  */ }
-                  <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
-                    List
-                  </PrimaryButton>
-                  <ListModal
-                    name={data?.name}
-                    imageUrl={resolveLink(data?.image)}
-                    collection={data.collectionId} 
-                    isOpen={activeModal === NFT_MODALS.LIST}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={handleList}
-                  />
+                  {!activeListings ? (
+                    <>
+                      <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
+                        List
+                      </PrimaryButton>
+                      <ListModal
+                        name={data?.name}
+                        imageUrl={resolveLink(data?.image)}
+                        collection={data.collectionId} 
+                        isOpen={activeModal === NFT_MODALS.LIST}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={handleList}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <div className='text-black'>
+                        <p>{`Listed for ${activeListings?.pricePerItem / 1000000000} ETH`}</p>
+                        <p>{`Untill ${fromUnixTime(activeListings?.expiry)}`}</p>
+                      </div>
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
+                        Change Price
+                      </PrimaryButton>
+                      <ChangePriceModal
+                        isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={data => console.log(data)}
+                      />
 
-                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
-                    Change Price
-                  </PrimaryButton>
-                  <ChangePriceModal
-                    isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={data => console.log(data)}
-                  />
-
-                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
-                    Cancel Listing
-                  </PrimaryButton>
-                  <CancelListingModal
-                    isOpen={activeModal === NFT_MODALS.UNLIST}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={data => console.log(data)}
-                  />    
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
+                        Cancel Listing
+                      </PrimaryButton>
+                      <CancelListingModal
+                        isOpen={activeModal === NFT_MODALS.UNLIST}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={() => handleCancelListing(activeListings)}
+                      />    
+                    </>
+                  )}
                 </div>
               </div>
             ) : (
@@ -431,7 +471,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   <PlaceBidModal
                     isOpen={activeModal === NFT_MODALS.PLACE_BID}
                     onClose={() => setActiveModal(null)}
-                    onConfirm={price => handleBid(price)}
+                    onConfirm={price => handlePlaceBid(price)}
                   />
 
                   <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
@@ -445,21 +485,6 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 </div>
               </div>
             )}
-            <div className="border-t border-gray-200 mt-10 pt-10">
-              <h3 className="text-sm font-medium text-gray-900">Description</h3>
-              <div className="mt-4 prose prose-sm text-gray-500">
-                <ReactMarkdown
-                  className='mt-6 whitespace-pre-line'
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
-                    p: ({node, ...props}) => <p {...props} className="text-gray-500" />
-                  }}
-                >
-                  {data?.metadata?.description}
-                </ReactMarkdown>
-              </div>
-            </div>
           </div>
         </div>
       </div>

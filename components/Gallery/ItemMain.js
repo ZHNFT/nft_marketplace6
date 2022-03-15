@@ -2,7 +2,7 @@ import { Fragment, useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
 import GalleryContext from '../../contexts/GalleryContext';
-import { resolveLink } from '../../Utils';
+import { resolveLink, resolveBunnyLink } from '../../Utils';
 import { NFT_LISTING_STATE, NFT_MODALS } from '../../constants/nft';
 import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -17,7 +17,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, auctio
     <div className="relative rounded-xl overflow-hidden w-[210px] h-[210px]">
       <Image
         className="block w-full"
-        src={imageUrl ? resolveLink(imageUrl) : DefaultImage}
+        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=210&height=210` : DefaultImage}
         alt={name}
         width="210"
         height="210"

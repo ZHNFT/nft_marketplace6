@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['ipfs.infura.io', 'ipfs.moralis.io', "ipfs.io", 'pbs.twimg.com', 'images.unsplash.com', 'bonez.mypinata.cloud', 'gateway.ipfs.io']
+    domains: ['ipfs.infura.io', 'ipfs.moralis.io', "ipfs.io", 'pbs.twimg.com', 'images.unsplash.com', 'hexagon-ipfs.b-cdn.net', 'gateway.ipfs.io']
   },
   // old way https://nextjs.org/docs/api-reference/next.config.js/environment-variables
   env: {
