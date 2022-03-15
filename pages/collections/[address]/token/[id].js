@@ -25,10 +25,13 @@ import CancelListingModal from '../../../../components/modals/CancelListingModal
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
   const isOwner = data?.owner === address?.toLowerCase() || false;
-  // there can only be one active listing for a token at the same time
+  // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
+  // there can only be one active auction or listing for a token at the same time
+  const activeAuction = data?.auctions?.find(auction => auction?.active);
   // there can be multiple active bids on a token at the same time
   const activeBids = data?.bids?.filter(bid => bid?.active);
+
   const marketplaceAddress = marketplaceContract?.address;
   console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
@@ -171,23 +174,31 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   }, [data?.collectionId, data?.owner, data?.tokenId, ethersProvider, marketplaceAddress, marketplaceContract])
 
   // For non-owners to place a bid on an auction
-  const handlePlaceAuctionBid = useCallback(async function(offer) {
-    const bid = Number(offer.price);
+  const handlePlaceAuctionBid = useCallback(async function({ price }) {
+    const bid = Number(price);
     const bidAmount = ethers.utils.parseEther(bid.toString());
     const allowance = await tokenContract.allowance(address, marketplaceAddress);
     const allowanceString = ethers.utils.formatEther(allowance.toString())
 
-    if (Number(allowanceString) < offer.price) {
+    let offer = {
+      collectionAddress: data?.collectionId,
+      owner: data?.owner,
+      tokenId: data?.tokenId,
+      amount: (Number(price) * 1000000000).toString(),
+    };
+
+    if (Number(allowanceString) < price) {
       const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
     }
 
+    // offer should include collectionAddress, tokenId, owner and amount
     const tx = await marketplaceContract.placeAuctionBid(offer);
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
 
-  }, [marketplaceContract, address, tokenContract, marketplaceAddress])
+  }, [marketplaceContract, address, tokenContract, marketplaceAddress, data?.tokenId, data?.collectionId, data?.owner])
 
   // For the owner of the NFT to change the price of an listing
   // we first cancel the current listing and then create a new listing
@@ -408,7 +419,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
             {isOwner ? (
               <div>
                 <div className="grid grid-cols-1 pt-6">
-                  {!activeListings ? (
+                  {!activeListing ? (
                     <>
                       <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
                         List
@@ -425,8 +436,8 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                   ) : (
                     <>
                       <div className='text-black'>
-                        <p>{`Listed for ${activeListings?.pricePerItem / 1000000000} ETH`}</p>
-                        <p>{`Untill ${fromUnixTime(activeListings?.expiry)}`}</p>
+                        <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
+                        <p>{`Untill ${fromUnixTime(activeListing?.expiry)}`}</p>
                       </div>
                       <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
                         Change Price
@@ -443,7 +454,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                       <CancelListingModal
                         isOpen={activeModal === NFT_MODALS.UNLIST}
                         onClose={() => setActiveModal(null)}
-                        onConfirm={() => handleCancelListing(activeListings)}
+                        onConfirm={() => handleCancelListing(activeListing)}
                       />    
                     </>
                   )}
