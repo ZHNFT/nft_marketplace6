@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useState, useEffect } from 'react'
 import { ethers } from "ethers";
 import Link from 'next/link'
 import Web3Token from 'web3-token';
@@ -56,7 +56,9 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
     }
 
     const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
-    await nftContract.setApprovalForAll(marketplaceAddress, true);
+    const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
 
     let signature
 
@@ -71,6 +73,8 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
       },
       body: JSON.stringify(listing)
     });
+
+    console.log(`response`, response)
 
   }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, marketplaceAddress])
 
