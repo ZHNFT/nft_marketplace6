@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { COMPLETE_LISTING_STATUS } from '../../constants/nft';
+import { TRANSACTION_STATUS } from '../../constants/nft';
 import { ellipseAddress } from '../../Utils';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import PrimaryButton from '../Buttons/PrimaryButton';
-import Step from './Step';
+import TransactionList from './TransactionList';
 
 export default function CompleteListing(props) {
   const { type, name, imageUrl, collection, price, currency, onCancel } = props;
@@ -29,29 +29,30 @@ export default function CompleteListing(props) {
           </div>
         </div>
         <div className="my-6">
-          <Step 
-            title="Approval to transfer"
-            status={COMPLETE_LISTING_STATUS.IN_PROGRESS}
-            isDefaultOpen
-          >
-            To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.
-          </Step>
-
-          <Step 
-            className="my-2"
-            title={`${type === 'auction' ? 'Transfering NFT' : 'Requesting Signature'}`}
-            status={COMPLETE_LISTING_STATUS.INACTIVE}
-          >
-            Description here
-          </Step>
-
-          <Step 
-            className="my-2"
-            title="Listing of Auction has Completed"
-            status={COMPLETE_LISTING_STATUS.INACTIVE}
-          >
-            Description here
-          </Step>
+          <TransactionList
+            steps={[
+              {
+                title: 'Approval to transfer',
+                status: TRANSACTION_STATUS.IN_PROGRESS,
+                isDefaultOpen: true,
+                description: 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
+              },
+              {
+                className: 'my-2',
+                title: `${type === 'auction' ? 'Transfering NFT' : 'Requesting Signature'}`,
+                status: TRANSACTION_STATUS.INACTIVE,
+                isDefaultOpen: false,
+                description: 'Description here'
+              },
+              {
+                className: 'my-2',
+                title: 'Listing of Auction has Completed',
+                status: TRANSACTION_STATUS.INACTIVE,
+                isDefaultOpen: false,
+                description: 'Description here'
+              }
+            ]}
+          />
 
         <div className="mt-9 flex justify-center">
           <PrimaryButton

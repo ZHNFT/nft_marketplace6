@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from './Modal';
-import Listing from '../Listing/Listing';
-import CompleteListing from '../Listing/CompleteListing';
+import ListingForm from '../Forms/ListingForm';
+import CompleteListing from '../Transactions/CompleteListing';
 
 export default function ListModal({ name, imageUrl, collection, isOpen, onClose }) {
   const initialData = {
@@ -25,7 +25,7 @@ export default function ListModal({ name, imageUrl, collection, isOpen, onClose 
              onCancel={() => setListingData(initialData)} // reset on cancel
             />
           )
-          : <Listing onSuccess={values => setListingData(values)} />
+          : <ListingForm onSuccess={values => setListingData(values)} />
       }
     </Modal>
   );
