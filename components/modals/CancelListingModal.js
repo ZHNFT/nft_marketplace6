@@ -1,11 +1,18 @@
-import { useState } from 'react';
-import { TRANSACTION_STATUS } from '../../constants/nft';
+import { useState, useEffect } from 'react';
+import { getTransactionStatus } from '../../Utils/helper';
 import TransactionList from '../Transactions/TransactionList';
 import Modal from './Modal';
 import ConfirmModal from './ConfirmModal';
 
-export default function CancelListingModal({ isOpen, onClose, onConfirm }) {
+export default function CancelListingModal({ isOpen, isReset,transactionCount, onClose, onConfirm }) {
   const [isCanceling, setIsCancelling] = useState(false);
+
+  useEffect(() => {
+    if (isReset) {
+      setIsCancelling(false);
+    }
+  }, [isReset]);
+
   if (isCanceling) {
     return (
       <Modal isOpen={isOpen} onClose={onClose} title="Cancel Listing">
@@ -13,14 +20,14 @@ export default function CancelListingModal({ isOpen, onClose, onConfirm }) {
           steps={[
             {
               title: 'Transaction to cancel list',
-              status: TRANSACTION_STATUS.IN_PROGRESS,
+              status: getTransactionStatus({ transactionStepNumber: 1, transactionCount }),
               isDefaultOpen: true,
               description: 'Description here'
             },
             {
               className: 'my-2',
               title: 'Completion',
-              status: TRANSACTION_STATUS.INACTIVE,
+              status: getTransactionStatus({ transactionStepNumber: 2, transactionCount }),
               isDefaultOpen: false,
               description: 'Description here'
             }

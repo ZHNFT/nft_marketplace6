@@ -1,24 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ellipseAddress } from '../../Utils';
-import { TRANSACTION_STATUS } from '../../constants/nft';
+import { getTransactionStatus } from '../../Utils/helper';
 import TransactionList from '../Transactions/TransactionList';
 import Image from 'next/image';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Modal from './Modal';
 import ListingForm from '../Forms/ListingForm';
-
-const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
-  const diff = transactionStepNumber - transactionCount;
-  if (diff === 1) {
-    return TRANSACTION_STATUS.IN_PROGRESS;
-  }
-
-  if (diff > 1) {
-    return TRANSACTION_STATUS.INACTIVE;
-  }
-
-  return TRANSACTION_STATUS.SUCCESS;
-};
 
 export default function ListModal({ name, imageUrl, collection, isOpen, isReset, transactionCount, onClose, onConfirm }) {
   const initialData = useMemo(() => ({

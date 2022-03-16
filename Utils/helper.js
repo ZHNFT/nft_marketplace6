@@ -1,4 +1,4 @@
-import { NFT_LISTING_STATE } from '../constants/nft';
+import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 
 const formatCurrency = ({ value }) => (
@@ -51,9 +51,28 @@ const convertToUsd = ({ value }) => (
   formatter.format(value * 1.5)
 )
 
+const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
+  if (transactionCount === null) {
+    return TRANSACTION_STATUS.SUCCESS;
+  }
+
+  const diff = transactionStepNumber - transactionCount;
+
+  if (diff === 1) {
+    return TRANSACTION_STATUS.IN_PROGRESS;
+  }
+
+  if (diff > 1) {
+    return TRANSACTION_STATUS.INACTIVE;
+  }
+
+  return TRANSACTION_STATUS.SUCCESS;
+};
+
 export {
   formatCurrency,
   formatter,
   transformGalleryItems,
-  convertToUsd
+  convertToUsd,
+  getTransactionStatus
 };

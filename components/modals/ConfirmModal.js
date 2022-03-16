@@ -70,7 +70,7 @@ export default function ConfirmModal(props) {
                 </PrimaryButton>
                 <PrimaryAltButton
                   onClick={onClose}
-                  ref={cancelButtonRef}
+                  innerRef={cancelButtonRef}
                 >
                   { cancelLabel }
                 </PrimaryAltButton>
