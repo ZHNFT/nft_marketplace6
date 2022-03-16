@@ -13,11 +13,6 @@ const currencies = [
   { label: 'HNY', value: 'hny' }
 ];
 
-const auctionMethods = [
-  { label: 'Sell to highest bidder', value: 'highestBidder' },
-  { label: 'Sell with declining price', value: 'decliningPrice' }
-];
-
 const durations = [
   { label: '1 day', value: { unit: 'days', number: 1 } },
   { label: '3 days', value: { unit: 'days', number: 3 } },
@@ -41,6 +36,12 @@ export default function Listing({ onSuccess }) {
           message: 'Invalid amount'
         },
       },
+      percent: {
+        pattern: {
+          value: '^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$',
+          message: 'Invalid amount'
+        },
+      },
     },
     onSubmit: () => {
       onSuccess({
@@ -48,7 +49,6 @@ export default function Listing({ onSuccess }) {
         type: data.type?.value,
         currency: data.currency?.value,
         duration: getUnixTime(add(new Date(), { [data.duration?.value?.unit]: data.duration?.value?.number })),
-        auctionMethod: data.auctionMethods?.value
       });
     },
     initialValues: { // used to initialize the data
@@ -56,7 +56,7 @@ export default function Listing({ onSuccess }) {
       currency: currencies[0],
       price: '',
       duration: durations[0],
-      auctionMethod: auctionMethods[0]
+      percent: '',
     },
   });
 
@@ -115,15 +115,21 @@ export default function Listing({ onSuccess }) {
           data.type.value === 'auction' && (
             <div className="my-10">
               { /* Method */ }
-              <p>Method</p>
-              <Dropdown 
-                label="Method"
-                className="mt-1 text-left text-base"
-                selected={data.auctionMethod}
-                onSelect={selected => {
-                  handleChange('auctionMethod')({ target: { value: selected }});
-                }}
-                list={auctionMethods}
+              {/* 
+                the percent increment is in a ratio of percent/1000 in contract
+                so 5% is the minimum which is passed into the contract function as 50 (50 / 1000 = 0.05 = 5%)
+              */}
+              <p>Percent Increment</p>
+              <input 
+                type="number"
+                name="percent"
+                id="percent"
+                value={data.price || ''}
+                onChange={handleChange('percent')}
+                required
+                min="5"
+                max="100"
+                className="text-ink rounded-xl flex flex-1"
               />
             </div>
           )

@@ -20,6 +20,7 @@ import MakeOfferModal from '../../../../components/modals/MakeOfferModal';
 import BuyNowModal from '../../../../components/modals/BuyNowModal';
 import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
+import NotFoundImage from "../../../../images/No-Image-Placeholder.png";
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -167,7 +168,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
     console.log('CANCEL', listing);
     console.log(`marketplaceContract`, marketplaceContract)
     
-    const tx = await marketplaceContract.CancelBid({
+    const tx = await marketplaceContract.CancelListing({
       contractAddress: listing?.collectionId || listing?.contractAddress,
       userAddress: listing.userAddress,
       tokenId: listing.tokenId,
@@ -186,7 +187,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   }, [marketplaceContract])
 
   // For the owner of the NFT to create an auction, its not possible to cancel an auction
-  const handleCreateAuction = useCallback(async function () {
+  const handleCreateAuction = useCallback(async function ({ price, expirationDate, percent }) {
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
@@ -194,10 +195,12 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
       collectionAddress: data?.collectionId,
       owner: data?.owner,
       tokenId: data?.tokenId,
-      expiry: 1647868506, // get from modal
+      expiry: expirationDate,
       quantity: 1,
-      minBid: 500000000000000000, // get from modal
-      percentIncrement: 50 // get from modal
+      minBid: price,
+      percentIncrement: percent * 10, // for example 5% should be passed to the contract as 50
+      highestBid: 0,
+      highestBidder: '0x0000000000000000000000000000000000000000',
     }
 
     const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
@@ -269,12 +272,21 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
           {/* Product image */}
           <div className="lg:col-span-3">
             <div className="aspect-w-4 aspect-h-4 rounded-lg bg-gray-100 overflow-hidden">
-              <Image
+              {data?.image ? (
+                <Image
                 src={`${resolveBunnyLink(data?.image)}?optimizer=image&width=600&height=600`}
                 alt={data?.tokenId}
                 className="object-center object-cover"
                 layout="fill" 
-              />
+              /> 
+              ) : (
+                <Image
+                  src={NotFoundImage}
+                  alt={data?.tokenId}
+                  className="object-center object-cover"
+                  layout="fill" 
+                /> 
+              )}
             </div>
           </div>
 
@@ -457,7 +469,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                         onConfirm={async data => {
                           try {
                             setTransactionCount(0);
-                            await handleList(data);
+                            data?.type === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
                             onModalSuccess({ modal: NFT_MODALS.LIST, transactionCount: 3 });
                           } catch(error) {
                             // reset modal on error

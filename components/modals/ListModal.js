@@ -79,7 +79,11 @@ export default function ListModal({ name, imageUrl, collection, isOpen, isReset,
           : (
             <ListingForm onSuccess={values => {
               setListingData(values);
-              onConfirm({ price: values?.price, expirationDate: values?.duration });
+              onConfirm({ 
+                price: values?.price,
+                expirationDate: values?.duration,
+                ...(values?.percent ? { percent: values?.percent } : {})
+              });
             }} />
           )
       }
