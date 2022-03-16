@@ -36,12 +36,12 @@ export default function Listing({ onSuccess }) {
           message: 'Invalid amount'
         },
       },
-      percent: {
-        pattern: {
-          value: '^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$',
-          message: 'Invalid amount'
-        },
-      },
+      // percent: {
+      //   pattern: {
+      //     value: '^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$',
+      //     message: 'Invalid amount'
+      //   },
+      // },
     },
     onSubmit: () => {
       onSuccess({
@@ -124,7 +124,7 @@ export default function Listing({ onSuccess }) {
                 type="number"
                 name="percent"
                 id="percent"
-                value={data.price || ''}
+                value={data.percent || ''}
                 onChange={handleChange('percent')}
                 required
                 min="5"

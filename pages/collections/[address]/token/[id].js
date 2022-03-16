@@ -35,6 +35,8 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   // there can be multiple active bids on a token at the same time
   const activeBids = data?.bids?.filter(bid => bid?.active);
 
+  console.log(`activeListing`, activeListing)
+
   const marketplaceAddress = marketplaceContract?.address;
   console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
@@ -165,9 +167,6 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 
   // For the owner of the NFT to cancel their listing
   const handleCancelListing = useCallback(async function(listing) {
-    console.log('CANCEL', listing);
-    console.log(`marketplaceContract`, marketplaceContract)
-    
     const tx = await marketplaceContract.CancelListing({
       contractAddress: listing?.collectionId || listing?.contractAddress,
       userAddress: listing.userAddress,
@@ -189,7 +188,6 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   // For the owner of the NFT to create an auction, its not possible to cancel an auction
   const handleCreateAuction = useCallback(async function ({ price, expirationDate, percent }) {
     const signer = ethersProvider.getSigner();
-    const nonce = await signer.getTransactionCount();
 
     let auction = {
       collectionAddress: data?.collectionId,
@@ -197,14 +195,19 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
       tokenId: data?.tokenId,
       expiry: expirationDate,
       quantity: 1,
-      minBid: price,
-      percentIncrement: percent * 10, // for example 5% should be passed to the contract as 50
+      minBid: (Number(price) * 1000000000).toString(),
+      percentIncrement: Number(percent) * 10, // for example 5% should be passed to the contract as 50
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
     }
-
+    console.log(`auction`, auction)
     const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
     await nftContract.setApprovalForAll(marketplaceAddress, true);
+
+    const tx = await marketplaceContract.placeAuction(auction);
+    console.log(`tx`, tx)
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
 
     const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
     console.log(token);
@@ -216,10 +219,6 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
       },
       body: JSON.stringify(auction)
     });
-
-    const tx = await marketplaceContract.placeAuction(auction);
-    const txResult = await tx?.wait();
-    console.log(`txResult`, txResult)
 
   }, [data?.collectionId, data?.owner, data?.tokenId, ethersProvider, marketplaceAddress, marketplaceContract])
 
@@ -252,9 +251,9 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 
   // For the owner of the NFT to change the price of an listing
   // we first cancel the current listing and then create a new listing
-  const handleChangePrice = useCallback(async function(listing, price, expirationDate) {
+  const handleChangePrice = useCallback(async function(listing, price) {
     await handleCancelListing(listing);
-    await handleList({ price, expirationDate });
+    await handleList({ price, expirationDate: listing?.expiry });
   }, [handleCancelListing, handleList])
 
   // reset modal
@@ -453,7 +452,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             {isOwner ? (
               <div>
                 <div className="grid grid-cols-1 pt-6">
-                  {!activeListing ? (
+                  {!activeListing && !activeAuction ? (
                     <>
                       <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
                         List
@@ -469,7 +468,8 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                         onConfirm={async data => {
                           try {
                             setTransactionCount(0);
-                            data?.type === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
+                            console.log(`data`, data)
+                            data?.auctionType === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
                             onModalSuccess({ modal: NFT_MODALS.LIST, transactionCount: 3 });
                           } catch(error) {
                             // reset modal on error
@@ -480,39 +480,51 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                     </>
                   ) : (
                     <>
-                      <div>
-                        <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
-                        <p>{`Untill ${fromUnixTime(activeListing?.expiry)}`}</p>
-                      </div>
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
-                        Change Price
-                      </PrimaryButton>
-                      <ChangePriceModal
-                        isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={data => console.log(data)}
-                      />
+                      {activeAuction ? (
+                        <div>
+                          <p>{`Min bid is ${activeAuction?.minBid / 1000000000} ETH`}</p>
+                          <p>{`Untill ${fromUnixTime(activeAuction?.expiry)}`}</p>
+                        </div>
+                      ) : (
+                        <>
+                          <div>
+                            <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
+                            <p>{`Untill ${fromUnixTime(activeListing?.expiry)}`}</p>
+                          </div>
+                          <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
+                            Change Price
+                          </PrimaryButton>
+                          <ChangePriceModal
+                            isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={async data => {
+                              console.log(`data`, data)
+                              await handleChangePrice(activeListing, data)
+                            }}
+                          />
 
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
-                        Cancel Listing
-                      </PrimaryButton>
-                      <CancelListingModal
-                        isOpen={activeModal === NFT_MODALS.UNLIST}
-                        isReset={resetModal === NFT_MODALS.UNLIST}
-                        transactionCount={activeModal === NFT_MODALS.UNLIST ? transactionCount : null}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={async () => {
-                          try {
-                            setTransactionCount(0);
-                            await handleCancelListing(activeListing);
-                            onModalSuccess({ modal: NFT_MODALS.UNLIST, transactionCount: 2 });
-                          } catch(error) {
-                            console.log(`error`, error)
-                            // reset modal on error
-                            setResetModal(NFT_MODALS.UNLIST);
-                          }
-                        }}
-                      />    
+                          <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
+                            Cancel Listing
+                          </PrimaryButton>
+                          <CancelListingModal
+                            isOpen={activeModal === NFT_MODALS.UNLIST}
+                            isReset={resetModal === NFT_MODALS.UNLIST}
+                            transactionCount={activeModal === NFT_MODALS.UNLIST ? transactionCount : null}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={async () => {
+                              try {
+                                setTransactionCount(0);
+                                await handleCancelListing(activeListing);
+                                onModalSuccess({ modal: NFT_MODALS.UNLIST, transactionCount: 2 });
+                              } catch(error) {
+                                console.log(`error`, error)
+                                // reset modal on error
+                                setResetModal(NFT_MODALS.UNLIST);
+                              }
+                            }}
+                          />
+                        </>
+                      )}
                     </>
                   )}
                 </div>

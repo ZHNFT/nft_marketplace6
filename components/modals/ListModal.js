@@ -78,10 +78,12 @@ export default function ListModal({ name, imageUrl, collection, isOpen, isReset,
           )
           : (
             <ListingForm onSuccess={values => {
+              console.log(`values`, values)
               setListingData(values);
               onConfirm({ 
                 price: values?.price,
                 expirationDate: values?.duration,
+                auctionType: values?.type,
                 ...(values?.percent ? { percent: values?.percent } : {})
               });
             }} />
