@@ -36,13 +36,13 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   const activeBids = data?.bids?.filter(bid => bid?.active);
 
   console.log(`activeListing`, activeListing)
-
+  console.log(`activeAuction`, activeAuction)
+  console.log(`activeBids`, activeBids)
+  
   const marketplaceAddress = marketplaceContract?.address;
-  console.log(`data`, data)
+
   const [activeModal, setActiveModal] = useState(null);
   const [resetModal, setResetModal] = useState(null);
-  console.log(`activeBids`, activeBids)
-
   const [transactionCount, setTransactionCount] = useState(null);
 
   // refresh server side data
@@ -153,22 +153,62 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 
   // For the owner of the NFT to accept a bid
   const handleAcceptBid = useCallback(async function(offer) {
-    const tx = await marketplaceContract.AcceptBid(offer);
+    const tx = await marketplaceContract.AcceptBid({
+      contractAddress: offer?.contractAddress || offer?.collectionId,
+      userAddress: offer.userAddress,
+      tokenId: offer.tokenId,
+      pricePerItem: offer.pricePerItem,
+      quantity: offer.quantity,
+      expiry: offer.expiry,
+      nonce: offer.nonce,
+      r: offer.r,
+      s: offer.s,
+      v: offer.v,
+    });
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
   }, [marketplaceContract])
 
   // For non-owners to cancel their bid
   const handleCancelBid = useCallback(async function(offer) {
-    const tx = await marketplaceContract.CancelBid(offer);
+    const tx = await marketplaceContract.CancelBid({
+      contractAddress: offer?.contractAddress || offer?.collectionId,
+      userAddress: offer.userAddress,
+      tokenId: offer.tokenId,
+      pricePerItem: offer.pricePerItem,
+      quantity: offer.quantity,
+      expiry: offer.expiry,
+      nonce: offer.nonce,
+      r: offer.r,
+      s: offer.s,
+      v: offer.v,
+    });
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
   }, [marketplaceContract])
 
+    // For the non-owners of the NFT to buy now/accept the listing of the owner
+    const handleAcceptListing = useCallback(async function(listing) {
+      const tx = await marketplaceContract.AcceptListing({
+        contractAddress: listing?.contractAddress || listing?.collectionId,
+        userAddress: listing.userAddress,
+        tokenId: listing.tokenId,
+        pricePerItem: listing.pricePerItem,
+        quantity: listing.quantity,
+        expiry: listing.expiry,
+        nonce: listing.nonce,
+        r: listing.r,
+        s: listing.s,
+        v: listing.v,
+      });
+      const txResult = await tx?.wait();
+      console.log(`txResult`, txResult)
+    }, [marketplaceContract])
+
   // For the owner of the NFT to cancel their listing
   const handleCancelListing = useCallback(async function(listing) {
     const tx = await marketplaceContract.CancelListing({
-      contractAddress: listing?.collectionId || listing?.contractAddress,
+      contractAddress: listing?.contractAddress || listing?.collectionId,
       userAddress: listing.userAddress,
       tokenId: listing.tokenId,
       pricePerItem: listing.pricePerItem,
@@ -204,11 +244,6 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
     const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
     await nftContract.setApprovalForAll(marketplaceAddress, true);
 
-    const tx = await marketplaceContract.placeAuction(auction);
-    console.log(`tx`, tx)
-    const txResult = await tx?.wait();
-    console.log(`txResult`, txResult)
-
     const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
     console.log(token);
     const response = await fetch(`https://hexagon-api.onrender.com/auctions`, {
@@ -219,6 +254,11 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
       },
       body: JSON.stringify(auction)
     });
+
+    const tx = await marketplaceContract.placeAuction(auction);
+    console.log(`tx`, tx)
+    const txResult = await tx?.wait();
+    console.log(`txResult`, txResult)
 
   }, [data?.collectionId, data?.owner, data?.tokenId, ethersProvider, marketplaceAddress, marketplaceContract])
 
@@ -532,36 +572,53 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             ) : (
               <div>
                 <div className="grid grid-cols-1 pt-6">
-                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
-                    Buy Now
-                  </PrimaryButton>
-                  <BuyNowModal
-                    isOpen={activeModal === NFT_MODALS.BUY_NOW}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={data => console.log(data)}
-                    name={data?.name}
-                    imageUrl={resolveLink(data?.image)}
-                    price={20}
-                    collection={data.collectionId}
-                  />
-
-                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
-                    Place Bid
-                  </PrimaryButton>
-                  <PlaceBidModal
-                    isOpen={activeModal === NFT_MODALS.PLACE_BID}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={price => handlePlaceBid(price)}
-                  />
-
-                  <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
-                    Make Offer
-                  </PrimaryButton>
-                  <MakeOfferModal
-                    isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
-                    onClose={() => setActiveModal(null)}
-                    onConfirm={data => console.log(data)}
-                  />
+                  {activeListing ? (
+                    <>
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
+                        Buy Now
+                      </PrimaryButton>
+                      <BuyNowModal
+                        isOpen={activeModal === NFT_MODALS.BUY_NOW}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={() => handleAcceptListing(activeListing)}
+                        name={data?.name}
+                        price={activeListing?.pricePerItem}
+                        imageUrl={resolveLink(data?.image)}
+                        collection={data.collectionId}
+                      />
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
+                        Make Offer
+                      </PrimaryButton>
+                      <MakeOfferModal
+                        isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={data => handlePlaceBid(data)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
+                        Make Offer
+                      </PrimaryButton>
+                      <MakeOfferModal
+                        isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={data => handlePlaceBid(data)}
+                      />
+                    </>
+                  )}
+                  {activeAuction ? (
+                    <>
+                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
+                        Place Bid
+                      </PrimaryButton>
+                      <PlaceBidModal
+                        isOpen={activeModal === NFT_MODALS.PLACE_BID}
+                        onClose={() => setActiveModal(null)}
+                        onConfirm={price => handlePlaceAuctionBid({price})}
+                      />
+                  </>
+                  ) : null}
                 </div>
               </div>
             )}

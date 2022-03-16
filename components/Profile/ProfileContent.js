@@ -6,7 +6,7 @@ import { transformGalleryItems } from '../../Utils/helper';
 
 export default function ProfileContent({ data }) {
   const { query: { tab } } = useRouter();
-  console.log(`data`, data)
+
   if (tab === 'activity') {
     return <Activity />;
   }
@@ -15,6 +15,10 @@ export default function ProfileContent({ data }) {
     return <div>Offers content here</div>;
   }
 
+  if (tab === 'auction') {
+    return <Gallery items={transformGalleryItems(data?.auctioned)} />
+  }
+
   // default content
-  return <Gallery items={transformGalleryItems(data)} />;
+  return <Gallery items={transformGalleryItems(data?.results)} />;
 }

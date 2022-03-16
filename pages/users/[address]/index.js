@@ -34,21 +34,28 @@ export default function UserAssets(props) {
   const { address } = router.query;
 
   const tabs = [
-    { href: '/profile', name: 'NFTs (12)' },
-    { href: '/profile?tab=activity', name: 'Activity' },
-    { href: '/profile?tab=offers', name: 'Offers' }
+    { href: '', name: 'NFTs' },
+    { href: '?tab=activity', name: 'Activity' },
+    { href: '?tab=offers', name: 'Offers' },
+    { href: '?tab=auction', name: 'On Auction' }
   ];
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [selectedSort, setSelectedSort] = useState(sortList[0]);
   const total = data?.results?.length;
-  
+  const totalOnAuction = data?.auctioned?.length;
+
   return (
     <>
       <div className="lg:max-w-6xl mx-auto">
         <ProfileHeader user={user} chainIdHex={chainIdHex} address={address} total={total} />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12">
           <div className="flex col-span-12 lg:col-span-7 items-center">
-            <Tabs list={tabs} />
+            <Tabs 
+              list={tabs}
+              total={total}
+              totalOnAuction={totalOnAuction}
+              address={address}
+            />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
             <span className="mr-4"><FilterButton /></span>
@@ -57,7 +64,7 @@ export default function UserAssets(props) {
           </div>
         </section>
         <section className="mt-14">
-          <ProfileContent data={data?.results} />
+          <ProfileContent data={data} />
         </section>
       </div>
     </>
