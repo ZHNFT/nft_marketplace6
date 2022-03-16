@@ -242,7 +242,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                 {/* Could also link to profile/account within the market place instead of blockexplorer */}
                 Owned by:
                 <Link href="/users/[address]" as={`/users/${data?.owner}`} passHref>
-                  <a className="hover:text-indigo-600">
+                  <a className="hover:text-indigo-600 dark:text-white text-black">
                     {isOwner ? ' You' : ` ${data?.owner}`}
                   </a>
                 </Link>

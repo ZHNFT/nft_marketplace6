@@ -30,6 +30,10 @@ module.exports = {
       maxWidth: {
         '8xl': '90rem',
       },
+      colors: {
+        search: 'rgba(255, 255, 255, 0.05)',
+        header: 'rgba(255, 255, 255, 0.25)',
+      }
     },
   },
   variants: {

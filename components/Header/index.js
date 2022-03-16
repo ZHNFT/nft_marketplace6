@@ -17,7 +17,7 @@ export default function Header(props) {
       <Popover
         as="header"
         className={({ open }) =>
-          clsx('relative border-b border-[#bac8cf] lg:overflow-y-visible', {
+          clsx('relative border-b dark:border-header lg:overflow-y-visible', {
             'fixed inset-0 z-40 overflow-y-auto': open
           })
         }
@@ -47,7 +47,7 @@ export default function Header(props) {
                         <input
                           id="search"
                           name="search"
-                          className="block w-full bg-gradient-to-r from-[#608293] to-[#748e9b] lg:max-w-[268px] rounded-full py-2 pl-4 pr-3 border-transparent text-sm placeholder-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu sm:text-sm"
+                          className="block w-full dark:bg-search lg:max-w-[268px] rounded-full py-2 pl-4 pr-3 border-transparent text-sm dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu sm:text-sm"
                           placeholder="Explore"
                           type="search"
                         />
