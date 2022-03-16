@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import Link from 'next/link'
 import Web3Token from 'web3-token';
@@ -35,7 +36,16 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
   const marketplaceAddress = marketplaceContract?.address;
   console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
+  const [resetModal, setResetModal] = useState(null);
   console.log(`activeBids`, activeBids)
+
+  const [transactionCount, setTransactionCount] = useState(0);
+
+  // refresh server side data
+  const router = useRouter();
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
@@ -55,29 +65,47 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
       nonce: nonce
     }
 
-    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
-    const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
-    const txResult = await tx?.wait();
-    console.log(`txResult`, txResult)
-
-    let signature
-
-    ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
-    const token = await Web3Token.sign(() => signature, '1d');
-
-    console.log('token', token);
-    
-    const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(listing)
-    });
-
-    console.log(`response`, response)
-
+    // reset transaction count
+    setTransactionCount(0);
+    try {
+      const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
+      const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
+      const txResult = await tx?.wait();
+      console.log(`txResult`, txResult)
+      setTransactionCount(1);
+  
+      let signature
+  
+      ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
+      const token = await Web3Token.sign(() => signature, '1d');
+  
+      console.log('token', token);
+      setTransactionCount(2);
+      
+      const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(listing)
+      });
+  
+      console.log(`response`, response)
+      
+      if (response.status === 200) {
+        // refresh data and close modal
+        setTransactionCount(3);
+        refreshData();
+        setTimeout(() => setActiveModal(null), 2000);
+      } else {
+        throw new Error('error posting listing to database');
+      }
+    } catch (error) {
+      // reset and close modal on error
+      setResetModal(NFT_MODALS.LIST);
+      setActiveModal(null);
+    }
   }, [ethersProvider, chainId, data.tokenId, data.collectionId, data.owner, marketplaceAddress])
 
   // For non-owners to place a bid on an listing
@@ -139,6 +167,7 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
   // For the owner of the NFT to cancel their listing
   const handleCancelListing = useCallback(async function(listing) {
+    console.log(listing);
     const tx = await marketplaceContract.CancelListing(listing);
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
@@ -403,6 +432,8 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
                         imageUrl={resolveLink(data?.image)}
                         collection={data.collectionId} 
                         isOpen={activeModal === NFT_MODALS.LIST}
+                        isReset={resetModal === NFT_MODALS.LIST}
+                        transactionCount={transactionCount}
                         onClose={() => setActiveModal(null)}
                         onConfirm={handleList}
                       />

@@ -38,7 +38,7 @@ export default function CancelListingModal({ isOpen, onClose, onConfirm }) {
       cancelLabel="Never mind"
       confirmLabel="Cancel listing"
       onClose={onClose}
-      onConfirm={setIsCancelling}
+      onConfirm={() => { setIsCancelling(true); onConfirm(); }}
     />
   );
 }

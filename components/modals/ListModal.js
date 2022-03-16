@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ellipseAddress } from '../../Utils';
 import { TRANSACTION_STATUS } from '../../constants/nft';
 import TransactionList from '../Transactions/TransactionList';
@@ -7,15 +7,35 @@ import ItemPrice from '../ItemPrice/ItemPrice';
 import Modal from './Modal';
 import ListingForm from '../Forms/ListingForm';
 
-export default function ListModal({ name, imageUrl, collection, isOpen, onClose, onConfirm }) {
-  const initialData = {
+const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
+  const diff = transactionStepNumber - transactionCount;
+  if (diff === 1) {
+    return TRANSACTION_STATUS.IN_PROGRESS;
+  }
+
+  if (diff > 1) {
+    return TRANSACTION_STATUS.INACTIVE;
+  }
+
+  return TRANSACTION_STATUS.SUCCESS;
+};
+
+export default function ListModal({ name, imageUrl, collection, isOpen, isReset, transactionCount, onClose, onConfirm }) {
+  const initialData = useMemo(() => ({
     type: null,
     currency: null,
     price: null,
     duration: null,
     auctionMethod: null
-  };
+  }), []);
   const [listingData, setListingData] = useState(initialData);
+
+  useEffect(() => {
+    if (isReset) {
+      setListingData(initialData);
+    }
+  }, [initialData, isReset]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={listingData.type ? `Listing ${listingData.type === 'fixed' ? 'a Purchase' : 'an Auction' }` : 'List item for sale'}>
       {
@@ -46,21 +66,21 @@ export default function ListModal({ name, imageUrl, collection, isOpen, onClose,
                   steps={[
                     {
                       title: 'Approval to transfer',
-                      status: TRANSACTION_STATUS.IN_PROGRESS,
+                      status: getTransactionStatus({ transactionStepNumber: 1, transactionCount }),
                       isDefaultOpen: true,
                       description: 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
                     },
                     {
                       className: 'my-2',
                       title: `${listingData.type === 'auction' ? 'Transfering NFT' : 'Requesting Signature'}`,
-                      status: TRANSACTION_STATUS.INACTIVE,
+                      status: getTransactionStatus({ transactionStepNumber: 2, transactionCount }),
                       isDefaultOpen: false,
                       description: 'Description here'
                     },
                     {
                       className: 'my-2',
                       title: 'Listing of Auction has Completed',
-                      status: TRANSACTION_STATUS.INACTIVE,
+                      status: getTransactionStatus({ transactionStepNumber: 3, transactionCount }),
                       isDefaultOpen: false,
                       description: 'Description here'
                     }
