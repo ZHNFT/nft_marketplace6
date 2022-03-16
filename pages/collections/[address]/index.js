@@ -112,15 +112,6 @@ export default function Collection(props) {
                 ? <Activity />
                 : <Gallery items={transformGalleryItems(collectionData?.results)} />
             }
-            {
-              /*
-              <List
-              items={collectionData?.results}
-              setMobileFiltersOpen={setMobileFiltersOpen}
-              collection={collection}
-              />
-              */
-            }
           </div>
         </>
       </section>

@@ -17,7 +17,7 @@ export default function Header(props) {
       <Popover
         as="header"
         className={({ open }) =>
-          clsx('relative bg-gradient-to-b from-[#4e7283] to-[#517687] border-b border-[#bac8cf] lg:overflow-y-visible', {
+          clsx('relative border-b border-[#bac8cf] lg:overflow-y-visible', {
             'fixed inset-0 z-40 overflow-y-auto': open
           })
         }
@@ -59,17 +59,17 @@ export default function Header(props) {
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <ul className="flex flex-1 justify-around">
                       <li>
-                        <a href="#" className="text-base text-white hover:underline">
+                        <a href="#" className="text-base hover:underline">
                           Collections
                         </a>
                       </li>
                       <li>
-                        <a href="#" className="text-base text-white hover:underline">
+                        <a href="#" className="text-base hover:underline">
                           Marketplace
                         </a>
                       </li>
                       <li>
-                        <a href="#" className="text-base text-white hover:underline">
+                        <a href="#" className="text-base hover:underline">
                           Drops
                         </a>
                       </li>
@@ -91,10 +91,10 @@ export default function Header(props) {
                   <DarkModeSwitch />
                   <a
                     href="#"
-                    className="ml-5 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-malibu"
+                    className="ml-5 flex-shrink-0 rounded-full p-1 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-malibu"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="text-white w-[25px] pb-1.5" />
+                    <BellIcon className="w-[25px] pb-1.5" />
                   </a>
 
                   {/* Profile dropdown */}
@@ -106,8 +106,8 @@ export default function Header(props) {
                             <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
                               <span className="sr-only">Open user menu</span>
                               <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
-                              <span className="text-xs text-white pr-2 pl-2">{ ellipseAddress(address, 4) }</span>
-                              <ChevronDownIcon className="w-[16px] text-white pr-1" />
+                              <span className="text-xs pr-2 pl-2">{ ellipseAddress(address, 4) }</span>
+                              <ChevronDownIcon className="w-[16px] pr-1" />
                             </Menu.Button>
                           </div>
                           <Transition

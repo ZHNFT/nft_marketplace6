@@ -31,8 +31,7 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
   return (
     <>
       <Seo />
-      <div className="w-full h-[400px] -z-10 absolute top-[56px] left-0 bg-gradient-to-b from-[#517687] via-[#507381] to-[#fff] dark:to-[#1f2225]" />
-      <div className="min-h-full">
+      <div className="min-h-full dark:bg-[#202225]">
         <Header
           user={user}
           navigation={navigation}
@@ -42,7 +41,7 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
-            <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white">
+            <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white text-black">
               {React.Children.map(children, child => {
                 if (!React.isValidElement(child)) {
                   return null;
