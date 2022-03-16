@@ -298,14 +298,14 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             </div>
             <Tab.Group as="div">
               <div className="mt-10 ">
-                <Tab.List className="-mb-px flex space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
+                <Tab.List className="-mb-px flex items-center space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
                   <Tab
                     className={({ selected }) =>
                       clsx(
                         selected
                           ? 'bg-tabButton shadow-tabButton rounded-tab'
                           : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
                       )
                     }
                   >
@@ -317,7 +317,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                         selected
                           ? 'bg-tabButton shadow-tabButton rounded-tab'
                           : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
                       )
                     }
                   >
@@ -329,7 +329,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                         selected
                           ? 'bg-tabButton shadow-tabButton rounded-tab'
                           : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
                       )
                     }
                   >
@@ -342,9 +342,9 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                   <div className="flex flex-col mt-10">
                     <div className="overflow-x-auto">
                       <div className="align-middle inline-block min-w-full">
-                        <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                          <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <div className="overflow-hidden sm:rounded-lg">
+                          <table className="min-w-full">
+                            <thead className="text-[#969EAB]">
                               <tr>
                                 <th
                                   scope="col"
@@ -368,17 +368,17 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                                   scope="col"
                                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 >
-                                  Rarity rank <b className='text-black'>#{data?.rarityRank}</b>
+                                  Rarity rank <b className='text-white'>#{data?.rarityRank}</b>
                                 </th>
                               </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="text-[#969EAB]">
                               {data?.traits?.map((attribute) => (
                                 <tr key={attribute?.trait_type}>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{attribute?.trait_type}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.value}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.rarityPercent.toFixed(2)}%</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{attribute?.rarityScore.toFixed(2)}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{attribute?.trait_type}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.value}</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.rarityPercent.toFixed(2)}%</td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.rarityScore.toFixed(2)}</td>
                                 </tr>
                               ))}
                             </tbody>
