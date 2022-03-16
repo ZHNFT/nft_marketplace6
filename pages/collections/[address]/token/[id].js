@@ -33,7 +33,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   const activeAuction = data?.auctions?.find(auction => auction?.active);
   // there can be multiple active bids on a token at the same time
   const activeBids = data?.bids?.filter(bid => bid?.active);
-
+  
   const marketplaceAddress = marketplaceContract?.address;
   console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
@@ -165,7 +165,21 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   // For the owner of the NFT to cancel their listing
   const handleCancelListing = useCallback(async function(listing) {
     console.log('CANCEL', listing);
-    const tx = await marketplaceContract.CancelListing(listing);
+    console.log(`marketplaceContract`, marketplaceContract)
+    
+    const tx = await marketplaceContract.CancelBid({
+      contractAddress: listing?.collectionId || listing?.contractAddress,
+      userAddress: listing.userAddress,
+      tokenId: listing.tokenId,
+      pricePerItem: listing.pricePerItem,
+      quantity: listing.quantity,
+      expiry: listing.expiry,
+      nonce: listing.nonce,
+      r: listing.r,
+      s: listing.s,
+      v: listing.v,
+    });
+    console.log(`tx`, tx)
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
     setTransactionCount(1);
@@ -454,7 +468,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                     </>
                   ) : (
                     <>
-                      <div className='text-black'>
+                      <div>
                         <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
                         <p>{`Untill ${fromUnixTime(activeListing?.expiry)}`}</p>
                       </div>
@@ -481,6 +495,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                             await handleCancelListing(activeListing);
                             onModalSuccess({ modal: NFT_MODALS.UNLIST, transactionCount: 2 });
                           } catch(error) {
+                            console.log(`error`, error)
                             // reset modal on error
                             setResetModal(NFT_MODALS.UNLIST);
                           }
