@@ -33,7 +33,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   const activeAuction = data?.auctions?.find(auction => auction?.active);
   // there can be multiple active bids on a token at the same time
   const activeBids = data?.bids?.filter(bid => bid?.active);
-  
+
   const marketplaceAddress = marketplaceContract?.address;
   console.log(`data`, data)
   const [activeModal, setActiveModal] = useState(null);
@@ -297,27 +297,27 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
               </p>
             </div>
             <Tab.Group as="div">
-              <div className="border-b border-gray-200 border-t border-gray-200 mt-10 ">
-                <Tab.List className="-mb-px flex space-x-8">
+              <div className="mt-10 ">
+                <Tab.List className="-mb-px flex space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
                   <Tab
                     className={({ selected }) =>
                       clsx(
                         selected
-                          ? 'border-indigo-600'
-                          : 'border-transparent text-[#969EAB] hover:text-gray-800 hover:border-gray-300',
-                        'whitespace-nowrap py-6 border-b-2 font-medium text-sm'
+                          ? 'bg-tabButton shadow-tabButton rounded-tab'
+                          : 'text-[#969EAB] hover:text-white',
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
                       )
                     }
                   >
-                    Traits
+                    Properties
                   </Tab>
                   <Tab
                     className={({ selected }) =>
                       clsx(
                         selected
-                          ? 'border-indigo-600'
-                          : 'border-transparent text-[#969EAB] hover:text-gray-800 hover:border-gray-300',
-                        'whitespace-nowrap py-6 border-b-2 font-medium text-sm'
+                          ? 'bg-tabButton shadow-tabButton rounded-tab'
+                          : 'text-[#969EAB] hover:text-white',
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
                       )
                     }
                   >
@@ -327,9 +327,9 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                     className={({ selected }) =>
                       clsx(
                         selected
-                          ? 'border-indigo-600'
-                          : 'border-transparent text-[#969EAB] hover:text-gray-800 hover:border-gray-300',
-                        'whitespace-nowrap py-6 border-b-2 font-medium text-sm'
+                          ? 'bg-tabButton shadow-tabButton rounded-tab'
+                          : 'text-[#969EAB] hover:text-white',
+                        'whitespace-nowrap font-medium text-sm w-[115px] h-[35px]'
                       )
                     }
                   >
@@ -419,7 +419,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                 </Tab.Panel>
 
                 <Tab.Panel className="pt-10" as="dl">
-                    <h3 className="text-sm font-medium text-gray-900">Description</h3>
+                    <h3 className="text-sm font-medium">Description</h3>
                     <div className="mt-4 prose prose-sm text-gray-500">
                       <ReactMarkdown
                         className='mt-6 whitespace-pre-line'
