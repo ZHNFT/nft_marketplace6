@@ -24,7 +24,8 @@ import CancelListingModal from '../../../../components/modals/CancelListingModal
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
+export default function Nft({ data: serverData, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
+  const [data, setData] = useState(serverData)
   const isOwner = data?.owner === address?.toLowerCase() || false;
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
@@ -43,15 +44,20 @@ export default function Nft({ data, chainIdHex, chainId, address, connect, ether
 
   // refresh server side data
   const router = useRouter();
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath, undefined, { scroll: false });
-  }, [router]);
+  const { address: contractAddress, id } = router.query;
+
+  const fetchData = useCallback(async function() {
+    const url = `https://hexagon-api.onrender.com/collections/${contractAddress}/token/${id}`;
+    const res = await fetch(url)
+    const data = await res?.json()
+    setData(data);
+  }, [contractAddress, id])
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
   // reset and close modal
   const onModalSuccess = ({ modal, transactionCount }) => {
-    refreshData();
+    fetchData();
     setTransactionCount(transactionCount);
     setTimeout(() => setActiveModal(null), 300);
     setTimeout(() => setResetModal(modal), 400);
