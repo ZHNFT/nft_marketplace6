@@ -13,6 +13,8 @@ import AuctionIcon from './AuctionIcon';
 import CartIcon from './CartIcon';
 import ViewIcon from './ViewIcon';
 import RefreshIcon from './RefreshIcon';
+import SearchIcon from './SearchIcon';
+import DiamondIcon from './DiamondIcon';
 
 export {
   BeeIcon,
@@ -29,5 +31,7 @@ export {
   AuctionIcon,
   CartIcon,
   ViewIcon,
-  RefreshIcon
+  RefreshIcon,
+  SearchIcon,
+  DiamondIcon
 }

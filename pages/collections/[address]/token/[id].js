@@ -1,15 +1,18 @@
 import { Fragment, useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import { ethers } from "ethers";
-import Link from 'next/link'
 import clsx from "clsx";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import Web3Token from 'web3-token';
 import { Tab } from '@headlessui/react'
+import { BeeIcon } from '../../../../components/icons';
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
 import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
+import { convertToUsd } from '../../../../Utils/helper';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
+import SecondaryButton from '../../../../components/Buttons/SecondaryButton';
 import ListModal from '../../../../components/modals/ListModal';
 import PlaceBidModal from '../../../../components/modals/PlaceBidModal';
 import MakeOfferModal from '../../../../components/modals/MakeOfferModal';
@@ -18,6 +21,9 @@ import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
+import Activity from '../../../../components/Product/Activity';
+import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
+import TraitsTable from '../../../../components/Traits/TraitsTable';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -31,6 +37,8 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   const activeAuction = data?.auctions?.find(auction => auction?.active);
   // there can be multiple active bids on a token at the same time
   const activeBids = data?.bids?.filter(bid => bid?.active);
+
+  console.log(data);
 
   console.log(`activeListing`, activeListing)
   console.log(`activeAuction`, activeAuction)
@@ -321,10 +329,249 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
           {/* Product details */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
+              name={data?.name}
+              owner={data?.owner}
+              isOwner={isOwner}
+              address={address}
+              lastSalePrice={38.7}
+              rarityRank={data?.rarityRank}
             />
             
+            <div className={clsx(
+              'min-h-[80px] border-[0.5px] rounded-xl mt-4 flex py-2 px-4 text-xs items-center',
+              !activeListing && !activeAuction ? 'border-manatee' : 'border-cornflower'
+            )}>
+              { isOwner ? (<>
+                  { // Owner & not listed
+                    !activeListing && !activeAuction  && (
+                      <>
+                        <p className="text-manatee font-medium">This items is not currently listed</p>
+                        <div className="ml-auto">
+                          {
+                            !!data?.highestBid && (
+                              <SecondaryButton
+                                className="border-manatee mr-4 text-ink dark:text-white"
+                                onClick={() => console.log('view offers')}
+                              >
+                                View offers
+                              </SecondaryButton>
+                            )
+                          }
+                          <SecondaryButton
+                            className="border-cornflower min-w-[98px] text-ink dark:text-white"
+                            onClick={() => handleModal(NFT_MODALS.LIST)}
+                          >
+                            List item
+                          </SecondaryButton>
+                          <ListModal
+                            name={data?.name}
+                            imageUrl={resolveLink(data?.image)}
+                            collection={data.collectionId} 
+                            isOpen={activeModal === NFT_MODALS.LIST}
+                            isReset={resetModal === NFT_MODALS.LIST}
+                            transactionCount={activeModal === NFT_MODALS.LIST ? transactionCount : null}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={async data => {
+                              try {
+                                setTransactionCount(0);
+                                console.log(`data`, data)
+                                data?.auctionType === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
+                                onModalSuccess({ modal: NFT_MODALS.LIST, transactionCount: 3 });
+                              } catch(error) {
+                                console.log(error);
+                                // reset modal on error
+                                setResetModal(NFT_MODALS.LIST);
+                              }
+                            }}
+                          />
+                        </div>
+                      </>
+                    )
+                  }
+
+                  { // Owner & for sale
+                    activeListing && (
+                      <>
+                        <div>
+                          <p className="mb-1">
+                            <span className="text-xs text-manatee mr-2.5 font-medium">Price</span>
+                            <button
+                              type="button"
+                              className="font-light text-xs text-cornflower"
+                              onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}
+                            >
+                              Change
+                            </button>
+                            <ChangePriceModal
+                              isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
+                              onClose={() => setActiveModal(null)}
+                              onConfirm={async data => {
+                                console.log(`data`, data)
+                                await handleChangePrice(activeListing, data)
+                              }}
+                            />
+                          </p>
+                          <div className="flex items-baseline relative">
+                            <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                            <span className="text-base font-medium ml-6">{activeListing.pricePerItem / 1000000000}</span>
+                            <span className="text-xs text-manatee ml-2">$ { convertToUsd({ value: activeListing.pricePerItem }) }</span>
+                          </div>
+                        </div>
+                        <div className="ml-auto items-center flex">
+                          <button
+                            type="button"
+                            className="font-light text-xs text-cornflower mr-4"
+                            onClick={() => handleModal(NFT_MODALS.UNLIST)}
+                          >
+                            Remove listing
+                          </button>
+                          {
+                            data?.highestBid
+                              ? (
+                                <SecondaryButton
+                                  className="border-manatee text-ink dark:text-white"
+                                  onClick={() => console.log('view offers')}
+                                >
+                                  View offers
+                                </SecondaryButton>
+                              )
+                              : <p className="text-manatee">No offers</p>
+                          }
+                          <CancelListingModal
+                            isOpen={activeModal === NFT_MODALS.UNLIST}
+                            isReset={resetModal === NFT_MODALS.UNLIST}
+                            transactionCount={activeModal === NFT_MODALS.UNLIST ? transactionCount : null}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={async () => {
+                              try {
+                                setTransactionCount(0);
+                                await handleCancelListing(activeListing);
+                                onModalSuccess({ modal: NFT_MODALS.UNLIST, transactionCount: 2 });
+                              } catch(error) {
+                                console.log(`error`, error)
+                                // reset modal on error
+                                setResetModal(NFT_MODALS.UNLIST);
+                              }
+                            }}
+                          />
+                        </div>
+                      </>
+                    )
+                  }
+
+                  { // Owner & in auction
+                    activeAuction && (
+                      <>
+                        <div>
+                          <p className="text-xs text-manatee">No bids yet</p>
+                        </div>
+                      </>
+                    )
+                  }
+                </>)
+                : (<>
+                  { // Not owner & not listed
+                    !activeListing && !activeAuction && (
+                      <>
+                        <p className="text-manatee font-medium">This items is not currently listed</p>
+                        <div className="ml-auto">
+                          <SecondaryButton
+                            className="border-manatee text-ink dark:text-white"
+                            onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}
+                          >
+                            Make offer
+                          </SecondaryButton>
+                          {
+                            !!data?.highestBid && (
+                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid / 1000000000} /></p>
+                            )
+                          }
+                          <MakeOfferModal
+                            isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={data => handlePlaceBid(data)}
+                          />
+                        </div>
+                      </>
+                    )
+                  }
+
+                  { // Not owner & for sale
+                    activeListing && (
+                      <>
+                        <div>
+                          <p className="mb-1">
+                            <span className="text-xs text-manatee mr-2.5 font-medium">Price</span>
+                          </p>
+                          <div className="flex items-baseline relative">
+                            <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                            <span className="text-base font-medium ml-6">{activeListing.pricePerItem / 1000000000}</span>
+                            <span className="text-xs text-manatee ml-2">$ { convertToUsd({ value: activeListing.pricePerItem }) }</span>
+                          </div>
+                        </div>
+                        <div className="ml-auto flex">
+                          <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
+                            Buy now
+                          </PrimaryButton>
+                          <div className="flex relative">
+                            <SecondaryButton
+                              className="border-manatee text-ink dark:text-white"
+                              onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}
+                            >
+                              Make offer
+                            </SecondaryButton>
+                            {
+                              !!data?.highestBid && (
+                                <p className="text-center absolute left-0 right-0 -bottom-[12px] text-xxs h-[12px]">
+                                  <ItemPrice label="Highest" value={data?.highestBid / 1000000000} />
+                                </p>
+                              )
+                            }
+                          </div>
+                          <BuyNowModal
+                            isOpen={activeModal === NFT_MODALS.BUY_NOW}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={() => handleAcceptListing(activeListing)}
+                            name={data?.name}
+                            price={activeListing?.pricePerItem}
+                            imageUrl={resolveLink(data?.image)}
+                            collection={data.collectionId}
+                          />
+                          <MakeOfferModal
+                            isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={data => handlePlaceBid(data)}
+                          />
+                        </div>
+                      </>
+                    )
+                  }
+
+                  { // Not owner & in auction
+                    activeAuction && (
+                      <>
+                        <div>
+                          <p className="text-xs text-manatee">No bids yet</p>
+                        </div>
+                        <div>
+                          <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
+                            Place Bid
+                          </PrimaryButton>
+                          <PlaceBidModal
+                            isOpen={activeModal === NFT_MODALS.PLACE_BID}
+                            onClose={() => setActiveModal(null)}
+                            onConfirm={price => handlePlaceAuctionBid({price})}
+                          />
+                        </div>
+                      </>
+                    )
+                  }
+                </>)
+              }
+            </div>
+            
             <Tab.Group as="div">
-              <div className="mt-10 ">
+              <div className="mt-4">
                 <Tab.List className="-mb-px flex items-center space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
                   <Tab
                     className={({ selected }) =>
@@ -366,50 +613,11 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
               </div>
               <Tab.Panels as={Fragment}>
                 <Tab.Panel as="dl">
-                  <div className="flex flex-col mt-10">
+                  <div className="flex flex-col mt-2">
                     <div className="overflow-x-auto">
                       <div className="align-middle inline-block min-w-full">
                         <div className="overflow-hidden sm:rounded-lg">
-                          <table className="min-w-full">
-                            <thead className="text-[#969EAB]">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Name/Type
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Property/Value
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Rarity %
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  Rarity rank <b className='text-white'>#{data?.rarityRank}</b>
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="text-[#969EAB]">
-                              {data?.traits?.map((attribute) => (
-                                <tr key={attribute?.trait_type}>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{attribute?.trait_type}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.value}</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.rarityPercent.toFixed(2)}%</td>
-                                  <td className="px-6 py-4 whitespace-nowrap text-sm">{attribute?.rarityScore.toFixed(2)}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                          <TraitsTable traits={data?.traits} />
                         </div>
                       </div>
                     </div>
@@ -464,143 +672,9 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             </Tab.Group>
           </div>
         </div>
-        <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
-            {isOwner ? (
-              <div>
-                <div className="grid grid-cols-1 pt-6">
-                  {!activeListing && !activeAuction ? (
-                    <>
-                      <PrimaryButton onClick={() => handleModal(NFT_MODALS.LIST)}>
-                        List
-                      </PrimaryButton>
-                      <ListModal
-                        name={data?.name}
-                        imageUrl={resolveLink(data?.image)}
-                        collection={data.collectionId} 
-                        isOpen={activeModal === NFT_MODALS.LIST}
-                        isReset={resetModal === NFT_MODALS.LIST}
-                        transactionCount={activeModal === NFT_MODALS.LIST ? transactionCount : null}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={async data => {
-                          try {
-                            setTransactionCount(0);
-                            console.log(`data`, data)
-                            data?.auctionType === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
-                            onModalSuccess({ modal: NFT_MODALS.LIST, transactionCount: 3 });
-                          } catch(error) {
-                            // reset modal on error
-                            setResetModal(NFT_MODALS.LIST);
-                          }
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      {activeAuction ? (
-                        <div>
-                          <p>{`Min bid is ${activeAuction?.minBid / 1000000000} ETH`}</p>
-                        </div>
-                      ) : (
-                        <>
-                          <div>
-                            <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
-                          </div>
-                          <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
-                            Change Price
-                          </PrimaryButton>
-                          <ChangePriceModal
-                            isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
-                            onClose={() => setActiveModal(null)}
-                            onConfirm={async data => {
-                              console.log(`data`, data)
-                              await handleChangePrice(activeListing, data)
-                            }}
-                          />
-
-                          <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.UNLIST)}>
-                            Cancel Listing
-                          </PrimaryButton>
-                          <CancelListingModal
-                            isOpen={activeModal === NFT_MODALS.UNLIST}
-                            isReset={resetModal === NFT_MODALS.UNLIST}
-                            transactionCount={activeModal === NFT_MODALS.UNLIST ? transactionCount : null}
-                            onClose={() => setActiveModal(null)}
-                            onConfirm={async () => {
-                              try {
-                                setTransactionCount(0);
-                                await handleCancelListing(activeListing);
-                                onModalSuccess({ modal: NFT_MODALS.UNLIST, transactionCount: 2 });
-                              } catch(error) {
-                                console.log(`error`, error)
-                                // reset modal on error
-                                setResetModal(NFT_MODALS.UNLIST);
-                              }
-                            }}
-                          />
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div className="grid grid-cols-1 pt-6">
-                  {activeListing ? (
-                    <>
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
-                        Buy Now
-                      </PrimaryButton>
-                      <BuyNowModal
-                        isOpen={activeModal === NFT_MODALS.BUY_NOW}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={() => handleAcceptListing(activeListing)}
-                        name={data?.name}
-                        price={activeListing?.pricePerItem}
-                        imageUrl={resolveLink(data?.image)}
-                        collection={data.collectionId}
-                      />
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
-                        Make Offer
-                      </PrimaryButton>
-                      <MakeOfferModal
-                        isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={data => handlePlaceBid(data)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}>
-                        Make Offer
-                      </PrimaryButton>
-                      <MakeOfferModal
-                        isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={data => handlePlaceBid(data)}
-                      />
-                    </>
-                  )}
-                  {activeAuction ? (
-                    <>
-                      <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
-                        Place Bid
-                      </PrimaryButton>
-                      <PlaceBidModal
-                        isOpen={activeModal === NFT_MODALS.PLACE_BID}
-                        onClose={() => setActiveModal(null)}
-                        onConfirm={price => handlePlaceAuctionBid({price})}
-                      />
-                  </>
-                  ) : null}
-                </div>
-              </div>
-            )}
-          </div>
-          {/* Activity */}
-          <div>
-            Here comes the activity feed/table
-          </div>
+        
+        <h2 className="mt-12 mb-4">Activity</h2>
+        <Activity />
       </div>
     </div>
   );
