@@ -2,17 +2,13 @@ import { Fragment, useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import Link from 'next/link'
-import Web3Token from 'web3-token';
-import { add, fromUnixTime } from 'date-fns';
-import Image from 'next/image'
 import clsx from "clsx";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { StarIcon } from '@heroicons/react/solid'
 import { Tab } from '@headlessui/react'
-import { resolveLink, resolveBunnyLink } from '../../../../Utils';
+import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
-import { NFT_MODALS } from '../../../../constants/nft';
+import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import ListModal from '../../../../components/modals/ListModal';
 import PlaceBidModal from '../../../../components/modals/PlaceBidModal';
@@ -20,7 +16,8 @@ import MakeOfferModal from '../../../../components/modals/MakeOfferModal';
 import BuyNowModal from '../../../../components/modals/BuyNowModal';
 import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
-import NotFoundImage from "../../../../images/No-Image-Placeholder.png";
+import ProductPreview from '../../../../components/Product/ProductPreview';
+import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -305,48 +302,27 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
-      <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-8xl lg:px-8">
+      <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-6xl">
         {/* Product */}
-        <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
-          {/* Product image */}
-          <div className="lg:col-span-3">
-            <div className="aspect-w-4 aspect-h-4 rounded-lg bg-gray-100 overflow-hidden">
-              {data?.image ? (
-                <Image
-                src={`${resolveBunnyLink(data?.image)}?optimizer=image&width=600&height=600`}
-                alt={data?.tokenId}
-                className="object-center object-cover"
-                layout="fill" 
-              /> 
-              ) : (
-                <Image
-                  src={NotFoundImage}
-                  alt={data?.tokenId}
-                  className="object-center object-cover"
-                  layout="fill" 
-                /> 
-              )}
-            </div>
-          </div>
+        <div className="lg:grid lg:grid-cols-8 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
+          {/* Product Image/Preview */}
+          <ProductPreview
+            className="lg:col-span-4 lg:max-w-[472px]"
+            name={data?.name}
+            image={data?.image}
+            expiry={activeAuction?.expiry || activeListing?.expiry}
+            listingState={(() => {
+              if (activeAuction) return NFT_LISTING_STATE.IN_AUCTION;
+              if (activeListing) return NFT_LISTING_STATE.FOR_SALE;
+              return NFT_LISTING_STATE.NOT_LISTED;
+            })()}
+          />
 
           {/* Product details */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
-            <div className="flex flex-col">
-              <h1 className="text-2xl tracking-tight sm:text-3xl">{data?.name}</h1>
-
-              <h2 id="information-heading" className="sr-only">
-                NFT information
-              </h2>
-              <p className="text-sm text-[#969EAB] mt-2">
-                {/* Could also link to profile/account within the market place instead of blockexplorer */}
-                Owned by:
-                <Link href="/users/[address]" as={`/users/${data?.owner}`} passHref>
-                  <a className="hover:text-indigo-600 dark:text-white text-black">
-                    {isOwner ? ' You' : ` ${data?.owner}`}
-                  </a>
-                </Link>
-              </p>
-            </div>
+            <ProductDetailsHeader
+            />
+            
             <Tab.Group as="div">
               <div className="mt-10 ">
                 <Tab.List className="-mb-px flex items-center space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
@@ -523,13 +499,11 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                       {activeAuction ? (
                         <div>
                           <p>{`Min bid is ${activeAuction?.minBid / 1000000000} ETH`}</p>
-                          <p>{`Untill ${fromUnixTime(activeAuction?.expiry)}`}</p>
                         </div>
                       ) : (
                         <>
                           <div>
                             <p>{`Listed for ${activeListing?.pricePerItem / 1000000000} ETH`}</p>
-                            <p>{`Untill ${fromUnixTime(activeListing?.expiry)}`}</p>
                           </div>
                           <PrimaryButton className="mt-4" onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}>
                             Change Price

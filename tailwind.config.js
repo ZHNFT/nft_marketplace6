@@ -39,6 +39,9 @@ module.exports = {
       boxShadow: {
         tab: '0px 1px 0px #282D34, inset 2px -3px 10px rgba(21, 23, 26, 0.2), inset 4px 4px 10px rgba(21, 23, 26, 0.7)',
         tabButton: '1px 1px 4px #15171A'
+      },
+      fontSize: {
+        xxs: '10px'
       }
     },
   },

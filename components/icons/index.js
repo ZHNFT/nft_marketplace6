@@ -11,6 +11,8 @@ import RefreshClockIcon from './RefreshClockIcon';
 import PulseIcon from './PulseIcon';
 import AuctionIcon from './AuctionIcon';
 import CartIcon from './CartIcon';
+import ViewIcon from './ViewIcon';
+import RefreshIcon from './RefreshIcon';
 
 export {
   BeeIcon,
@@ -25,5 +27,7 @@ export {
   RefreshClockIcon,
   PulseIcon,
   AuctionIcon,
-  CartIcon
+  CartIcon,
+  ViewIcon,
+  RefreshIcon
 }
