@@ -44,14 +44,15 @@ export default function ItemMain({ isOwner, isActive, name, listingState, auctio
                     <div className="w-full mx-[14px] flex justify-center">
                       {
                         listingState === NFT_LISTING_STATE.FOR_SALE && (
-                          <PrimaryButton className="w-[85px] h-[30px] mr-[6px]" size="sml" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
+                          <PrimaryButton className="w-[85px] h-[30px] mr-[6px]" size="sm" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
                         )
                       }
                       <div className="relative flex flex-col ml-[6px]">
                         {
                           !isOwner && (
                             <SecondaryButton
-                              className="w-[85px] h-[30px]"
+                              className="h-[30px]"
+                              size="xs"
                               onClick={event => {
                                 event.preventDefault();
                                 setActiveModal({ type: NFT_MODALS.MAKE_OFFER });
@@ -81,6 +82,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, auctio
                       <div className="relative flex flex-col">
                         <SecondaryButton
                           className="w-[85px]"
+                          size="xs"
                           onClick={event => {
                             event.preventDefault();
                             setActiveModal({ type: NFT_MODALS.PLACE_BID });
