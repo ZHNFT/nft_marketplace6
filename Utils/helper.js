@@ -15,32 +15,27 @@ const formatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2 // (causes 2500.99 to be printed as $2,501)
 });
 
-const getListingData = (item) => {
-  // hardcoded values for testing
-  return {
-    listingState: NFT_LISTING_STATE.NOT_LISTED,
-    price: 0,
-    lastSalePrice: 2,
-    topOffer: null
-  };
-};
-
 const transformGalleryItem = (item) => {
-    const { name, collectionId, image, tokenId, owner } = item;
-    const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
-    
+    console.log(`item`, item)
+    const { name, collectionId, image, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice } = item;
+    // there can only be one active listing or auction for a token at the same time
+    const activeListing = item?.listings?.find(listing => listing?.active);
+    // there can only be one active auction or listing for a token at the same time
+    const activeAuction = item?.auction;
     return {
       name,
       collectionName: ellipseAddress(collectionId, 4),
       tokenId,
       collectionId,
       imageUrl: image,
-      auctionEndDate: null,
-      listingState,
-      price,
+      owner,
+      activeListing,
+      activeAuction,
       lastSalePrice,
-      topOffer,
-      owner
+      highestBid,
+      highestPrice,
+      lowestBid,
+      lowestPrice
     };
   };
 

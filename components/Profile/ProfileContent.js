@@ -5,6 +5,7 @@ import Activity from './Activity';
 
 export default function ProfileContent({ data }) {
   const { query: { tab } } = useRouter();
+  console.log(`data`, data)
 
   if (tab === 'activity') {
     return <Activity />;
@@ -15,7 +16,7 @@ export default function ProfileContent({ data }) {
   }
 
   if (tab === 'auction') {
-    return <Gallery items={data?.auctioned} />
+    return <Gallery items={data?.auctioned} listing="auctioned" />
   }
 
   // default content

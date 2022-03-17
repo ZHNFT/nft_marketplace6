@@ -10,10 +10,15 @@ import ItemListingState from './ItemListingState';
 
 export default function GalleryItem({ item }) {
   const [isHovering, setIsHovering] = useState(false);
-  const { owner, name, collectionName, listingState, price, lastSalePrice, topOffer, auctionEndDate, imageUrl } = item;
+  const { owner, name, collectionName, imageUrl, activeListing, activeAuction, lastSalePrice, highestBid } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
-  console.log(`item`, item)
+  console.log(`activeAuction`, activeAuction)
+  const listingState = activeListing ? NFT_LISTING_STATE.FOR_SALE : activeAuction ? NFT_LISTING_STATE.IN_AUCTION : NFT_LISTING_STATE.NOT_LISTED;
+  const listing = activeListing ? activeListing : activeAuction ? activeAuction : null;
+  console.log(`listing`, listing)
+  console.log(`listingState`, listingState)
+
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
@@ -34,25 +39,24 @@ export default function GalleryItem({ item }) {
           isOwner={isOwner}
           isActive={isHovering}
           name={name}
-          listingState={listingState}
-          auctionEndDate={auctionEndDate}
           imageUrl={imageUrl}
-          topOffer={topOffer}
+          listingState={listingState}
+          highestBid={highestBid}
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
           <div className="flex h-[24px] justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
-            <ItemListingState listingState={listingState} price={price} auctionEndDate={auctionEndDate} />
+            <ItemListingState listingState={listingState} />
           </div>
           <div className="flex justify-between pt-[5px] items-baseline">
             <span>{ !!lastSalePrice && <ItemPrice label="Last sale" value={lastSalePrice} /> }</span>
             <span>
               {
                 // TODO: convert date to days/timer left
-                auctionEndDate && <span className="text-xs">12h 32m 12s</span>
+                listing?.expiry ? <span className="text-xs">{listing?.expiry}</span> : null
               }
               {
-                listingState !== NFT_LISTING_STATE.IN_AUCTION && topOffer && (
-                  <ItemPrice label="Top offer" value={topOffer} />
+                listingState !== NFT_LISTING_STATE.IN_AUCTION && highestBid && (
+                  <ItemPrice label="Top offer" value={highestBid} />
                 )
               }
             </span>
