@@ -10,14 +10,11 @@ import ItemListingState from './ItemListingState';
 
 export default function GalleryItem({ item }) {
   const [isHovering, setIsHovering] = useState(false);
-  const { owner, name, collectionName, imageUrl, activeListing, activeAuction, lastSalePrice, highestBid } = item;
+  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice  } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
-  console.log(`activeAuction`, activeAuction)
-  const listingState = activeListing ? NFT_LISTING_STATE.FOR_SALE : activeAuction ? NFT_LISTING_STATE.IN_AUCTION : NFT_LISTING_STATE.NOT_LISTED;
-  const listing = activeListing ? activeListing : activeAuction ? activeAuction : null;
-  console.log(`listing`, listing)
-  console.log(`listingState`, listingState)
+  const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
+  const listing = activeAuction ? activeAuction : lowestPrice !== 0 ? { highestPrice, lowestPrice } : null;
 
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
@@ -41,7 +38,7 @@ export default function GalleryItem({ item }) {
           name={name}
           imageUrl={imageUrl}
           listingState={listingState}
-          highestBid={highestBid}
+          listing={listing}
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
           <div className="flex h-[24px] justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">

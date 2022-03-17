@@ -5,7 +5,6 @@ import Activity from './Activity';
 
 export default function ProfileContent({ data }) {
   const { query: { tab } } = useRouter();
-  console.log(`data`, data)
 
   if (tab === 'activity') {
     return <Activity />;

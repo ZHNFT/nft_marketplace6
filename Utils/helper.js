@@ -17,11 +17,10 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 const transformGalleryItem = (item) => {
     console.log(`item`, item)
+    // highestPrice/lowestPrice is only for listings
     const { name, collectionId, image, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice } = item;
-    // there can only be one active listing or auction for a token at the same time
-    const activeListing = item?.listings?.find(listing => listing?.active);
     // there can only be one active auction or listing for a token at the same time
-    const activeAuction = item?.auction;
+    const activeAuction = item?.auctions?.find(auction => auction?.active);
     return {
       name,
       collectionName: ellipseAddress(collectionId, 4),
@@ -29,7 +28,6 @@ const transformGalleryItem = (item) => {
       collectionId,
       imageUrl: image,
       owner,
-      activeListing,
       activeAuction,
       lastSalePrice,
       highestBid,
