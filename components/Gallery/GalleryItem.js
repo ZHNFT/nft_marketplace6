@@ -13,7 +13,7 @@ export default function GalleryItem({ item }) {
   const { owner, name, collectionName, listingState, price, lastSalePrice, topOffer, auctionEndDate, imageUrl } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
-
+  console.log(`item`, item)
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 

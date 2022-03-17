@@ -25,8 +25,7 @@ const getListingData = (item) => {
   };
 };
 
-const transformGalleryItems = (items) => (
-  items.map(item => {
+const transformGalleryItem = (item) => {
     const { name, collectionId, image, tokenId, owner } = item;
     const  { listingState, price, lastSalePrice, topOffer } = getListingData(item);
     
@@ -43,8 +42,7 @@ const transformGalleryItems = (items) => (
       topOffer,
       owner
     };
-  })
-);
+  };
 
 const convertToUsd = ({ value }) => (
   // hardcoded rate for testing
@@ -72,7 +70,7 @@ const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
 export {
   formatCurrency,
   formatter,
-  transformGalleryItems,
+  transformGalleryItem,
   convertToUsd,
   getTransactionStatus
 };

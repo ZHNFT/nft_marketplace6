@@ -11,8 +11,6 @@ import Activity from '../../../components/Collection/Activity';
 import Gallery from '../../../components/Gallery/Gallery';
 import SortOptions from '../../../components/sortOptions';
 
-import { transformGalleryItems } from '../../../Utils/helper';
-
 const url = `https://hexagon-api.onrender.com/collections/`;
 
 const itemsFilterList = [
@@ -110,7 +108,7 @@ export default function Collection(props) {
             {
               tab === 'activity'
                 ? <Activity />
-                : <Gallery items={transformGalleryItems(collectionData?.results)} />
+                : <Gallery items={collectionData?.results} />
             }
           </div>
         </>

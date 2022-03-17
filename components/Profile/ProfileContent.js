@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import Gallery from '../Gallery/Gallery';
 import Activity from './Activity';
-import { transformGalleryItems } from '../../Utils/helper';
 
 export default function ProfileContent({ data }) {
   const { query: { tab } } = useRouter();
@@ -16,9 +15,9 @@ export default function ProfileContent({ data }) {
   }
 
   if (tab === 'auction') {
-    return <Gallery items={transformGalleryItems(data?.auctioned)} />
+    return <Gallery items={data?.auctioned} />
   }
 
   // default content
-  return <Gallery items={transformGalleryItems(data?.results)} />;
+  return <Gallery items={data?.results} />;
 }
