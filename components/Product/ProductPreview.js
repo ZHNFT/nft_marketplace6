@@ -44,7 +44,7 @@ export default function ProductPreview({ className, name, image, expiry, listing
             </div>
           )
         }
-        <div className="aspect-w-4 aspect-h-4 rounded-lg bg-gray-100 overflow-hidden">
+        <div className="aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
           {image ? (
             <Image
             src={`${resolveBunnyLink(image)}?optimizer=image&width=600&height=600`}
