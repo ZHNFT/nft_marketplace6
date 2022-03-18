@@ -2,8 +2,6 @@ import { Fragment, useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import clsx from "clsx";
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import Web3Token from 'web3-token';
 import { Tab } from '@headlessui/react'
 import Link from 'next/link';
@@ -22,6 +20,8 @@ import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
+import ProductDetails from '../../../../components/Product/ProductDetails';
+import ProductCollection from '../../../../components/Product/ProductCollection';
 import Activity from '../../../../components/Product/Activity';
 import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
@@ -43,12 +43,21 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   console.log(`activeListing`, activeListing)
   console.log(`activeAuction`, activeAuction)
   console.log(`activeBids`, activeBids)
+
+  console.log(serverData);
   
   const marketplaceAddress = marketplaceContract?.address;
 
   const [activeModal, setActiveModal] = useState(null);
   const [resetModal, setResetModal] = useState(null);
   const [transactionCount, setTransactionCount] = useState(null);
+  const PRODUCT_TABS = [
+    { id: 'properties', label: 'Properties', active: true },
+    { id: 'offers', label: 'Offers', active: !!activeListing },
+    { id: 'bids', label: 'Bids', active: !!activeAuction },
+    { id: 'collection', label: 'Collection', active: true },
+    { id: 'details', label: 'Details', active: true }
+  ];
 
   // refresh server side data
   const router = useRouter();
@@ -331,7 +340,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
             })()}
           />
 
-          {/* Product details */}
+          {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
               name={data?.name}
@@ -577,101 +586,88 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
             
             <Tab.Group as="div">
               <div className="mt-4">
-                <Tab.List className="-mb-px flex items-center space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Properties
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Bids
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Details
-                  </Tab>
+                <Tab.List className="-mb-px flex items-center justify-between space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
+                  {
+                    PRODUCT_TABS.filter(tab => tab.active).map(({ id, label }) => (
+                      <Tab
+                        key={id}
+                        className={({ selected }) =>
+                          clsx(
+                            selected
+                              ? 'bg-tabButton shadow-tabButton rounded-tab'
+                              : 'text-[#969EAB] hover:text-white',
+                            'whitespace-nowrap font-medium text-xs w-[115px] h-[34px]'
+                          )
+                        }
+                      >
+                        { label }
+                      </Tab>
+                    ))
+                  }
                 </Tab.List>
               </div>
               <Tab.Panels as={Fragment}>
+
+                {/* Properties tab */}
                 <Tab.Panel as="dl">
-                  <div className="flex flex-col mt-2">
-                    <div className="overflow-x-auto">
-                      <div className="align-middle inline-block min-w-full">
-                        <div className="overflow-hidden sm:rounded-lg">
-                          <TraitsTable traits={data?.traits} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <TraitsTable traits={data?.traits} />
+                </Tab.Panel>
+                
+                {
+                  activeAuction && (
+                    <Tab.Panel as="dl" className="text-sm text-gray-500">
+                      {activeBids?.map((bid) => (
+                        <Fragment key={bid._id}>
+                          <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
+                          <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
+                            <p>{bid.pricePerItem}</p>
+                          </dd>
+                          {bid?.userAddress === address && (
+                            <button
+                              type="button"
+                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                              onClick={() => handleCancelBid(bid)}
+                            >
+                              Cancel Bid
+                            </button>
+                          )}
+                          {isOwner && (
+                              <button
+                              type="button"
+                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                              onClick={() => handleAcceptBid(bid)}
+                            >
+                              Accept Bid
+                            </button>
+                          )}
+                        </Fragment>
+                      ))}
+                    </Tab.Panel>
+                  )
+                }
+
+                {/* Collection tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductCollection
+                    collectionId={data?.collectionId}
+                    itemCount="48K"
+                    ownerCount="36.1K"
+                    volume="16.7K"
+                    floorPrice="23"
+                    instagram="#"
+                    twitter="#"
+                    website="#"                  />
                 </Tab.Panel>
 
-                <Tab.Panel as="dl" className="text-sm text-gray-500">
-                  {activeBids?.map((bid) => (
-                    <Fragment key={bid._id}>
-                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
-                      <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                        <p>{bid.pricePerItem}</p>
-                      </dd>
-                      {bid?.userAddress === address && (
-                        <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleCancelBid(bid)}
-                        >
-                          Cancel Bid
-                        </button>
-                      )}
-                      {isOwner && (
-                          <button
-                           type="button"
-                           className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                           onClick={() => handleAcceptBid(bid)}
-                         >
-                           Accept Bid
-                         </button>
-                      )}
-                    </Fragment>
-                  ))}
-                </Tab.Panel>
-
-                <Tab.Panel className="pt-10" as="dl">
-                    <h3 className="text-sm font-medium">Description</h3>
-                    <div className="mt-4 prose prose-sm text-gray-500">
-                      <ReactMarkdown
-                        className='mt-6 whitespace-pre-line'
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
-                          p: ({node, ...props}) => <p {...props} className="text-gray-500" />
-                        }}
-                      >
-                        {data?.metadata?.description}
-                      </ReactMarkdown>
-                    </div>
+                {/* Details tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                    <ProductDetails
+                      description={data?.metadata?.description}
+                      address={data?.collectionId}
+                      tokenId={data?.tokenId}
+                      tokenStandard={data?.contractType}
+                      blockchain={data?.blockchain}
+                    />
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

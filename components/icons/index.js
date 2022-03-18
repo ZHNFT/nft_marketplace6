@@ -16,6 +16,7 @@ import RefreshIcon from './RefreshIcon';
 import SearchIcon from './SearchIcon';
 import DiamondIcon from './DiamondIcon';
 import ArrowIcon from './ArrowIcon';
+import ChainIcon from './ChainIcon';
 
 export {
   BeeIcon,
@@ -35,5 +36,6 @@ export {
   RefreshIcon,
   SearchIcon,
   DiamondIcon,
-  ArrowIcon
+  ArrowIcon,
+  ChainIcon
 }
