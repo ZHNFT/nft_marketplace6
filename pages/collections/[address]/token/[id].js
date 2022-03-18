@@ -148,11 +148,13 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
     }
+    setTransactionCount(1);
 
     let signature
 
     ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
     const token = await Web3Token.sign(() => signature, '1d');
+    setTransactionCount(2);
 
     const response = await fetch(`https://hexagon-api.onrender.com/bids`, {
       method: 'POST',
