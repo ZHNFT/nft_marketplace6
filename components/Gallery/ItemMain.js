@@ -42,7 +42,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                   <PulseIcon className="w-[15px] text-white" />
                 </div>
                 {
-                  listingState !== NFT_LISTING_STATE.IN_AUCTION && (
+                  listingState !== NFT_LISTING_STATE.IN_AUCTION && !isOwner && (
                     <div className="w-full mx-[14px] flex justify-center">
                       {
                         listingState === NFT_LISTING_STATE.FOR_SALE && (
@@ -50,20 +50,16 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                         )
                       }
                       <div className="relative flex flex-col ml-[6px]">
-                        {
-                          !isOwner && (
-                            <SecondaryButton
-                              className="h-[30px]"
-                              size="xs"
-                              onClick={event => {
-                                event.preventDefault();
-                                setActiveModal({ type: NFT_MODALS.MAKE_OFFER });
-                              }}
-                            >
-                              Make offer
-                            </SecondaryButton>
-                          )
-                        }
+                        <SecondaryButton
+                          className="h-[30px]"
+                          size="xs"
+                          onClick={event => {
+                            event.preventDefault();
+                            setActiveModal({ type: NFT_MODALS.MAKE_OFFER });
+                          }}
+                        >
+                          Make offer
+                        </SecondaryButton>
                         {
                           listing?.highestPrice && (
                             <span className="text-center absolute left-0 right-0 -bottom-[28px]">

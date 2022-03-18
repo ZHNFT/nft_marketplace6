@@ -5,6 +5,9 @@ import { providers, ethers } from 'ethers'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3Modal from "web3modal";
 import Web3Context from '../contexts/Web3Context';
+import router from 'next/router';
+import nprogress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 // Components
 import Layout from '../components/layout';
@@ -27,6 +30,12 @@ const initialState = {
   address: null,
   chainId: null,
 }
+
+// trigger progress bar on router events
+nprogress.configure({ showSpinner: false });
+router.events.on('routeChangeStart', () => nprogress.start());
+router.events.on('routeChangeComplete', () => nprogress.done());
+router.events.on('routeChangeError', () => nprogress.done());
 
 function reducer(state, action) {
   switch (action.type) {
