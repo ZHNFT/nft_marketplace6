@@ -4,8 +4,7 @@ import { ethers } from "ethers";
 import clsx from "clsx";
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import Web3Token from 'web3-token'
-import jwt from 'jsonwebtoken'
+import Web3Token from 'web3-token';
 import { Tab } from '@headlessui/react'
 import { BeeIcon } from '../../../../components/icons';
 import { resolveLink } from '../../../../Utils';
@@ -27,7 +26,7 @@ import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Traits/TraitsTable';
 
 // This will be the Single Asset of a collection (Single NFT)
-// Route: http://localhost:3000/collection/[address]/[id] 
+// Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data: serverData, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
   const [data, setData] = useState(serverData)
@@ -95,7 +94,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
     let signature
 
     ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
-    const token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 30 })
+    const token = await Web3Token.sign(() => signature, '1d');
 
     console.log('token', token);
     setTransactionCount(2);
@@ -142,7 +141,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
     let signature
 
     ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
-    const token = jwt.sign({ data: signature, chain: chainId }, offer.contractAddress, { expiresIn: 30 })
+    const token = await Web3Token.sign(() => signature, '1d');
 
     const response = await fetch(`https://hexagon-api.onrender.com/bids`, {
       method: 'POST',
