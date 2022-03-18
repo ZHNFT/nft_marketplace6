@@ -129,6 +129,8 @@ export async function getSignatureOffer(offer, signer, ethers, marketplaceAddres
         nonce : offer.nonce
     };
 
+    console.log(value)
+
     let signature = await signer._signTypedData(domain, types, value);
 
     // const verifiedAddress = ethers.utils.verifyTypedData(

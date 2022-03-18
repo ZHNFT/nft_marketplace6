@@ -51,7 +51,7 @@ export default function PlaceBidForm({ onConfirm }) {
             </span>
           </div>
           { errors.price && <p className="mt-1 absolute text-sm text-red-600">{ errors.price }</p> }
-          <div className="mt-1 text-sm text-right">Balace: 0.0000 HNY</div>
+          <div className="mt-1 text-sm text-right">Balance: 0.0000 HNY</div>
         </div>
       </div>
       <div className="flex justify-center mt-10 my-4">
