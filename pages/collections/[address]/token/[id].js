@@ -301,6 +301,11 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     await handleList({ price, expirationDate: listing?.expiry });
   }, [handleCancelListing, handleList])
 
+  // reload data when navigating to the same route
+  useEffect(() => {
+    setData(serverData);
+  }, [serverData]);
+
   // reset modal
   useEffect(() => {
     if (resetModal) {

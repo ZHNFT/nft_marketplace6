@@ -3,14 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Web3Context from '../../contexts/Web3Context';
 import { NFT_LISTING_STATE } from '../../constants/nft';
-import { HexagonBeeIcon } from '../icons';
+import { HexagonBeeIcon, DiamondIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import ItemMain from './ItemMain';
 import ItemListingState from './ItemListingState';
 
-export default function GalleryItem({ item }) {
+export default function GalleryItem({ item, showRarity }) {
   const [isHovering, setIsHovering] = useState(false);
-  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice  } = item;
+  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
@@ -24,13 +24,23 @@ export default function GalleryItem({ item }) {
         onMouseLeave={() => setIsHovering(false)}
       >
         <header className="flex items-center px-2.5 py-[9px]">
-          <div className="mr-1.5">
-            <HexagonBeeIcon className="w-[30px]" />
+          <div className="flex items-center">
+            <div className="mr-1.5">
+              <HexagonBeeIcon className="w-[30px]" />
+            </div>
+            <div className="leading-tight">
+              <h3>{ name || 'Unnamed' }</h3>
+              <p className="text-silver dark:text-manatee">{ collectionName }</p>
+            </div>
           </div>
-          <div className="leading-tight">
-            <h3>{ name || 'Unnamed' }</h3>
-            <p className="text-silver dark:text-manatee">{ collectionName }</p>
-          </div>
+          {
+            showRarity && rarityRank && (
+              <div className="ml-auto flex">
+                <DiamondIcon className="w-[12px]" />
+                <span className="text-xs ml-1.5">{ rarityRank }</span>
+              </div>
+            )
+          }
         </header>
         <ItemMain
           isOwner={isOwner}
