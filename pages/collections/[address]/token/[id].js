@@ -21,6 +21,8 @@ import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
+import ProductDetails from '../../../../components/Product/ProductDetails';
+import ProductCollection from '../../../../components/Product/ProductCollection';
 import Activity from '../../../../components/Product/Activity';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Traits/TraitsTable';
@@ -47,6 +49,13 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   const [activeModal, setActiveModal] = useState(null);
   const [resetModal, setResetModal] = useState(null);
   const [transactionCount, setTransactionCount] = useState(null);
+  const PRODUCT_TABS = [
+    { id: 'properties', label: 'Properties', active: true },
+    { id: 'offers', label: 'Offers', active: !!activeListing },
+    { id: 'bids', label: 'Bids', active: !!activeAuction },
+    { id: 'collection', label: 'Collection', active: true },
+    { id: 'details', label: 'Details', active: true }
+  ];
 
   // refresh server side data
   const router = useRouter();
@@ -621,34 +630,51 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                     </div>
                   </div>
                 </Tab.Panel>
+                
+                {
+                  activeAuction && (
+                    <Tab.Panel as="dl" className="text-sm text-gray-500">
+                      {activeBids?.map((bid) => (
+                        <Fragment key={bid._id}>
+                          <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
+                          <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
+                            <p>{bid.pricePerItem}</p>
+                          </dd>
+                          {bid?.userAddress === address && (
+                            <button
+                              type="button"
+                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                              onClick={() => handleCancelBid(bid)}
+                            >
+                              Cancel Bid
+                            </button>
+                          )}
+                          {isOwner && (
+                              <button
+                              type="button"
+                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                              onClick={() => handleAcceptBid(bid)}
+                            >
+                              Accept Bid
+                            </button>
+                          )}
+                        </Fragment>
+                      ))}
+                    </Tab.Panel>
+                  )
+                }
 
-                <Tab.Panel as="dl" className="text-sm text-gray-500">
-                  {activeBids?.map((bid) => (
-                    <Fragment key={bid._id}>
-                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
-                      <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                        <p>{bid.pricePerItem}</p>
-                      </dd>
-                      {bid?.userAddress === address && (
-                        <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleCancelBid(bid)}
-                        >
-                          Cancel Bid
-                        </button>
-                      )}
-                      {isOwner && (
-                          <button
-                           type="button"
-                           className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                           onClick={() => handleAcceptBid(bid)}
-                         >
-                           Accept Bid
-                         </button>
-                      )}
-                    </Fragment>
-                  ))}
+                {/* Collection tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductCollection
+                    collectionId={data?.collectionId}
+                    itemCount="48K"
+                    ownerCount="36.1K"
+                    volume="16.7K"
+                    floorPrice="23"
+                    instagram="#"
+                    twitter="#"
+                    website="#"                  />
                 </Tab.Panel>
 
                 <Tab.Panel className="pt-10" as="dl">
