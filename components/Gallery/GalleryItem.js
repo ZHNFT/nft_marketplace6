@@ -28,7 +28,7 @@ export default function GalleryItem({ item }) {
             <HexagonBeeIcon className="w-[30px]" />
           </div>
           <div className="leading-tight">
-            <h3>{ name }</h3>
+            <h3>{ name || 'Unnamed' }</h3>
             <p className="text-silver dark:text-manatee">{ collectionName }</p>
           </div>
         </header>

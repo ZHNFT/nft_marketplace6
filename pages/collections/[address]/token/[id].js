@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import Web3Token from 'web3-token';
 import { Tab } from '@headlessui/react'
+import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
@@ -22,13 +23,14 @@ import CancelListingModal from '../../../../components/modals/CancelListingModal
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
 import Activity from '../../../../components/Product/Activity';
+import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Traits/TraitsTable';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
+export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
   const [data, setData] = useState(serverData)
   const isOwner = data?.owner === address?.toLowerCase() || false;
   // there can only be one active listing or auction for a token at the same time
@@ -673,6 +675,16 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
         
         <h2 className="mt-12 mb-4">Activity</h2>
         <Activity />
+
+        <div className="mt-12 flex justify-between items-center">
+          <h2>More from this collection</h2>
+          <Link href={`/collections/${data?.collectionId}`} passHref>
+            <a className="text-xs text-cornflower hover:underline ml-1">
+              View collection
+            </a>
+          </Link>
+        </div>
+        <CollectionSlider items={nfts} />
       </div>
     </div>
   );
@@ -681,8 +693,15 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 export async function getServerSideProps(context) {
   const { params: { address, id } } = context;
   const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
-  const res = await fetch(url)
-  const data = await res?.json()
+  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
+  const [res, nftsRes ] = await Promise.all([fetch(url), fetch(collectionUrl, { method: 'POST' })]);
+  const data = await res?.json();
+  const nfts = await nftsRes?.json();
 
-  return { props: { data } };
+  return {
+    props: {
+      data,
+      nfts: nfts?.results?.filter(result => result?.tokenId?.toString() !== id) // exclude current NFT from "more collections"
+    }
+  };
 }
