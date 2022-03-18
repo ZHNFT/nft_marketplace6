@@ -22,10 +22,12 @@ import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
 import ProductDetails from '../../../../components/Product/ProductDetails';
 import ProductCollection from '../../../../components/Product/ProductCollection';
+import ProductBids from '../../../../components/Product/ProductBids';
+import ProductOffers from '../../../../components/Product/ProductOffers';
 import Activity from '../../../../components/Product/Activity';
 import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
-import TraitsTable from '../../../../components/Traits/TraitsTable';
+import TraitsTable from '../../../../components/Product/TraitsTable';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -53,8 +55,8 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   const [transactionCount, setTransactionCount] = useState(null);
   const PRODUCT_TABS = [
     { id: 'properties', label: 'Properties', active: true },
-    { id: 'offers', label: 'Offers', active: !!activeListing },
-    { id: 'bids', label: 'Bids', active: !!activeAuction },
+    { id: 'offers', label: 'Offers', active: true }, // set active to true for testing
+    { id: 'bids', label: 'Bids', active: true },  // set active to true for testing
     { id: 'collection', label: 'Collection', active: true },
     { id: 'details', label: 'Details', active: true }
   ];
@@ -614,39 +616,73 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                 <Tab.Panel as="dl">
                   <TraitsTable traits={data?.traits} />
                 </Tab.Panel>
+
+                {/* Offers tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductOffers
+                    //offers={activeBids}
+                    offers={[
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' }
+                    ]}
+                    onCancelOffer={() => console.log('cancel offer')}
+                    onAcceptOffer={() => console.log('accept offer')}
+                  />
+                </Tab.Panel>
                 
-                {
-                  activeAuction && (
-                    <Tab.Panel as="dl" className="text-sm text-gray-500">
-                      {activeBids?.map((bid) => (
-                        <Fragment key={bid._id}>
-                          <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
-                          <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                            <p>{bid.pricePerItem}</p>
-                          </dd>
-                          {bid?.userAddress === address && (
-                            <button
-                              type="button"
-                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                              onClick={() => handleCancelBid(bid)}
-                            >
-                              Cancel Bid
-                            </button>
-                          )}
-                          {isOwner && (
-                              <button
-                              type="button"
-                              className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                              onClick={() => handleAcceptBid(bid)}
-                            >
-                              Accept Bid
-                            </button>
-                          )}
-                        </Fragment>
-                      ))}
-                    </Tab.Panel>
-                  )
-                }
+                {/* Bids tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductBids
+                    bids={activeBids}
+                    currentUser={address}
+                    isOwner={isOwner}
+                    /*bids={[
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' }
+                    ]}*/
+                    onCancelBid={handleCancelBid}
+                    onAcceptBid={handleAcceptBid}
+                  />
+                </Tab.Panel>
+                
+                { /*
+                <Tab.Panel as="dl" className="text-sm text-gray-500">
+                  {activeBids?.map((bid) => (
+                    <Fragment key={bid._id}>
+                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
+                      <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
+                        <p>{bid.pricePerItem}</p>
+                      </dd>
+                      {bid?.userAddress === address && (
+                        <button
+                          type="button"
+                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                          onClick={() => handleCancelBid(bid)}
+                        >
+                          Cancel Bid
+                        </button>
+                      )}
+                      {isOwner && (
+                          <button
+                          type="button"
+                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                          onClick={() => handleAcceptBid(bid)}
+                        >
+                          Accept Bid
+                        </button>
+                      )}
+                    </Fragment>
+                  ))}
+                </Tab.Panel>
+                */ }
 
                 {/* Collection tab */}
                 <Tab.Panel className="pt-7" as="dl">
