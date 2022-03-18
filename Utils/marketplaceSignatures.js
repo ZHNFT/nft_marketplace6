@@ -63,18 +63,20 @@ export async function getSignatureListing(listing, signer, ethers, marketplaceAd
 
     let signature = await signer._signTypedData(domain, types, value);
 
-    // const verifiedAddress = ethers.utils.verifyTypedData(
-    //     domain,
-    //     types,
-    //     value,
-    //     signature
-    // );
+    const verifiedAddress = ethers.utils.verifyTypedData(
+        domain,
+        types,
+        value,
+        signature
+     );
 
     let splitSignature = ethers.utils.splitSignature(signature);
 
     listing.v = splitSignature.v;
     listing.s = splitSignature.s;
     listing.r = splitSignature.r;
+
+    console.log(verifiedAddress)
 
     return { listing, signature };
 
