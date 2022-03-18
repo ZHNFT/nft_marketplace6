@@ -113,7 +113,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     console.log('token', token);
     setTransactionCount(2);
     
-    const response = await fetch(`http://localhost:5000/listings`, {
+    const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
