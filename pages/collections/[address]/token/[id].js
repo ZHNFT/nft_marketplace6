@@ -8,7 +8,7 @@ import { Tab } from '@headlessui/react'
 import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
 import { resolveLink } from '../../../../Utils';
-import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
+import { getSignatureListing, getSignatureOffer } from '../../../../Utils/marketplaceSignatures';
 import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
 import { convertToUsd } from '../../../../Utils/helper';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
@@ -130,14 +130,16 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
+    console.log(expirationDate)
+
     let offer = {
       contractAddress: data.collectionId,
       tokenId: data.tokenId,
       userAddress: address,
       // TODO fix this in correct formatting wei/gwei/eth in combination with the input value (price)
-      pricePerItem: (Number(price) * 1000000000).toString(),
+      pricePerItem: (Number(price) * 10 ** 18).toString(),
       quantity: 1,
-      expiry: expirationDate,
+      expiry: expirationDate || new Date().getTime() + 864000000, // Whichever function triggers this is not returning expiry
       nonce: nonce
     }
 
@@ -151,12 +153,13 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
     }
+
     setTransactionCount(1);
 
     let signature
 
     ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
-    const token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 60 })
+    const token = jwt.sign({ data: signature, chain: chainId }, offer.contractAddress, { expiresIn: 60 }) 
     setTransactionCount(2);
 
     const response = await fetch(`https://hexagon-api.onrender.com/bids`, {
