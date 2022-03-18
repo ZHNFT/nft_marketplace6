@@ -339,7 +339,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
           <ProductPreview
             className="lg:col-span-4 lg:max-w-[472px]"
             name={data?.name}
-            image={data?.image}
+            image={data?.imageHosted}
             expiry={activeAuction?.expiry || activeListing?.expiry}
             listingState={(() => {
               if (activeAuction) return NFT_LISTING_STATE.IN_AUCTION;
