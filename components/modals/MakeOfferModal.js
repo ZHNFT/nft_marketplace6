@@ -36,7 +36,7 @@ export default function MakeOfferModal({ isOpen, onClose, onConfirm }) {
               ]}
             />
           )
-          : <MakeOfferForm onConfirm={data => { setFormData(data); onConfirm(data); }} />
+          : <MakeOfferForm onConfirm={setFormData} />
       }
     </Modal>
   );

@@ -3,14 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Web3Context from '../../contexts/Web3Context';
 import { NFT_LISTING_STATE } from '../../constants/nft';
-import { HexagonBeeIcon, DiamondIcon } from '../icons';
+import { HexagonBeeIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import ItemMain from './ItemMain';
 import ItemListingState from './ItemListingState';
 
-export default function GalleryItem({ item, showRarity }) {
+export default function GalleryItem({ item }) {
   const [isHovering, setIsHovering] = useState(false);
-  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
+  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice  } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
@@ -24,23 +24,13 @@ export default function GalleryItem({ item, showRarity }) {
         onMouseLeave={() => setIsHovering(false)}
       >
         <header className="flex items-center px-2.5 py-[9px]">
-          <div className="flex items-center">
-            <div className="mr-1.5">
-              <HexagonBeeIcon className="w-[30px]" />
-            </div>
-            <div className="leading-tight">
-              <h3>{ name || 'Unnamed' }</h3>
-              <p className="text-silver dark:text-manatee">{ collectionName }</p>
-            </div>
+          <div className="mr-1.5">
+            <HexagonBeeIcon className="w-[30px]" />
           </div>
-          {
-            showRarity && rarityRank && (
-              <div className="ml-auto flex">
-                <DiamondIcon className="w-[12px]" />
-                <span className="text-xs ml-1.5">{ rarityRank }</span>
-              </div>
-            )
-          }
+          <div className="leading-tight">
+            <h3>{ name }</h3>
+            <p className="text-silver dark:text-manatee">{ collectionName }</p>
+          </div>
         </header>
         <ItemMain
           isOwner={isOwner}

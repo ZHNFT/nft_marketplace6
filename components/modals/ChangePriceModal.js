@@ -40,7 +40,7 @@ export default function ChangePriceModal({ isOpen, onClose, onConfirm }) {
               ]}
             />
           )
-          : <ChangePriceForm onClose={onClose} onConfirm={data => { setFormData(data); onConfirm(data); }} />
+          : <ChangePriceForm onClose={onClose} onConfirm={setFormData} />
       }
     </Modal>
   );

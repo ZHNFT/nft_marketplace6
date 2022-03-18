@@ -5,7 +5,7 @@ import { DiamondIcon, SearchIcon } from '../icons';
 export default function TraitsTable({ traits }) {
   const router = useRouter();
   return (
-    <Table className="text-xs mt-2">
+    <Table className="text-xs">
       <RowHeading>
         <Cell className="w-[150px]" />
         <Cell className="w-[75px]">

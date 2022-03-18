@@ -36,7 +36,7 @@ export default function PlaceBidModal({ isOpen, onClose, onConfirm }) {
               ]}
             />
           )
-          : <PlaceBidForm onConfirm={data => { setFormData(data); onConfirm(data); }} />
+          : <PlaceBidForm onConfirm={setFormData} />
       }
     </Modal>
   );
