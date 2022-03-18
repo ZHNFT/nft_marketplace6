@@ -35,7 +35,7 @@ export default function BuyNowModal({ isOpen, imageUrl, name, price, collection,
               name={name}
               price={price}
               collection={collection}
-              onConfirm={setFormData}
+              onConfirm={data => { setFormData(data); onConfirm(); }}
             />
           )
       }

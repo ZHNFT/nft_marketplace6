@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm'
 import Web3Token from 'web3-token'
 import jwt from 'jsonwebtoken'
 import { Tab } from '@headlessui/react'
+import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
 import { resolveLink } from '../../../../Utils';
 import { getSignatureListing } from '../../../../Utils/marketplaceSignatures';
@@ -22,14 +23,19 @@ import ChangePriceModal from '../../../../components/modals/ChangePriceModal';
 import CancelListingModal from '../../../../components/modals/CancelListingModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
+import ProductDetails from '../../../../components/Product/ProductDetails';
+import ProductCollection from '../../../../components/Product/ProductCollection';
+import ProductBids from '../../../../components/Product/ProductBids';
+import ProductOffers from '../../../../components/Product/ProductOffers';
 import Activity from '../../../../components/Product/Activity';
+import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
-import TraitsTable from '../../../../components/Traits/TraitsTable';
+import TraitsTable from '../../../../components/Product/TraitsTable';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id] 
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
+export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
   const [data, setData] = useState(serverData)
   const isOwner = data?.owner === address?.toLowerCase() || false;
   // there can only be one active listing or auction for a token at the same time
@@ -42,12 +48,21 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
   console.log(`activeListing`, activeListing)
   console.log(`activeAuction`, activeAuction)
   console.log(`activeBids`, activeBids)
+
+  console.log(serverData);
   
   const marketplaceAddress = marketplaceContract?.address;
 
   const [activeModal, setActiveModal] = useState(null);
   const [resetModal, setResetModal] = useState(null);
   const [transactionCount, setTransactionCount] = useState(null);
+  const PRODUCT_TABS = [
+    { id: 'properties', label: 'Properties', active: true },
+    { id: 'offers', label: 'Offers', active: true }, // set active to true for testing
+    { id: 'bids', label: 'Bids', active: true },  // set active to true for testing
+    { id: 'collection', label: 'Collection', active: true },
+    { id: 'details', label: 'Details', active: true }
+  ];
 
   // refresh server side data
   const router = useRouter();
@@ -138,11 +153,17 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
     }
+    setTransactionCount(1);
 
     let signature
 
     ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
+<<<<<<< HEAD
     const token = jwt.sign({ data: signature, chain: chainId }, offer.contractAddress, { expiresIn: 30 })
+=======
+    const token = await Web3Token.sign(() => signature, '1d');
+    setTransactionCount(2);
+>>>>>>> main
 
     const response = await fetch(`https://hexagon-api.onrender.com/bids`, {
       method: 'POST',
@@ -300,6 +321,11 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
     await handleList({ price, expirationDate: listing?.expiry });
   }, [handleCancelListing, handleList])
 
+  // reload data when navigating to the same route
+  useEffect(() => {
+    setData(serverData);
+  }, [serverData]);
+
   // reset modal
   useEffect(() => {
     if (resetModal) {
@@ -325,7 +351,7 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             })()}
           />
 
-          {/* Product details */}
+          {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
               name={data?.name}
@@ -571,58 +597,70 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
             
             <Tab.Group as="div">
               <div className="mt-4">
-                <Tab.List className="-mb-px flex items-center space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Properties
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Bids
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        selected
-                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                          : 'text-[#969EAB] hover:text-white',
-                        'whitespace-nowrap font-medium text-sm w-[115px] h-[34px]'
-                      )
-                    }
-                  >
-                    Details
-                  </Tab>
+                <Tab.List className="-mb-px flex items-center justify-between space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
+                  {
+                    PRODUCT_TABS.filter(tab => tab.active).map(({ id, label }) => (
+                      <Tab
+                        key={id}
+                        className={({ selected }) =>
+                          clsx(
+                            selected
+                              ? 'bg-tabButton shadow-tabButton rounded-tab'
+                              : 'text-[#969EAB] hover:text-white',
+                            'whitespace-nowrap font-medium text-xs w-[115px] h-[34px]'
+                          )
+                        }
+                      >
+                        { label }
+                      </Tab>
+                    ))
+                  }
                 </Tab.List>
               </div>
               <Tab.Panels as={Fragment}>
+
+                {/* Properties tab */}
                 <Tab.Panel as="dl">
-                  <div className="flex flex-col mt-2">
-                    <div className="overflow-x-auto">
-                      <div className="align-middle inline-block min-w-full">
-                        <div className="overflow-hidden sm:rounded-lg">
-                          <TraitsTable traits={data?.traits} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <TraitsTable traits={data?.traits} />
                 </Tab.Panel>
 
+                {/* Offers tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductOffers
+                    //offers={activeBids}
+                    offers={[
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' }
+                    ]}
+                    onCancelOffer={() => console.log('cancel offer')}
+                    onAcceptOffer={() => console.log('accept offer')}
+                  />
+                </Tab.Panel>
+                
+                {/* Bids tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductBids
+                    bids={activeBids}
+                    currentUser={address}
+                    isOwner={isOwner}
+                    /*bids={[
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
+                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' }
+                    ]}*/
+                    onCancelBid={handleCancelBid}
+                    onAcceptBid={handleAcceptBid}
+                  />
+                </Tab.Panel>
+                
+                { /*
                 <Tab.Panel as="dl" className="text-sm text-gray-500">
                   {activeBids?.map((bid) => (
                     <Fragment key={bid._id}>
@@ -641,31 +679,40 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
                       )}
                       {isOwner && (
                           <button
-                           type="button"
-                           className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                           onClick={() => handleAcceptBid(bid)}
-                         >
-                           Accept Bid
-                         </button>
+                          type="button"
+                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
+                          onClick={() => handleAcceptBid(bid)}
+                        >
+                          Accept Bid
+                        </button>
                       )}
                     </Fragment>
                   ))}
                 </Tab.Panel>
+                */ }
 
-                <Tab.Panel className="pt-10" as="dl">
-                    <h3 className="text-sm font-medium">Description</h3>
-                    <div className="mt-4 prose prose-sm text-gray-500">
-                      <ReactMarkdown
-                        className='mt-6 whitespace-pre-line'
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          a: ({node, ...props}) => <a {...props} className="text-indigo-600 hover:underline" />,
-                          p: ({node, ...props}) => <p {...props} className="text-gray-500" />
-                        }}
-                      >
-                        {data?.metadata?.description}
-                      </ReactMarkdown>
-                    </div>
+                {/* Collection tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                  <ProductCollection
+                    collectionId={data?.collectionId}
+                    itemCount="48K"
+                    ownerCount="36.1K"
+                    volume="16.7K"
+                    floorPrice="23"
+                    instagram="#"
+                    twitter="#"
+                    website="#"                  />
+                </Tab.Panel>
+
+                {/* Details tab */}
+                <Tab.Panel className="pt-7" as="dl">
+                    <ProductDetails
+                      description={data?.metadata?.description}
+                      address={data?.collectionId}
+                      tokenId={data?.tokenId}
+                      tokenStandard={data?.contractType}
+                      blockchain={data?.blockchain}
+                    />
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>
@@ -674,6 +721,16 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
         
         <h2 className="mt-12 mb-4">Activity</h2>
         <Activity />
+
+        <div className="mt-12 flex justify-between items-center">
+          <h2>More from this collection</h2>
+          <Link href={`/collections/${data?.collectionId}`} passHref>
+            <a className="text-xs text-cornflower hover:underline ml-1">
+              View collection
+            </a>
+          </Link>
+        </div>
+        <CollectionSlider items={nfts} />
       </div>
     </div>
   );
@@ -682,8 +739,15 @@ export default function Nft({ data: serverData, chainIdHex, chainId, address, co
 export async function getServerSideProps(context) {
   const { params: { address, id } } = context;
   const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
-  const res = await fetch(url)
-  const data = await res?.json()
+  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
+  const [res, nftsRes ] = await Promise.all([fetch(url), fetch(collectionUrl, { method: 'POST' })]);
+  const data = await res?.json();
+  const nfts = await nftsRes?.json();
 
-  return { props: { data } };
+  return {
+    props: {
+      data,
+      nfts: nfts?.results?.filter(result => result?.tokenId?.toString() !== id) // exclude current NFT from "more collections"
+    }
+  };
 }
