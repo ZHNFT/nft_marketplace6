@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import clsx from "clsx";
 import Web3Token from 'web3-token';
+import jwt from 'jsonwebtoken'
 import { Tab } from '@headlessui/react'
 import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
@@ -107,7 +108,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     let signature
 
     ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
-    const token = await Web3Token.sign(() => signature, '1d');
+    const token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 60 })
 
     console.log('token', token);
     setTransactionCount(2);
@@ -155,7 +156,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     let signature
 
     ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
-    const token = await Web3Token.sign(() => signature, '1d');
+    const token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 60 })
     setTransactionCount(2);
 
     const response = await fetch(`https://hexagon-api.onrender.com/bids`, {
