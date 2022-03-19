@@ -13,7 +13,7 @@ export default function ProfileMenu({ address, disconnect }) {
             128.34 HNY
           </span>
           <button
-            className="block active:text-cornflower"
+            className="block hover:text-white"
             type="button"
             onClick={() => navigator.clipboard.writeText(address)}
           >
@@ -25,11 +25,11 @@ export default function ProfileMenu({ address, disconnect }) {
         </div>
         <div>
           <div className="text-right flex items-center justify-end">
-            <button type="button">
+            <button type="button" className="hover:text-white">
               <span className="sr-only">Refresh</span>
               <RefreshIcon className="w-[13px]" />
             </button>
-            <button type="button" className="ml-2.5">
+            <button type="button" className="ml-2.5 hover:text-white">
               <span className="sr-only">Add</span>
               <PlusIcon className="w-[14px]" />
             </button>
@@ -48,21 +48,21 @@ export default function ProfileMenu({ address, disconnect }) {
       <ul>
         <li className="my-3">
           <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-            <a className="flex items-center">
+            <a className="flex items-center hover:text-white">
               <ProfileIcon className="w-[12px]" />
               <span className="text-white ml-4">My portfolio</span>
             </a>
           </Link>
         </li>
         <li className="my-3">
-          <button type="button" className="flex items-center">
+          <button type="button" className="flex items-center hover:text-white">
             <EditIcon className="w-[12px]" />
             <span className="text-white ml-4">Edit profile</span>
           </button>
         </li>
         <li className="my-3">
           <Link href={`/users/[address]?tab=activity`} as={`/users/${address}?tab=activity`} passHref>
-            <a className="flex items-center">
+            <a className="flex items-center hover:text-white">
               <FolderIcon className="w-[14px]" />
               <span className="text-white ml-4">Activity</span>
             </a>
@@ -70,7 +70,7 @@ export default function ProfileMenu({ address, disconnect }) {
         </li>
         <li className="my-3">
           <Link href="#" passHref>
-            <a className="flex items-center">
+            <a className="flex items-center hover:text-white">
               <ReceiveIcon className="w-[17px] relative -left-[1px]" />
               <span className="text-white ml-4">Offers</span>
             </a>
@@ -78,7 +78,7 @@ export default function ProfileMenu({ address, disconnect }) {
         </li>
         <li className="my-3">
           <Link href="#" passHref>
-            <a className="flex items-center">
+            <a className="flex items-center hover:text-white">
               <FilesIcon className="w-[14px]" />
               <span className="text-white ml-4">My collections</span>
             </a>
