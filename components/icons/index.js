@@ -17,6 +17,15 @@ import SearchIcon from './SearchIcon';
 import DiamondIcon from './DiamondIcon';
 import ArrowIcon from './ArrowIcon';
 import ChainIcon from './ChainIcon';
+import CopyIcon from './CopyIcon';
+import EditIcon from './EditIcon';
+import FilesIcon from './FilesIcon';
+import FolderIcon from './FolderIcon';
+import MoonIcon from './MoonIcon';
+import ProfileIcon from './ProfileIcon';
+import ReceiveIcon from './ReceiveIcon';
+import SunIcon from './SunIcon';
+import PlusIcon from './PlusIcon';
 
 export {
   BeeIcon,
@@ -37,5 +46,14 @@ export {
   SearchIcon,
   DiamondIcon,
   ArrowIcon,
-  ChainIcon
+  ChainIcon,
+  CopyIcon,
+  EditIcon,
+  FilesIcon,
+  FolderIcon,
+  MoonIcon,
+  ProfileIcon,
+  ReceiveIcon,
+  SunIcon,
+  PlusIcon
 }

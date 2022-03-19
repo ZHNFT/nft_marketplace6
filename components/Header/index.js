@@ -2,13 +2,13 @@ import { Fragment, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, Popover, Transition } from '@headlessui/react'
+import { Popover } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import { ChevronDownIcon, BellIcon } from '../icons';
-import DarkModeSwitch from '../darkModeSwitch';
+import { BellIcon } from '../icons';
 import MobileMenu from './MobileMenu';
+import ProfileMenuButton from './ProfileMenuButton';
+import ProfileMenu from './ProfileMenu';
 import Logo from '../../images/hive-logo.png';
-import { ellipseAddress } from '../../Utils';
 
 export default function Header(props) {
   const { user, navigation, connect, disconnect, address } = props;
@@ -88,64 +88,27 @@ export default function Header(props) {
                   </Popover.Button>
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <DarkModeSwitch />
-                  <a
-                    href="#"
-                    className="ml-5 flex-shrink-0 rounded-full p-1 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-malibu"
+                  <button 
+                    type="button"
+                    onClick={() => console.log('notifications')}
+                    className="ml-5 flex-shrink-0 rounded-full p-1 hover:text-cornflower border-[0.5px] w-[38px] h-[38px] border-manatee relative"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="w-[25px] pb-1.5" />
-                  </a>
+                    <BellIcon className="w-[24px] pb-1.5 absolute mx-auto top-0 left-[8px]" />
+                  </button>
 
                   {/* Profile dropdown */}
                   {
                     address
                       ? (
-                        <Menu as="div" className="flex-shrink-0 relative ml-5">
-                          <div>
-                            <Menu.Button className="border rounded-full flex items-center p-1 focus:outline-none focus:ring-2 focus:ring-malibu">
-                              <span className="sr-only">Open user menu</span>
-                              <Image className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" width={"27"} height={"27"} />
-                              <span className="text-xs pr-2 pl-2">{ ellipseAddress(address, 4) }</span>
-                              <ChevronDownIcon className="w-[16px] pr-1" />
-                            </Menu.Button>
-                          </div>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                              <Menu.Item key="wallet">
-                                <button
-                                  type="button"
-                                  onClick={disconnect}
-                                  className="w-full text-left block py-2 px-4 text-sm text-gray-700"
-                                >
-                                  Disconnect
-                                </button>
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-                                    <a
-                                      className={clsx(
-                                        'block py-2 px-4 text-sm text-gray-700',
-                                        { 'bg-gray-100': active }
-                                      )}
-                                    >
-                                      {'Your Profile'}
-                                    </a>
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
+                        <ProfileMenuButton
+                          address={address}
+                          name={user?.name}
+                          imageUrl={user?.imageUrl}
+                          disconnect={disconnect}
+                        >
+                          <ProfileMenu address={address} disconnect={disconnect} />
+                        </ProfileMenuButton>
                       )
                       : (
                         <button
@@ -162,11 +125,11 @@ export default function Header(props) {
             </div>
             <MobileMenu
               navigation={navigation}
-              user={user}
               connect={connect}
               address={address}
-              disconnect={disconnect}
-            />
+            >
+              <ProfileMenu address={address} disconnect={disconnect} />
+            </MobileMenu>
           </>
         )}
       </Popover>

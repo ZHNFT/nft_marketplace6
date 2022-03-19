@@ -4,11 +4,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Popover } from '@headlessui/react'
 import { BellIcon } from '@heroicons/react/outline'
-import DarkModeSwitch from '../darkModeSwitch';
+import DarkModeSwitch from './DarkModeSwitch';
 import { ellipseAddress } from '../../Utils';
 
 export default function MobileMenu(props) {
-  const { navigation, user, userNavigation, connect, address, disconnect } = props;
+  const { navigation, connect, address, children } = props;
 
   return (
     <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
@@ -27,45 +27,12 @@ export default function MobileMenu(props) {
           </a>
         ))}
       </div>
-      <div className="border-t border-gray-200 pt-4">
-        <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
-          <div className="flex-shrink-0">
-            <Image className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" width={"40"} height={"40"} />
-          </div>
-          <div className="ml-3">
-            <div className="text-base font-medium text-gray-800">{ellipseAddress(address)}</div>
-            <div className="text-sm font-medium text-gray-500">{user.email}</div>
-          </div>
-          <button
-            type="button"
-            className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-          >
-            <span className="sr-only">View notifications</span>
-            <BellIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <div className="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
-          {address ? (
-            <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-              <a
-                className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-              >
-                {'Your Profile'}
-              </a>
-            </Link>
-          ) : null}
-        </div>
-      </div>
 
       <div className="mt-6 max-w-3xl mx-auto px-4 sm:px-6">
       {address ? (
-        <button
-          type="button"
-          onClick={disconnect}
-          className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
-        >
-          Disconnect
-        </button>
+        <div className="text-xs text-manatee mb-4">
+          { children }
+        </div>
       ) : (
         <button
           type="button"
@@ -75,13 +42,6 @@ export default function MobileMenu(props) {
           Connect
         </button>
       )}
-
-        <div className="mt-6 flex justify-center">
-          <DarkModeSwitch />
-          <a href="#" className="text-base font-medium text-gray-900 hover:underline">
-            Some Link
-          </a>
-        </div>
       </div>
     </Popover.Panel>
   );
