@@ -18,7 +18,7 @@ export default function CollectionHeader(props) {
           onClick={() => setShowEditModal(true)}
         >
           <EditIcon className="w-[14px] mr-2" />
-          Edit Collection
+          Edit collection
         </SecondaryButton>
         <div className="flex lg:col-span-7">
           <div className="mr-2.5">

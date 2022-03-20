@@ -8,16 +8,15 @@ import TextareaField from '../Forms/TextareaField';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const textFields = [
-  { id: 'name', label: 'Collection Name', isRequired: true },
+  { id: 'name', label: 'Username', isRequired: true },
   { id: 'website', label: 'Website', icon: () => <ChainIcon className="w-[10px] mr-2" /> },
   { id: 'instagram', label: 'Instagram', icon: () => <InstagramIcon className="w-[12px] mr-1.5" /> },
-  { id: 'twitter', label: 'Twitter', icon: () => <TwitterIcon className="w-[12px] mr-2" /> },
-  { id: 'discord', label: 'Discord', icon: () => <ChainIcon className="w-[10px] mr-1" /> },
-  { id: 'Telegram', label: 'Telegram', icon: () => <ChainIcon className="w-[10px] mr-1" /> }
+  { id: 'twitter', label: 'Twitter', icon: () => <TwitterIcon className="w-[12px] mr-2" /> }
 ];
 
-export default function EditCollectionModal(props) {
-  const { isOpen, onClose, logo, name, website, instagram, twitter, discord, telegram, description, payoutAddress } = props;
+export default function EditProfileModal(props) {
+  const { isOpen, name, imageUrl, website, instagram, twitter, description, onClose } = props;
+
   const {
     handleSubmit, // handles form submission
     handleChange, // handles input changes
@@ -26,9 +25,6 @@ export default function EditCollectionModal(props) {
   } = useForm({
     validations: { // validation rules
       name: {
-        required: { value: true, message: 'This field is required.' }
-      },
-      payoutAddress: {
         required: { value: true, message: 'This field is required.' }
       }
     },
@@ -39,10 +35,7 @@ export default function EditCollectionModal(props) {
       website,
       instagram,
       twitter,
-      discord,
-      telegram,
-      description,
-      payoutAddress
+      description
     },
   });
 
@@ -56,8 +49,8 @@ export default function EditCollectionModal(props) {
               className="w-[74px] h-[74px] border-[1px] border-malibu rounded-full p-[1.5px] overflow-hidden"
               onClick={() => console.log('change image')}
             >
-              <span className="sr-only">Change collection image</span>
-              <Image className="h-8 w-8" src={logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
+              <span className="sr-only">Change profile image</span>
+              <Image className="h-8 w-8" src={imageUrl || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
               <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
                 <CameraIcon className="text-white w-[13px]" />
               </span>
@@ -73,12 +66,10 @@ export default function EditCollectionModal(props) {
             </button>
           </div>
         </div>
-
-        <h2 className="mt-5 mb-4 text-xs">Details</h2>
       </div>
 
-      <div className="max-h-[300px] overflow-y-scroll scroller">
-        <div className="px-4 pb-4">
+      <div className="mt-5">
+        <div className="px-4">
           <div className="grid grid-cols-2 gap-y-5 gap-x-5">
             {
               textFields.map(({ id, label, icon, isRequired}) => (
@@ -111,24 +102,12 @@ export default function EditCollectionModal(props) {
               onChange={handleChange('description')}
             />
           </div>
-
-          <div className="w-full mt-2">
-            <label className="text-xxs text-manatee mb-2" htmlFor="payoutAddress">Payout address</label>
-            <InputField
-              type="text"
-              className="mt-1"
-              value={data['payoutAddress'] || ''}
-              name="payoutAddress"
-              error={errors['payoutAddress']}
-              onChange={handleChange('payoutAddress')}
-            />
-          </div>
         </div>
       </div>
       
       <div className="px-4">
         <PrimaryButton
-          className="text-xs px-6 min-w-[85px] text-center block ml-auto mt-8"
+          className="text-xs px-6 min-w-[85px] text-center block ml-auto mt-4"
           size="sm"
           onClick={handleSubmit}
         >
