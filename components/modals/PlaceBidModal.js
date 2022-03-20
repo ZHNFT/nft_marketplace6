@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TRANSACTION_STATUS } from '../../constants/nft';
 import TransactionList from '../Transactions/TransactionList';
-import Modal from '../modals/Modal';
+import Modal from '../Modals/Modal';
 import PlaceBidForm from '../Forms/PlaceBidForm';
 
 export default function PlaceBidModal({ isOpen, onClose, onConfirm }) {

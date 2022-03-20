@@ -18,7 +18,7 @@ export default function TraitsTable({ traits }) {
         <Cell className="w-[100px] text-center">%</Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
-      <div className="h-[250px] overflow-y-scroll">
+      <div className="max-h-[250px] overflow-y-auto scroller">
         {
           traits.map((row, index) => {
             const { trait_type: type, value, rarityScore, rarityPercent } = row;

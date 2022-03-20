@@ -1,8 +1,9 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { CrossIcon } from '../icons';
 
 export default function Modal(props) {
-  const { isOpen, title, children, onClose } = props;
+  const { isOpen, title, children, onClose, paddingY = 6, paddingX = 5 } = props;
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -33,17 +34,29 @@ export default function Modal(props) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="relative inline-block align-bottom bg-white dark:bg-[#282d35] rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
-              <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:text-left">
-                    <Dialog.Title as="h3" className="text-2xl leading-6 font-medium">
-                      { title }
-                    </Dialog.Title>
+            <div className={`relative inline-block align-bottom bg-white dark:bg-[#292f37] border-[0.5px] border-malibu rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full py-${paddingY} px-${paddingX}`}>
+              <button
+                type="button"
+                className="absolute right-8"
+                onClick={onClose}
+              >
+                <span className="sr-only">Close modal</span>
+                <CrossIcon className="w-[13px]" />
+              </button>
+              {
+                title && (
+                  <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mt-3 text-center sm:mt-0 sm:text-left">
+                        <Dialog.Title as="h3" className="text-2xl leading-6 font-medium">
+                          { title }
+                        </Dialog.Title>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="px-5 pb-5">
+                )
+              }
+              <div className="px-3">
                 { children }
               </div>
             </div>

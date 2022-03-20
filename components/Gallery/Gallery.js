@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import GalleryContext from '../../contexts/GalleryContext';
 import { NFT_MODALS } from '../../constants/nft';
 import GalleryItem from './GalleryItem';
-import MakeOfferModal from '../modals/MakeOfferModal';
-import PlaceBidModal from '../modals/PlaceBidModal';
+import MakeOfferModal from '../Modals/MakeOfferModal';
+import PlaceBidModal from '../Modals/PlaceBidModal';
 import { transformGalleryItem } from '../../Utils/helper'
 
 export default function Gallery({ items }) {
