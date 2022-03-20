@@ -13,14 +13,13 @@ import DefaultImage from '../../images/No-Image-Placeholder.png';
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
   const { setActiveModal } = useContext(GalleryContext);
-  console.log(`listing`, listing)
-  console.log(`${resolveBunnyLink(imageUrl)}?optimizer=image&width=210&height=210`);
+  console.log(`listing`, listing);
 
   return (
     <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[210px]">
       <Image
         className="block w-full object-center object-cover"
-        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&height=420` : DefaultImage}
+        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&aspect_ratio=1:1` : DefaultImage}
         alt={name}
         layout="fill" 
       />

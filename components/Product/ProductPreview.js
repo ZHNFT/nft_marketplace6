@@ -47,7 +47,7 @@ export default function ProductPreview({ className, name, image, expiry, listing
         <div className="aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
           {image ? (
             <Image
-            src={`${resolveBunnyLink(image)}?optimizer=image&width=944&height=944`}
+            src={`${resolveBunnyLink(image)}?optimizer=image&width=944&aspect_ratio=1:1`}
             alt={name}
             className="object-center object-cover"
             layout="fill" 
