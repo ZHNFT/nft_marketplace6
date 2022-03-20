@@ -14,15 +14,15 @@ import DefaultImage from '../../images/No-Image-Placeholder.png';
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
   const { setActiveModal } = useContext(GalleryContext);
   console.log(`listing`, listing)
+  console.log(`${resolveBunnyLink(imageUrl)}?optimizer=image&width=210&height=210`);
 
   return (
-    <div className="relative rounded-xl overflow-hidden w-[210px] h-[210px]">
+    <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[210px]">
       <Image
-        className="block w-full"
-        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=210&height=210` : DefaultImage}
+        className="block w-full object-center object-cover"
+        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&height=420` : DefaultImage}
         alt={name}
-        width="210"
-        height="210"
+        layout="fill" 
       />
       {
         <Transition

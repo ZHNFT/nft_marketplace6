@@ -26,6 +26,7 @@ import ProfileIcon from './ProfileIcon';
 import ReceiveIcon from './ReceiveIcon';
 import SunIcon from './SunIcon';
 import PlusIcon from './PlusIcon';
+import CrossIcon from './CrossIcon';
 
 export {
   BeeIcon,
@@ -55,5 +56,6 @@ export {
   ProfileIcon,
   ReceiveIcon,
   SunIcon,
-  PlusIcon
+  PlusIcon,
+  CrossIcon
 }
