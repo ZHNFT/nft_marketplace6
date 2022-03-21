@@ -89,7 +89,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       tokenId: data.tokenId,
       userAddress: data?.owner,
       // TODO fix this in correct formatting wei/gwei/eth in combination with the input value (price)
-      pricePerItem: (Number(price) * 1000000000).toString(),
+      pricePerItem: (Number(price) * 10 ** 18).toString(),
       quantity: 1,
       expiry: expirationDate,
       nonce: nonce
@@ -253,7 +253,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       tokenId: data?.tokenId,
       expiry: expirationDate,
       quantity: 1,
-      minBid: (Number(price) * 1000000000).toString(),
+      minBid: (Number(price) * 10 ** 18).toString(),
       percentIncrement: Number(percent) * 10, // for example 5% should be passed to the contract as 50
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
