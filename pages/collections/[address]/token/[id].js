@@ -73,12 +73,12 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
   // reset and close modal
-  const onModalSuccess = ({ modal, transactionCount }) => {
+  const onModalSuccess = useCallback(function({ modal, transactionCount }) {
     fetchData();
     setTransactionCount(transactionCount);
     setTimeout(() => setActiveModal(null), 300);
     setTimeout(() => setResetModal(modal), 400);
-  };
+  }, [fetchData]);
 
   // For owner of an NFT to list the NFT
   const handleList = useCallback(async function({ price, expirationDate }) {
@@ -132,8 +132,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
-    console.log(expirationDate)
-
     let offer = {
       contractAddress: data.collectionId,
       tokenId: data.tokenId,
@@ -173,7 +171,11 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       body: JSON.stringify(offer)
     });
 
-  }, [ethersProvider, chainId, data.tokenId, tokenContract, data.collectionId, address, marketplaceAddress])
+    console.log(`response`, response)
+
+    onModalSuccess({ modal: NFT_MODALS.MAKE_OFFER, transactionCount: 3 });
+
+  }, [ethersProvider, chainId, data.tokenId, tokenContract, data.collectionId, address, marketplaceAddress, onModalSuccess])
 
   // For the owner of the NFT to accept a bid
   const handleAcceptBid = useCallback(async function(offer) {
@@ -243,7 +245,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       s: listing.s,
       v: listing.v,
     });
-    console.log(`tx`, tx)
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
     setTransactionCount(1);
@@ -287,7 +288,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       },
       body: JSON.stringify(auction)
     });
-
+    console.log(`response`, response)
     const tx = await marketplaceContract.placeAuction(auction);
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
@@ -311,7 +312,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     if (Number(allowanceString) < price) {
       const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
       const allowanceResult = await allow?.wait();
-      console.log(`allowanceResult`, allowanceResult)
       setTransactionCount(1);
     } else {
       setTransactionCount(1);
@@ -319,11 +319,12 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
 
     // offer should include collectionAddress, tokenId, owner and amount
     const tx = await marketplaceContract.placeAuctionBid(offer.collectionAddress, offer.tokenId, offer.owner, offer.amount);
+    setTransactionCount(2);
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
-    setTransactionCount(2);
+    onModalSuccess({ modal: NFT_MODALS.PLACE_BID, transactionCount: 3 });
 
-  }, [marketplaceContract, address, tokenContract, marketplaceAddress, data?.tokenId, data?.collectionId, data?.owner])
+  }, [marketplaceContract, address, tokenContract, marketplaceAddress, data?.tokenId, data?.collectionId, data?.owner, onModalSuccess])
 
   // For the owner of the NFT to change the price of an listing
   // we first cancel the current listing and then create a new listing
@@ -441,7 +442,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                               isOpen={activeModal === NFT_MODALS.CHANGE_PRICE}
                               onClose={() => setActiveModal(null)}
                               onConfirm={async data => {
-                                console.log(`data`, data)
                                 await handleChangePrice(activeListing, data)
                               }}
                             />
@@ -525,6 +525,8 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                             isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
                             onClose={() => setActiveModal(null)}
                             onConfirm={data => handlePlaceBid(data)}
+                            transactionCount={activeModal === NFT_MODALS.MAKE_OFFER ? transactionCount : null}
+                            isReset={resetModal === NFT_MODALS.MAKE_OFFER}
                           />
                         </div>
                       </>
@@ -567,15 +569,18 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                             isOpen={activeModal === NFT_MODALS.BUY_NOW}
                             onClose={() => setActiveModal(null)}
                             onConfirm={() => handleAcceptListing(activeListing)}
+                            transactionCount={activeModal === NFT_MODALS.MAKE_OFFER ? transactionCount : null}
                             name={data?.name}
                             price={activeListing?.pricePerItem}
-                            imageUrl={resolveLink(data?.image)}
+                            imageUrl={resolveBunnyLink(data?.imageHosted)}
                             collection={data.collectionId}
                           />
                           <MakeOfferModal
                             isOpen={activeModal === NFT_MODALS.MAKE_OFFER}
                             onClose={() => setActiveModal(null)}
                             onConfirm={data => handlePlaceBid(data)}
+                            transactionCount={activeModal === NFT_MODALS.MAKE_OFFER ? transactionCount : null}
+                            isReset={resetModal === NFT_MODALS.MAKE_OFFER}
                           />
                         </div>
                       </>
@@ -596,6 +601,9 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                             isOpen={activeModal === NFT_MODALS.PLACE_BID}
                             onClose={() => setActiveModal(null)}
                             onConfirm={price => handlePlaceAuctionBid({price})}
+                            minBid={activeAuction?.minBid}
+                            transactionCount={activeModal === NFT_MODALS.PLACE_BID ? transactionCount : null}
+                            isReset={resetModal === NFT_MODALS.PLACE_BID}
                           />
                         </div>
                       </>

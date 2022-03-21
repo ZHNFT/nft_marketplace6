@@ -13,7 +13,6 @@ import DefaultImage from '../../images/No-Image-Placeholder.png';
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
   const { setActiveModal } = useContext(GalleryContext);
-  console.log(`listing`, listing);
 
   return (
     <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[210px]">

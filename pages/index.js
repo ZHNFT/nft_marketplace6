@@ -27,7 +27,6 @@ const NftProjects = [
 
 export default function Home(props) {
   const { collections } = props;
-  console.log(`collections`, collections)
 
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState('not-loaded');

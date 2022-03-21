@@ -73,8 +73,6 @@ export default function Collection(props) {
     fetchCollection();
   }, [search, fetchCollection])
 
-  console.log(`collectionData`, collectionData)
-
   return (
     <>
       <div className="lg:max-w-6xl mx-auto">

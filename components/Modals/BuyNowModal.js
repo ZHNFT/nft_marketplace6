@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TRANSACTION_STATUS } from '../../constants/nft';
+import { getTransactionStatus } from '../../Utils/helper';
 import TransactionList from '../Transactions/TransactionList';
 import BuyNowForm from '../Forms/BuyNowForm';
 import Modal from './Modal';
@@ -15,14 +16,14 @@ export default function BuyNowModal({ isOpen, imageUrl, name, price, collection,
               steps={[
                 {
                   title: `Approval to transfer ${price} HNY`,
-                  status: TRANSACTION_STATUS.IN_PROGRESS,
+                  status: getTransactionStatus({ transactionStepNumber: 1, transactionCount }),
                   isDefaultOpen: true,
                   description: 'Description here'
                 },
                 {
                   className: 'my-2',
                   title: 'Completion',
-                  status: TRANSACTION_STATUS.INACTIVE,
+                  status: getTransactionStatus({ transactionStepNumber: 2, transactionCount }),
                   isDefaultOpen: false,
                   description: 'Description here'
                 }
