@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import { Tab } from '@headlessui/react'
 import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
-import { resolveLink } from '../../../../Utils';
+import { resolveLink, resolveBunnyLink } from '../../../../Utils';
 import { getSignatureListing, getSignatureOffer } from '../../../../Utils/marketplaceSignatures';
 import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
 import { convertToUsd } from '../../../../Utils/helper';
@@ -40,15 +40,11 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   const activeListing = data?.listings?.find(listing => listing?.active);
   // there can only be one active auction or listing for a token at the same time
   const activeAuction = data?.auctions?.find(auction => auction?.active);
-  // there can be multiple active bids on a token at the same time, these are all bids on an item: listed, non-listed and on auction
+  // there can be multiple active bids on a token at the same time, these are all bids on an item: listed, non-listed
   const activeBids = data?.bids?.filter(bid => bid?.active);
 
-  console.log(`activeListing`, activeListing)
-  console.log(`activeAuction`, activeAuction)
-  console.log(`activeBids`, activeBids)
+  const activeAuctionbids = activeAuction?.bids;
 
-  console.log(serverData);
-  
   const marketplaceAddress = marketplaceContract?.address;
 
   const [activeModal, setActiveModal] = useState(null);
@@ -303,11 +299,14 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
     }
+    setTransactionCount(1);
+
 
     // offer should include collectionAddress, tokenId, owner and amount
-    const tx = await marketplaceContract.placeAuctionBid(offer);
+    const tx = await marketplaceContract.placeAuctionBid(offer.collectionAddress, offer.tokenId, offer.owner, offer.amount);
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
+    setTransactionCount(2);
 
   }, [marketplaceContract, address, tokenContract, marketplaceAddress, data?.tokenId, data?.collectionId, data?.owner])
 
@@ -387,7 +386,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                           </SecondaryButton>
                           <ListModal
                             name={data?.name}
-                            imageUrl={resolveLink(data?.image)}
+                            imageUrl={resolveBunnyLink(data?.imageHosted)}
                             collection={data.collectionId} 
                             isOpen={activeModal === NFT_MODALS.LIST}
                             isReset={resetModal === NFT_MODALS.LIST}

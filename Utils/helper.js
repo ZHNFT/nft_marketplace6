@@ -16,7 +16,6 @@ const formatter = new Intl.NumberFormat('en-US', {
 });
 
 const transformGalleryItem = (item) => {
-    console.log(`item`, item)
     // highestPrice/lowestPrice is only for listings
     const { name, collectionId, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
     // there can only be one active auction or listing for a token at the same time
