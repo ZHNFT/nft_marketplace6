@@ -215,6 +215,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
 
     // For the non-owners of the NFT to buy now/accept the listing of the owner
     const handleAcceptListing = useCallback(async function(listing) {
+      // TODO increase allowance?
       const tx = await marketplaceContract.AcceptListing({
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,
@@ -306,7 +307,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       collectionAddress: data?.collectionId,
       owner: data?.owner,
       tokenId: data?.tokenId,
-      amount: (Number(price) * 1000000000).toString(),
+      amount: (Number(price) * 10 ** 18).toString(),
     };
 
     if (Number(allowanceString) < price) {
