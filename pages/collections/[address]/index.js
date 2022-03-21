@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
+import clsx from 'clsx';
 import Sidebar from '../../../components/sidebar';
 import Filters from '../../../components/filters';
 import Tabs from '../../../components/Tabs/Tabs';
@@ -10,6 +11,7 @@ import CollectionHeader from '../../../components/Collection/CollectionHeader';
 import Activity from '../../../components/Collection/Activity';
 import Gallery from '../../../components/Gallery/Gallery';
 import SortOptions from '../../../components/sortOptions';
+import { ArrowAltIcon } from '../../../components/icons';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
 
@@ -55,6 +57,7 @@ export default function Collection(props) {
   const { search, address, sort, tab } = router.query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
+  const [showFilters, setShowFilters] = useState(true);
   const tabs = [
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'items' } }, name: 'NFTs' },
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'activity' } }, name: 'Activity' }
@@ -85,26 +88,48 @@ export default function Collection(props) {
           totalSupply={totalSupply}
           socials={{ instagram: 'testInsta', twitter: 'testTwitter' }}
         />
+        <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
+          <div className="flex col-span-12 lg:col-span-7 items-center ml-5">
+            <Tabs list={tabs} />
+          </div>
+          <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
+            <span className="mr-4"><FilterButton filters={traits} /></span>
+            <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
+            <SortOptions className="max-w-[180px]" />
+          </div>
+        </section>
       </div>
-      <section className="mt-14 lg:grid lg:grid-cols-12 lg:gap-8">
+      <section className={clsx(
+        'mt-14 flex justify-around lg:justify-between mx-auto transition-max-w duration-300 ease-in-out',
+        showFilters ? 'lg:max-w-[1400px]' : 'lg:max-w-6xl'
+      )}>
         <>
-          <Sidebar className="max-w-[200px]">
-            <Filters
-              placement="desktop"
-              filters={collection?.traits}
-            />
+          <Sidebar className={clsx(
+            'w-[200px] flex-shrink-0 transition-all duration-300 ease-in-out lg:mr-2',
+            showFilters ? 'delay-75' : '-ml-2 w-0 '
+          )}>
+            <button
+              className="absolute right-0 top-0 w-[38px] h-[38px] border-[0.5px] border-silver rounded-full"
+              type="button"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <span className="sr-only">
+                { showFilters ? 'Hide filters' : 'Show filters' }
+              </span>
+              <ArrowAltIcon className="w-[12px]" type={showFilters ? 'right' : 'left' } />
+            </button>
+            <div className={clsx(
+              'mt-5 transition-opacity',
+              showFilters ? 'opacity-1 delay-300' : 'opacity-0 duration-150'
+            )}>
+              <Filters
+                placement="desktop"
+                filters={collection?.traits}
+                total={collectionData?.total}
+              />
+            </div>
           </Sidebar>
-          <div className="lg:col-span-9 xl:col-span-10">
-            <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
-              <div className="flex col-span-12 lg:col-span-7 items-center">
-                <Tabs list={tabs} />
-              </div>
-              <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-                <span className="mr-4"><FilterButton filters={traits} /></span>
-                <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
-                <SortOptions className="max-w-[180px]" />
-              </div>
-            </section>
+          <div>
             {
               tab === 'activity'
                 ? <Activity />

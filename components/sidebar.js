@@ -1,11 +1,11 @@
 import clsx from "clsx";
 
-export default function Sidebar({ navigation, children }) {
+export default function Sidebar({ navigation, className, children }) {
 
   return (
-    <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
-      <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
-        <div className="pb-8 space-y-1">
+    <div className={className}>
+      <nav aria-label="Sidebar" className="sticky top-4">
+        { navigation && <div className="pb-8 space-y-1">
           {navigation?.map((item) => (
             <a
               key={item.name}
@@ -26,7 +26,7 @@ export default function Sidebar({ navigation, children }) {
               <span className="truncate">{item.name}</span>
             </a>
           ))}
-        </div>
+        </div> }
         {children}
       </nav>
     </div>

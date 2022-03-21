@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState, useRef, useEffect } from 'react';
 import { ArrowIcon } from '../icons';
 
-export default function Slider({ className, children }) {
+export default function Slider({ className, arrowSize, children }) {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const slider = useRef(null);
@@ -51,24 +51,39 @@ export default function Slider({ className, children }) {
   return (
     <div className={clsx('mx-auto', className)}>
       <div className="relative">
-        <div className="flex justify-between absolute -left-[10px] -right-[10px] lg:-left-[60px] lg:-right-[60px] w-auto h-full">
+        <div className={clsx(
+          'flex justify-between absolute -left-[10px] -right-[10px] w-auto h-full',
+          arrowSize === 'sml' ? 'lg:-left-[28px] lg:-right-[45px]' : 'lg:-left-[60px] lg:-right-[60px]'
+        )}>
           <button
-            onClick={movePrev}
-            className="text-white w-10 h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300"
+            onClick={event => { event.preventDefault(); movePrev(); }}
+            className={clsx(
+              'text-white h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
+              arrowSize === 'sml' ? 'w-6' : 'w-10'
+            )}
             disabled={isDisabled('prev')}
           >
-            <span className="flex justify-center items-center bg-black/[0.5] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower w-[38px] h-[38px] rounded-full">
-              <ArrowIcon className="w-[11px]" type="left" />
+            <span className={clsx(
+              'flex justify-center items-center bg-black/[0.5] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower rounded-full',
+              arrowSize === 'sml' ? 'w-[24px] h-[24px]' : 'w-[38px] h-[38px]'
+            )}>
+              <ArrowIcon className={clsx(arrowSize === 'sml' ? 'w-[6px]' : 'w-[11px]')} type="left" />
             </span>
             <span className="sr-only">Previous</span>
           </button>
           <button
-            onClick={moveNext}
-            className="text-white w-10 h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300"
+            onClick={event => { event.preventDefault(); moveNext(); }}
+            className={clsx(
+              'text-white w-10 h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
+              arrowSize === 'sml' ? 'w-6' : 'w-10'
+            )}
             disabled={isDisabled('next')}
           >
-            <span className="flex justify-center items-center bg-black/[0.5] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower w-[38px] h-[38px] rounded-full">
-              <ArrowIcon className="w-[11px]" />
+            <span className={clsx(
+              'flex justify-center items-center bg-black/[0.5] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower rounded-full',
+              arrowSize === 'sml' ? 'w-[24px] h-[24px]' : 'w-[38px] h-[38px]'
+            )}>
+              <ArrowIcon className={clsx(arrowSize === 'sml' ? 'w-[6px]' : 'w-[11px]')} />
             </span>
             <span className="sr-only">Next</span>
           </button>

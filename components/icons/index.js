@@ -16,6 +16,7 @@ import RefreshIcon from './RefreshIcon';
 import SearchIcon from './SearchIcon';
 import DiamondIcon from './DiamondIcon';
 import ArrowIcon from './ArrowIcon';
+import ArrowAltIcon from './ArrowAltIcon';
 import ChainIcon from './ChainIcon';
 import CopyIcon from './CopyIcon';
 import EditIcon from './EditIcon';
@@ -48,6 +49,7 @@ export {
   SearchIcon,
   DiamondIcon,
   ArrowIcon,
+  ArrowAltIcon,
   ChainIcon,
   CopyIcon,
   EditIcon,
