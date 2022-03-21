@@ -94,7 +94,7 @@ export default function CollectionCard({ collection }) {
               View Collection
             </button>
           </div>
-          <div className="absolute text-white text-sm relative bottom-36 w-full h-12 backdrop-blur-[30px] rounded-lg z-20 p-1">
+          <div className="absolute text-white text-sm relative bottom-36 w-full h-12 backdrop-blur-[30px] bg-black/[0.3] rounded-lg z-20 p-1">
             <div className="font-sans font-normal flex items-center h-10">
               <div className="flex-1 w-32 h-5  py-3.5"></div>
               <div className="flex-none w-32 h-5">
@@ -130,7 +130,7 @@ export default function CollectionCard({ collection }) {
             <p className="text-white absolute p-3 left-60">Supply: {collection.totalSupply}</p>
             <p className="text-white absolute p-3 left-96">Volume: {collection.volume.total}</p> backdrop-blur-[1000px]*/}
           </div>
-          <div className=" absolute top-5 right-5 w-16 h-[357px] rounded-lg  backdrop-blur-[20px] z-10">
+          <div className=" absolute top-5 right-5 w-16 h-[357px] rounded-lg  backdrop-blur-[20px] bg-black/[0.3] z-10">
             <div className="grid grid-cols-1 place-content-stretch p-2 border-0 gap-2 w-full h-full rounded-lg">
               <div className="w-12 h-12 bg-black rounded-md overflow-clip">
                 <Image
