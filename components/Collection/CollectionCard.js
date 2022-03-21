@@ -114,7 +114,7 @@ export default function CollectionCard({ collection }) {
             </div>
           </div>
           <div className=" text-white absolute bottom-[86px] right-5 w-full">
-            <div className="border-2 flex gap-2">
+            <div className="border-0 flex gap-2">
               <div className="flex-1 px-5 py-0.5 z-50"></div>
               <div className="flex-none px-3  py-0.5  text-xs font-medium bg-white bg-opacity-5 rounded-full z-50">
                 <span>Utility</span>
