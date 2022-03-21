@@ -29,6 +29,7 @@ import Activity from '../../../../components/Product/Activity';
 import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Product/TraitsTable';
+import { NftCollectionABI } from '../../../../config';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -95,22 +96,21 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       nonce: nonce
     }
 
-    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external", "isApprovedForAll(address owner, address operator)"], signer);
+    const nftContract = new ethers.Contract(data.collectionId, NftCollectionABI, signer);
     const isApprovedForAll = await nftContract.isApprovedForAll(data.owner, marketplaceAddress);
     if (!isApprovedForAll) {
       const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
+      setTransactionCount(1);
+    } else {
+      setTransactionCount(1);
     }
-    
-    setTransactionCount(1);
 
     let signature
 
     ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
     const token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 60 })
-
-    console.log('token', token);
     setTransactionCount(2);
     
     const response = await fetch(`https://hexagon-api.onrender.com/listings`, {
@@ -153,10 +153,10 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     if (Number(allowanceString) < price) {
       const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
       const allowanceResult = await allow?.wait();
-      console.log(`allowanceResult`, allowanceResult)
+      setTransactionCount(1);
+    } else {
+      setTransactionCount(1);
     }
-
-    setTransactionCount(1);
 
     let signature
 
@@ -264,18 +264,21 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
     }
-    console.log(`auction`, auction)
 
-    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external", "isApprovedForAll(address owner, address operator)"], signer);
+    const nftContract = new ethers.Contract(data.collectionId, NftCollectionABI, signer);
     const isApprovedForAll = await nftContract.isApprovedForAll(data.owner, marketplaceAddress);
+
     if (!isApprovedForAll) {
       const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
+      setTransactionCount(1);
+    } else {
+      setTransactionCount(1);
     }
 
     const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
-    console.log(token);
+    setTransactionCount(2);
     const response = await fetch(`https://hexagon-api.onrender.com/auctions`, {
       method: 'POST',
       headers: {
@@ -286,7 +289,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     });
 
     const tx = await marketplaceContract.placeAuction(auction);
-    console.log(`tx`, tx)
     const txResult = await tx?.wait();
     console.log(`txResult`, txResult)
 
@@ -310,9 +312,10 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
       const allowanceResult = await allow?.wait();
       console.log(`allowanceResult`, allowanceResult)
+      setTransactionCount(1);
+    } else {
+      setTransactionCount(1);
     }
-    setTransactionCount(1);
-
 
     // offer should include collectionAddress, tokenId, owner and amount
     const tx = await marketplaceContract.placeAuctionBid(offer.collectionAddress, offer.tokenId, offer.owner, offer.amount);
