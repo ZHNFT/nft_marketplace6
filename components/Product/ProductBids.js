@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { ethers } from "ethers";
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { BeeIcon, LinkIcon } from '../icons';
@@ -32,7 +33,7 @@ export default function ProductBids({ bids, currentUser, isOwner, onCancelBid, o
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px]">
                     <BeeIcon className="w-[26px] relative -top-[2px]" />
-                    { pricePerItem }
+                    { ethers.utils.formatEther(ethers.BigNumber.from(pricePerItem.toString())) }
                   </span>
                   <span className="text-manatee text-xxs">$6,450.28</span>
                 </Cell>

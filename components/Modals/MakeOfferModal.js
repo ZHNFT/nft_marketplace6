@@ -14,7 +14,7 @@ export default function MakeOfferModal({ isOpen, onClose, onConfirm }) {
             <TransactionList
               steps={[
                 {
-                  title: 'Approval to transfer',
+                  title: 'Increase Allowance',
                   status: TRANSACTION_STATUS.IN_PROGRESS,
                   isDefaultOpen: true,
                   description: 'Description here'

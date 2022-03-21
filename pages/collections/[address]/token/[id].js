@@ -95,10 +95,14 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       nonce: nonce
     }
 
-    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
-    const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
-    const txResult = await tx?.wait();
-    console.log(`txResult`, txResult)
+    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external", "isApprovedForAll(address owner, address operator)"], signer);
+    const isApprovedForAll = await nftContract.isApprovedForAll(data.owner, marketplaceAddress);
+    if (!isApprovedForAll) {
+      const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
+      const txResult = await tx?.wait();
+      console.log(`txResult`, txResult)
+    }
+    
     setTransactionCount(1);
 
     let signature
@@ -123,6 +127,8 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
 
   // For non-owners to place a bid on an listing
   const handlePlaceBid = useCallback(async function({ price, expirationDate }) {
+    
+    console.log(`expirationDate`, expirationDate)
     const signer = ethersProvider.getSigner();
     const nonce = await signer.getTransactionCount();
 
@@ -259,8 +265,14 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
       highestBidder: '0x0000000000000000000000000000000000000000',
     }
     console.log(`auction`, auction)
-    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external"], signer);
-    await nftContract.setApprovalForAll(marketplaceAddress, true);
+
+    const nftContract = new ethers.Contract(data.collectionId, ["function setApprovalForAll(address _operator, bool _approved) external", "isApprovedForAll(address owner, address operator)"], signer);
+    const isApprovedForAll = await nftContract.isApprovedForAll(data.owner, marketplaceAddress);
+    if (!isApprovedForAll) {
+      const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
+      const txResult = await tx?.wait();
+      console.log(`txResult`, txResult)
+    }
 
     const token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
     console.log(token);
@@ -395,7 +407,6 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                             onConfirm={async data => {
                               try {
                                 setTransactionCount(0);
-                                console.log(`data`, data)
                                 data?.auctionType === 'fixed' ? await handleList(data) : await handleCreateAuction(data);
                                 onModalSuccess({ modal: NFT_MODALS.LIST, transactionCount: 3 });
                               } catch(error) {
@@ -504,7 +515,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                           </SecondaryButton>
                           {
                             !!data?.highestBid && (
-                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid / 1000000000} /></p>
+                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={ethers.utils.formatEther(ethers.BigNumber.from(data?.highestBid.toString()))} /></p>
                             )
                           }
                           <MakeOfferModal
