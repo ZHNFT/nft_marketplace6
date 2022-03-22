@@ -4,14 +4,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Popover } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import { BellIcon } from '../icons';
 import MobileMenu from './MobileMenu';
 import ProfileMenuButton from './ProfileMenuButton';
 import ProfileMenu from './ProfileMenu';
+import NotificationsButton from './NotificationsButton';
 import Logo from '../../images/hive-logo.png';
 
 export default function Header(props) {
   const { user, navigation, connect, disconnect, address } = props;
+
+  console.log(user);
 
   return (
       <Popover
@@ -88,14 +90,7 @@ export default function Header(props) {
                   </Popover.Button>
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <button 
-                    type="button"
-                    onClick={() => console.log('notifications')}
-                    className="ml-5 flex-shrink-0 rounded-full p-1 hover:text-cornflower border-[0.5px] w-[38px] h-[38px] border-manatee relative"
-                  >
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="w-[24px] pb-1.5 absolute mx-auto top-0 left-[8px]" />
-                  </button>
+                  <NotificationsButton />
 
                   {/* Profile dropdown */}
                   {

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 // Components
 import Seo from './seo';
-import Header from './Header';
+import Header from './Header/Header';
 import Sidebar from './sidebar';
 import MobileFilters from './Filters/mobileFilters';
 import Filters from './Filters/Filters';
