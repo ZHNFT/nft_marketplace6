@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
+import { fromUnixTime, format } from 'date-fns';
+import clsx from 'clsx';
 
-export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, onChange }) {
-  const [values, setValues] = useState([0, 0]);
+export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, isDate, onChange }) {
+  const [values, setValues] = useState([min, max]);
 
   useEffect(() => {
     setValues([min, max]);
@@ -52,8 +54,15 @@ export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, 
               backgroundColor: isDragged ? '#5a93ff' : '#4d71be'
             }}
           >
-            <div className="absolute -bottom-[30px] py-1 px-1.5 dark:bg-white/[0.1] bg-black/[0.1] rounded text-xs">
-              { values[index] === 0 || values[index] === max ? values[index] : values[index].toFixed(decimals) }
+            <div className={clsx(
+              'absolute -bottom-[30px] py-1 px-1.5 dark:bg-white/[0.1] bg-black/[0.1] rounded text-xs',
+              isDate ? 'text-xxs' : ''
+            )}>
+              { 
+                isDate
+                  ? `${format(fromUnixTime(values[index]), 'P')}`
+                  : `${values[index] === 0 || values[index] === max ? values[index] : values[index].toFixed(decimals)}`
+              }
             </div>
           </div>
         )}

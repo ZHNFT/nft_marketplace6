@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Disclosure, RadioGroup, Transition } from '@headlessui/react';
 import { Field, FieldArray } from 'formik';
+import RangeField from '../Forms/RangeField';
 import { ArrowIcon, DiamondIcon } from '../icons';
 import Slider from '../Slider/Slider';
 import FilterCheckbox from './FilterCheckbox';
@@ -66,7 +67,7 @@ export default function TraitsFilter({ filters, submitForm }) {
                     </RadioGroup>
                   </Slider>
                   {
-                    selectedTraitType && selectedTraitType.attributes?.length > 0 && (
+                    selectedTraitType && selectedTraitType.attributes?.length > 0 ? (
                       <>
                         <div className="flex text-xs px-3">
                           <div className="flex-1" />
@@ -117,6 +118,19 @@ export default function TraitsFilter({ filters, submitForm }) {
                             </FieldArray>
                           </div>
                         </div>
+                      </>
+                    )
+                    : (
+                      <>
+                        { selectedTraitType && (
+                          <RangeField
+                            step={1}
+                            min={selectedTraitType.minValue}
+                            max={selectedTraitType.maxValue}
+                            isDate={selectedTraitType.display_type === 'date'}
+                            onChange={([min, max]) => console.log(min, max)}
+                          />
+                        )}
                       </>
                     )
                   }
