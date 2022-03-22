@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import Filters from '../filters';
+import Filters from '../Filters/Filters';
 
 export default function FilterModal({ open, close, filters }) {
   return (

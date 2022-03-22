@@ -19,8 +19,6 @@ export default function ListingFilter() {
     hasOffers: false
   });
 
-  console.log(selected);
-
   return (
     <Disclosure as="div" className="mt-10 min-w-[200px]" defaultOpen>
       {({ open }) => (

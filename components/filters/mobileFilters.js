@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
-import Filters from './index';
+import Filters from './Filters';
 
 export default function MobileFilters({ mobileFiltersOpen, setMobileFiltersOpen, filters }) {
   return (

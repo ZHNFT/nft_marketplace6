@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
 import clsx from 'clsx';
 import Sidebar from '../../../components/sidebar';
-import Filters from '../../../components/filters';
+import Filters from '../../../components/Filters/Filters';
 import Tabs from '../../../components/Tabs/Tabs';
 import FilterButton from '../../../components/FilterButton/FilterButton';
 import Dropdown from '../../../components/Dropdown/Dropdown';

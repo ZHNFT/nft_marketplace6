@@ -6,8 +6,8 @@ import { useRouter } from 'next/router'
 import Seo from './seo';
 import Header from './Header';
 import Sidebar from './sidebar';
-import MobileFilters from './filters/mobileFilters';
-import Filters from './filters';
+import MobileFilters from './Filters/mobileFilters';
+import Filters from './Filters/Filters';
 import { FireIcon, HomeIcon, TrendingUpIcon, UserGroupIcon } from '@heroicons/react/outline'
 
 
