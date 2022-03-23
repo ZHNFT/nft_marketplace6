@@ -1,39 +1,32 @@
 import { useState, useEffect } from 'react';
 import { getTransactionStatus } from '../../Utils/helper';
 import TransactionList from '../Transactions/TransactionList';
-import Modal from './Modal';
+import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import ConfirmModal from './ConfirmModal';
+import useCancelListing from '../../hooks/useCancelListing';
 
-export default function CancelListingModal({ isOpen, isReset,transactionCount, onClose, onConfirm }) {
+export default function CancelListingModal(props) {
+  const { isOpen, onClose, activeListing, marketplaceContract } = props;
   const [isCanceling, setIsCancelling] = useState(false);
+  const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract, setIsCancelling })
 
-  useEffect(() => {
-    if (isReset) {
-      setIsCancelling(false);
-    }
-  }, [isReset]);
+  function handleConfirm() {
+    setIsCancelling(true);
+    handleCancelListing(activeListing);
+  }
 
   if (isCanceling) {
     return (
-      <Modal isOpen={isOpen} onClose={onClose} title="Cancel Listing">
-        <TransactionList
-          steps={[
-            {
-              title: 'Transaction to cancel list',
-              status: getTransactionStatus({ transactionStepNumber: 1, transactionCount }),
-              isDefaultOpen: true,
-              description: 'Description here'
-            },
-            {
-              className: 'my-2',
-              title: 'Completion',
-              status: getTransactionStatus({ transactionStepNumber: 2, transactionCount }),
-              isDefaultOpen: false,
-              description: 'Description here'
-            }
-          ]}
-        />
-      </Modal>
+      <TransactionList
+        steps={[
+          {
+            title: 'Transaction to cancel list',
+            status: cancellationStatus,
+            isDefaultOpen: true,
+            description: 'Description here'
+          }
+        ]}
+      />
     );
   }
 
@@ -45,7 +38,7 @@ export default function CancelListingModal({ isOpen, isReset,transactionCount, o
       cancelLabel="Never mind"
       confirmLabel="Cancel listing"
       onClose={onClose}
-      onConfirm={() => { setIsCancelling(true); onConfirm(); }}
+      onConfirm={handleConfirm}
     />
   );
 }
