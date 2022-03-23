@@ -2,15 +2,30 @@ import Link from 'next/link';
 import { ellipseAddress } from '../../Utils';
 import { CopyIcon, EditIcon, PlusIcon, ProfileIcon, RefreshIcon, FolderIcon, ReceiveIcon, FilesIcon } from '../icons';
 import DarkModeSwitch from './DarkModeSwitch';
+import { GetNumberTokens } from '../../Utils/web3HelperFunctions';
+import { useState, useEffect } from "react";
 
 export default function ProfileMenu({ address, disconnect }) {
+  const [hnyBalance, setHnyBalane] = useState([])
+
+  useEffect(() => {
+    getHNYBalance();
+  }, []);
+
+  // This is kind of funky but seemed to be the only way
+  // to resolve the promise without making the functional
+  // component async, let me know if there's a better way.
+  async function getHNYBalance() {
+    setHnyBalane(await GetNumberTokens());
+  }
+
   return (
     <>
       <h4 className="font-medium">Current balance</h4>
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
           <span className="font-medium text-white text-base">
-            128.34 HNY
+            { hnyBalance > 0 ? hnyBalance : 0 } HNY
           </span>
           <button
             className="block hover:text-white"
