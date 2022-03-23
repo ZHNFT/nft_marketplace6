@@ -36,3 +36,8 @@
   border-radius: 10px;
   background: #5095FF; 
 }
+
+.popover-container {
+  background: linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%);
+  box-shadow: 2px 4px 15px rgba(21, 23, 26, 0.05);
+}

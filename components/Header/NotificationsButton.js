@@ -44,13 +44,7 @@ export default function NotificationsButton({ currentUserAddress }) {
             as={Fragment}
           >
             <Popover.Panel className="absolute z-10 lg:w-[450px] right-0 mt-[8px]">
-              <div
-                className="overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5"
-                style={{
-                  background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)',
-                  boxShadow: '2px 4px 15px rgba(21, 23, 26, 0.05)'
-                }}
-              >
+              <div className="popover-container overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5">
                 <div className="flex justify-between items-center">
                  <h3 className="text-xs text-manatee font-medium">Notifications</h3>
                  <div className="rounded-full bg-white/[0.05] min-w-[24px] h-6 px-1.5 flex justify-center items-center text-xs font-medium text-white">

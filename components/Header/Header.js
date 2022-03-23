@@ -8,6 +8,7 @@ import MobileMenu from './MobileMenu';
 import ProfileMenuButton from './ProfileMenuButton';
 import ProfileMenu from './ProfileMenu';
 import NotificationsButton from './NotificationsButton';
+import SearchInput from './SearchInput';
 import Logo from '../../images/hive-logo.png';
 
 export default function Header(props) {
@@ -42,18 +43,7 @@ export default function Header(props) {
                       </a>
                     </Link>
                     <div className="w-full">
-                      <label htmlFor="search" className="sr-only">
-                        Search
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="search"
-                          name="search"
-                          className="block w-full dark:bg-search lg:max-w-[268px] rounded-full py-2 pl-4 pr-3 border-transparent text-sm dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu sm:text-sm"
-                          placeholder="Explore"
-                          type="search"
-                        />
-                      </div>
+                      <SearchInput />
                     </div>
                   </div>
                 </div>
