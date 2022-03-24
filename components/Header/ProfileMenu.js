@@ -1,25 +1,51 @@
-import Link from 'next/link';
-import { ellipseAddress } from '../../Utils';
-import { CopyIcon, EditIcon, PlusIcon, ProfileIcon, RefreshIcon, FolderIcon, ReceiveIcon, FilesIcon } from '../icons';
-import DarkModeSwitch from './DarkModeSwitch';
+import Link from "next/link";
+import { ellipseAddress } from "../../Utils";
+import {
+  CopyIcon,
+  EditIcon,
+  PlusIcon,
+  ProfileIcon,
+  RefreshIcon,
+  FolderIcon,
+  ReceiveIcon,
+  FilesIcon,
+} from "../icons";
+import DarkModeSwitch from "./DarkModeSwitch";
+import { GetNumberTokens } from "../../Utils/web3HelperFunctions";
+import { useState, useEffect } from "react";
+import { makeCancelable } from "../../Utils/helper";
 
 export default function ProfileMenu({ address, disconnect }) {
+  const [hnyBalance, setHnyBalance] = useState([]);
+
+  useEffect(() => {
+    const balanceRequest = makeCancelable(GetNumberTokens());
+
+    balanceRequest
+      .then((balance) => setHnyBalance(balance))
+      .catch((e) => {
+        console.log("req cancelled: ", e);
+      });
+
+    return function cleanup() {
+      balanceRequest.cancel();
+    };
+  }, []);
+
   return (
     <>
       <h4 className="font-medium">Current balance</h4>
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
           <span className="font-medium text-white text-base">
-            128.34 HNY
+            {hnyBalance > 0 ? hnyBalance : 0} HNY
           </span>
           <button
             className="block hover:text-white"
             type="button"
             onClick={() => navigator.clipboard.writeText(address)}
           >
-            <span className="text-xxs">
-              { ellipseAddress(address, 4) }
-            </span>
+            <span className="text-xxs">{ellipseAddress(address, 4)}</span>
             <CopyIcon className="w-[10px] ml-2" />
           </button>
         </div>
@@ -61,7 +87,11 @@ export default function ProfileMenu({ address, disconnect }) {
           </button>
         </li>
         <li className="my-3">
-          <Link href={`/users/[address]?tab=activity`} as={`/users/${address}?tab=activity`} passHref>
+          <Link
+            href={`/users/[address]?tab=activity`}
+            as={`/users/${address}?tab=activity`}
+            passHref
+          >
             <a className="flex items-center hover:text-white">
               <FolderIcon className="w-[14px]" />
               <span className="text-white ml-4">Activity</span>
@@ -85,7 +115,7 @@ export default function ProfileMenu({ address, disconnect }) {
           </Link>
         </li>
       </ul>
-      
+
       <div className="mt-4 text-right">
         <DarkModeSwitch />
       </div>
