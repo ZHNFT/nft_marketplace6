@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-export default function TextareaField({ value, name, placeholder, required, className, height, size = 'sm', error, onChange}) {
+export default function TextareaField({ value, name, placeholder, required, className, maxLength, height, size = 'sm', error, onChange}) {
   return (
     <div className={clsx('relative', className)}>
       <textarea
@@ -9,13 +9,21 @@ export default function TextareaField({ value, name, placeholder, required, clas
         placeholder={placeholder}
         required={required}
         onChange={onChange}
+        maxLength={maxLength}
         className={clsx(
-          'input-field rounded-md text-white border-0 w-full py-4 resize-none',
-          size === 'sm' ? 'text-xs' : '',
+          'input-field placeholder:text-manatee rounded-md text-white border-0 w-full !py-4 resize-none',
+          size === 'sm' ? 'text-sm' : '',
           height
         )}
       />
-      { error && <p className="mt-0.5 absolute text-xxs text-red-600">{ error}</p> }
+      { 
+        maxLength && (
+          <p className="absolute right-2 -bottom-3.75 text-xxs">
+            {value?.length || 0} of {maxLength} <span className="text-manatee">characters used</span>
+          </p>
+        )
+      }
+      { error && <p className="absolute text-xxs text-red-600">{ error}</p> }
     </div>
   );
 }

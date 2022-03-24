@@ -11,8 +11,8 @@ export default function InputField({ value, name, placeholder, type, required, c
         required={required}
         onChange={onChange}
         className={clsx(
-          'input-field rounded-md text-white border-0 w-full',
-          size === 'sm' ? 'text-xs' : ''
+          'input-field placeholder:text-manatee rounded-md text-white border-0 w-full',
+          size === 'sm' ? 'text-sm' : ''
         )}
       />
       { error && <p className="mt-0.5 absolute text-xxs text-red-600">{ error}</p> }

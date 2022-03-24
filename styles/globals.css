@@ -12,9 +12,10 @@
   height: 100%;
 }
 
-.input-field {
+.input-field, .select-field {
   background: linear-gradient(142.25deg, #1E2024 20.17%, #202225 78.18%);
   box-shadow: 2px 4px 15px rgba(21, 23, 26, 0.05);
+  padding: 4px 11px;
 }
 
 .btn {

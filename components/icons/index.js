@@ -29,6 +29,8 @@ import SunIcon from './SunIcon';
 import PlusIcon from './PlusIcon';
 import CrossIcon from './CrossIcon';
 import CameraIcon from './CameraIcon';
+import TelegramIcon from './TelegramIcon';
+import DiscordIcon from './DiscordIcon';
 
 export {
   BeeIcon,
@@ -61,5 +63,7 @@ export {
   SunIcon,
   PlusIcon,
   CrossIcon,
-  CameraIcon
+  CameraIcon,
+  TelegramIcon,
+  DiscordIcon
 }

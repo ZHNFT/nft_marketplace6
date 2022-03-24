@@ -3,25 +3,27 @@ import { Listbox, Transition } from '@headlessui/react';
 import clsx from 'clsx';
 import { ChevronDownIcon } from '../icons';
 
-export default function Dropdown({ className, buttonClassName, label, isDisabled = false, size, list, selected, onSelect }) {
+export default function Dropdown({ className, buttonClassName, label, isSelectField, isDisabled = false, size, list, selected, error, onSelect }) {
   return (
     <div className={clsx('w-full', className ? className : '' )}>
       <Listbox value={selected} disabled={isDisabled} label={label} onChange={onSelect}>
         <div className="relative">
           <Listbox.Button className={clsx(
-            'cursor-pointer relative w-full py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none focus-visible:ring-1 focus-visible:ring-opacity-75 focus-visible:ring-malibu font-medium border-[0.5px] border-rhino',
+            'cursor-pointer relative w-full focus:outline-none focus-visible:border-malibu',
+            isSelectField ? 'select-field rounded-md text-white border-[0.5px] border-transparent focus:border-malibu text-left !text-sm' : 'py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none font-medium border-[0.5px] border-rhino',
             isDisabled ? 'opacity-50' : '',
             size === 'sml' ? 'text-xs' : 'text-base',
             buttonClassName
           )}>
-            <span className="block truncate">{selected.label}</span>
+            <span className={clsx('block truncate', !selected.value ? 'text-manatee' : '')}>{selected.label}</span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <ChevronDownIcon
-                className="w-[16px] text-ink dark:text-white pr-1"
+                className={clsx('text-ink pr-1', isSelectField ? 'w-[14px] text-malibu' : 'w-[16px] dark:text-white')}
                 aria-hidden="true"
               />
             </span>
           </Listbox.Button>
+          { error && <p className="-mt-0.5 absolute text-xxs text-red-600">{ error}</p> }
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"

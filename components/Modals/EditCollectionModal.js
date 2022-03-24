@@ -2,7 +2,7 @@ import Image from 'next/image';
 import DefaultLogo from '../../images/default-collection-logo-2.png';
 import { useForm } from '../../hooks/useForm';
 import Modal from './Modal';
-import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon } from '../icons';
+import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon, TelegramIcon, DiscordIcon } from '../icons';
 import InputField from '../Forms/InputField';
 import TextareaField from '../Forms/TextareaField';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -12,8 +12,8 @@ const textFields = [
   { id: 'website', label: 'Website', icon: () => <ChainIcon className="w-[10px] mr-2" /> },
   { id: 'instagram', label: 'Instagram', icon: () => <InstagramIcon className="w-[12px] mr-1.5" /> },
   { id: 'twitter', label: 'Twitter', icon: () => <TwitterIcon className="w-[12px] mr-2" /> },
-  { id: 'discord', label: 'Discord', icon: () => <ChainIcon className="w-[10px] mr-1" /> },
-  { id: 'Telegram', label: 'Telegram', icon: () => <ChainIcon className="w-[10px] mr-1" /> }
+  { id: 'discord', label: 'Discord', icon: () => <DiscordIcon className="w-[12px] mr-2" /> },
+  { id: 'Telegram', label: 'Telegram', icon: () => <TelegramIcon className="w-[12px] mr-2" /> }
 ];
 
 export default function EditCollectionModal(props) {

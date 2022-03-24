@@ -3,12 +3,9 @@ import { Range, getTrackBackground } from 'react-range';
 import { fromUnixTime, format } from 'date-fns';
 import clsx from 'clsx';
 
-export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, isDate, onChange }) {
+export default function RangeField(props) {
+  const { value = [0], step = 0.01, decimals, min = 0, max = 100, color = '#494433', isDate, onChange } = props;
   const [values, setValues] = useState([min, max]);
-
-  useEffect(() => {
-    setValues([min, max]);
-  }, [min, max]);
 
   return (
     <div className="flex justify-center">
@@ -35,7 +32,7 @@ export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, 
               style={{
                 background: getTrackBackground({
                   values,
-                  colors: ['#494433', '#4d71be', '#494433'],
+                  colors: [color, color, color],
                   min,
                   max
                 })
@@ -48,7 +45,10 @@ export default function RangeField({ step = 0.01, decimals, min = 0, max = 100, 
         renderThumb={({ index, props, isDragged }) => (
           <div
             {...props}
-            className="w-[12px] h-[12px] rounded-full flex justify-center items-center"
+            className={clsx(
+              'w-[12px] h-[12px] rounded-full flex justify-center items-center',
+              isDragged ? 'brightness-120' : ''
+            )}
             style={{
               ...props.style,
               backgroundColor: isDragged ? '#5a93ff' : '#4d71be'
