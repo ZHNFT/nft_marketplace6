@@ -3,7 +3,7 @@ import { RadioGroup } from '@headlessui/react';
 import { ethers } from "ethers";
 import jwt from 'jsonwebtoken'
 import { ellipseAddress } from '../../Utils';
-import Web3Token from 'web3-token';
+
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { add, getUnixTime } from 'date-fns';
 import Dropdown from '../Dropdown/Dropdown';
@@ -16,6 +16,7 @@ import { NftCollectionABI } from '../../config';
 import { TRANSACTION_STATUS } from '../../constants/nft';
 import useListNft from '../../hooks/useListNft';
 import useListNftForAuction from '../../hooks/useListNftForAuction';
+import PriceInputField from './Fields/PriceInputField';
 
 const listTypes = [
   { label: 'Fixed Price', value: 'fixed' },
@@ -86,7 +87,7 @@ export default function Listing(props) {
       validate={validate}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
-      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting }) => {
+      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
         return isSubmitting ? (
           <div className="max-w-lg mt-5">
             <div className="flex justify-between mb-6">
@@ -241,7 +242,12 @@ export default function Listing(props) {
 
                 <div className="my-10">
                   { /* Price */}
-                  <label htmlFor="price">
+                  <Field
+                    name="price"
+                    component={PriceInputField}
+                    label={values.type.value === 'fixed' ? 'Price' : 'Starting price'}
+                  />
+                  {/* <label htmlFor="price">
                     {values.type.value === 'fixed' ? 'Price' : 'Starting price'}
                   </label>
                   <div className="mt-1 relative">
@@ -270,9 +276,8 @@ export default function Listing(props) {
                         onBlur={handleBlur}
                       />
                     </div>
-                    {/* https://formik.org/docs/api/errormessage#props-1 */}
                     <ErrorMessage name="price">{msg => <p className="mt-1 absolute text-red-600">{msg}</p>}</ErrorMessage>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="my-10">
@@ -312,6 +317,7 @@ export default function Listing(props) {
                   <PrimaryButton
                     className="max-w-[300px]"
                     type="submit"
+                    disabled={!isValid || isSubmitting}
                   >
                     Complete listing
                   </PrimaryButton>

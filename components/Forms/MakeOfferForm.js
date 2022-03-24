@@ -13,6 +13,7 @@ import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import { getTransactionStatus } from '../../Utils/helper';
 import usePlaceBid from '../../hooks/usePlaceBid';
 import usePlaceAuctionBid from '../../hooks/usePlaceAuctionBid';
+import PriceInputField from './Fields/PriceInputField';
 
 const expirationOptions = [
   { label: '1 day', value: 'day1' },
@@ -72,7 +73,7 @@ export default function MakeOfferForm(props) {
       validate={validate}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
-      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting }) => {
+      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
         return isSubmitting ? (
           <TransactionList
             steps={activeModal === NFT_MODALS.MAKE_OFFER ? [
@@ -115,36 +116,12 @@ export default function MakeOfferForm(props) {
         ) : (
           // https://formik.org/docs/api/form
           <Form>
-            <div className="mt-4 mb-8">
-              <label htmlFor="price">Price</label>
-              <div className="mt-1 relative">
-                <div className="flex items-center rounded-lg border-[0.5px] border-cornflower">
-                  <div className="border-r-[0.5px] border-cornflower py-2 pl-2 pr-4">
-                    <BeeIcon className="w-[25px] h-[25px]" />
-                    <span>HNY</span>
-                  </div>
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    id="price"
-                    name="price"
-                    className="text-ink dark:text-white flex flex-1 bg-transparent"
-                    value={values?.price || ''}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder="Amount"
-                    required
-                  />
-                  <span className="border-l-[0.5px] border-cornflower p-2 text-sm w-[80px] text-right">
-                    <span className="overflow-hidden truncate">${convertToUsd({ value: values.price })}</span>
-                  </span>
-                </div>
-                {/* https://formik.org/docs/api/errormessage#props-1 */}
-                <ErrorMessage name="price">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
-                <div className="mt-1 text-sm text-right">Balace: 0.0000 HNY</div>
-              </div>
-            </div>
-
+            {/* https://formik.org/docs/api/field */}
+            <Field 
+              name="price"
+              component={PriceInputField}
+              showTokenBalance={true}
+            />
             {activeModal === NFT_MODALS.MAKE_OFFER ? (
               <div className="mt-4 mb-8">
                 <label htmlFor="price">Offer Expiration</label>
@@ -179,7 +156,13 @@ export default function MakeOfferForm(props) {
             ) : null}
 
             <div className="flex justify-center mt-10 my-4">
-              <PrimaryButton className="max-w-[200px]" type="submit">Make Offer</PrimaryButton>
+              <PrimaryButton
+                className="max-w-[200px]"
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
+                  Make Offer
+              </PrimaryButton>
               <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={() => console.log('convert')}>Convert HNY</PrimaryAltButton>
             </div>
           </Form>

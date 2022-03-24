@@ -25,7 +25,7 @@ import TraitsTable from '../../../../components/Product/TraitsTable';
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract }) {
+export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
   const [data, setData] = useState(serverData)
   const isOwner = data?.owner === address?.toLowerCase() || false;
   // there can only be one active listing or auction for a token at the same time
@@ -106,15 +106,10 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     }
   }, [marketplaceContract])
 
-  // reload data when navigating to the same route
-  useEffect(() => {
-    setData(serverData);
-  }, [serverData]);
-
   const handleCloseModal = useCallback(function (){
     setActiveModal(null)
   }, [])
-  
+
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
       <SingleNftPageModal

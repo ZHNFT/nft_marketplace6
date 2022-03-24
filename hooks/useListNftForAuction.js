@@ -32,7 +32,6 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
     let token;
 
     try {
-      // TODO: replace with jwt?
       token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
     } catch (error) {
       alert(error?.message)

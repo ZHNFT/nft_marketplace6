@@ -5,6 +5,7 @@ import TransactionList from '../Transactions/TransactionList';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import PrimaryAltButton from '../Buttons/PrimaryAltButton';
 import Dropdown from '../Dropdown/Dropdown';
+import PriceInputField from './Fields/PriceInputField';
 
 const currencies = [
   { label: 'HNY', value: 'hny' }
@@ -58,7 +59,7 @@ export default function ChangePriceForm(props) {
       validate={validate}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
-      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting }) => {
+      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
         return isSubmitting ? (
           <TransactionList
             steps={[
@@ -86,7 +87,11 @@ export default function ChangePriceForm(props) {
           />
         ) : (
           <Form>
-            <div className="mt-4 mb-6">
+           <Field 
+             name="price"
+             component={PriceInputField}
+           />
+            {/* <div className="mt-4 mb-6">
               <label htmlFor="price" className="sr-only">Price</label>
               <div className="mt-1 relative">
                 <div className="flex">
@@ -104,27 +109,23 @@ export default function ChangePriceForm(props) {
                     }}
                     list={currencies}
                   />
-                  <input
-                    type="text"
-                    id="price"
-                    name="price"
-                    className="text-ink rounded-xl flex flex-1"
-                    value={values.price || ''}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
+
                 </div>
-                {/* https://formik.org/docs/api/errormessage#props-1 */}
-                <ErrorMessage name="price">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
               </div>
-            </div>
+            </div> */}
 
             <p className="text-justify mt-10">
               You must pay an additional gas fee if you want to cancel this listing at a later point. <a href="#" className="text-cornflower">Learn more about canceling listings.</a>
             </p>
 
             <div className="flex justify-center mt-10 my-4">
-              <PrimaryButton className="max-w-[200px]" type="submit">Set new price</PrimaryButton>
+              <PrimaryButton
+                className="max-w-[200px]"
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
+                Set new price
+              </PrimaryButton>
               <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={handleClose}>Never mind</PrimaryAltButton>
             </div>
           </Form>

@@ -8,6 +8,8 @@ import Web3Context from '../contexts/Web3Context';
 import router from 'next/router';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
+import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
+import { honeyTokenAddress } from '../config'
 
 // Components
 import Layout from '../components/layout';
@@ -50,6 +52,7 @@ function reducer(state, action) {
         ethersProvider: action.ethersProvider,
         marketplaceContract: action.marketplaceContract,
         tokenContract: action.tokenContract,
+        tokenBalance: action.tokenBalance,
       }
     case 'SET_ADDRESS':
       return {
@@ -109,6 +112,10 @@ function MyApp({ Component, pageProps }) {
     const marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
     const erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
 
+    let erc20TokenBalance = await erc20TokenContract?.balanceOf(address);
+
+    erc20TokenBalance = ethers.utils.formatEther(erc20TokenBalance.toString());
+
     dispatch({
       type: 'SET_WEB3_PROVIDER',
       provider,
@@ -123,6 +130,7 @@ function MyApp({ Component, pageProps }) {
           : null,
       marketplaceContract: marketplaceTestContract,
       tokenContract: erc20TokenContract,
+      tokenBalance: erc20TokenBalance
     })
   }, []);
 

@@ -36,7 +36,7 @@ export default function Modal(props) {
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <div className={clsx(
-              `relative inline-block align-bottom bg-white dark:bg-[#292f37] border-[0.5px] border-malibu rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full py-8 px-${paddingX}`,
+              `relative inline-block overflow-visible align-bottom bg-white dark:bg-[#272C33] border-[0.5px] border-malibu rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle py-8 px-${paddingX}`,
               className
             )}>
               <button
