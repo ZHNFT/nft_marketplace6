@@ -52,7 +52,7 @@ async function fetchData(address, query, sort) {
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
-  const { createdAt, name, description, images, totalSupply, traits } = collection;
+  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials } = collection;
   const router = useRouter();
   const { search, address, sort, tab } = router.query;
   const [collectionData, setData] = useState(data);
@@ -75,7 +75,7 @@ export default function Collection(props) {
 
   return (
     <>
-      <div className="lg:max-w-6xl mx-auto">
+      <div className="lg:max-w-6xl mx-auto"> {console.log(collection)} {console.log(collectionData)}
         <CollectionHeader
           chainIdHex={chainIdHex}
           address={address}
@@ -84,7 +84,10 @@ export default function Collection(props) {
           description={description}
           logo={images?.logo}
           totalSupply={totalSupply}
-          socials={{ instagram: 'testInsta', twitter: 'testTwitter' }}
+          socials={socials} 
+          ownerCount={ownerCount}
+          volume={volume.total}
+          floorPrice={floorPrice}
         />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
           <div className="flex col-span-12 lg:col-span-7 items-center ml-5">

@@ -2,13 +2,13 @@ import { useState } from 'react';
 import Image from 'next/image'
 import { ellipseAddress } from '../../Utils';
 import DefaultLogo from '../../images/default-collection-logo.png';
-import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon } from '../icons';
+import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon, DiscordIcon, TelegramIcon } from '../icons';
 import { getExplorer } from '../../config';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import EditCollectionModal from '../Modals/EditCollectionModal';
 
 export default function CollectionHeader(props) {
-  const { address, createdAt, name, description, logo, totalSupply, socials, chainIdHex } = props;
+  const { address, createdAt, name, description, logo, totalSupply, socials, chainIdHex, floorPrice, ownerCount, volume } = props;
   const [showEditModal, setShowEditModal] = useState(false);
   return (
     <>
@@ -30,7 +30,7 @@ export default function CollectionHeader(props) {
           </div>
           <div className="flex flex-col">
             <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ name }</h1>
-            <ul className="flex justify-start items-center text-xs">
+            <ul className="flex justify-start items-center text-xs pt-1">
                 <li className="mr-6">
                     <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
                       { ellipseAddress(address, 4) }
@@ -57,6 +57,36 @@ export default function CollectionHeader(props) {
                     </li>
                   )
                 }
+                 {
+                  socials?.discord && (
+                    <li className="mr-6">
+                      <a href="#">
+                        <DiscordIcon className="w-[19px] mr-2" />
+                        { socials.discord }
+                      </a>
+                    </li>
+                  )
+                }
+                {
+                  socials?.telegram && (
+                    <li className="mr-6">
+                      <a href="#">
+                        <TelegramIcon className="w-[19px] mr-2" />
+                        { socials.telegram }
+                      </a>
+                    </li>
+                  )
+                }
+                 {
+                  socials?.link && (
+                    <li className="mr-6">
+                      <a href="#">
+                        <LinkIcon className="w-[19px] mr-2" />
+                        { socials.link }
+                      </a>
+                    </li>
+                  )
+                }
                 <li>
                     <a href="#">
                       <span className="hidden">Share</span>
@@ -74,23 +104,24 @@ export default function CollectionHeader(props) {
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Owners</h4>
-                    <span className="text-xl font-medium">36.1K</span>
+                    <span className="text-xl font-medium">{ownerCount}</span>
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Volume</h4>
                     <span className="text-xl font-medium">
                       <BeeIcon className="w-[31px] relative -top-[3px]" />
-                      16.7K
+                      {volume}
                     </span>
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Floor</h4>
                     <span className="text-xl font-medium">
                       <BeeIcon className="w-[31px] relative -top-[3px]" />
-                      23
+                      {floorPrice}
                     </span>
                 </li>
             </ul>
+            <p className='text-manatee text-xs pt-3'>{description}</p>
         </div>
       </section>
       <EditCollectionModal
