@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ethers } from "ethers";
+import jwt from 'jsonwebtoken'
 import { TRANSACTION_STATUS } from '../constants/nft';
 import useApiCall from './useApiCall';
 import useTokenApproval from './useTokenApproval';
