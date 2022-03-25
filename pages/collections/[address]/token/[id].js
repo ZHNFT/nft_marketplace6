@@ -27,7 +27,6 @@ import TraitsTable from '../../../../components/Product/TraitsTable';
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
   const [data, setData] = useState(serverData)
-  const isOwner = data?.owner === address?.toLowerCase() || false;
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
   // there can only be one active auction or listing for a token at the same time
@@ -36,6 +35,9 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   const activeBids = data?.bids?.filter(bid => bid?.active);
   // these are all bids on an item that are on auction
   const activeAuctionbids = activeAuction?.bids;
+
+  const isOwner = activeAuction ? activeAuction.owner === address?.toLowerCase() : data?.owner === address?.toLowerCase() || false;
+  const owner = activeAuction ? activeAuction.owner : data?.owner;
 
   const marketplaceAddress = marketplaceContract?.address;
 
@@ -137,7 +139,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
         tokenId={data?.tokenId}
         collectionId={data?.collectionId}
         name={data?.name}
-        owner={data?.owner}
+        owner={owner}
         imageUrl={resolveBunnyLink(data?.imageHosted)}
         fetchData={fetchData}
         activeListing={activeListing}
@@ -162,7 +164,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
               name={data?.name}
-              owner={data?.owner}
+              owner={owner}
               isOwner={isOwner}
               address={address}
               lastSalePrice={38.7}
