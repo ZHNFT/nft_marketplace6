@@ -266,8 +266,8 @@ export default function AddCollectionModal(props) {
                     {
                       tokens.map(({ label, value, icon }) => (
                         <label key={value} className={clsx(
-                          'flex flex-1 cursor-pointer mx-6 first:ml-0 last:mr-0 flex-col items-center justify-center py-1.5 px-8 border-[0.5px] border-manatee rounded-md text-center',
-                          values?.paymentTokens.includes(value) ? 'bg-cornflower' : ''
+                          'relative flex flex-1 cursor-pointer mx-6 first:ml-0 last:mr-0 flex-col items-center justify-center py-1.5 px-8 border-[0.5px] border-manatee rounded-md text-center overflow-hidden',
+                          values?.paymentTokens.includes(value) ? 'border-cornflower after:bg-cornflower after:block after:m-auto after:h-[3px] after:w-full after:absolute after:left-0 after:bottom-0' : ''
                         )}>
                           <Field type="checkbox" name="paymentTokens" className="absolute -left-[999px]" value={value} />
                           { icon() }
@@ -282,12 +282,13 @@ export default function AddCollectionModal(props) {
                     <span className="text-cornflower ml-1">*</span>
                   </p>
                   <p className="text-manatee text-xs mr-8 mb-2">Caution: This can’t be changed once the collection has been accepted.</p>
-                  <div className="-mx-[12px]">
+                  <div className="-mx-[6px]">
                     <RangeField
                       step={.1}
                       decimals={1}
-                      color="#3CA075"
-                      onChange={() => console.log('test')}
+                      initialValues={[2]}
+                      suffix="%"
+                      onChange={() => {}}
                     />
                   </div>
 

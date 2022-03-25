@@ -127,6 +127,7 @@ export default function TraitsFilter({ filters, submitForm }) {
                             step={1}
                             min={selectedTraitType.minValue}
                             max={selectedTraitType.maxValue}
+                            initialValues={[selectedTraitType.minValue, selectedTraitType.maxValue]}
                             isDate={selectedTraitType.display_type === 'date'}
                             onChange={([min, max]) => console.log(min, max)}
                           />

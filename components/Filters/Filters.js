@@ -56,6 +56,7 @@ export default function Filters({ filters, total, placement }) {
           <RangeField
             step={.1}
             decimals={1}
+            initialValues={[0, 100]}
             onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
           />
 
@@ -64,6 +65,7 @@ export default function Filters({ filters, total, placement }) {
           <RangeField
             step={1}
             decimals={0}
+            initialValues={[0, 100]}
             onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
           />
 
