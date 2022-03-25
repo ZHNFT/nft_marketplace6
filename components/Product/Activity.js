@@ -45,7 +45,8 @@ export default function Activity() {
       <div className="max-h-[280px] overflow-y-auto scroller">
         {
           activities?.results?.map(row => {
-            const { activityType, fromAddress, toAddress, minBid, _id, expiry } = row;
+            const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem } = row;
+            const price = activityType === 'listing' ? pricePerItem : minBid;
             return (
               <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>
                 <Cell className="w-[30px]">
@@ -56,12 +57,12 @@ export default function Activity() {
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
                   <span className="-ml-[8px]">
-                    {minBid ? (
-                      <ItemPrice value={ethers.utils.formatEther(ethers.BigNumber.from(minBid.toString()))} />
+                    {price ? (
+                      <ItemPrice value={ethers.utils.formatEther(ethers.BigNumber.from(price.toString()))} />
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">
-                    { minBid ? formatCurrency({ value: minBid }) : '-' }
+                    { price ? formatCurrency({ value: price }) : '-' }
                   </span>
                 </Cell>
                 <Cell className="w-[100px] text-center">

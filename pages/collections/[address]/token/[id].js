@@ -217,7 +217,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                         </p>
                         <div className="flex items-baseline relative">
                           <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
-                          <span className="text-base font-medium ml-6">{activeListing.pricePerItem / 1000000000}</span>
+                          <span className="text-base font-medium ml-6">{ethers.utils.formatEther(ethers.BigNumber.from(activeListing?.pricePerItem.toString()))}</span>
                           <span className="text-xs text-manatee ml-2">$ {convertToUsd({ value: activeListing.pricePerItem })}</span>
                         </div>
                       </div>
@@ -287,7 +287,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                           </p>
                           <div className="flex items-baseline relative">
                             <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
-                            <span className="text-base font-medium ml-6">{activeListing.pricePerItem / 1000000000}</span>
+                            <span className="text-base font-medium ml-6">{ethers.utils.formatEther(ethers.BigNumber.from(activeListing?.pricePerItem.toString()))}</span>
                             <span className="text-xs text-manatee ml-2">$ {convertToUsd({ value: activeListing.pricePerItem })}</span>
                           </div>
                         </div>
@@ -305,7 +305,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
                             {
                               !!data?.highestBid && (
                                 <p className="text-center absolute left-0 right-0 -bottom-[12px] text-xxs h-[12px]">
-                                  <ItemPrice label="Highest" value={data?.highestBid / 1000000000} />
+                                  <ItemPrice label="Highest" value={ethers.utils.formatEther(ethers.BigNumber.from(data?.highestBid.toString()))} />
                                 </p>
                               )
                             }

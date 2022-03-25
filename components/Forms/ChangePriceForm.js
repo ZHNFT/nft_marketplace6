@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { TRANSACTION_STATUS } from '../../constants/nft';
 import TransactionList from '../Transactions/TransactionList';
@@ -6,6 +6,8 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 import PrimaryAltButton from '../Buttons/PrimaryAltButton';
 import Dropdown from '../Dropdown/Dropdown';
 import PriceInputField from './Fields/PriceInputField';
+import useCancelListing from '../../hooks/useCancelListing';
+import useListNft from '../../hooks/useListNft';
 
 const currencies = [
   { label: 'HNY', value: 'hny' }
@@ -114,7 +116,7 @@ export default function ChangePriceForm(props) {
               </div>
             </div> */}
 
-            <p className="text-justify mt-10">
+            <p className="text-justify mt-10 max-w-[440px] text-xs text-[#969EAB]">
               You must pay an additional gas fee if you want to cancel this listing at a later point. <a href="#" className="text-cornflower">Learn more about canceling listings.</a>
             </p>
 

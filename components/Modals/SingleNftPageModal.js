@@ -17,14 +17,19 @@ const modalToTitleMap = {
   [NFT_MODALS.PLACE_BID]: 'Place a bid',
   [NFT_MODALS.UNLIST]: 'Cancel listing',
   [NFT_MODALS.BUY_NOW]: 'Buy now',
-  [NFT_MODALS.CHANGE_PRICE]: 'Change the listing price',
+  [NFT_MODALS.CHANGE_PRICE]: 'Set new listing price',
 };
 
 const modalToFormMap = {
   [NFT_MODALS.MAKE_OFFER]: <MakeOfferForm />, // Being used to place a bid on an auction or make an offer depending on active modal
   [NFT_MODALS.LIST]: <ListingForm />, // Being used to list an item for sale or list for auction
   [NFT_MODALS.PLACE_BID]: <MakeOfferForm />, // Being used to place a bid on an auction or make an offer depending on active modal
-  [NFT_MODALS.UNLIST]: <CancelListingModal />, // Being used to cancel a listing
+  [NFT_MODALS.UNLIST]: (
+    <CancelListingModal
+      description="Canceling your listing will unpublish this sale from Hexagon and requires a transaction to make sure it will never be fulfillable."
+      confirmLabel="Cancel"
+    />
+  ), // Being used to cancel a listing
   [NFT_MODALS.BUY_NOW]: <BuyNowForm />,
   [NFT_MODALS.CHANGE_PRICE]: <ChangePriceForm />,
 }
