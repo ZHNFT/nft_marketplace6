@@ -4,7 +4,7 @@ import { HexagonBeeIcon, RefreshIcon, ShareIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import ProgressHexagon from '../ProgressHexagon/ProgressHexagon';
 
-export default function ProductDetailsHeader({ className, name, owner, isOwner, address, collection, rarityRank, lastSalePrice }) {
+export default function ProductDetailsHeader({ className, name, owner, isOwner, address, collection, rarityRank, lastSalePrice, refreshMetaData }) {
   return (
     <div className={className}>
       <div className="flex justify-between items-center text-xs">
@@ -13,7 +13,7 @@ export default function ProductDetailsHeader({ className, name, owner, isOwner, 
           <span className="text-manatee font-medium">Hive Investments</span>
         </div>
         <div className="flex items-center">
-          <button type="button" className="mr-3 flex">
+          <button type="button" className="mr-3 flex" onClick={refreshMetaData}>
             <span className="text-cornflower mr-2">Refresh</span>
             <RefreshIcon className="w-[12px]" />
           </button>

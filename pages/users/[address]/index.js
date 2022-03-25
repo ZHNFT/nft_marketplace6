@@ -35,8 +35,6 @@ export default function UserAssets(props) {
   const router = useRouter();
   const { address, tab } = router.query;
 
-  console.log(tab);
-
   const tabs = [
     { href: '', name: 'NFTs' },
     { href: '?tab=activity', name: 'Activity' },

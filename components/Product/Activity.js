@@ -1,25 +1,31 @@
+import { useState, useEffect, useCallback } from 'react';
+import { ethers } from "ethers";
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { formatCurrency } from '../../Utils/helper';
+import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 
-const testActivities = [
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/1.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#1' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/2.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#2' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/3.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#3' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/4.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#4' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/5.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#5' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/2.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#6' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/3.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#7' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/4.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#8' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/5.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#9' }
-];
-
 export default function Activity() {
   const router = useRouter();
+  const { address, id } = router.query;
+  const [activities, setActivities] = useState([]);
+
+  const fetchData = useCallback(async function() {
+    const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}/activity?include=sales&include=listings&include=bids&include=transfers&include=auctions`;
+    const res = await fetch(url)
+    const data = await res?.json()
+    setActivities(data);
+  }, [address, id])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  console.log(`activities`, activities)
   return (
     <Table className="text-xs">
       <RowHeading>
@@ -38,30 +44,39 @@ export default function Activity() {
       </RowHeading>
       <div className="max-h-[280px] overflow-y-auto scroller">
         {
-          testActivities.map(row => {
-            const { type, description, name, collection, imageUrl, price, priceUsd, from, to, date, url, transactionId } = row;
+          activities?.results?.map(row => {
+            const { activityType, fromAddress, toAddress, minBid, _id, expiry } = row;
             return (
-              <Row key={transactionId} className="cursor-pointer" onClick={() => router.push('#')}>
+              <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>
                 <Cell className="w-[30px]">
                   <CartIcon className="w-[16px]" />
                 </Cell>
                 <Cell className="w-[75px]">
-                  <span className="block">List</span>
-                  <span className="text-manatee">For sale</span>
+                  <span className="block">{activityType}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
-                  <span className="-ml-[8px]"><ItemPrice value={price} /></span>
+                  <span className="-ml-[8px]">
+                    {minBid ? (
+                      <ItemPrice value={ethers.utils.formatEther(ethers.BigNumber.from(minBid.toString()))} />
+                    ) : '-'}
+                  </span>
                   <span className="block text-[10px] text-manatee">
-                    { formatCurrency({ value: priceUsd }) }
+                    { minBid ? formatCurrency({ value: minBid }) : '-' }
                   </span>
                 </Cell>
                 <Cell className="w-[100px] text-center">
-                  <a href="#">
-                    { from }
-                  </a>
+                  {fromAddress ? (
+                    <a href="#">
+                      { ellipseAddress(fromAddress, 4) }
+                    </a>
+                  ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center">
-                  { to ? <a href="#">{ to }</a> : '-'}
+                  { toAddress ? (
+                    <a href="#">
+                      { ellipseAddress(toAddress, 4) }
+                    </a>
+                   ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   <div className="group relative">

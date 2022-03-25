@@ -53,12 +53,22 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
   const router = useRouter();
   const { address: contractAddress, id } = router.query;
 
-  const fetchData = useCallback(async function () {
+  const fetchData = useCallback(async function() {
     const url = `https://hexagon-api.onrender.com/collections/${contractAddress}/token/${id}`;
     const res = await fetch(url)
     const data = await res?.json()
     setData(data);
   }, [contractAddress, id])
+
+  const refreshMetaData = useCallback(async function() {
+    const url = `https://hexagon-api.onrender.com/tokens/${data?._id}/refresh-metadata`;
+    await fetch(
+      url,
+      {
+        method: 'PUT',
+      }
+    )
+  }, [data?._id])
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
@@ -157,6 +167,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
               address={address}
               lastSalePrice={38.7}
               rarityRank={data?.rarityRank}
+              refreshMetaData={refreshMetaData}
             />
 
             <div className={clsx(
