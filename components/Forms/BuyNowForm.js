@@ -9,14 +9,15 @@ import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { imageUrl, name, collectionId, marketplaceContract, activeListing } = props;
+  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError } = useAcceptListing({ marketplaceContract, setIsConfirming });
   const price = activeListing?.pricePerItem;
 
-  function handleConfirm() {
+  async function handleConfirm() {
     setIsConfirming(true);
-    handleAcceptListing(activeListing);
+    await handleAcceptListing(activeListing);
+    fetchData();
   }
 
   if (isConfirming) {

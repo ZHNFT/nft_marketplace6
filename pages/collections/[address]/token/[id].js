@@ -38,7 +38,7 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
 
   // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
   const isOwner = activeAuction ? activeAuction.owner === address?.toLowerCase() : data?.owner === address?.toLowerCase() || false;
-  const owner = activeAuction ? activeAuction.owner : data?.owner;
+  const owner = activeAuction ? activeAuction?.owner : data?.owner;
 
   const marketplaceAddress = marketplaceContract?.address;
 

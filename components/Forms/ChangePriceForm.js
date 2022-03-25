@@ -25,7 +25,7 @@ const validate = (values) => {
 }
 
 export default function ChangePriceForm(props) {
-  const { handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId } = props;
+  const { handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
@@ -45,6 +45,8 @@ export default function ChangePriceForm(props) {
 
     // close modal here
     handleClose();
+
+    fetchData();
 
     // eslint-disable-next-line
   }, [handleCancelListing, handleList])
