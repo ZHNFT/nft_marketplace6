@@ -4,8 +4,8 @@ import { fromUnixTime, format } from 'date-fns';
 import clsx from 'clsx';
 
 export default function RangeField(props) {
-  const { value = [0], step = 0.01, decimals, min = 0, max = 100, color = '#494433', isDate, onChange } = props;
-  const [values, setValues] = useState([min, max]);
+  const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, onChange } = props;
+  const [values, setValues] = useState(initialValues);
 
   return (
     <div className="flex justify-center">
@@ -32,7 +32,7 @@ export default function RangeField(props) {
               style={{
                 background: getTrackBackground({
                   values,
-                  colors: [color, color, color],
+                  colors: values?.length > 1 ? ['#494433', '#4d71be', '#494433'] : ['#3CA075', '#494433'],
                   min,
                   max
                 })
@@ -51,7 +51,7 @@ export default function RangeField(props) {
             )}
             style={{
               ...props.style,
-              backgroundColor: isDragged ? '#5a93ff' : '#4d71be'
+              backgroundColor: values?.length > 1 ? '#4d71be' : '#3CA075'
             }}
           >
             <div className={clsx(
@@ -61,7 +61,7 @@ export default function RangeField(props) {
               { 
                 isDate
                   ? `${format(fromUnixTime(values[index]), 'P')}`
-                  : `${values[index] === 0 || values[index] === max ? values[index] : values[index].toFixed(decimals)}`
+                  : `${values[index] === 0 || values[index] === max ? values[index] : values[index].toFixed(decimals)}${suffix ? suffix : ''}`
               }
             </div>
           </div>
