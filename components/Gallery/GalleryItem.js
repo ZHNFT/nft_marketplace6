@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, forwardRef } from 'react';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Web3Context from '../../contexts/Web3Context';
@@ -8,7 +8,8 @@ import ItemPrice from '../ItemPrice/ItemPrice';
 import ItemMain from './ItemMain';
 import ItemListingState from './ItemListingState';
 
-export default function GalleryItem({ item, showRarity }) {
+const GalleryItem = forwardRef((props, ref) => {
+  const { item, showRarity } = props;
   const [isHovering, setIsHovering] = useState(false);
   const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
   const { state: web3State } = useContext(Web3Context);
@@ -22,6 +23,7 @@ export default function GalleryItem({ item, showRarity }) {
         className="relative cursor-pointer w-[210px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        ref={ref}
       >
         <header className="flex items-center px-2.5 py-[9px]">
           <div className="flex items-center">
@@ -72,4 +74,8 @@ export default function GalleryItem({ item, showRarity }) {
       </div>
     </Link>
   );
-}
+});
+
+GalleryItem.displayName = 'GalleryItem';
+
+export default GalleryItem;

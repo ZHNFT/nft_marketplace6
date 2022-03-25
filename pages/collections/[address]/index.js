@@ -9,7 +9,7 @@ import FilterButton from '../../../components/FilterButton/FilterButton';
 import Dropdown from '../../../components/Dropdown/Dropdown';
 import CollectionHeader from '../../../components/Collection/CollectionHeader';
 import Activity from '../../../components/Collection/Activity';
-import Gallery from '../../../components/Gallery/Gallery';
+import InfiniteGallery from '../../../components/Gallery/InfiniteGallery';
 import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
 
@@ -21,7 +21,7 @@ const itemsFilterList = [
   { label: 'Bundles' }
 ];
 
-async function fetchData(address, query, sort) {
+export async function fetchData(address, page = 0, query, sort) {
   const activeFilters = parse(query);
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
@@ -34,7 +34,7 @@ async function fetchData(address, query, sort) {
   ));
 
   const res = await fetch(
-    `${url}${address}/tokens${sort ? `?${stringify({ sort })}` : ''}`,
+    `${url}${address}/tokens?page=${page}&size=20${sort ? `&${stringify({ sort })}` : ''}`,
     {
       method: 'POST',
       headers: {
@@ -64,7 +64,7 @@ export default function Collection(props) {
   ];
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData(address, search, sort);
+    const json = await fetchData(address, 0, search, sort);
     setData(json);
   // eslint-disable-next-line
   }, [address, search, sort]);
@@ -75,7 +75,7 @@ export default function Collection(props) {
 
   return (
     <>
-      <div className="lg:max-w-6xl mx-auto"> {console.log(collection)} {console.log(collectionData)}
+      <div className="lg:max-w-6xl mx-auto">
         <CollectionHeader
           chainIdHex={chainIdHex}
           address={address}
@@ -134,7 +134,7 @@ export default function Collection(props) {
             {
               tab === 'activity'
                 ? <Activity />
-                : <Gallery items={collectionData?.results} />
+                : <InfiniteGallery collectionData={collectionData} />
             }
           </div>
         </>
@@ -147,8 +147,6 @@ export async function getStaticPaths() {
   const url = "https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=mumbai"
   const res = await fetch(url)
   const collections = await res?.json()
-
-  console.log(`collections`, collections)
 
   // Get the paths we want to pre-render based on posts
   const paths = collections?.results?.map((collection) => ({
