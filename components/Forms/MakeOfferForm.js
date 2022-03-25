@@ -39,7 +39,7 @@ export default function MakeOfferForm(props) {
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
   const initialValues = {
-    price: null,
+    price: "",
     expiration: expirationOptions[0],
     time: `${date.getHours().toString().length < 2 ? '0' : ''}${date.getHours()}:${date.getMinutes()}`
   };

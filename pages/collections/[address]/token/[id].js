@@ -110,6 +110,8 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     setActiveModal(null)
   }, [])
 
+  console.log(`data`, data)
+
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
       <SingleNftPageModal

@@ -143,8 +143,25 @@ export default function Collection(props) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const { params: { address } } = context;
+export async function getStaticPaths() {
+  const url = "https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=mumbai"
+  const res = await fetch(url)
+  const collections = await res?.json()
+
+  console.log(`collections`, collections)
+
+  // Get the paths we want to pre-render based on posts
+  const paths = collections?.results?.map((collection) => ({
+    params: { address: collection.address },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
+}
+
+export async function getStaticProps({ params }) {
+  const { address } = params;
   const url = `https://hexagon-api.onrender.com/collections/${address}`;
   const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
   const res = await fetch(url)

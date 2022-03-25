@@ -16,7 +16,7 @@ const modalToTitleMap = {
   [NFT_MODALS.LIST]: 'List item',
   [NFT_MODALS.PLACE_BID]: 'Place a bid',
   [NFT_MODALS.UNLIST]: 'Cancel listing',
-  [NFT_MODALS.BUY_NOW]: 'Complete checkout',
+  [NFT_MODALS.BUY_NOW]: 'Buy now',
   [NFT_MODALS.CHANGE_PRICE]: 'Change the listing price',
 };
 

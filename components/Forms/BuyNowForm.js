@@ -6,6 +6,7 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 import TransactionList from '../Transactions/TransactionList';
 import { BeeIcon } from '../icons';
 import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
+import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
   const { imageUrl, name, collectionId, marketplaceContract, activeListing } = props;

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { useContext } from 'react';
+import Web3Context from '../../contexts/Web3Context';
 import { ellipseAddress } from "../../Utils";
 import {
   CopyIcon,
@@ -11,26 +13,10 @@ import {
   FilesIcon,
 } from "../icons";
 import DarkModeSwitch from "./DarkModeSwitch";
-import { GetNumberTokens } from "../../Utils/web3HelperFunctions";
-import { useState, useEffect } from "react";
-import { makeCancelable } from "../../Utils/helper";
+import { formatter } from "../../Utils/helper";
 
 export default function ProfileMenu({ address, disconnect }) {
-  const [hnyBalance, setHnyBalance] = useState([]);
-
-  useEffect(() => {
-    const balanceRequest = makeCancelable(GetNumberTokens());
-
-    balanceRequest
-      .then((balance) => setHnyBalance(balance))
-      .catch((e) => {
-        console.log("req cancelled: ", e);
-      });
-
-    return function cleanup() {
-      balanceRequest.cancel();
-    };
-  }, []);
+  const { state: { tokenBalance } } = useContext(Web3Context);
 
   return (
     <>
@@ -38,7 +24,7 @@ export default function ProfileMenu({ address, disconnect }) {
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
           <span className="font-medium text-white text-base">
-            {hnyBalance > 0 ? hnyBalance : 0} HNY
+            {tokenBalance > 0 ? formatter.format(tokenBalance) : 0} HNY
           </span>
           <button
             className="block hover:text-white"

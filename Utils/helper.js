@@ -1,6 +1,5 @@
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
-import { Promise } from 'bluebird';
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -61,29 +60,10 @@ const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
   return TRANSACTION_STATUS.SUCCESS;
 };
 
-const makeCancelable = promise => {
-  let rejectFn;
-
-  const wrappedPromise = new Promise((resolve, reject) => {
-      rejectFn = reject;
-
-      Promise.resolve(promise)
-          .then(resolve)
-          .catch(reject);
-  });
-
-  wrappedPromise.cancel = () => {
-      rejectFn({ canceled: true });
-  };
-
-  return wrappedPromise;
-};
-
 export {
   formatCurrency,
   formatter,
   transformGalleryItem,
   convertToUsd,
-  getTransactionStatus,
-  makeCancelable
+  getTransactionStatus
 };
