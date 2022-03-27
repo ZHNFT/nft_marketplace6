@@ -37,7 +37,7 @@ export default function FilterCheckbox(props) {
 
   return (
     <div className={clsx(
-      'flex relative overflow-hidden items-center rounded-md py-1.5 px-3 my-1 border-[0.5px]',
+      'flex relative overflow-hidden items-center rounded-md py-1.5 px-3 my-1 border-[0.5px] hover:border-cornflower',
       isChecked ? 'border-cornflower after:bg-cornflower after:block after:m-auto after:w-[3px] after:h-full after:absolute after:left-0 after:top-0 after:bottom-0' : 'border-transparent'
     )}>
       <label

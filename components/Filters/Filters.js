@@ -1,7 +1,9 @@
+import { useContext, useEffect, useRef } from 'react';
 import { stringify, parse } from 'qs';
 import clsx from "clsx";
 import { useRouter } from 'next/router'
 import { Formik } from 'formik';
+import FiltersContext from '../../contexts/FiltersContext';
 import RangeField from '../Forms/RangeField';
 import ListingFilter from './ListingFilter';
 import TraitsFilter from './TraitsFilter';
@@ -9,14 +11,24 @@ import TraitsFilter from './TraitsFilter';
 export default function Filters({ filters, total, placement }) {
   const { push, query, pathname } = useRouter()
   const { search } = query;
+  const formRef = useRef();
+  const { setTraitFilters, isFormReset, setIsFormReset } = useContext(FiltersContext);
+
+  useEffect(() => {
+    if (isFormReset && formRef.current) {
+      formRef.current.resetForm();
+      formRef.current.handleSubmit();
+      setIsFormReset(false);
+    }
+  }, [isFormReset, setIsFormReset]);
 
   function handleSubmit(values) {
     let appendQuery;
     let stringifiedSearch;
-    console.log(values);
     if (values.query) {
       appendQuery = values.query;
     } else {
+      setTraitFilters(values);
       stringifiedSearch = stringify(values, { encode: false, arrayFormat: 'indices' });
     }
 
@@ -24,7 +36,7 @@ export default function Filters({ filters, total, placement }) {
       ...query,
       ...appendQuery,
       ...(query?.sort ? { sort: query.sort } : {}),
-      ...(stringifiedSearch?.length ? { search: stringifiedSearch } : {})
+      ...(stringifiedSearch?.length ? { search: stringifiedSearch } : { search: null})
     };
 
     push({
@@ -37,6 +49,7 @@ export default function Filters({ filters, total, placement }) {
     <Formik
       initialValues={parse(search)}
       onSubmit={handleSubmit}
+      innerRef={formRef}
     >
       {({ submitForm, values }) => (
         <form className={clsx(placement === 'desktop' ? "" : 'mt-4 border-t border-gray-200')}>

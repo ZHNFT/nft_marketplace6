@@ -62,7 +62,7 @@ export default function CollectionCard({ collection }) {
             alt="NFT Image" //layout="fill"
             width={576}
             height={555}
-            resizeMode="contain"
+            resizemode="contain"
             priority={true}
           />
           <div className="absolute bottom-16 left-4 z-30 overflow-visible bg-gunmetal  rounded-full p-5 w-[100] h-[100] content-center">

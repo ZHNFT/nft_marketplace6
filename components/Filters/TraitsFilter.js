@@ -9,8 +9,6 @@ import FilterCheckbox from './FilterCheckbox';
 export default function TraitsFilter({ filters, submitForm }) {
   const [selectedTraitType, setSelectedTraitType] = useState(null);
 
-  console.log(selectedTraitType);
-
   return (
     <Disclosure as="div" className="mt-8 min-w-[200px]" defaultOpen>
       {({ open }) => (
@@ -45,7 +43,7 @@ export default function TraitsFilter({ filters, submitForm }) {
                             className={({ checked }) =>
                               `${
                                 (checked || selectedTraitType?.type === traitType.type) ? 'border-cornflower after:bg-cornflower after:block after:m-auto after:w-full after:h-[3px] after:absolute after:left-0 after:right-0 after:bottom-0' : 'border-white'
-                              } relative min-w-[50px] no-shrink w-auto overflow-hidden mx-1 first:ml-0 bg-black/[0.05] dark:bg-white/[0.05] text-ink dark:text-white last:mr-0 text-xs rounded-md px-3 py-2 cursor-pointer flex border-[0.5px]`
+                              } relative min-w-[50px] no-shrink w-auto overflow-hidden mx-1 first:ml-0 bg-black/[0.05] dark:bg-white/[0.05] text-ink dark:text-white last:mr-0 text-xs rounded-md px-3 py-2 cursor-pointer flex border-[0.5px] hover:border-cornflower`
                             }
                           >
                             {({ checked }) => (

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
 import clsx from 'clsx';
+import FiltersContext from '../../../contexts/FiltersContext';
 import Sidebar from '../../../components/sidebar';
 import Filters from '../../../components/Filters/Filters';
 import Tabs from '../../../components/Tabs/Tabs';
@@ -12,6 +13,7 @@ import Activity from '../../../components/Collection/Activity';
 import InfiniteGallery from '../../../components/Gallery/InfiniteGallery';
 import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
+import FiltersTags from '../../../components/filters/FiltersTags';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
 
@@ -69,12 +71,19 @@ export default function Collection(props) {
   // eslint-disable-next-line
   }, [address, search, sort]);
 
+  const [traitFilters, setTraitFilters] = useState();
+  const [isFormReset, setIsFormReset] = useState();
+  const filtersContextValue = useMemo(
+    () => ({ traitFilters, setTraitFilters, isFormReset, setIsFormReset }), 
+    [traitFilters, isFormReset]
+  );
+
   useEffect(() => {
     fetchCollection();
   }, [search, fetchCollection])
 
   return (
-    <>
+    <FiltersContext.Provider value={filtersContextValue}>
       <div className="lg:max-w-6xl mx-auto">
         <CollectionHeader
           chainIdHex={chainIdHex}
@@ -134,12 +143,17 @@ export default function Collection(props) {
             {
               tab === 'activity'
                 ? <Activity />
-                : <InfiniteGallery collectionData={collectionData} />
+                : (
+                  <>
+                    <FiltersTags />
+                    <InfiniteGallery collectionData={collectionData} />
+                  </>
+                )
             }
           </div>
         </>
       </section>
-    </>
+    </FiltersContext.Provider>
   );
 }
 
