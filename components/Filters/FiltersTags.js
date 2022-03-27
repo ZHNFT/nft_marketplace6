@@ -23,7 +23,7 @@ export default function FiltersTags() {
   };
 
   return (
-    <>
+    <div>
       {
         traitFilters?.stringTraits?.map((type, typeIndex) => {
           if (type?.name && type?.values?.length ) {
@@ -61,6 +61,6 @@ export default function FiltersTags() {
           </button>
         )
       }
-    </>
+    </div>
   );
 }

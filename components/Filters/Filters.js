@@ -24,19 +24,22 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
 
   function handleSubmit(values) {
     let appendQuery;
-    let stringifiedSearch;
+    let searchQuery;
     if (values.query) {
       appendQuery = values.query;
+      searchQuery = query?.search ? { search: query.search } : {};
     } else {
       setTraitFilters(values);
-      stringifiedSearch = stringify(values, { encode: false, arrayFormat: 'indices' });
+      const stringifiedSearch = stringify(values, { encode: false, arrayFormat: 'indices' });
+      searchQuery = stringifiedSearch?.length ? { search: stringifiedSearch } : { search: null};
     }
 
     const newQuery = {
       ...query,
-      ...appendQuery,
       ...(query?.sort ? { sort: query.sort } : {}),
-      ...(stringifiedSearch?.length ? { search: stringifiedSearch } : { search: null})
+      ...(query?.filter ? { filter: query.filter } : {}),
+      ...appendQuery,
+      ...searchQuery
     };
 
     push({
@@ -85,7 +88,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
           />
 
           {/* Listing */}
-          <ListingFilter />
+          <ListingFilter onChange={({ filters }) => handleSubmit({ query: { filter: stringify(filters) } })}/>
 
           {/* Traits */}
           <TraitsFilter filters={filters} submitForm={submitForm} />

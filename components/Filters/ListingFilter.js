@@ -5,18 +5,18 @@ import SecondaryButton from '../Buttons/SecondaryButton';
 import { ArrowIcon } from '../icons';
 
 const listTypes = [
-  { value: 'buyNow', label: 'Buy now' },
-  { value: 'auction', label: 'Auction' },
-  { value: 'notListed', label: 'Not listed' },
-  { value: 'hasOffers', label: 'Has offers' }
+  { value: 'listed', label: 'Buy now' },
+  { value: 'auctions', label: 'Auction' },
+  { value: 'unlisted', label: 'Not listed' },
+  { value: 'has-bids', label: 'Has offers' }
 ];
 
-export default function ListingFilter() {
+export default function ListingFilter({ onChange }) {
   const [selected, setSelected] = useState({
-    buyNow: false,
-    auction: false,
-    notListed: false,
-    hasOffers: false
+    listed: false,
+    auctions: false,
+    unlisted: false,
+    'has-bids': false
   });
 
   return (
@@ -44,7 +44,17 @@ export default function ListingFilter() {
                     <SecondaryButton
                       key={value}
                       className={clsx('text-ink dark:text-white', selected[value] ? '!bg-cornflower !text-white' : '')}
-                      onClick={() => setSelected({...selected, [value]: !selected[value]})}
+                      onClick={() => {
+                        const updated = {...selected, [value]: !selected[value]};
+                        setSelected(updated);
+                        const filters = Object.keys(updated).reduce((acc, key) => {
+                          if (updated[key] === true) {
+                            acc.push(key);
+                          }
+                          return acc;
+                        }, []);
+                        onChange({ filters });
+                      }}
                     >
                       { label }
                     </SecondaryButton>

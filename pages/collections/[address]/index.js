@@ -23,7 +23,7 @@ const itemsFilterList = [
   { label: 'Bundles' }
 ];
 
-export async function fetchData(address, page = 0, query, sort) {
+export async function fetchData(address, page = 0, query, filter, sort) {
   const activeFilters = parse(query);
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
@@ -36,7 +36,7 @@ export async function fetchData(address, page = 0, query, sort) {
   ));
 
   const res = await fetch(
-    `${url}${address}/tokens?page=${page}&size=20${sort ? `&${stringify({ sort })}` : ''}`,
+    `${url}${address}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`,
     {
       method: 'POST',
       headers: {
@@ -56,7 +56,7 @@ export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials } = collection;
   const router = useRouter();
-  const { search, address, sort, tab } = router.query;
+  const { search, address, sort, filter, tab } = router.query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [showFilters, setShowFilters] = useState(true);
@@ -66,10 +66,10 @@ export default function Collection(props) {
   ];
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData(address, 0, search, sort);
+    const json = await fetchData(address, 0, search, filter, sort);
     setData(json);
   // eslint-disable-next-line
-  }, [address, search, sort]);
+  }, [address, search, filter, sort]);
 
   const [traitFilters, setTraitFilters] = useState();
   const [isFormReset, setIsFormReset] = useState();
