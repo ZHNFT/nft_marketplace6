@@ -60,10 +60,13 @@ const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
   return TRANSACTION_STATUS.SUCCESS;
 };
 
+const toFixedOptional = ({ value, decimals }) => +parseFloat(value).toFixed(decimals);
+
 export {
   formatCurrency,
   formatter,
   transformGalleryItem,
   convertToUsd,
-  getTransactionStatus
+  getTransactionStatus,
+  toFixedOptional
 };

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/router'
 import { stringify, parse } from 'qs';
 import clsx from 'clsx';
+import { toFixedOptional } from '../../../Utils/helper';
 import FiltersContext from '../../../contexts/FiltersContext';
 import Sidebar from '../../../components/sidebar';
 import Filters from '../../../components/Filters/Filters';
@@ -54,7 +55,7 @@ export async function fetchData(address, page = 0, query, filter, sort) {
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
-  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials } = collection;
+  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
   const { search, address, sort, filter, tab } = router.query;
   const [collectionData, setData] = useState(data);
@@ -64,6 +65,8 @@ export default function Collection(props) {
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'items' } }, name: 'NFTs' },
     { href: { pathname: router.pathname, query: { ...router.query, tab: 'activity' } }, name: 'Activity' }
   ];
+  const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
+  const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
 
   const fetchCollection = useCallback(async function() {
     const json = await fetchData(address, 0, search, filter, sort);
@@ -134,8 +137,8 @@ export default function Collection(props) {
             )}>
               <Filters
                 placement="desktop"
-                minRarity={collection?.rarity?.lowest}
-                maxRarity={collection?.rarity?.highest}
+                minRarity={minRarity}
+                maxRarity={maxRarity}
                 filters={collection?.traits}
                 total={collectionData?.total}
               />

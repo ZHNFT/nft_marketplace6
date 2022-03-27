@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Disclosure, Transition } from '@headlessui/react'
 import clsx from 'clsx';
 import SecondaryButton from '../Buttons/SecondaryButton';
@@ -11,13 +11,17 @@ const listTypes = [
   { value: 'has-bids', label: 'Has offers' }
 ];
 
-export default function ListingFilter({ onChange }) {
-  const [selected, setSelected] = useState({
-    listed: false,
-    auctions: false,
-    unlisted: false,
-    'has-bids': false
-  });
+export default function ListingFilter({ isReset, onChange }) {
+  const defaultValue = useMemo(
+    () => ({ listed: false, auctions: false, unlisted: false, 'has-bids': false })
+  , []);
+  const [selected, setSelected] = useState(defaultValue);
+
+  useEffect(() => {
+    if (isReset) {
+      setSelected(defaultValue);
+    }
+  }, [defaultValue, isReset]);
 
   return (
     <Disclosure as="div" className="mt-10 min-w-[200px]" defaultOpen>

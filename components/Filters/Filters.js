@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useCallback } from 'react';
 import { stringify, parse } from 'qs';
 import clsx from "clsx";
 import { useRouter } from 'next/router'
@@ -14,15 +14,17 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
   const formRef = useRef();
   const { setTraitFilters, isFormReset, setIsFormReset } = useContext(FiltersContext);
 
-  useEffect(() => {
-    if (isFormReset && formRef.current) {
-      formRef.current.resetForm();
-      formRef.current.handleSubmit();
-      setIsFormReset(false);
+  const handleSubmit = useCallback(function(values) {
+    if (!values) {
+      // reset
+      push({
+        pathname,
+        query: { address: query.address },
+      }, undefined, { scroll: false });
+      setTraitFilters(null);
+      return;
     }
-  }, [isFormReset, setIsFormReset]);
 
-  function handleSubmit(values) {
     let appendQuery;
     let searchQuery;
     if (values.query) {
@@ -46,7 +48,15 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
       pathname,
       query: newQuery,
     }, undefined, { scroll: false });
-  }
+  }, [push, pathname, query, setTraitFilters]);
+
+  useEffect(() => {
+    if (isFormReset && formRef.current) {
+      formRef.current.resetForm();
+      handleSubmit();
+      setIsFormReset(false);
+    }
+  }, [isFormReset, setIsFormReset, handleSubmit]);
 
   return (
     <Formik
@@ -73,6 +83,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             step={.1}
             decimals={1}
             initialValues={[0, 100]}
+            isReset={isFormReset}
             onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
           />
 
@@ -84,11 +95,15 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             min={minRarity}
             max={maxRarity}
             initialValues={[minRarity, maxRarity]}
+            isReset={isFormReset}
             onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
           />
 
           {/* Listing */}
-          <ListingFilter onChange={({ filters }) => handleSubmit({ query: { filter: stringify(filters) } })}/>
+          <ListingFilter
+            isReset={isFormReset}
+            onChange={({ filters }) => handleSubmit({ query: { filter: stringify(filters) } })}
+          />
 
           {/* Traits */}
           <TraitsFilter filters={filters} submitForm={submitForm} />

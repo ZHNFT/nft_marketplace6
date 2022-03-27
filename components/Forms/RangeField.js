@@ -4,8 +4,14 @@ import { fromUnixTime, format } from 'date-fns';
 import clsx from 'clsx';
 
 export default function RangeField(props) {
-  const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, onChange } = props;
+  const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, isReset, onChange } = props;
   const [values, setValues] = useState(initialValues);
+
+  useEffect(() => {
+    if(isReset) {
+      setValues(initialValues);
+    }
+  }, [isReset, initialValues]);
 
   return (
     <div className="flex justify-center">
