@@ -54,6 +54,7 @@ export async function fetchData(address, page = 0, query, sort) {
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
+  console.log(collection);
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials } = collection;
   const router = useRouter();
   const { search, address, sort, tab } = router.query;
@@ -134,6 +135,8 @@ export default function Collection(props) {
             )}>
               <Filters
                 placement="desktop"
+                minRarity={collection?.rarity?.lowest}
+                maxRarity={collection?.rarity?.highest}
                 filters={collection?.traits}
                 total={collectionData?.total}
               />

@@ -8,7 +8,7 @@ import RangeField from '../Forms/RangeField';
 import ListingFilter from './ListingFilter';
 import TraitsFilter from './TraitsFilter';
 
-export default function Filters({ filters, total, placement }) {
+export default function Filters({ minRarity = 0, maxRarity = 100, filters, total, placement }) {
   const { push, query, pathname } = useRouter()
   const { search } = query;
   const formRef = useRef();
@@ -78,7 +78,9 @@ export default function Filters({ filters, total, placement }) {
           <RangeField
             step={1}
             decimals={0}
-            initialValues={[0, 100]}
+            min={minRarity}
+            max={maxRarity}
+            initialValues={[minRarity, maxRarity]}
             onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
           />
 
