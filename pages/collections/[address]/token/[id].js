@@ -25,7 +25,7 @@ import TraitsTable from '../../../../components/Product/TraitsTable';
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
+export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
   const [data, setData] = useState(serverData)
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
@@ -123,7 +123,12 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
     setActiveModal(null)
   }, [])
 
+  console.log(`collection`, collection)
   console.log(`data`, data)
+
+  useEffect(() => {
+    setData(serverData);
+  }, [serverData]);
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
@@ -164,12 +169,14 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
           {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
+              collection={{ name: collection?.name, logo: collection?.logo, address: collection?.address }}
               name={data?.name}
               owner={owner}
               isOwner={isOwner}
               address={address}
               lastSalePrice={38.7}
-              rarityRank={data?.rarityRank}
+              rarity={data?.rarity}
+              maxRarity={collection.rarity?.highest}
               refreshMetaData={refreshMetaData}
             />
 
@@ -481,14 +488,17 @@ export default function Nft({ data: serverData, nfts, chainIdHex, chainId, addre
 export async function getServerSideProps(context) {
   const { params: { address, id } } = context;
   const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
-  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
-  const [res, nftsRes] = await Promise.all([fetch(url), fetch(collectionUrl, { method: 'POST' })]);
+  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}`;
+  const tokensUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
+  const [res, collectionRes, nftsRes] = await Promise.all([fetch(url), fetch(collectionUrl), fetch(tokensUrl, { method: 'POST' })]);
   const data = await res?.json();
+  const collection = await collectionRes?.json();
   const nfts = await nftsRes?.json();
 
   return {
     props: {
       data,
+      collection,
       nfts: nfts?.results?.filter(result => result?.tokenId?.toString() !== id) // exclude current NFT from "more collections"
     }
   };

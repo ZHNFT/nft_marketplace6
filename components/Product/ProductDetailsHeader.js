@@ -1,16 +1,25 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ellipseAddress } from '../../Utils';
-import { HexagonBeeIcon, RefreshIcon, ShareIcon } from '../icons';
+import { RefreshIcon, ShareIcon } from '../icons';
+import DefaultLogo from '../../images/default-collection-logo.png';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import ProgressHexagon from '../ProgressHexagon/ProgressHexagon';
 
-export default function ProductDetailsHeader({ className, name, owner, isOwner, address, collection, rarityRank, lastSalePrice, refreshMetaData }) {
+export default function ProductDetailsHeader(props) {
+  const { className, collection, name, owner, isOwner, address, rarity, maxRarity, lastSalePrice, refreshMetaData } = props;
   return (
     <div className={className}>
       <div className="flex justify-between items-center text-xs">
         <div>
-          <HexagonBeeIcon className="w-[26px] mr-1.5" />
-          <span className="text-manatee font-medium">Hive Investments</span>
+          <Link href={`/collections/${collection.address}`} passHref>
+            <span className="flex items-center cursor-pointer">
+              <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
+                <Image className="h-8 w-8" src={collection.logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
+              </span>
+              <span className="text-manatee font-medium hover:underline">{collection.name}</span>
+            </span>
+          </Link>
         </div>
         <div className="flex items-center">
           <button type="button" className="mr-3 flex" onClick={refreshMetaData}>
@@ -28,8 +37,8 @@ export default function ProductDetailsHeader({ className, name, owner, isOwner, 
         <div className="text-xs shrink-0">
           <span className="text-manatee mr-2">Rarity score</span>
           <div className="relative inline-block -right-[2px]">
-            <ProgressHexagon width="35" height="35" percent={25} />
-            <span className="absolute inset-0 flex items-center justify-center font-medium">{ rarityRank }</span>
+            <ProgressHexagon width="35" height="35" percent={(rarity/maxRarity) * 100} />
+            <span className="absolute inset-0 flex items-center justify-center font-medium text-xxs">{ rarity?.toFixed(0) }</span>
           </div>
         </div>
       </div>
