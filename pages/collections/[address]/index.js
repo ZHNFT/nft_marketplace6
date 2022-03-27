@@ -6,6 +6,7 @@ import { toFixedOptional } from '../../../Utils/helper';
 import FiltersContext from '../../../contexts/FiltersContext';
 import Sidebar from '../../../components/sidebar';
 import Filters from '../../../components/Filters/Filters';
+import FiltersTags from '../../../components/Filters/FiltersTags';
 import Tabs from '../../../components/Tabs/Tabs';
 import FilterButton from '../../../components/FilterButton/FilterButton';
 import Dropdown from '../../../components/Dropdown/Dropdown';
@@ -14,7 +15,6 @@ import Activity from '../../../components/Collection/Activity';
 import InfiniteGallery from '../../../components/Gallery/InfiniteGallery';
 import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
-import FiltersTags from '../../../components/filters/FiltersTags';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
 
