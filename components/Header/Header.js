@@ -93,7 +93,7 @@ export default function Header(props) {
                           imageUrl={user?.imageUrl}
                           disconnect={disconnect}
                         >
-                          <ProfileMenu address={address} disconnect={disconnect} />
+                          <ProfileMenu user={user} address={address} disconnect={disconnect} />
                         </ProfileMenuButton>
                       )
                       : (
@@ -114,7 +114,7 @@ export default function Header(props) {
               connect={connect}
               address={address}
             >
-              <ProfileMenu address={address} disconnect={disconnect} />
+              <ProfileMenu user={user} address={address} disconnect={disconnect} />
             </MobileMenu>
           </>
         )}
