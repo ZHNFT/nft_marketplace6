@@ -14,10 +14,10 @@ import {
 } from "../icons";
 import DarkModeSwitch from "./DarkModeSwitch";
 import { formatter } from "../../Utils/helper";
-import EditProfileModal from '../Modals/EditProfileModal';
+import AppGlobalContext from "../../contexts/AppGlobalContext";
 
 export default function ProfileMenu({ user, address, disconnect }) {
-  const [showEditModal, setShowEditModal] = useState(false);
+  const { setShowEditProfileModal } = useContext(AppGlobalContext);
   const {
     state: { tokenBalance },
   } = useContext(Web3Context);
@@ -74,7 +74,9 @@ export default function ProfileMenu({ user, address, disconnect }) {
           <button
             type="button"
             className="flex items-center hover:text-white"
-            onClick={() => setShowEditModal(true)}
+            onClick={() => {
+              setShowEditProfileModal(true);
+            }}
           >
             <EditIcon className="w-[12px]" />
             <span className="text-white ml-4">Edit profile</span>
@@ -121,17 +123,6 @@ export default function ProfileMenu({ user, address, disconnect }) {
       <div className="mt-4 text-right">
         <DarkModeSwitch />
       </div>
-
-      <EditProfileModal
-        isOpen={showEditModal}
-        name={user.name}
-        imageUrl={user.imageUrl}
-        website={user.website}
-        instagram={user.instagram}
-        twitter={user.twitter}
-        description={user.description}
-        onClose={() => setShowEditModal(false)}
-      />
     </>
   );
 }

@@ -1,28 +1,33 @@
-import { Fragment, useState } from 'react';
-import clsx from 'clsx';
-import Link from 'next/link'
-import Image from 'next/image'
-import { Popover } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
-import MobileMenu from './MobileMenu';
-import ProfileMenuButton from './ProfileMenuButton';
-import ProfileMenu from './ProfileMenu';
-import NotificationsButton from './NotificationsButton';
-import SearchInput from './SearchInput';
-import Logo from '../../images/hive-logo.png';
+import { useContext } from "react";
+import clsx from "clsx";
+import Link from "next/link";
+import Image from "next/image";
+import { Popover } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import MobileMenu from "./MobileMenu";
+import ProfileMenuButton from "./ProfileMenuButton";
+import ProfileMenu from "./ProfileMenu";
+import NotificationsButton from "./NotificationsButton";
+import SearchInput from "./SearchInput";
+import Logo from "../../images/hive-logo.png";
+import EditProfileModal from "../Modals/EditProfileModal";
+import AppGlobalContext from "../../contexts/AppGlobalContext";
 
 export default function Header(props) {
   const { user, navigation, connect, disconnect, address, withBorder } = props;
+  const { showEditProfileModal, setShowEditProfileModal } =
+    useContext(AppGlobalContext);
 
   console.log(user);
 
   return (
+    <>
       <Popover
         as="header"
         className={({ open }) =>
-          clsx('relative lg:overflow-y-visible', {
-            'fixed inset-0 z-40 overflow-y-auto': open,
-            'border-b dark:border-header': withBorder
+          clsx("relative lg:overflow-y-visible", {
+            "fixed inset-0 z-40 overflow-y-auto": open,
+            "border-b dark:border-header": withBorder,
           })
         }
       >
@@ -33,7 +38,7 @@ export default function Header(props) {
                 <div className="flex md:inset-y-0 lg:static col-span-4">
                   <div className="flex-shrink-0 flex items-center w-full">
                     <Link href="/">
-                      <a className='flex items-center mr-[25px]'>
+                      <a className="flex items-center mr-[25px]">
                         <Image
                           className="block h-8 w-auto"
                           src={Logo}
@@ -84,28 +89,28 @@ export default function Header(props) {
                   <NotificationsButton />
 
                   {/* Profile dropdown */}
-                  {
-                    address
-                      ? (
-                        <ProfileMenuButton
-                          address={address}
-                          name={user?.name}
-                          imageUrl={user?.imageUrl}
-                          disconnect={disconnect}
-                        >
-                          <ProfileMenu user={user} address={address} disconnect={disconnect} />
-                        </ProfileMenuButton>
-                      )
-                      : (
-                        <button
-                          type="button"
-                          onClick={connect}
-                          className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
-                        >
-                          Connect
-                        </button>
-                      )
-                  }
+                  {address ? (
+                    <ProfileMenuButton
+                      address={address}
+                      name={user?.name}
+                      imageUrl={user?.imageUrl}
+                      disconnect={disconnect}
+                    >
+                      <ProfileMenu
+                        user={user}
+                        address={address}
+                        disconnect={disconnect}
+                      />
+                    </ProfileMenuButton>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={connect}
+                      className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
+                    >
+                      Connect
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -114,10 +119,25 @@ export default function Header(props) {
               connect={connect}
               address={address}
             >
-              <ProfileMenu user={user} address={address} disconnect={disconnect} />
+              <ProfileMenu
+                user={user}
+                address={address}
+                disconnect={disconnect}
+              />
             </MobileMenu>
           </>
         )}
       </Popover>
+      <EditProfileModal
+        isOpen={showEditProfileModal}
+        name={user.name}
+        imageUrl={user.imageUrl}
+        website={user.website}
+        instagram={user.instagram}
+        twitter={user.twitter}
+        description={user.description}
+        onClose={() => setShowEditProfileModal(false)}
+      />
+    </>
   );
 }

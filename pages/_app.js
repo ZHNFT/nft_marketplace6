@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import { ThemeProvider } from "next-themes";
-import { useCallback, useEffect, useReducer, createContext, useMemo} from 'react'
+import { useCallback, useEffect, useReducer, createContext, useState, useMemo} from 'react'
 import { providers, ethers } from 'ethers'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3Modal from "web3modal";
@@ -16,6 +16,7 @@ import Layout from '../components/layout';
 
 // Config
 import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
+import AppGlobalContext from '../contexts/AppGlobalContext';
 
 const providerOptions = {
   walletconnect: {
@@ -81,6 +82,11 @@ function MyApp({ Component, pageProps }) {
   const { provider, web3Provider, address, chainId } = state;
   const mainnetChainId = "0x89";
   const testnetChainId = "0x13881";
+
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const globalContextValue = useMemo(() => {
+    return { showEditProfileModal, setShowEditProfileModal };
+  }, [showEditProfileModal, setShowEditProfileModal]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -216,13 +222,15 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Web3Context.Provider value={contextValue}>
-        <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>
-          {/* 
-            Component here is the page, for example index.js
-            So if we want a sidebar or main menu on every page of the website its best to put these components in layout.js
-          */}
-          <Component {...pageProps} {...contextValue.state} connect={connect} />
-        </Layout>
+        <AppGlobalContext.Provider value={globalContextValue}>
+          <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>
+            {/*
+              Component here is the page, for example index.js
+              So if we want a sidebar or main menu on every page of the website its best to put these components in layout.js
+            */}
+            <Component {...pageProps} {...contextValue.state} connect={connect} />
+          </Layout>
+        </AppGlobalContext.Provider>
       </Web3Context.Provider>
     </ThemeProvider>
   )
