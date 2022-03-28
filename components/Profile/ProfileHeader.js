@@ -1,19 +1,20 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import Image from 'next/image'
 import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon } from '../icons';
 import { getExplorer } from '../../config';
 import { ellipseAddress } from '../../Utils';
 import SecondaryButton from '../Buttons/SecondaryButton';
-import EditProfileModal from '../Modals/EditProfileModal';
+import AppGlobalContext from '../../contexts/AppGlobalContext';
 
 export default function ProfileHeader({ user, chainIdHex, address, total }) {
-  const [showEditModal, setShowEditModal] = useState(false);
+  const { setShowEditProfileModal } = useContext(AppGlobalContext);
+
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
         <SecondaryButton
           className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
-          onClick={() => setShowEditModal(true)}
+          onClick={() => setShowEditProfileModal(true)}
         >
           <EditIcon className="w-[14px] mr-2" />
           Edit profile
@@ -91,16 +92,6 @@ export default function ProfileHeader({ user, chainIdHex, address, total }) {
             </ul>
         </div>
       </section>
-      <EditProfileModal
-        isOpen={showEditModal}
-        name={user.name}
-        imageUrl={user.imageUrl}
-        website={user.website}
-        instagram={user.instagram}
-        twitter={user.twitter}
-        description={user.description}
-        onClose={() => setShowEditModal(false)}
-      />
     </>
   );
 }

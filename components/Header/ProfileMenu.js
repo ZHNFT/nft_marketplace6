@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useContext } from 'react';
-import Web3Context from '../../contexts/Web3Context';
+import { useContext, useState } from "react";
+import Web3Context from "../../contexts/Web3Context";
 import { ellipseAddress } from "../../Utils";
 import {
   CopyIcon,
@@ -14,9 +14,13 @@ import {
 } from "../icons";
 import DarkModeSwitch from "./DarkModeSwitch";
 import { formatter } from "../../Utils/helper";
+import AppGlobalContext from "../../contexts/AppGlobalContext";
 
-export default function ProfileMenu({ address, disconnect }) {
-  const { state: { tokenBalance } } = useContext(Web3Context);
+export default function ProfileMenu({ user, address, disconnect }) {
+  const { setShowEditProfileModal } = useContext(AppGlobalContext);
+  const {
+    state: { tokenBalance },
+  } = useContext(Web3Context);
 
   return (
     <>
@@ -67,7 +71,13 @@ export default function ProfileMenu({ address, disconnect }) {
           </Link>
         </li>
         <li className="my-3">
-          <button type="button" className="flex items-center hover:text-white">
+          <button
+            type="button"
+            className="flex items-center hover:text-white"
+            onClick={() => {
+              setShowEditProfileModal(true);
+            }}
+          >
             <EditIcon className="w-[12px]" />
             <span className="text-white ml-4">Edit profile</span>
           </button>
@@ -85,7 +95,11 @@ export default function ProfileMenu({ address, disconnect }) {
           </Link>
         </li>
         <li className="my-3">
-          <Link href="#" passHref>
+          <Link
+            href={`/users/[address]?tab=offers`}
+            as={`/users/${address}?tab=offers`}
+            passHref
+          >
             <a className="flex items-center hover:text-white">
               <ReceiveIcon className="w-[17px] relative -left-[1px]" />
               <span className="text-white ml-4">Offers</span>
@@ -93,7 +107,11 @@ export default function ProfileMenu({ address, disconnect }) {
           </Link>
         </li>
         <li className="my-3">
-          <Link href="#" passHref>
+          <Link
+            href={`/users/[address]?tab=collections`}
+            as={`/users/${address}?tab=collections`}
+            passHref
+          >
             <a className="flex items-center hover:text-white">
               <FilesIcon className="w-[14px]" />
               <span className="text-white ml-4">My collections</span>
