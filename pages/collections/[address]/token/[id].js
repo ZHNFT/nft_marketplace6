@@ -174,7 +174,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
               owner={owner}
               isOwner={isOwner}
               address={address}
-              lastSalePrice={38.7}
+              lastSalePrice={data?.lastSalePrice}
               rarity={data?.rarity}
               maxRarity={collection?.rarity?.highest}
               refreshMetaData={refreshMetaData}
@@ -280,7 +280,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           </SecondaryButton>
                           {
                             !!data?.highestBid && (
-                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={ethers.utils.formatEther(ethers.BigNumber.from(data?.highestBid.toString()))} /></p>
+                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid} /></p>
                             )
                           }
                         </div>
@@ -315,7 +315,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                             {
                               !!data?.highestBid && (
                                 <p className="text-center absolute left-0 right-0 -bottom-[12px] text-xxs h-[12px]">
-                                  <ItemPrice label="Highest" value={ethers.utils.formatEther(ethers.BigNumber.from(data?.highestBid.toString()))} />
+                                  <ItemPrice label="Highest" value={data?.highestBid} />
                                 </p>
                               )
                             }

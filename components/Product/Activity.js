@@ -58,7 +58,7 @@ export default function Activity() {
                 <Cell className="w-[100px] text-center leading-none">
                   <span className="-ml-[8px]">
                     {price ? (
-                      <ItemPrice value={ethers.utils.formatEther(ethers.BigNumber.from(price.toString()))} />
+                      <ItemPrice value={price} />
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">
