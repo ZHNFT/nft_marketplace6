@@ -9,6 +9,10 @@ import { getSignatureListing } from '../Utils/marketplaceSignatures';
 export default function useListNftForAuction({ ethersProvider, marketplaceAddress, owner, collectionId, tokenId, marketplaceContract }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();
   const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId });
+  const [signatureStatus, setSignatureStatus] = useState(TRANSACTION_STATUS.INACTIVE);
+  const [signatureError, setSignatureError] = useState(null);
+  const [transactionStatus, setTransactionStatus] = useState(TRANSACTION_STATUS.INACTIVE);
+  const [transactionError, setTransactionError] = useState(null);
 
   // For the owner of the NFT to create an auction, its not possible to cancel an auction
   const handleCreateAuction = useCallback(async function ({ price, expirationDate, percent }) {
@@ -32,8 +36,14 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
     let token;
 
     try {
+      setSignatureStatus(TRANSACTION_STATUS.IN_PROGRESS);
       token = await Web3Token.sign(async msg => await signer.signMessage(msg), '1d');
+      if (token) {
+        setSignatureStatus(TRANSACTION_STATUS.SUCCESS);
+      }
     } catch (error) {
+      setSignatureStatus(TRANSACTION_STATUS.FAILED);
+      setSignatureError(error?.message);
       alert(error?.message)
     }
 
@@ -41,15 +51,21 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
     await handleApiCall({ token, endpoint: 'auctions', data: auction });
 
     try {
+      setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
       const tx = await marketplaceContract.placeAuction(auction);
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
+      if (txResult) {
+        setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
+      }
     } catch (error) {
+      setTransactionStatus(TRANSACTION_STATUS.FAILED);
+      setTransactionError(error?.message);
       alert(error?.message)
     }
 
   }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall])
 
-  return { handleCreateAuction, approvalStatus, approvalError, apiStatus, apiError };
+  return { handleCreateAuction, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, transactionStatus, transactionError };
 
 }

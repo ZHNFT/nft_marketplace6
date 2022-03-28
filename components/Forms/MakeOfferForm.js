@@ -35,8 +35,8 @@ const validate = (values) => {
 
 export default function MakeOfferForm(props) {
   const { ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData } = props;
-  const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
-  const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
+  const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
+  const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
   const initialValues = {
     price: "",
@@ -78,7 +78,7 @@ export default function MakeOfferForm(props) {
           <TransactionList
             steps={activeModal === NFT_MODALS.MAKE_OFFER ? [
               {
-                title: `Increase Allowance / Approval to transfer ${values.price} HNY`,
+                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: allowanceStatus,
                 isDefaultOpen: true,
                 description: 'Description here'
@@ -86,7 +86,7 @@ export default function MakeOfferForm(props) {
               {
                 className: 'my-2',
                 title: 'Requesting Signature',
-                status: 'transactionStatus.signature',
+                status: signatureStatus,
                 isDefaultOpen: true,
                 description: 'Description here'
               },
@@ -99,15 +99,15 @@ export default function MakeOfferForm(props) {
               }
             ] : [
               {
-                title: `Increase Allowance / Approval to transfer ${values.price} HNY`,
+                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
                 description: 'Description here'
               },
               {
                 className: 'my-2',
-                title: 'Requesting Signature',
-                status: 'transactionStatus.signature',
+                title: 'Transaction status',
+                status: transactionStatus,
                 isDefaultOpen: true,
                 description: 'Description here'
               }]

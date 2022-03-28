@@ -9,7 +9,9 @@ import useTokenAllowance from './useTokenAllowance';
 export default function usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();
   const { handleAllowance, allowanceStatus, allowanceError, allowanceTx } = useTokenAllowance({ tokenContract, marketplaceAddress, address });
-    
+  const [signatureStatus, setSignatureStatus] = useState(TRANSACTION_STATUS.INACTIVE);
+  const [signatureError, setSignatureError] = useState(null);
+
   // For non-owners to place a bid on an listing
     const handlePlaceBid = useCallback(async function ({ price, expirationDate }) {
       const signer = ethersProvider.getSigner();
@@ -30,13 +32,18 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
   
       let signature;
       let token;
-      
+
       try {
+        setSignatureStatus(TRANSACTION_STATUS.IN_PROGRESS);
         ({ offer, signature } = await getSignatureOffer(offer, signer, ethers, marketplaceAddress, chainId))
   
         token = jwt.sign({ data: signature, chain: chainId }, offer.contractAddress, { expiresIn: 60 })
-  
+        if (token) {
+          setSignatureStatus(TRANSACTION_STATUS.SUCCESS);
+        }
       } catch (error) {
+        setSignatureStatus(TRANSACTION_STATUS.FAILED);
+        setSignatureError(error?.message);
         console.log('Metamask error message:', error?.message)
         alert(error?.message)
       }
@@ -46,5 +53,5 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
   
     }, [ethersProvider, chainId, tokenId, collectionId, address, marketplaceAddress, handleAllowance, handleApiCall]);
 
-    return { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError }
+    return { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError }
 }

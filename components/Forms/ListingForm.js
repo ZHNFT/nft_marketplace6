@@ -49,8 +49,8 @@ const validate = (values) => {
 
 export default function Listing(props) {
   const { fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
-  const { handleList, approvalStatus, approvalError, apiStatus, apiError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
-  const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
+  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+  const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const initialValues = {
     type: listTypes[0],
     currency: currencies[0],
@@ -121,7 +121,7 @@ export default function Listing(props) {
                   {
                     className: 'my-2',
                     title: 'Requesting Signature',
-                    status: 'transactionStatus.signature',
+                    status: signatureStatus,
                     isDefaultOpen: false,
                     description: 'Description here'
                   },
@@ -142,7 +142,7 @@ export default function Listing(props) {
                   {
                     className: 'my-2',
                     title: 'Requesting Signature',
-                    status: 'transactionStatus.signature',
+                    status: auctionSignatureStatus,
                     isDefaultOpen: false,
                     description: 'Description here'
                   },
@@ -156,7 +156,7 @@ export default function Listing(props) {
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
-                    status: 'list for auction transaction status',
+                    status: transactionStatus,
                     isDefaultOpen: false,
                     description: 'Description here'
                   }

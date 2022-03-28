@@ -27,7 +27,7 @@ const validate = (values) => {
 export default function ChangePriceForm(props) {
   const { handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
-  const { handleList, approvalStatus, approvalError, apiStatus, apiError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
   const initialValues = {
     currency: currencies[0],
@@ -76,7 +76,7 @@ export default function ChangePriceForm(props) {
               {
                 className: 'my-2',
                 title: 'Requesting signature',
-                status: TRANSACTION_STATUS.INACTIVE,
+                status: signatureStatus,
                 isDefaultOpen: false,
                 description: 'Description here'
               },

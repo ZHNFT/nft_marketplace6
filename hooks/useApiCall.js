@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { TRANSACTION_STATUS } from '../constants/nft';
 
 export default function useApiCall() {
-  const [apiCallStatus, setApiCallStatus] = useState(null);
+  const [apiCallStatus, setApiCallStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [apiError, setApiError] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
 

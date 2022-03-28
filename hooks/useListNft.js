@@ -9,6 +9,8 @@ import { getSignatureListing } from '../Utils/marketplaceSignatures';
 export default function useListNft({ ethersProvider, marketplaceAddress, owner, collectionId, tokenId, chainId }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();
   const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId });
+  const [signatureStatus, setSignatureStatus] = useState(TRANSACTION_STATUS.INACTIVE);
+  const [signatureError, setSignatureError] = useState(null);
 
   // For owner of an NFT to list the NFT
   const handleList = useCallback(async function ({ price, expirationDate }) {
@@ -33,9 +35,15 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
     let token;
 
     try {
+      setSignatureStatus(TRANSACTION_STATUS.IN_PROGRESS);
       ({ listing, signature } = await getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId))
       token = jwt.sign({ data: signature, chain: chainId }, listing.contractAddress, { expiresIn: 60 })
+      if (token) {
+        setSignatureStatus(TRANSACTION_STATUS.SUCCESS);
+      }
     } catch (error) {
+      setSignatureStatus(TRANSACTION_STATUS.FAILED);
+      setSignatureError(error?.message);
       alert(error?.message)
     }
 
@@ -44,6 +52,6 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
 
   }, [ethersProvider, chainId, tokenId, collectionId, owner, marketplaceAddress, handleApproval, handleApiCall])
 
-  return { handleList, approvalStatus, approvalError, apiStatus, apiError };
+  return { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError };
 
 }

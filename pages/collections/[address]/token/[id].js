@@ -176,7 +176,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
               address={address}
               lastSalePrice={38.7}
               rarity={data?.rarity}
-              maxRarity={collection.rarity?.highest}
+              maxRarity={collection?.rarity?.highest}
               refreshMetaData={refreshMetaData}
             />
 
