@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
 
 export default function useTokenAllowance({ tokenContract, marketplaceAddress, address }) {
-  const [allowanceStatus, setAllowanceStatus] = useState();
+  const [allowanceStatus, setAllowanceStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [allowanceError, setAllowanceError] = useState(null);
   const [transaction, setTransaction] = useState(null);
 

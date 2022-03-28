@@ -4,7 +4,7 @@ import { TRANSACTION_STATUS } from '../constants/nft';
 import { NftCollectionABI } from '../config';
 
 export default function useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId }) {
-  const [approvalStatus, setApprovalStatus] = useState();
+  const [approvalStatus, setApprovalStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [approvalError, setApprovalError] = useState(null);
   const [transaction, setTransaction] = useState(null);
 

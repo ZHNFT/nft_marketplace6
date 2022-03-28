@@ -15,7 +15,7 @@ export default function useAcceptListing({ marketplaceContract, setIsConfirming 
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,
         tokenId: listing.tokenId,
-        pricePerItem: listing.pricePerItem,
+        pricePerItem: listing.pricePerItem.toString(),
         quantity: listing.quantity,
         expiry: listing.expiry,
         nonce: listing.nonce,
