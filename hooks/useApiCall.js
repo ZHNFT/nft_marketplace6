@@ -34,5 +34,5 @@ export default function useApiCall() {
     }
   }, []);
 
-  return {response: apiResponse, handleApiCall, apiCallStatus, apiError};
+  return {response: apiResponse, handleApiCall, apiStatus: apiCallStatus, apiError};
 }

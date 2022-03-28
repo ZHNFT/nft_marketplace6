@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
-import useApiCall from './useApiCall';
 import useTokenAllowance from './useTokenAllowance';
 
 export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner }) {
