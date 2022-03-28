@@ -31,6 +31,7 @@ import CrossIcon from './CrossIcon';
 import CameraIcon from './CameraIcon';
 import TelegramIcon from './TelegramIcon';
 import DiscordIcon from './DiscordIcon';
+import TogaIcon from './TogaIcon';
 
 export {
   BeeIcon,
@@ -65,5 +66,6 @@ export {
   CrossIcon,
   CameraIcon,
   TelegramIcon,
-  DiscordIcon
+  DiscordIcon,
+  TogaIcon
 }

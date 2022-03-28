@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { fromUnixTime, format } from 'date-fns';
 import { resolveBunnyLink } from '../../Utils';
 import { NFT_LISTING_STATE } from '../../constants/nft';
+import { LISTING_END_DATE_FORMAT } from '../../constants/dates';
 import { ViewIcon, AuctionIcon } from '../icons';
 import NotFoundImage from '../../images/No-Image-Placeholder.png';
 
@@ -12,8 +13,6 @@ const LISTING_LABELS = {
 };
 
 export default function ProductPreview({ className, name, image, expiry, listingState }) {
-  const dateFormat = `EEEE do LLLL 'at' k:m`;
-
   return (
     <div className={className}>
       <div className="flex justify-between items-center mb-4">
@@ -28,7 +27,7 @@ export default function ProductPreview({ className, name, image, expiry, listing
           expiry && (
             <div className="text-xs text-manatee">
               { listingState === NFT_LISTING_STATE.IN_AUCTION && <AuctionIcon className="w-[14px] mr-2 relative -top-[1px]" /> }
-              { `Ends ${format(fromUnixTime(expiry), dateFormat)} UTC` }
+              { `Ends ${format(fromUnixTime(expiry), LISTING_END_DATE_FORMAT)} UTC` }
             </div>
           )
         } 

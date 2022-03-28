@@ -12,7 +12,7 @@ import SearchInput from './SearchInput';
 import Logo from '../../images/hive-logo.png';
 
 export default function Header(props) {
-  const { user, navigation, connect, disconnect, address } = props;
+  const { user, navigation, connect, disconnect, address, withBorder } = props;
 
   console.log(user);
 
@@ -20,8 +20,9 @@ export default function Header(props) {
       <Popover
         as="header"
         className={({ open }) =>
-          clsx('relative border-b dark:border-header lg:overflow-y-visible', {
-            'fixed inset-0 z-40 overflow-y-auto': open
+          clsx('relative lg:overflow-y-visible', {
+            'fixed inset-0 z-40 overflow-y-auto': open,
+            'border-b dark:border-header': withBorder
           })
         }
       >

@@ -1,0 +1,5 @@
+const LISTING_END_DATE_FORMAT = `EEEE do LLLL 'at' k:m`;
+
+export {
+  LISTING_END_DATE_FORMAT
+};

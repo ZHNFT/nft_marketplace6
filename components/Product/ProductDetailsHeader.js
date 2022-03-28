@@ -13,12 +13,12 @@ export default function ProductDetailsHeader(props) {
       <div className="flex justify-between items-center text-xs">
         <div>
           <Link href={`/collections/${collection.address}`} passHref>
-            <span className="flex items-center cursor-pointer">
+            <a className="flex items-center cursor-pointer">
               <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
                 <Image className="h-8 w-8" src={collection.logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
               </span>
               <span className="text-manatee font-medium hover:underline">{collection.name}</span>
-            </span>
+            </a>
           </Link>
         </div>
         <div className="flex items-center">

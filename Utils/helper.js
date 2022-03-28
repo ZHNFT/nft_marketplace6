@@ -62,11 +62,30 @@ const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
 
 const toFixedOptional = ({ value, decimals }) => +parseFloat(value).toFixed(decimals);
 
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const getListingState = ({ listings, auctions }) => {
+  const activeAuction = auctions?.find(auction => auction?.active);
+  if (activeAuction) {
+    return { state: NFT_LISTING_STATE.IN_AUCTION, expiry: activeAuction.expiry };
+  }
+
+  const activeListing = listings?.find(listing => listing?.active);
+  if (activeListing) {
+    return { state: NFT_LISTING_STATE.FOR_SALE, expiry: activeListing.expiry };
+  }
+
+  return { state: NFT_LISTING_STATE.NOT_LISTED, expiry: null };
+}
+
+
 export {
   formatCurrency,
   formatter,
   transformGalleryItem,
   convertToUsd,
   getTransactionStatus,
-  toFixedOptional
+  toFixedOptional,
+  fetcher,
+  getListingState
 };

@@ -7,6 +7,8 @@ import axios from 'axios'
 import Web3Modal from 'web3modal'
 import { nftAddress, nftMarketAddress } from '../config'
 //import styles from '../styles/Home.module.css'
+import Hero from '../components/Home/Hero';
+import HeroCards from '../components/Home/HeroCards';
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Marketplace from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import CollectionCard from '../components/Collection/CollectionCard'
@@ -97,17 +99,19 @@ export default function Home(props) {
   )
 
   return (
-    <div className='flex justify-center'>
+    <div className="flex justify-center lg:max-w-6xl mx-auto">
 
-      <div className='px-4' style={{ maxWidth :'1600px'}}>
+      <div className="px-4">
           <div className="flex flex-col">
+            <Hero />
+            <HeroCards />
             <div className="-my-2 overflow-x-auto sm:-mx-8 lg:-mx-8">
               <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 {/* <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"> */}
                 <ul role="list" className="grid grid-cols-2 gap-x-4 gap-y-8  lg:grid-cols-2 xl:gap-x-8">
-                      {collections?.results?.map((collection) => (
+                      {collections?.results?.map((collection, index) => (
                       <li
-                        key={collection.id}
+                        key={`${collection.id}_${index}`}
                         className="">
                       <CollectionCard collection={collection} />
                       </li>

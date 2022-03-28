@@ -27,17 +27,18 @@ const navigation = [
 export default function Layout({ children, pageProps, connect, disconnect, address }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const { pathname } = useRouter();
-
+  
   return (
     <>
       <Seo />
-      <div className="min-h-full dark:bg-[#202225]">
+      <div className={clsx('min-h-full', pathname === '/' ? 'bg-main-page bg-top-center' : 'dark:bg-[#202225]')}>
         <Header
           user={user}
           navigation={navigation}
           connect={connect}
           disconnect={disconnect}
           address={address}
+          withBorder={pathname !== '/'}
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
