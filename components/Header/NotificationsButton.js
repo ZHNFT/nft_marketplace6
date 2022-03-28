@@ -1,7 +1,8 @@
+import { Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
-import { Popover, Transition, Fragment } from '@headlessui/react';
+import { Popover, Transition } from '@headlessui/react';
 import { BellIcon } from '../icons';
 
 const NOTIFICATION_TYPES = {
