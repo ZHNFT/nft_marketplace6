@@ -28,7 +28,7 @@ export default function BuyNowForm(props) {
             title: `Approval to transfer ${price} HNY`,
             status: acceptationStatus,
             isDefaultOpen: true,
-            description: 'Description here'
+            description: acceptationError ? acceptationError : 'Description here'
           }
         ]}
       />

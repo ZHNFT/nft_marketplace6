@@ -93,7 +93,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
     } catch (error) {
-      alert(error?.message)
+      alert(error?.data?.message || error?.message)
     }
   }, [marketplaceContract])
 
@@ -115,7 +115,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
     } catch (error) {
-      alert(error?.message)
+      alert(error?.data?.message || error?.message)
     }
   }, [marketplaceContract])
 

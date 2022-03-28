@@ -30,9 +30,9 @@ export default function useAcceptListing({ marketplaceContract, setIsConfirming 
       }
     } catch (error) {
       setAcceptationStatus(TRANSACTION_STATUS.FAILED);
-      setAcceptationError(error?.message);
-      alert(error?.message)
+      setAcceptationError(error?.data?.message || error?.message);
       setIsConfirming && setIsConfirming(false);
+      alert(error?.data?.message || error?.message)
     }
   }, [marketplaceContract, setIsConfirming])
 

@@ -18,7 +18,6 @@ export default function useTokenAllowance({ tokenContract, marketplaceAddress, a
       if (Number(allowanceString) < Number(price)) {
         const allow = await tokenContract.increaseAllowance(marketplaceAddress, bidAmount);
         const allowanceResult = await allow?.wait();
-        console.log(`allowanceResult`, allowanceResult)
         if (allowanceResult) {
           setTransaction(allowanceResult);
           setAllowanceStatus(TRANSACTION_STATUS.SUCCESS)
@@ -28,8 +27,8 @@ export default function useTokenAllowance({ tokenContract, marketplaceAddress, a
       }
     } catch (error) {
       setAllowanceStatus(TRANSACTION_STATUS.FAILED)
-      setAllowanceError(error?.message);
-      alert(error?.message)
+      setAllowanceError(error?.data?.message || error?.message);
+      alert(error?.data?.message || error?.message)
     }
   }, [address, marketplaceAddress, tokenContract]);
 
