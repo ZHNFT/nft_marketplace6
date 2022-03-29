@@ -10,13 +10,14 @@ import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
 import { honeyTokenAddress } from '../config'
+import { fetcher } from '../Utils/helper';
+import AppGlobalContext from '../contexts/AppGlobalContext';
 
 // Components
 import Layout from '../components/layout';
 
 // Config
 import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
-import AppGlobalContext from '../contexts/AppGlobalContext';
 
 const providerOptions = {
   walletconnect: {
@@ -84,9 +85,13 @@ function MyApp({ Component, pageProps }) {
   const testnetChainId = "0x13881";
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-  const globalContextValue = useMemo(() => {
-    return { showEditProfileModal, setShowEditProfileModal };
-  }, [showEditProfileModal, setShowEditProfileModal]);
+  const [user, setUser] = useState({});
+  const globalContextValue = {
+    showEditProfileModal,
+    setShowEditProfileModal,
+    user,
+    setUser
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -138,6 +143,10 @@ function MyApp({ Component, pageProps }) {
       tokenContract: erc20TokenContract,
       tokenBalance: erc20TokenBalance
     })
+
+    // Pull in user details once the user has connected
+    // and we have their address.
+    getUserDetails(address);
   }, []);
 
   const disconnect = useCallback(
@@ -218,6 +227,13 @@ function MyApp({ Component, pageProps }) {
       return
     }
   }, [chainId, provider, mainnetChainId, testnetChainId])
+
+  async function getUserDetails(address) {
+    if (address) {
+      const data = await fetcher(`https://hexagon-api.onrender.com/users/${address}`);
+      setUser(data.user);
+    }
+  }
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">

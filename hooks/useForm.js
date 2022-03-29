@@ -35,7 +35,7 @@ import { useState } from 'react';
   );
 */
 export const useForm = (options) => {
-  const [data, setData] = useState((options?.initialValues || {}));
+  const [data, setData] = useState((options.initialValues || {}));
   const [errors, setErrors] = useState({});
 
   const handleChange = (key, sanitizeFn) => (
