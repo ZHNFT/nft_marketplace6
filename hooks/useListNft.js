@@ -43,8 +43,8 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
       }
     } catch (error) {
       setSignatureStatus(TRANSACTION_STATUS.FAILED);
-      setSignatureError(error?.message);
-      alert(error?.message)
+      setSignatureError(error?.data?.message || error?.message);
+      alert(error?.data?.message || error?.message)
     }
 
     // handle api call

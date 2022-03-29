@@ -17,7 +17,7 @@ export default function useTokenApproval({ ethersProvider, marketplaceAddress, o
       if (!isApprovedForAll) {
         const tx = await nftContract.setApprovalForAll(marketplaceAddress, true);
         const txResult = await tx?.wait();
-        console.log(`txResult`, txResult)
+
         if (txResult) {
           setTransaction(txResult);
           setApprovalStatus(TRANSACTION_STATUS.SUCCESS)
@@ -27,8 +27,8 @@ export default function useTokenApproval({ ethersProvider, marketplaceAddress, o
       }
     } catch (error) {
       setApprovalStatus(TRANSACTION_STATUS.FAILED)
-      setApprovalError(error?.message);
-      alert(error?.message)
+      setApprovalError(error?.data?.message || error?.message);
+      alert(error?.data?.message || error?.message)
     }
   }, [ethersProvider, marketplaceAddress, owner, collectionId])
 

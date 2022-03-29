@@ -116,49 +116,49 @@ export default function Listing(props) {
                     title: 'Approval to transfer',
                     status: approvalStatus,
                     isDefaultOpen: true,
-                    description: 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
+                    description: approvalError ? approvalError : 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
                   },
                   {
                     className: 'my-2',
                     title: 'Requesting Signature',
                     status: signatureStatus,
                     isDefaultOpen: false,
-                    description: 'Description here'
+                    description: signatureError ? signatureError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: apiStatus,
                     isDefaultOpen: false,
-                    description: 'Description here'
+                    description: apiError ? apiError : 'Description here'
                   }
                 ] : [
                   {
                     title: 'Approval to transfer',
                     status: auctionApprovalStatus,
                     isDefaultOpen: true,
-                    description: 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
+                    description: auctionApprovalError ? auctionApprovalError : 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
                   },
                   {
                     className: 'my-2',
                     title: 'Requesting Signature',
                     status: auctionSignatureStatus,
                     isDefaultOpen: false,
-                    description: 'Description here'
+                    description: auctionSignatureError ? auctionSignatureError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: auctionApiStatus,
                     isDefaultOpen: false,
-                    description: 'Description here'
+                    description: auctionApiError ? auctionApiError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: transactionStatus,
                     isDefaultOpen: false,
-                    description: 'Description here'
+                    description: transactionError ? transactionError : 'Description here'
                   }
                 ]}
               />

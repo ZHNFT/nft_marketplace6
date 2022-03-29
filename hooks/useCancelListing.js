@@ -24,16 +24,15 @@ export default function useCancelListing({ marketplaceContract, setIsCancelling 
           v: listing.v,
         });
         const txResult = await tx?.wait();
-        console.log(`txResult`, txResult)
         if (txResult) {
           setTransaction(txResult);
           setCancellationStatus(TRANSACTION_STATUS.SUCCESS);
         }
       } catch (error) {
         setCancellationStatus(TRANSACTION_STATUS.FAILED);
-        setCancellationError(error?.message);
-        alert(error?.message)
+        setCancellationError(error?.data?.message || error?.message);
         setIsCancelling && setIsCancelling(false);
+        alert(error?.data?.message || error?.message)
       }
   
     }, [marketplaceContract, setIsCancelling])

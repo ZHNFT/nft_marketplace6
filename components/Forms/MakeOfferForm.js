@@ -57,10 +57,10 @@ export default function MakeOfferForm(props) {
 
     // set form submitting status to false
     actions.setSubmitting(false);
-
+    
     // close modal here
     handleClose();
-    
+
     // refetch data
     fetchData();
   }
@@ -81,14 +81,14 @@ export default function MakeOfferForm(props) {
                 title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: allowanceStatus,
                 isDefaultOpen: true,
-                description: 'Description here'
+                description: allowanceError ? allowanceError : 'Description here'
               },
               {
                 className: 'my-2',
                 title: 'Requesting Signature',
                 status: signatureStatus,
                 isDefaultOpen: true,
-                description: 'Description here'
+                description: signatureError ? signatureError : 'Description here'
               },
               {
                 className: 'my-2',
@@ -102,14 +102,14 @@ export default function MakeOfferForm(props) {
                 title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
-                description: 'Description here'
+                description: auctionAllowanceError ? auctionAllowanceError : 'Description here'
               },
               {
                 className: 'my-2',
                 title: 'Transaction status',
                 status: transactionStatus,
                 isDefaultOpen: true,
-                description: 'Description here'
+                description: transactionError ? transactionError : 'Description here'
               }]
             }
           />

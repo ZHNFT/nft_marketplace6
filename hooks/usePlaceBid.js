@@ -43,9 +43,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         }
       } catch (error) {
         setSignatureStatus(TRANSACTION_STATUS.FAILED);
-        setSignatureError(error?.message);
-        console.log('Metamask error message:', error?.message)
-        alert(error?.message)
+        setSignatureError(error?.data?.message);
       }
 
       // handle api call
