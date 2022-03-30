@@ -26,7 +26,8 @@ const usdFormatter = new Intl.NumberFormat('en-US', {
 // https://docs.ethers.io/v5/api/utils/display-logic/
 // https://docs.ethers.io/v5/api/utils/bignumber/
 const formatEther = (value) => {
-  const valueString = typeof value === 'string' ? ethers.BigNumber.from(value) : ethers.BigNumber.from(value.toString());
+  if (!value) return;
+  const valueString = typeof value === 'string' ? ethers.BigNumber.from(value) : ethers.BigNumber.from(value?.toString());
   return ethers.utils.formatEther(valueString);
 }
 
