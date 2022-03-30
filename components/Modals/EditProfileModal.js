@@ -9,8 +9,8 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import { useContext, useEffect } from "react";
 import Web3Context from "../../contexts/Web3Context";
 import Web3Token from "web3-token";
-import _ from "lodash";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
+import { transformUserData } from "../../Utils/helper";
 
 const textFields = [
   { id: "username", label: "Username", isRequired: true },
@@ -37,12 +37,6 @@ export default function EditProfileModal(props) {
   const {
     state: { ethersProvider },
   } = useContext(Web3Context);
-
-  const website = _.find(user.socials, { name: "website" })?.href;
-  const twitter = _.find(user.socials, { name: "twitter" })?.href;
-  const instagram = _.find(user.socials, { name: "instagram" })?.href;
-  const username = user.username;
-  const description = user.description;
 
   async function saveUserDetails() {
     const signer = ethersProvider.getSigner();
@@ -89,7 +83,7 @@ export default function EditProfileModal(props) {
   const {
     handleSubmit, // handles form submission
     handleChange, // handles input changes
-    data, // access to the form data
+    data, // access to the form data,
     errors, // includes the errors to show
   } = useForm({
     validations: {
@@ -99,13 +93,7 @@ export default function EditProfileModal(props) {
       },
     },
     onSubmit: saveUserDetails,
-    initialValues: {
-      username,
-      description,
-      website,
-      instagram,
-      twitter,
-    },
+    initialValues: transformUserData(user),
   });
 
   return (

@@ -146,7 +146,7 @@ function MyApp({ Component, pageProps }) {
 
     // Pull in user details once the user has connected
     // and we have their address.
-    getUserDetails(address);
+    await getUserDetails(address);
   }, []);
 
   const disconnect = useCallback(

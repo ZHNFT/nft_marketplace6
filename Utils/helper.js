@@ -1,5 +1,6 @@
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
+import _ from "lodash";
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -78,6 +79,21 @@ const getListingState = ({ listings, auctions }) => {
   return { state: NFT_LISTING_STATE.NOT_LISTED, expiry: null };
 }
 
+const transformUserData = (user) => {
+  const website = _.find(user.socials, { name: "website" })?.href;
+  const twitter = _.find(user.socials, { name: "twitter" })?.href;
+  const instagram = _.find(user.socials, { name: "instagram" })?.href;
+  const username = user.username;
+  const description = user.description;
+
+  return {
+    username,
+    description,
+    website,
+    twitter,
+    instagram
+  }
+}
 
 export {
   formatCurrency,
@@ -87,5 +103,6 @@ export {
   getTransactionStatus,
   toFixedOptional,
   fetcher,
-  getListingState
+  getListingState,
+  transformUserData
 };
