@@ -48,7 +48,7 @@ const validate = (values) => {
 }
 
 export default function Listing(props) {
-  const { fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
+  const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const initialValues = {
@@ -246,6 +246,7 @@ export default function Listing(props) {
                     name="price"
                     component={PriceInputField}
                     label={values.type.value === 'fixed' ? 'Price' : 'Starting price'}
+                    tokenPriceUsd={tokenPriceUsd}
                   />
                   {/* <label htmlFor="price">
                     {values.type.value === 'fixed' ? 'Price' : 'Starting price'}

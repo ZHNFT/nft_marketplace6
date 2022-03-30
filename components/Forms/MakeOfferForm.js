@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { ethers } from "ethers";
 import jwt from 'jsonwebtoken'
-import { convertToUsd } from '../../Utils/helper';
+import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { BeeIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -14,6 +14,7 @@ import { getTransactionStatus } from '../../Utils/helper';
 import usePlaceBid from '../../hooks/usePlaceBid';
 import usePlaceAuctionBid from '../../hooks/usePlaceAuctionBid';
 import PriceInputField from './Fields/PriceInputField';
+import ItemPrice from '../ItemPrice/ItemPrice';
 
 const expirationOptions = [
   { label: '1 day', value: 'day1' },
@@ -22,19 +23,40 @@ const expirationOptions = [
   { label: '1 month', value: 'month1' }
 ];
 
-const validate = (values) => {
+// number = 60, percentage = 50, returns = 30;
+function percentage(number, percentage) {
+  return (number/100)*percentage;
+}
+
+const validate = (values, activeModal, activeListing, activeAuction, tokenBalance) => {
   const errors = {};
   if (!values.price) {
     errors.price = 'Required';
   } else if (!/^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$/i.test(values.price)) {
     errors.price = 'Invalid amount';
+  } else if (Number(values.price) > Number(tokenBalance)) {
+    errors.price = 'Insufficient balance';
+  } else if (activeModal === NFT_MODALS.PLACE_BID) {
+    const valueToIncrease = percentage(Number(formatEther(activeAuction?.highestBid)), activeAuction?.percentIncrement);
+
+    if (Number(values.price) < Number(formatEther(activeAuction?.minBid))) {
+      errors.price = 'Must be greater than minimum bid';
+    } else if (Number(values.price) <= Number(formatEther(activeAuction?.highestBid))) {
+      errors.price = 'Must be greater than highest bid';
+    } else if (Number(values.price) < Number(formatEther(activeAuction?.highestBid)) + valueToIncrease) {
+      errors.price = `Must be greater than highest bid + a ${activeAuction?.percentIncrement}% increase`;
+    }
+  } else if (activeModal === NFT_MODALS.MAKE_OFFER) {
+    if (Number(values.price) <= Number(formatEther(activeListing?.highestBid))) {
+      errors.price = 'Must be greater than highest bid';
+    }
   }
 
   return errors;
 }
 
 export default function MakeOfferForm(props) {
-  const { ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData } = props;
+  const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData, activeListing, activeAuction } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
@@ -64,13 +86,13 @@ export default function MakeOfferForm(props) {
     // refetch data
     fetchData();
   }
-
+  console.log(`activeListing`, activeListing)
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
       // https://formik.org/docs/guides/validation
-      validate={validate}
+      validate={(values) => validate(values, activeModal, activeListing, activeAuction, tokenBalance)}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
@@ -121,6 +143,7 @@ export default function MakeOfferForm(props) {
               name="price"
               component={PriceInputField}
               showTokenBalance={true}
+              tokenPriceUsd={tokenPriceUsd}
             />
             {activeModal === NFT_MODALS.MAKE_OFFER ? (
               <div className="mt-4 mb-8">
@@ -154,6 +177,27 @@ export default function MakeOfferForm(props) {
                 </div>
               </div>
             ) : null}
+            <div className="flex justify-center mt-10 my-4">
+              {activeModal === NFT_MODALS.MAKE_OFFER ? (
+                <ItemPrice
+                  label="Highest Bid"
+                  value={activeListing?.highestBid}
+                />
+              ) : (
+                <div className='flex flex-col'>
+                  <ItemPrice
+                    label="Highest Bid"
+                    value={activeAuction?.highestBid}
+                  />
+                  <span>{`Percentage to increase ${activeAuction?.percentIncrement}%`}</span>
+                  <span>
+                    {`Minimum bid ${activeAuction?.highestBid ? 
+                      Number(formatEther(activeAuction?.highestBid)) + percentage(Number(formatEther(activeAuction?.highestBid)), activeAuction?.percentIncrement)
+                    : formatEther(activeAuction?.minBid)}`}
+                  </span>
+                </div>
+              )}
+            </div>
 
             <div className="flex justify-center mt-10 my-4">
               <PrimaryButton

@@ -98,7 +98,7 @@ export default function Collection(props) {
           totalSupply={totalSupply}
           socials={socials} 
           ownerCount={ownerCount}
-          volume={volume.total}
+          volume={volume?.total}
           floorPrice={floorPrice}
         />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
