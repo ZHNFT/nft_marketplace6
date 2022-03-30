@@ -25,7 +25,7 @@ const validate = (values) => {
 }
 
 export default function ChangePriceForm(props) {
-  const { handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
+  const { tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
@@ -101,6 +101,7 @@ export default function ChangePriceForm(props) {
            <Field 
              name="price"
              component={PriceInputField}
+             tokenPriceUsd={tokenPriceUsd}
            />
             {/* <div className="mt-4 mb-6">
               <label htmlFor="price" className="sr-only">Price</label>

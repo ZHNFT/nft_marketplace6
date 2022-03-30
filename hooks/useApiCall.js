@@ -26,6 +26,7 @@ export default function useApiCall() {
       const error = await response?.json();
       setApiCallStatus(TRANSACTION_STATUS.FAILED);
       setApiError(error?.message);
+      alert(error?.message);
     } else {
       setApiCallStatus(TRANSACTION_STATUS.SUCCESS);
     }
