@@ -107,25 +107,19 @@ export default function Home(props) {
             <HeroCards />
 
             <section className="mt-14 mb-4">
-              <h2 className="text-center text-[22px] font-medium mb-6">Featured collections</h2>
+              <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
+              <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2 xl:gap-x-8">
+                  {collections?.results?.map((collection, index) => (
+                    <li
+                      key={`${collection.id}_${index}`}
+                      className="mx-auto">
+                    <CollectionCard collection={collection} />
+                    </li>
+                  ))}
+              </ul>
             </section>
-            <div className="-my-2 overflow-x-auto sm:-mx-8 lg:-mx-8">
-              <div className="align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                {/* <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"> */}
-                <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8  lg:grid-cols-2 xl:gap-x-8">
-                      {collections?.results?.map((collection, index) => (
-                      <li
-                        key={`${collection.id}_${index}`}
-                        className="mx-auto">
-                      <CollectionCard collection={collection} />
-                      </li>
-                    ))}
-                  </ul>
-              </div>
-            </div>
           </div>
-          <br />
-          <br />
+
           <div>
             
                   <table className="min-w-full divide-y divide-gray-200 hidden">

@@ -35,7 +35,8 @@ export default function HeroCards() {
         CARDS.map(({ title, description, button, buttonClass, action }, index) => (
           <li key={index} className={clsx(
             'bg-cover px-4 pt-9 pb-10 shadow-featuredCard rounded-[20px] mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0',
-            CARD_CLASSES[index]
+            CARD_CLASSES[index],
+            { 'md:-top-[12px] relative': index === 1 }
           )}>
             <div className="block w-[90px] h-[90px] bg-frame bg-cover flex justify-center items-center mb-8 mx-auto ">
               <span className="gradient-heading font-semibold text-4xl">{index+1}</span>

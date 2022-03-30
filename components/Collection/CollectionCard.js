@@ -54,17 +54,18 @@ export default function CollectionCard({ collection }) {
   return (
     <>
       {/* <div className="static group block w-96 aspect-[31/30] rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden"> */}
-      <div className="relative w-[555px] h-[576px] rounded-3xl bg-gray-900 ">
+      <div className="relative max-w-[555px] w-full rounded-3xl bg-gray-900 ">
         <div className="relative w-full h-full z-0 text-white">
-          <Image
-            className="object-cover rounded-3xl"  
-            src={nft1}
-            alt="NFT Image" //layout="fill"
-            width={576}
-            height={555}
-            resizemode="contain"
-            priority={true}
-          />
+          <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">
+            <Image
+              className="object-center object-cover"
+              src={nft1}
+              alt="NFT Image"
+              layout="fill"
+              resizemode="contain"
+              priority={true}
+            />
+          </div>
           <div className="absolute bottom-16 left-4 z-30 overflow-visible bg-gunmetal  rounded-full p-5 w-[100] h-[100] content-center">
             <Image
               className=""
