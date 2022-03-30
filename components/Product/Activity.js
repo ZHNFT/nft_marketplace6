@@ -45,9 +45,9 @@ export default function Activity({ tokenPriceUsd }) {
       <div className="max-h-[280px] overflow-y-auto scroller">
         {
           activities?.results?.map(row => {
-            const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash } = row;
-            const price = activityType === 'sale' ? value : activityType === 'listing' ? pricePerItem : minBid;
-            const from = activityType === 'sale' ? seller : fromAddress;
+            const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress } = row;
+            const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
+            const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
             const to = activityType === 'sale' ? buyer : toAddress;
             return (
               <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>

@@ -412,37 +412,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                   />
                 </Tab.Panel>
 
-                { /*
-                <Tab.Panel as="dl" className="text-sm text-gray-500">
-                  {activeBids?.map((bid) => (
-                    <Fragment key={bid._id}>
-                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
-                      <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                        <p>{bid.pricePerItem}</p>
-                      </dd>
-                      {bid?.userAddress === address && (
-                        <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleCancelBid(bid)}
-                        >
-                          Cancel Bid
-                        </button>
-                      )}
-                      {isOwner && (
-                          <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleAcceptBid(bid)}
-                        >
-                          Accept Bid
-                        </button>
-                      )}
-                    </Fragment>
-                  ))}
-                </Tab.Panel>
-                */ }
-
                 {/* Collection tab */}
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductCollection
