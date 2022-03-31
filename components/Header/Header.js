@@ -96,7 +96,6 @@ export default function Header(props) {
                       disconnect={disconnect}
                     >
                       <ProfileMenu
-                        user={user}
                         address={address}
                         disconnect={disconnect}
                       />

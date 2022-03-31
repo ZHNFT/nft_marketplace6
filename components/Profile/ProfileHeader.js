@@ -5,10 +5,13 @@ import { getExplorer } from '../../config';
 import { ellipseAddress } from '../../Utils';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import AppGlobalContext from '../../contexts/AppGlobalContext';
+import { transformUserData } from '../../Utils/helper';
+import DefaultLogo from "../../images/default-collection-logo.png";
 
-export default function ProfileHeader({ user, chainIdHex, address, total }) {
-  const { setShowEditProfileModal } = useContext(AppGlobalContext);
+export default function ProfileHeader({ chainIdHex, address, total }) {
+  const { user, setShowEditProfileModal } = useContext(AppGlobalContext);
 
+  const userData = transformUserData(user);
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
@@ -23,12 +26,12 @@ export default function ProfileHeader({ user, chainIdHex, address, total }) {
           <div className="mr-2.5">
             <div className="gradient-border relative p-2.5">
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
-                  <Image className="h-8 w-8" src={user.imageUrl} alt="Profile photo" width={"100%"} height={"100%"} />
+                  <Image className="h-8 w-8" src={userData.imageUrl || DefaultLogo} alt="Profile photo" width={"100%"} height={"100%"} />
               </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ user.name }</h1>
+            <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ userData.username }</h1>
             <ul className="flex justify-start items-center text-xs">
                 <li className="mr-6">
                     <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${user.address}`} className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
@@ -37,21 +40,21 @@ export default function ProfileHeader({ user, chainIdHex, address, total }) {
                     </a>
                 </li>
                 {
-                  user.instagram && (
+                  userData.instagram && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={userData.instagram}>
                         <InstagramIcon className="w-[18px] mr-2" />
-                        { user.instagram }
+                        { userData.instagram }
                       </a>
                     </li>
                   )
                 }
                 {
-                  user.twitter && (
+                  userData.twitter && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={userData.twitter}>
                         <TwitterIcon className="w-[19px] mr-2" />
-                        { user.twitter }
+                        { userData.twitter }
                       </a>
                     </li>
                   )

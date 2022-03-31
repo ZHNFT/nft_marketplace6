@@ -86,7 +86,8 @@ const transformUserData = (user) => {
       description: '',
       website: '',
       twitter: '',
-      instagram: ''
+      instagram: '',
+      imageUrl: ''
     }
   }
 
@@ -95,13 +96,15 @@ const transformUserData = (user) => {
   const instagram = _.find(user.socials, { name: "instagram" })?.href;
   const username = user.username;
   const description = user.description;
+  const imageUrl = user.imageUrl;
 
   return {
     username,
     description,
     website,
     twitter,
-    instagram
+    instagram,
+    imageUrl
   }
 }
 
