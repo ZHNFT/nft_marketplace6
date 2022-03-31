@@ -8,17 +8,6 @@ import { CartIcon, LinkIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 
-const testActivities = [
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/1.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#1' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/2.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#2' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/3.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#3' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/4.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#4' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/5.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#5' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/6.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#6' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/7.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#7' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/8.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#8' }
-];
-
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
   const { address } = router.query;

@@ -243,7 +243,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                   )
                 }
 
-                { // TODO FIXME Owner & in auction
+                { // Owner & in auction
                   activeAuction && (
                     <div className='flex items-center justify-between w-full'>
                       <div>
