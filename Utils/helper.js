@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
+import _ from "lodash";
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -94,6 +95,49 @@ const getListingState = ({ listings, auctions }) => {
   return { state: NFT_LISTING_STATE.NOT_LISTED, expiry: null };
 }
 
+async function getUserDetails(address) {
+  if (address) {
+    try {
+      const response = await fetch(`https://hexagon-api.onrender.com/users/${address}`);
+      if (!response.status == 200) {
+        return {}
+      }
+
+      return response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
+
+const transformUserData = (user) => {
+  if (!user) {
+    return {
+      username: '',
+      description: '',
+      website: '',
+      twitter: '',
+      instagram: '',
+      imageUrl: ''
+    }
+  }
+
+  const website = _.find(user.socials, { name: "website" })?.href;
+  const twitter = _.find(user.socials, { name: "twitter" })?.href;
+  const instagram = _.find(user.socials, { name: "instagram" })?.href;
+  const username = user.username;
+  const description = user.description;
+  const imageUrl = user.imageUrl;
+
+  return {
+    username,
+    description,
+    website,
+    twitter,
+    instagram,
+    imageUrl
+  }
+}
 
 export {
   formatCurrency,
@@ -104,6 +148,8 @@ export {
   toFixedOptional,
   fetcher,
   getListingState,
+  getUserDetails,
+  transformUserData,
   usdFormatter,
   formatEther
 };
