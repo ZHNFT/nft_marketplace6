@@ -7,6 +7,8 @@ import { HexagonBeeIcon, DiamondIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import ItemMain from './ItemMain';
 import ItemListingState from './ItemListingState';
+import fromUnixTime from 'date-fns/fromUnixTime'
+import CountdownTimer from '../CountdownTimer';
 
 const GalleryItem = forwardRef((props, ref) => {
   const { item, showRarity } = props;
@@ -16,7 +18,6 @@ const GalleryItem = forwardRef((props, ref) => {
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
   const listing = activeAuction ? activeAuction : lowestPrice !== 0 ? { highestPrice, lowestPrice } : null;
-
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
@@ -54,19 +55,25 @@ const GalleryItem = forwardRef((props, ref) => {
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
           <div className="flex h-[24px] justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
-            <ItemListingState listingState={listingState} />
+            <ItemListingState 
+              listingState={listingState}
+              price={listingState === NFT_LISTING_STATE.IN_AUCTION ? listing?.highestBid : listing?.lowestPrice}
+            />
           </div>
           <div className="flex justify-between pt-[5px] items-baseline">
             <span>{ !!lastSalePrice && <ItemPrice label="Last sale" value={lastSalePrice} /> }</span>
             <span>
               {
-                // TODO: convert date to days/timer left
-                listing?.expiry ? <span className="text-xs">{listing?.expiry}</span> : null
+                listingState === NFT_LISTING_STATE.IN_AUCTION ? 
+                  listing?.expiry 
+                    ? <CountdownTimer date={fromUnixTime(listing?.expiry)} /> 
+                    : null
+                  : null
               }
               {
-                listingState !== NFT_LISTING_STATE.IN_AUCTION && highestBid && (
+                listingState !== NFT_LISTING_STATE.IN_AUCTION && highestBid ? (
                   <ItemPrice label="Top offer" value={highestBid} />
-                )
+                ) : null
               }
             </span>
           </div>

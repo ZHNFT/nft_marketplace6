@@ -49,7 +49,7 @@ const transformGalleryItem = (item) => {
       highestPrice,
       lowestBid,
       lowestPrice,
-      rarityRank
+      rarityRank,
     };
   };
 

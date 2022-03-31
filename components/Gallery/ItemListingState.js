@@ -2,7 +2,7 @@ import { NFT_LISTING_STATE } from '../../constants/nft';
 import { AuctionIcon, CartIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 
-export default function ItemListingState({ listingState, price, auctionEndDate }) {
+export default function ItemListingState({ listingState, price }) {
   if (listingState === NFT_LISTING_STATE.NOT_LISTED) {
     return <span className="text-silver dark:text-manatee ml-auto">Not listed</span>
   }
