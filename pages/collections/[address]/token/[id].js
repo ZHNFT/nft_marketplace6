@@ -21,6 +21,8 @@ import Activity from '../../../../components/Product/Activity';
 import CollectionSlider from '../../../../components/Product/CollectionSlider';
 import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Product/TraitsTable';
+import CountdownTimer from '../../../../components/CountdownTimer';
+import fromUnixTime from 'date-fns/fromUnixTime'
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -142,9 +144,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     fetchTokenData();
   }, [])
 
-  console.log(`tokenData`, tokenData)
-  console.log(`activeAuctionbids`, activeAuctionbids)
-
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
       <SingleNftPageModal
@@ -208,16 +207,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                     <>
                       <p className="text-manatee font-medium">This item is not currently listed</p>
                       <div className="ml-auto">
-                        {
-                          !!data?.highestBid && (
-                            <SecondaryButton
-                              className="border-manatee mr-4 text-ink dark:text-white"
-                              onClick={() => console.log('view offers')}
-                            >
-                              View offers
-                            </SecondaryButton>
-                          )
-                        }
                         <SecondaryButton
                           className="border-cornflower min-w-[98px] text-ink dark:text-white"
                           onClick={() => handleModal(NFT_MODALS.LIST)}
@@ -257,28 +246,18 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         >
                           Remove listing
                         </button>
-                        {
-                          data?.highestBid
-                            ? (
-                              <SecondaryButton
-                                className="border-manatee text-ink dark:text-white"
-                                onClick={() => console.log('view offers')}
-                              >
-                                View offers
-                              </SecondaryButton>
-                            )
-                            : <p className="text-manatee">No offers</p>
-                        }
                       </div>
                     </>
                   )
                 }
 
-                { // Owner & in auction
+                { // TODO FIXME Owner & in auction
                   activeAuction && (
                     <>
                       <div>
-                        <p className="text-xs text-manatee">No bids yet</p>
+                        <CountdownTimer
+                          date={fromUnixTime(activeAuction?.expiry)}
+                        />
                       </div>
                     </>
                   )
@@ -345,16 +324,36 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                   { // Not owner & in auction
                     activeAuction && (
-                      <>
+                      <div className='flex items-center justify-between w-full'>
                         <div>
-                          <p className="text-xs text-manatee">No bids yet</p>
+                          {activeAuction?.highestBid ? (
+                            <div>
+                              <p className="mb-1">
+                                <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
+                              </p>
+                              <div className="flex items-baseline relative">
+                                <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                                <span className="text-base font-medium ml-6">{formatEther(activeAuction?.highestBid)}</span>
+                                <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd))}</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-xs text-manatee">No bids yet</p>
+                          )}
+                        </div>
+                        <div className='flex flex-col'>
+                          <span>Time remaining</span>
+                          <CountdownTimer
+                            date={fromUnixTime(activeAuction?.expiry)}
+                            log={console.log(`activeAuction`, activeAuction)}
+                          />
                         </div>
                         <div>
                           <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
                             Place Bid
                           </PrimaryButton>
                         </div>
-                      </>
+                      </div>
                     )
                   }
                 </>)
@@ -416,10 +415,10 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductCollection
                     collectionId={data?.collectionId}
-                    itemCount="48K"
-                    ownerCount="36.1K"
-                    volume="16.7K"
-                    floorPrice="23"
+                    itemCount={collection?.totalSupply}
+                    ownerCount={collection?.ownerCount}
+                    volume={formatEther(collection?.volume?.total)}
+                    floorPrice={formatEther(collection?.floorPrice)}
                     instagram="#"
                     twitter="#"
                     website="#"

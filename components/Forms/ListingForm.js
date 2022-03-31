@@ -44,6 +44,12 @@ const validate = (values) => {
     errors.price = 'Invalid amount';
   }
 
+  if (!values.percent) {
+    errors.percent = 'Required';
+  } else if (Number(values.percent) < 5) {
+    errors.percent = 'Minimum price increase on each bid must be 5% or more';
+  }
+
   return errors;
 }
 
@@ -56,7 +62,7 @@ export default function Listing(props) {
     currency: currencies[0],
     price: '',
     duration: durations[0],
-    percent: '',
+    percent: 5,
   };
 
   async function handleSubmit(values, actions) {
@@ -302,7 +308,7 @@ export default function Listing(props) {
                 </div>
 
                 <div className="my-6">
-                  { /* Fees */}
+                  { /* TODO GET DATA FROM COLLECTION Fees */}
                   <p>Fees</p>
                   <div className="mt-1 text-sm text-manatee flex justify-between">
                     <span>Service Fee</span>

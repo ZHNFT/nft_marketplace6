@@ -4,6 +4,8 @@ import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { BeeIcon, LinkIcon } from '../icons';
 import SecondaryButton from '../Buttons/SecondaryButton';
+import fromUnixTime from 'date-fns/fromUnixTime'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 
 export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOwner, onCancelBid, onAcceptBid, }) {
   const router = useRouter();
@@ -38,7 +40,8 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                   <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(pricePerItem)) * tokenPriceUsd)}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
-                  { expiry }
+                  {/* https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict */}
+                  { formatDistanceToNowStrict(fromUnixTime(expiry), { addSuffix: true }) }
                 </Cell>
                 <Cell className="w-[140px] text-right leading-none">
                   {userAddress === currentUser && (

@@ -8,6 +8,8 @@ import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
+import fromUnixTime from 'date-fns/fromUnixTime'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -49,6 +51,8 @@ export default function Activity({ tokenPriceUsd }) {
             const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
             const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
             const to = activityType === 'sale' ? buyer : toAddress;
+            // TODO FIX DATE with correct formatting
+            const date = ''
             return (
               <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>
                 <Cell className="w-[30px]">
@@ -83,9 +87,10 @@ export default function Activity({ tokenPriceUsd }) {
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   <div className="group relative">
-                    { /*TODO convert date to time ago */ }
+                    { /* TODO convert date to time ago */ }
+                    {/* formatDistanceToNowStrict(date, { addSuffix: true }) */}
                     23 minutes ago
-                    <Tooltip position="bottom">
+                    <Tooltip position="bottom" className="z-10">
                       <span className="block">13:01 UTC</span>
                       <span>March 12th 2022</span>
                     </Tooltip>
