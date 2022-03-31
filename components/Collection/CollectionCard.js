@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ellipseAddress } from "../../Utils";
 import DefaultLogo from "../../images/default-collection-logo.png";
-import yellowph from "../../images/nftObject.png";
 import nft1 from "../../images/nfts/nft1.png";
 import nft2 from "../../images/nfts/nft2.jpg";
 import nft3 from "../../images/nfts/nft3.png";
@@ -31,29 +30,8 @@ const person = {
 };
 // More people...
 export default function CollectionCard({ collection }) {
-  // const options = { address: "0xd...07", chain: "bsc" };
-
-  // const getMetaData = async(options) => {
-  //   Moralis.start()
-  //   await Moralis.Web3API.token.getNFTMetadata(options);
-  // }
-  // const metaData = getMetaData(options)
-  //   const {
-  //     address,
-  //     createdAt,
-  //     name,
-  //     description,
-  //     logo,
-  //     totalSupply,
-  //     socials,
-  //     chainIdHex,
-  //   } = data;
-  // console.log("data:", data);
-  // const nft_image_url = "https://ipfs.moralis.io:2052/ipfs/QmQNyLJBN2jWea1DFHjxV5wCYzriavmUEn4XPym5gbtxkV"
-  // const nft_image_url = "https://assets.nftrade.com/image/upload/w_500,c_scale/v1643590584/evm_43114_0x6a2b2e8123a046e643faf2cb78d86eb4e8496d2f_7707.png"
   return (
     <>
-      {/* <div className="static group block w-96 aspect-[31/30] rounded-lg bg-gray-900 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden"> */}
       <div className="relative max-w-[555px] w-full rounded-3xl bg-gray-900 ">
         <div className="relative w-full h-full z-0 text-white">
           <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">

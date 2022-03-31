@@ -28,11 +28,7 @@ export default function Hero() {
     setListingState(state);
     setExpiry(expiry)
   }, [listings, auctions]);
-
-  console.log(listingState);
-
-  console.log(collection);
-  console.log(nft);
+  
   return (
     <div className="flex flex-col lg:flex-row mt-12 mb-10 items-center">
       <div className="md:mr-12 lg:mr-24 mb-8 lg:mb-0 text-center lg:text-left">

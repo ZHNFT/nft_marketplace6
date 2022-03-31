@@ -31,6 +31,16 @@ const formatEther = (value) => {
   return ethers.utils.formatEther(valueString);
 }
 
+// formats number to K, M, B, T format eg. 16700 to 16.7k
+const formatCompact = value => {
+  if (!value) return null;
+  if (value < 1e3) return n;
+  if (value >= 1e3 && value < 1e6) return + (value / 1e3).toFixed(1) + 'K';
+  if (value >= 1e6 && value < 1e9) return + (value / 1e6).toFixed(1) + 'M';
+  if (value >= 1e9 && value < 1e12) return + (value / 1e9).toFixed(1) + 'B';
+  if (value >= 1e12) return + (value / 1e12).toFixed(1) + 'T';
+}
+
 const transformGalleryItem = (item) => {
     // highestPrice/lowestPrice is only for listings
     const { name, collectionId, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
@@ -105,5 +115,6 @@ export {
   fetcher,
   getListingState,
   usdFormatter,
-  formatEther
+  formatEther,
+  formatCompact
 };

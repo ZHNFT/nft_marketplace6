@@ -9,6 +9,7 @@ import { nftAddress, nftMarketAddress } from '../config'
 //import styles from '../styles/Home.module.css'
 import Hero from '../components/Home/Hero';
 import HeroCards from '../components/Home/HeroCards';
+import Statistics from '../components/Home/Statistics';
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Marketplace from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import CollectionCard from '../components/Collection/CollectionCard'
@@ -102,78 +103,24 @@ export default function Home(props) {
     <div className="flex justify-center lg:max-w-6xl mx-auto">
 
       <div className="px-4">
-          <div className="flex flex-col">
-            <Hero />
-            <HeroCards />
+        <div className="flex flex-col">
+          <Hero />
+          <HeroCards />
 
-            <section className="mt-14 mb-4">
-              <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
-              <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2 xl:gap-x-8">
-                  {collections?.results?.map((collection, index) => (
-                    <li
-                      key={`${collection.id}_${index}`}
-                      className="mx-auto">
-                    <CollectionCard collection={collection} />
-                    </li>
-                  ))}
-              </ul>
-            </section>
-          </div>
-
-          <div>
-            
-                  <table className="min-w-full divide-y divide-gray-200 hidden">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Name
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Address
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Slug
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Chain
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Total
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {collections?.results?.map((collection) => (
-                        <Link href="/collections/[address]" as={`/collections/${collection.address}`} key={collection.address} passHref>
-                            <tr key={collection.address} className="hover:bg-gray-50 cursor-pointer">
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.name}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.address}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.slug}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.chain}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{collection.totalSupply}</td>
-                            </tr>
-                          </Link>
-                      ))}
-                    </tbody>
-                  </table>
-          </div>
+          <section className="mt-14 mb-4">
+            <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
+            <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2 xl:gap-x-8">
+                {collections?.results?.map((collection, index) => (
+                  <li
+                    key={`${collection.id}_${index}`}
+                    className="mx-auto">
+                  <CollectionCard collection={collection} />
+                  </li>
+                ))}
+            </ul>
+          </section>
+        </div>
       </div>
-
     </div>
   )
 }
