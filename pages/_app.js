@@ -10,7 +10,7 @@ import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
 import { honeyTokenAddress } from '../config'
-import { fetcher } from '../Utils/helper';
+import { getUserDetails } from '../Utils/helper';
 import AppGlobalContext from '../contexts/AppGlobalContext';
 
 // Components
@@ -146,7 +146,8 @@ function MyApp({ Component, pageProps }) {
 
     // Pull in user details once the user has connected
     // and we have their address.
-    await getUserDetails(address);
+    const userData = await getUserDetails(address);
+    setUser(userData.user);
   }, []);
 
   const disconnect = useCallback(
@@ -227,13 +228,6 @@ function MyApp({ Component, pageProps }) {
       return
     }
   }, [chainId, provider, mainnetChainId, testnetChainId])
-
-  async function getUserDetails(address) {
-    if (address) {
-      const data = await fetcher(`https://hexagon-api.onrender.com/users/${address}`);
-      setUser(data.user);
-    }
-  }
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">

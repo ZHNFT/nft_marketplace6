@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ProfileHeader from "../../../components/Profile/ProfileHeader";
 import ProfileContent from "../../../components/Profile/ProfileContent";
@@ -7,6 +7,7 @@ import FilterButton from "../../../components/FilterButton/FilterButton";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import AddCollectionModal from "../../../components/Modals/AddCollectionModal";
+import { getUserDetails, transformUserData } from "../../../Utils/helper";
 
 const itemsFilterList = [
   { label: "All items" },
@@ -38,12 +39,19 @@ export default function UserAssets(props) {
   const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
   const total = data?.results?.length;
   const totalOnAuction = data?.auctioned?.length;
+  const [userData, setUserData] = useState({});
+
+  useEffect(async () => {
+    const data = await getUserDetails(address);
+    setUserData(transformUserData(data.user));
+  }, []);
 
   return (
     <>
       <div className="lg:max-w-6xl mx-auto">
         <ProfileHeader
           chainIdHex={chainIdHex}
+          userData={userData}
           address={address}
           total={total}
         />

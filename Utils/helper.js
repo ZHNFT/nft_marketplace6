@@ -95,6 +95,21 @@ const getListingState = ({ listings, auctions }) => {
   return { state: NFT_LISTING_STATE.NOT_LISTED, expiry: null };
 }
 
+async function getUserDetails(address) {
+  if (address) {
+    try {
+      const response = await fetch(`https://hexagon-api.onrender.com/users/${address}`);
+      if (!response.status == 200) {
+        return {}
+      }
+
+      return response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
+
 const transformUserData = (user) => {
   if (!user) {
     return {
@@ -133,6 +148,7 @@ export {
   toFixedOptional,
   fetcher,
   getListingState,
+  getUserDetails,
   transformUserData,
   usdFormatter,
   formatEther
