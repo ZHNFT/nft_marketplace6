@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 import _ from "lodash";
@@ -15,6 +16,21 @@ const formatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
   maximumFractionDigits: 2 // (causes 2500.99 to be printed as $2,501)
 });
+
+const usdFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+// https://docs.ethers.io/v5/api/utils/display-logic/
+// https://docs.ethers.io/v5/api/utils/bignumber/
+const formatEther = (value) => {
+  if (!value) return;
+  const valueString = typeof value === 'string' ? ethers.BigNumber.from(value) : ethers.BigNumber.from(value?.toString());
+  return ethers.utils.formatEther(valueString);
+}
 
 const transformGalleryItem = (item) => {
     // highestPrice/lowestPrice is only for listings
@@ -117,5 +133,7 @@ export {
   toFixedOptional,
   fetcher,
   getListingState,
-  transformUserData
+  transformUserData,
+  usdFormatter,
+  formatEther
 };

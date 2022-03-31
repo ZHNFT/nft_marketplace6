@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image'
 import { ellipseAddress } from '../../Utils';
+import { formatEther, usdFormatter } from '../../Utils/helper';
 import DefaultLogo from '../../images/default-collection-logo.png';
 import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon, DiscordIcon, TelegramIcon } from '../icons';
 import { getExplorer } from '../../config';
@@ -110,14 +111,14 @@ export default function CollectionHeader(props) {
                     <h4 className="text-xs mb-1.5">Volume</h4>
                     <span className="text-xl font-medium">
                       <BeeIcon className="w-[31px] relative -top-[3px]" />
-                      {volume}
+                      {formatEther(volume)}
                     </span>
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Floor</h4>
                     <span className="text-xl font-medium">
                       <BeeIcon className="w-[31px] relative -top-[3px]" />
-                      {floorPrice}
+                      {formatEther(floorPrice)}
                     </span>
                 </li>
             </ul>

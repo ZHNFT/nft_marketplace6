@@ -7,6 +7,7 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
   const { handleAllowance, allowanceStatus, allowanceError, allowanceTx } = useTokenAllowance({ tokenContract, marketplaceAddress, address });
   const [transactionStatus, setTransactionStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [transactionError, setTransactionError] = useState(null);
+  const [transaction, setTransaction] = useState(null);
 
     // For non-owners to place a bid on an auction
     const handlePlaceAuctionBid = useCallback(async function ({ price }) {
@@ -24,14 +25,15 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         // offer should include collectionAddress, tokenId, owner and amount
         const tx = await marketplaceContract.placeAuctionBid(offer.collectionAddress, offer.tokenId, offer.owner, offer.amount);
         const txResult = await tx?.wait();
-        console.log(`txResult`, txResult)
+
         if (txResult) {
+          setTransaction(txResult);
           setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
         }
       } catch (error) {
         setTransactionStatus(TRANSACTION_STATUS.FAILED);
-        setTransactionError(error?.message);
-        alert(error?.message)
+        setTransactionError(error?.data?.message || error?.message);
+        alert(error?.data?.message || error?.message)
       }
   
     }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner]);

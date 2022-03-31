@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { BeeIcon } from '../../../../components/icons';
 import { resolveBunnyLink } from '../../../../Utils';
 import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
-import { convertToUsd } from '../../../../Utils/helper';
+import { usdFormatter, formatEther } from '../../../../Utils/helper';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import SecondaryButton from '../../../../components/Buttons/SecondaryButton';
 import SingleNftPageModal from '../../../../components/Modals/SingleNftPageModal';
@@ -27,6 +27,7 @@ import TraitsTable from '../../../../components/Product/TraitsTable';
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
 export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
   const [data, setData] = useState(serverData)
+  const [tokenData, setTokenData] = useState([]);
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
   // there can only be one active auction or listing for a token at the same time
@@ -93,7 +94,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
     } catch (error) {
-      alert(error?.message)
+      alert(error?.data?.message || error?.message)
     }
   }, [marketplaceContract])
 
@@ -115,7 +116,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
     } catch (error) {
-      alert(error?.message)
+      alert(error?.data?.message || error?.message)
     }
   }, [marketplaceContract])
 
@@ -129,6 +130,20 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   useEffect(() => {
     setData(serverData);
   }, [serverData]);
+
+  useEffect(() => {
+    async function fetchTokenData() {
+      const hnyAddress = '0x1FA2F83BA2DF61c3d370071d61B17Be01e224f3a';
+      const response = await fetch(`https://api.dexscreener.io/latest/dex/tokens/${hnyAddress}`);
+      const data = await response?.json()
+      const firstPair = data?.pairs[0];
+      setTokenData(firstPair);
+    }
+    fetchTokenData();
+  }, [])
+
+  console.log(`tokenData`, tokenData)
+  console.log(`activeAuctionbids`, activeAuctionbids)
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
@@ -148,7 +163,10 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
         owner={owner}
         imageUrl={resolveBunnyLink(data?.imageHosted)}
         fetchData={fetchData}
-        activeListing={activeListing}
+        activeListing={{ ...activeListing, highestBid: data?.highestBid }}
+        activeAuction={activeAuction}
+        tokenPriceUsd={tokenData?.priceUsd}
+        tokenBalance={tokenBalance}
       />
       <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-6xl">
         {/* Product */}
@@ -227,8 +245,8 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         </p>
                         <div className="flex items-baseline relative">
                           <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
-                          <span className="text-base font-medium ml-6">{ethers.utils.formatEther(ethers.BigNumber.from(activeListing?.pricePerItem.toString()))}</span>
-                          <span className="text-xs text-manatee ml-2">$ {convertToUsd({ value: activeListing.pricePerItem })}</span>
+                          <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
+                          <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
                         </div>
                       </div>
                       <div className="ml-auto items-center flex">
@@ -297,8 +315,8 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           </p>
                           <div className="flex items-baseline relative">
                             <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
-                            <span className="text-base font-medium ml-6">{ethers.utils.formatEther(ethers.BigNumber.from(activeListing?.pricePerItem.toString()))}</span>
-                            <span className="text-xs text-manatee ml-2">$ {convertToUsd({ value: activeListing.pricePerItem })}</span>
+                            <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
+                            <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
                           </div>
                         </div>
                         <div className="ml-auto flex">
@@ -375,69 +393,24 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                 {/* Offers tab */}
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductOffers
-                    //offers={activeBids}
-                    offers={[
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '2 days' }
-                    ]}
-                    onCancelOffer={() => console.log('cancel offer')}
-                    onAcceptOffer={() => console.log('accept offer')}
+                    offers={activeBids}
+                    tokenPriceUsd={tokenData?.priceUsd}
+                    onCancelBid={handleCancelBid}
+                    onAcceptBid={handleAcceptBid}
+                    currentUser={address}
+                    isOwner={isOwner}
                   />
                 </Tab.Panel>
 
                 {/* Bids tab */}
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductBids
-                    bids={activeBids}
+                    bids={activeAuctionbids}
                     currentUser={address}
                     isOwner={isOwner}
-                    /*bids={[
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' },
-                      { '_id': 1, pricePerItem: 122, userAddress: '0x43dkjfdkfjkb928', expiry: '23 minutes ago' }
-                    ]}*/
-                    onCancelBid={handleCancelBid}
-                    onAcceptBid={handleAcceptBid}
+                    tokenPriceUsd={tokenData?.priceUsd}
                   />
                 </Tab.Panel>
-
-                { /*
-                <Tab.Panel as="dl" className="text-sm text-gray-500">
-                  {activeBids?.map((bid) => (
-                    <Fragment key={bid._id}>
-                      <dt className="mt-10 font-medium text-gray-900">{bid.expiry}</dt>
-                      <dd className="mt-2 prose prose-sm max-w-none text-gray-500">
-                        <p>{bid.pricePerItem}</p>
-                      </dd>
-                      {bid?.userAddress === address && (
-                        <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleCancelBid(bid)}
-                        >
-                          Cancel Bid
-                        </button>
-                      )}
-                      {isOwner && (
-                          <button
-                          type="button"
-                          className='mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-full'
-                          onClick={() => handleAcceptBid(bid)}
-                        >
-                          Accept Bid
-                        </button>
-                      )}
-                    </Fragment>
-                  ))}
-                </Tab.Panel>
-                */ }
 
                 {/* Collection tab */}
                 <Tab.Panel className="pt-7" as="dl">
@@ -469,7 +442,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
         </div>
 
         <h2 className="mt-12 mb-4">Activity</h2>
-        <Activity />
+        <Activity
+          tokenPriceUsd={tokenData?.priceUsd}
+        />
 
         <div className="mt-12 flex justify-between items-center">
           <h2>More from this collection</h2>
