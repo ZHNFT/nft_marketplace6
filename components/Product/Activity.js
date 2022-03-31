@@ -2,14 +2,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { ethers } from "ethers";
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { formatCurrency } from '../../Utils/helper';
+import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 
-export default function Activity() {
+export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
   const { address, id } = router.query;
   const [activities, setActivities] = useState([]);
@@ -45,8 +45,10 @@ export default function Activity() {
       <div className="max-h-[280px] overflow-y-auto scroller">
         {
           activities?.results?.map(row => {
-            const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem } = row;
-            const price = activityType === 'listing' ? pricePerItem : minBid;
+            const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress } = row;
+            const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
+            const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
+            const to = activityType === 'sale' ? buyer : toAddress;
             return (
               <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>
                 <Cell className="w-[30px]">
@@ -62,20 +64,20 @@ export default function Activity() {
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">
-                    { price ? formatCurrency({ value: price }) : '-' }
+                    { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                   </span>
                 </Cell>
                 <Cell className="w-[100px] text-center">
-                  {fromAddress ? (
+                  {from ? (
                     <a href="#">
-                      { ellipseAddress(fromAddress, 4) }
+                      { ellipseAddress(from, 4) }
                     </a>
                   ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center">
-                  { toAddress ? (
+                  { to ? (
                     <a href="#">
-                      { ellipseAddress(toAddress, 4) }
+                      { ellipseAddress(to, 4) }
                     </a>
                    ) : '-'}
                 </Cell>

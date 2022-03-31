@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import { ethers } from "ethers";
 import { ellipseAddress } from '../../Utils';
+import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { BeeIcon, LinkIcon } from '../icons';
 import SecondaryButton from '../Buttons/SecondaryButton';
 
-export default function ProductBids({ bids, currentUser, isOwner, onCancelBid, onAcceptBid }) {
+export default function ProductBids({ bids, tokenPriceUsd }) {
   const router = useRouter();
 
   if (!bids || bids.length === 0) {
@@ -17,46 +18,27 @@ export default function ProductBids({ bids, currentUser, isOwner, onCancelBid, o
         <Cell className="w-[120px]">Bidder</Cell>
         <Cell className="w-[100px] text-center">Bid</Cell>
         <Cell className="w-[100px] text-center">Date</Cell>
-        <Cell className="w-[140px] text-center"></Cell>
         <Cell className="w-[20px]" />
       </RowHeading>
       <div className="h-[240px] overflow-y-scroll">
         {
           bids.map(bid => {
-            const { _id: id, pricePerItem, userAddress, expiry } = bid;
+            const { bidder, timestamp, value } = bid;
             return (
-              <Row key={id} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
+              <Row key={`${bidder}-${timestamp}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
                 <Cell className="w-[120px] flex items-center">
                   <span className="block bg-cornflower rounded-full w-[24px] h-[24px] mr-2"></span>
-                  <span>{ ellipseAddress(userAddress, 4) }</span>
+                  <span>{ ellipseAddress(bidder, 4) }</span>
                 </Cell>
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px]">
                     <BeeIcon className="w-[26px] relative -top-[2px]" />
-                    { ethers.utils.formatEther(ethers.BigNumber.from(pricePerItem.toString())) }
+                    { formatEther(value) }
                   </span>
-                  <span className="text-manatee text-xxs">$6,450.28</span>
+                  <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(value)) * tokenPriceUsd)}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
-                  { expiry }
-                </Cell>
-                <Cell className="w-[140px] text-right leading-none">
-                  {userAddress === currentUser && (
-                    <SecondaryButton
-                      className="border-manatee mr-4 text-ink dark:text-white"
-                      onClick={() => onCancelBid(bid)}
-                    >
-                      Cancel Bid
-                    </SecondaryButton>
-                  )}
-                  {isOwner && (
-                    <SecondaryButton
-                      className="border-manatee mr-4 text-ink dark:text-white"
-                      onClick={() => onAcceptBid(bid)}
-                    >
-                      Accept Bid
-                    </SecondaryButton>
-                  )}
+                  { timestamp }
                 </Cell>
                 <Cell className="w-[20px] text-right text-manatee">
                   <a href="#">

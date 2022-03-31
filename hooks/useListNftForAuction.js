@@ -13,6 +13,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
   const [signatureError, setSignatureError] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [transactionError, setTransactionError] = useState(null);
+  const [transaction, setTransaction] = useState(null);
 
   // For the owner of the NFT to create an auction, its not possible to cancel an auction
   const handleCreateAuction = useCallback(async function ({ price, expirationDate, percent }) {
@@ -43,8 +44,8 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       }
     } catch (error) {
       setSignatureStatus(TRANSACTION_STATUS.FAILED);
-      setSignatureError(error?.message);
-      alert(error?.message)
+      setSignatureError(error?.data?.message || error?.message);
+      alert(error?.data?.message || error?.message)
     }
 
     // handle api call
@@ -54,14 +55,15 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
       const tx = await marketplaceContract.placeAuction(auction);
       const txResult = await tx?.wait();
-      console.log(`txResult`, txResult)
+
       if (txResult) {
+        setTransaction(txResult);
         setTransactionStatus(TRANSACTION_STATUS.SUCCESS);
       }
     } catch (error) {
       setTransactionStatus(TRANSACTION_STATUS.FAILED);
-      setTransactionError(error?.message);
-      alert(error?.message)
+      setTransactionError(error?.data?.message || error?.message);
+      alert(error?.data?.message || error?.message)
     }
 
   }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall])

@@ -20,15 +20,13 @@ export default function useApiCall() {
       body: JSON.stringify(data)
     });
 
-    console.log(`response`, response)
     setApiResponse(response);
 
     if (!response.ok) {
       const error = await response?.json();
-      console.log('API error message:', error?.message)
-      setApiError(error?.message);
       setApiCallStatus(TRANSACTION_STATUS.FAILED);
-      alert(error?.message)
+      setApiError(error?.message);
+      alert(error?.message);
     } else {
       setApiCallStatus(TRANSACTION_STATUS.SUCCESS);
     }

@@ -18,6 +18,7 @@ export default function CancelListingModal(props) {
     setIsCancelling(true);
     await handleCancelListing(activeListing);
     fetchData();
+    handleClose();
   }
 
   if (isCanceling) {
@@ -28,7 +29,7 @@ export default function CancelListingModal(props) {
             title: 'Transaction to cancel list',
             status: cancellationStatus,
             isDefaultOpen: true,
-            description: 'Description here'
+            description: cancellationError ? cancellationError : 'Description here'
           }
         ]}
       />

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Image from 'next/image';
+import { ethers } from "ethers";
 import { ellipseAddress } from '../../Utils';
-import { convertToUsd } from '../../Utils/helper';
+import { usdFormatter, formatEther } from '../../Utils/helper';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import TransactionList from '../Transactions/TransactionList';
 import { BeeIcon } from '../icons';
@@ -9,7 +10,7 @@ import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData } = props;
+  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError } = useAcceptListing({ marketplaceContract, setIsConfirming });
   const price = activeListing?.pricePerItem;
@@ -28,7 +29,7 @@ export default function BuyNowForm(props) {
             title: `Approval to transfer ${price} HNY`,
             status: acceptationStatus,
             isDefaultOpen: true,
-            description: 'Description here'
+            description: acceptationError ? acceptationError : 'Description here'
           }
         ]}
       />
@@ -60,9 +61,9 @@ export default function BuyNowForm(props) {
           <div className="text-right">
             <div>
               <BeeIcon className="w-[25px] -top-[3px] relative" />
-              <span>{price}</span>
+              <span>{price ? formatEther(price) : price}</span>
             </div>
-            <p className="text-manatee text-sm">${convertToUsd({ value: price })}</p>
+            <p className="text-manatee text-sm">{usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd))}</p>
           </div>
         </div>
       </div>
@@ -73,9 +74,9 @@ export default function BuyNowForm(props) {
           <div className="text-right">
             <div>
               <BeeIcon className="w-[28px] -top-[4px] relative" />
-              <span className="font-medium text-xl text-cornflower">{price}</span>
+              <span className="font-medium text-xl text-cornflower">{price ? formatEther(price) : price}</span>
             </div>
-            <p className="text-manatee text-sm">${convertToUsd({ value: price })}</p>
+            <p className="text-manatee text-sm">{usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd))}</p>
           </div>
         </div>
       </div>

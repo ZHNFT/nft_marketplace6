@@ -2,10 +2,10 @@ import { useContext } from 'react';
 import Web3Context from '../../../contexts/Web3Context';
 import { ErrorMessage } from 'formik';
 import { BeeIcon } from '../../icons';
-import { convertToUsd, formatter } from '../../../Utils/helper';
+import { usdFormatter, formatter } from '../../../Utils/helper';
 
 export default function PriceInputField(props) {
-  const { field, form, label = "Price", showTokenBalance = false } = props;
+  const { field, form, label = "Price", showTokenBalance = false, tokenPriceUsd } = props;
   const { state: { tokenBalance } } = useContext(Web3Context);
   return (
     <div className="mt-4 mb-8">
@@ -34,7 +34,7 @@ export default function PriceInputField(props) {
           {...field}
         />
         <span className="p-2 text-sm w-[80px] text-right">
-          <span className="overflow-hidden text-xs truncate text-[#969EAB]">${convertToUsd({ value: field?.value })}</span>
+          <span className="overflow-hidden text-xs truncate text-[#969EAB]">{usdFormatter.format(Number(field?.value) * tokenPriceUsd)}</span>
         </span>
       </div>
       {/* https://formik.org/docs/api/errormessage#props-1 */}

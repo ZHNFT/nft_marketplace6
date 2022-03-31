@@ -46,8 +46,10 @@ module.exports = {
       },
       backgroundImage: {
         'main-page': 'url("/images/bg-main.svg")',
-        'frame': 'url("/images/bg-frame.svg")',
-        'cardOutline': 'url("/images/bg-card-outline.svg")'
+        'frame': 'url("/images/bg-frame.png")',
+        'cardOutline1': 'url("/images/bg-card-outline.png")',
+        'cardOutline2': 'url("/images/bg-card-outline-2.png")',
+        'cardOutline3': 'url("/images/bg-card-outline-3.png")'
       },
       backgroundPosition: {
         'top-center': 'top center'
