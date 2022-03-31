@@ -4,7 +4,8 @@ import { ellipseAddress } from '../../Utils';
 import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { BeeIcon, LinkIcon } from '../icons';
-import SecondaryButton from '../Buttons/SecondaryButton';
+import fromUnixTime from 'date-fns/fromUnixTime'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 
 export default function ProductBids({ bids, tokenPriceUsd }) {
   const router = useRouter();
@@ -38,7 +39,8 @@ export default function ProductBids({ bids, tokenPriceUsd }) {
                   <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(value)) * tokenPriceUsd)}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
-                  { timestamp }
+                  {/* https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict */}
+                  { formatDistanceToNowStrict(fromUnixTime(timestamp), { addSuffix: true }) }
                 </Cell>
                 <Cell className="w-[20px] text-right text-manatee">
                   <a href="#">

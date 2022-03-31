@@ -27,7 +27,10 @@ export default function Activity({ tokenPriceUsd }) {
     fetchData()
   }, [fetchData])
 
-  console.log(`activities`, activities)
+  if (!activities || !activities.length) {
+    return <p className="text-center text-xs mt-2">No activity available</p>
+  }
+
   return (
     <Table className="text-xs">
       <RowHeading>
