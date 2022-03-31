@@ -1,49 +1,54 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import clsx from 'clsx';
-import { useRouter } from 'next/router'
+import React, { useState, useContext } from "react";
+import clsx from "clsx";
+import { useRouter } from "next/router";
 
 // Components
-import Seo from './seo';
-import Header from './Header/Header';
-import Sidebar from './sidebar';
-import MobileFilters from './Filters/mobileFilters';
-import Filters from './Filters/Filters';
-import { FireIcon, HomeIcon, TrendingUpIcon, UserGroupIcon } from '@heroicons/react/outline'
-
-
-const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelseahagon@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+import Seo from "./seo";
+import Header from "./Header/Header";
+import Sidebar from "./sidebar";
+import MobileFilters from "./Filters/mobileFilters";
+import Filters from "./Filters/Filters";
+import {
+  FireIcon,
+  HomeIcon,
+  TrendingUpIcon,
+  UserGroupIcon,
+} from "@heroicons/react/outline";
+import Web3Context from "../contexts/Web3Context";
 
 const navigation = [
-  { name: 'Collections', href: '#', icon: HomeIcon, current: true },
-  { name: 'Marketplace', href: '#', icon: FireIcon, current: false },
-  { name: 'Drops', href: '#', icon: TrendingUpIcon, current: false },
-]
+  { name: "Collections", href: "#", icon: HomeIcon, current: true },
+  { name: "Marketplace", href: "#", icon: FireIcon, current: false },
+  { name: "Drops", href: "#", icon: TrendingUpIcon, current: false },
+];
 
-export default function Layout({ children, pageProps, connect, disconnect, address }) {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+export default function Layout({ children, pageProps, connect, disconnect }) {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { pathname } = useRouter();
-  
+  const {
+    state: { address },
+  } = useContext(Web3Context);
+
   return (
     <>
       <Seo />
-      <div className={clsx('min-h-full', pathname === '/' ? 'bg-main-page bg-top-center' : 'dark:bg-[#202225]')}>
+      <div
+        className={clsx(
+          "min-h-full",
+          pathname === "/" ? "bg-main-page bg-top-center" : "dark:bg-[#202225]"
+        )}
+      >
         <Header
-          user={user}
           navigation={navigation}
           connect={connect}
           disconnect={disconnect}
           address={address}
-          withBorder={pathname !== '/'}
+          withBorder={pathname !== "/"}
         />
         <div className="py-10">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
             <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white text-black">
-              {React.Children.map(children, child => {
+              {React.Children.map(children, (child) => {
                 if (!React.isValidElement(child)) {
                   return null;
                 }
@@ -65,5 +70,5 @@ export default function Layout({ children, pageProps, connect, disconnect, addre
         </div>
       </div>
     </>
-  )
+  );
 }

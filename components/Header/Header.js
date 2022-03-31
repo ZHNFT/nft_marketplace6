@@ -12,13 +12,12 @@ import SearchInput from "./SearchInput";
 import Logo from "../../images/hive-logo.png";
 import EditProfileModal from "../Modals/EditProfileModal";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
+import DefaultLogo from '../../images/default-collection-logo-2.png';
 
 export default function Header(props) {
-  const { user, navigation, connect, disconnect, address, withBorder } = props;
-  const { showEditProfileModal, setShowEditProfileModal } =
+  const { navigation, connect, disconnect, address, withBorder } = props;
+  const { showEditProfileModal, setShowEditProfileModal, user } =
     useContext(AppGlobalContext);
-
-  console.log(user);
 
   return (
     <>
@@ -92,12 +91,11 @@ export default function Header(props) {
                   {address ? (
                     <ProfileMenuButton
                       address={address}
-                      name={user?.name}
+                      name={user?.username}
                       imageUrl={user?.imageUrl}
                       disconnect={disconnect}
                     >
                       <ProfileMenu
-                        user={user}
                         address={address}
                         disconnect={disconnect}
                       />
@@ -130,12 +128,6 @@ export default function Header(props) {
       </Popover>
       <EditProfileModal
         isOpen={showEditProfileModal}
-        name={user.name}
-        imageUrl={user.imageUrl}
-        website={user.website}
-        instagram={user.instagram}
-        twitter={user.twitter}
-        description={user.description}
         onClose={() => setShowEditProfileModal(false)}
       />
     </>

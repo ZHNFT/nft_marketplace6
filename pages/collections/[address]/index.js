@@ -19,9 +19,10 @@ import { ArrowAltIcon } from '../../../components/icons';
 const url = `https://hexagon-api.onrender.com/collections/`;
 
 const itemsFilterList = [
-  { label: 'All items' },
-  { label: 'Single items' },
-  { label: 'Bundles' }
+  { label: 'For Sale' },
+  { label: 'Auction' },
+  { label: 'Has Offers' },
+  { label: 'Not Listed' }
 ];
 
 export async function fetchData(address, page = 0, query, filter, sort) {
