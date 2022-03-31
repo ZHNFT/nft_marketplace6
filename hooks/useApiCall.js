@@ -27,6 +27,7 @@ export default function useApiCall() {
       setApiCallStatus(TRANSACTION_STATUS.FAILED);
       setApiError(error?.message);
       alert(error?.message);
+      return;
     } else {
       setApiCallStatus(TRANSACTION_STATUS.SUCCESS);
     }

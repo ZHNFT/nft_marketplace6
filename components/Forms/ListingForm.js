@@ -112,7 +112,7 @@ export default function Listing(props) {
               </div>
               <div>
                 <p className="text-sm text-manatee">Price</p>
-                <ItemPrice value={values.price} />
+                <ItemPrice value={Number(values.price) * 10 ** 18} />
               </div>
             </div>
             <div className="my-6">

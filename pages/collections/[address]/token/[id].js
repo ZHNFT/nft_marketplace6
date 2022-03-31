@@ -253,13 +253,34 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                 { // TODO FIXME Owner & in auction
                   activeAuction && (
-                    <>
+                    <div className='flex items-center justify-between w-full'>
                       <div>
+                        {activeAuction?.highestBid ? (
+                          <div>
+                            <p className="mb-1">
+                              <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
+                            </p>
+                            <div className="flex items-baseline relative">
+                              <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                              <span className="text-base font-medium ml-6">{formatEther(activeAuction?.highestBid)}</span>
+                              <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd))}</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-manatee">No bids yet</p>
+                        )}
+                      </div>
+                      <div className='flex flex-col'>
+                        <span>Time remaining</span>
                         <CountdownTimer
                           date={fromUnixTime(activeAuction?.expiry)}
+                          log={console.log(`activeAuction`, activeAuction)}
                         />
                       </div>
-                    </>
+                      <div>
+                        
+                      </div>
+                    </div>
                   )
                 }
               </>)

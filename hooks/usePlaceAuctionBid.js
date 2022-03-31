@@ -34,6 +34,7 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         setTransactionStatus(TRANSACTION_STATUS.FAILED);
         setTransactionError(error?.data?.message || error?.message);
         alert(error?.data?.message || error?.message)
+        return;
       }
   
     }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner]);
