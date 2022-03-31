@@ -95,10 +95,13 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       });
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
+      if (txResult) {
+        fetchData()
+      }
     } catch (error) {
       alert(error?.data?.message || error?.message)
     }
-  }, [marketplaceContract])
+  }, [marketplaceContract, fetchData])
 
   // For non-owners to cancel their bid
   const handleCancelBid = useCallback(async function (offer) {
@@ -117,10 +120,13 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
       });
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
+      if (txResult) {
+        fetchData()
+      }
     } catch (error) {
       alert(error?.data?.message || error?.message)
     }
-  }, [marketplaceContract])
+  }, [marketplaceContract, fetchData])
 
   const handleCloseModal = useCallback(function (){
     setActiveModal(null)
@@ -278,7 +284,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         />
                       </div>
                       <div>
-                        
+
                       </div>
                     </div>
                   )

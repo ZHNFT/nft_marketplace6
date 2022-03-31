@@ -24,8 +24,8 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
       </RowHeading>
       <div className="h-[240px] overflow-y-scroll">
         {
-          offers.map((row, index) => {
-            const { _id: id, pricePerItem, userAddress, expiry } = row;
+          offers.map((offer, index) => {
+            const { _id: id, pricePerItem, userAddress, expiry } = offer;
             return (
               <Row key={id} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
                 <Cell className="w-[120px] flex items-center">
@@ -47,7 +47,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                   {userAddress === currentUser && (
                     <SecondaryButton
                       className="border-manatee mr-4 text-ink dark:text-white"
-                      onClick={() => onCancelBid(bid)}
+                      onClick={() => onCancelBid(offer)}
                     >
                       Cancel Bid
                     </SecondaryButton>
@@ -55,7 +55,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                   {isOwner && (
                     <SecondaryButton
                       className="border-manatee mr-4 text-ink dark:text-white"
-                      onClick={() => onAcceptBid(bid)}
+                      onClick={() => onAcceptBid(offer)}
                     >
                       Accept Bid
                     </SecondaryButton>
