@@ -10,13 +10,14 @@ import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
 import { honeyTokenAddress } from '../config'
+import { getUserDetails } from '../Utils/helper';
+import AppGlobalContext from '../contexts/AppGlobalContext';
 
 // Components
 import Layout from '../components/layout';
 
 // Config
 import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
-import AppGlobalContext from '../contexts/AppGlobalContext';
 
 const providerOptions = {
   walletconnect: {
@@ -60,6 +61,11 @@ function reducer(state, action) {
         ...state,
         address: action.address,
       }
+    case 'SET_TOKEN_DATA':
+      return {
+        ...state,
+        tokenData: action.tokenData,
+      }
     case 'SET_CHAIN_ID':
       return {
         ...state,
@@ -84,9 +90,13 @@ function MyApp({ Component, pageProps }) {
   const testnetChainId = "0x13881";
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-  const globalContextValue = useMemo(() => {
-    return { showEditProfileModal, setShowEditProfileModal };
-  }, [showEditProfileModal, setShowEditProfileModal]);
+  const [user, setUser] = useState({});
+  const globalContextValue = {
+    showEditProfileModal,
+    setShowEditProfileModal,
+    user,
+    setUser
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -138,6 +148,11 @@ function MyApp({ Component, pageProps }) {
       tokenContract: erc20TokenContract,
       tokenBalance: erc20TokenBalance
     })
+
+    // Pull in user details once the user has connected
+    // and we have their address.
+    const userData = await getUserDetails(address);
+    setUser(userData.user);
   }, []);
 
   const disconnect = useCallback(
@@ -218,6 +233,20 @@ function MyApp({ Component, pageProps }) {
       return
     }
   }, [chainId, provider, mainnetChainId, testnetChainId])
+
+  useEffect(() => {
+    async function fetchTokenData() {
+      const hnyAddress = '0x1FA2F83BA2DF61c3d370071d61B17Be01e224f3a';
+      const response = await fetch(`https://api.dexscreener.io/latest/dex/tokens/${hnyAddress}`);
+      const data = await response?.json()
+      const firstPair = data?.pairs[0];
+      dispatch({
+        type: 'SET_TOKEN_DATA',
+        tokenData: firstPair,
+      })
+    }
+    fetchTokenData();
+  }, [])
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">

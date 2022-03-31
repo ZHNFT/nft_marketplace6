@@ -27,9 +27,9 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance }) {
+export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance, tokenData }) {
   const [data, setData] = useState(serverData)
-  const [tokenData, setTokenData] = useState([]);
+
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
   // there can only be one active auction or listing for a token at the same time
@@ -132,23 +132,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     setActiveModal(null)
   }, [])
 
-  console.log(`collection`, collection)
-  console.log(`data`, data)
-
   useEffect(() => {
     setData(serverData);
   }, [serverData]);
-
-  useEffect(() => {
-    async function fetchTokenData() {
-      const hnyAddress = '0x1FA2F83BA2DF61c3d370071d61B17Be01e224f3a';
-      const response = await fetch(`https://api.dexscreener.io/latest/dex/tokens/${hnyAddress}`);
-      const data = await response?.json()
-      const firstPair = data?.pairs[0];
-      setTokenData(firstPair);
-    }
-    fetchTokenData();
-  }, [])
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
@@ -257,7 +243,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                   )
                 }
 
-                { // TODO FIXME Owner & in auction
+                { // Owner & in auction
                   activeAuction && (
                     <div className='flex items-center justify-between w-full'>
                       <div>

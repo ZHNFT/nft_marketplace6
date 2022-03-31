@@ -15,6 +15,7 @@ import Activity from '../../../components/Collection/Activity';
 import InfiniteGallery from '../../../components/Gallery/InfiniteGallery';
 import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
+import CollectionTab from '../../../components/Tabs/CollectionTab';
 
 const url = `https://hexagon-api.onrender.com/collections/`;
 
@@ -55,7 +56,7 @@ export async function fetchData(address, page = 0, query, filter, sort) {
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
   const { search, address, sort, filter, tab } = router.query;
@@ -63,8 +64,8 @@ export default function Collection(props) {
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [showFilters, setShowFilters] = useState(true);
   const tabs = [
-    { href: { pathname: router.pathname, query: { ...router.query, tab: 'items' } }, name: 'NFTs' },
-    { href: { pathname: router.pathname, query: { ...router.query, tab: 'activity' } }, name: 'Activity' }
+    { href: "", name: 'NFTs' },
+    { href: "?tab=activity", name: 'Activity' }
   ];
   const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
@@ -104,7 +105,7 @@ export default function Collection(props) {
         />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
           <div className="flex col-span-12 lg:col-span-7 items-center ml-5">
-            <Tabs list={tabs} />
+            <Tabs list={tabs} tabComponent={CollectionTab} address={address} />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
             <span className="mr-4"><FilterButton filters={traits} /></span>
@@ -145,10 +146,14 @@ export default function Collection(props) {
               />
             </div>
           </Sidebar>
-          <div>
+          <>
             {
               tab === 'activity'
-                ? <Activity />
+                ? (
+                  <div className='flex flex-1 justify-center'>
+                    <Activity tokenPriceUsd={tokenData?.priceUsd} />
+                  </div>
+                )
                 : (
                   <>
                     <FiltersTags />
@@ -156,7 +161,7 @@ export default function Collection(props) {
                   </>
                 )
             }
-          </div>
+          </>
         </>
       </section>
     </FiltersContext.Provider>

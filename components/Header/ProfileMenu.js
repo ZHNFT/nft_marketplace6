@@ -16,8 +16,8 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import { formatter } from "../../Utils/helper";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 
-export default function ProfileMenu({ user, address, disconnect }) {
-  const { setShowEditProfileModal } = useContext(AppGlobalContext);
+export default function ProfileMenu({ address, disconnect }) {
+  const { user, setShowEditProfileModal } = useContext(AppGlobalContext);
   const {
     state: { tokenBalance },
   } = useContext(Web3Context);
