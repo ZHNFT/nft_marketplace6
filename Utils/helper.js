@@ -80,6 +80,16 @@ const getListingState = ({ listings, auctions }) => {
 }
 
 const transformUserData = (user) => {
+  if (!user) {
+    return {
+      username: '',
+      description: '',
+      website: '',
+      twitter: '',
+      instagram: ''
+    }
+  }
+
   const website = _.find(user.socials, { name: "website" })?.href;
   const twitter = _.find(user.socials, { name: "twitter" })?.href;
   const instagram = _.find(user.socials, { name: "instagram" })?.href;
