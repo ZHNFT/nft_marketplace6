@@ -93,7 +93,7 @@ export default function Listing(props) {
       validate={validate}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
-      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
+      {({ values, setSubmitting, handleSubmit, errors, touched, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
         return isSubmitting ? (
           <div className="max-w-lg mt-5">
             <div className="flex justify-between mb-6">
@@ -225,7 +225,7 @@ export default function Listing(props) {
 
                 {
                   values.type.value === 'auction' && (
-                    <div className="my-10">
+                    <div className="my-10 relative">
                       { /* Method */}
                       {/* 
                       the percent increment is in a ratio of percent/1000 in contract
@@ -238,10 +238,12 @@ export default function Listing(props) {
                         id="percent"
                         value={values.percent || ''}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         min="5"
                         max="100"
                         className="text-ink rounded-xl flex flex-1"
                       />
+                      <ErrorMessage name="percent">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
                     </div>
                   )
                 }
