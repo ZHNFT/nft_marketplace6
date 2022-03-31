@@ -8,6 +8,7 @@ import Dropdown from "../../../components/Dropdown/Dropdown";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import AddCollectionModal from "../../../components/Modals/AddCollectionModal";
 import { getUserDetails, transformUserData } from "../../../Utils/helper";
+import UserTab from '../../../components/Tabs/UserTab';
 
 const itemsFilterList = [
   { label: "All items" },
@@ -62,6 +63,7 @@ export default function UserAssets(props) {
               total={total}
               totalOnAuction={totalOnAuction}
               address={address}
+              tabComponent={UserTab}
             />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">

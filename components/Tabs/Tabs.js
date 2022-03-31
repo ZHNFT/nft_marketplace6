@@ -1,6 +1,4 @@
-import Tab from './Tab';
-
-export default function Tabs({ list, total, totalOnAuction, address }) {
+export default function Tabs({ list, tabComponent: Tab, ...rest }) {
   return (
     <ul className="w-full flex text-center text-base">
       {
@@ -9,9 +7,7 @@ export default function Tabs({ list, total, totalOnAuction, address }) {
             <Tab
               href={href}
               name={name}
-              total={total}
-              totalOnAuction={totalOnAuction}
-              address={address}
+              {...rest}
             />
           </li>
         ))

@@ -61,6 +61,11 @@ function reducer(state, action) {
         ...state,
         address: action.address,
       }
+    case 'SET_TOKEN_DATA':
+      return {
+        ...state,
+        tokenData: action.tokenData,
+      }
     case 'SET_CHAIN_ID':
       return {
         ...state,
@@ -228,6 +233,20 @@ function MyApp({ Component, pageProps }) {
       return
     }
   }, [chainId, provider, mainnetChainId, testnetChainId])
+
+  useEffect(() => {
+    async function fetchTokenData() {
+      const hnyAddress = '0x1FA2F83BA2DF61c3d370071d61B17Be01e224f3a';
+      const response = await fetch(`https://api.dexscreener.io/latest/dex/tokens/${hnyAddress}`);
+      const data = await response?.json()
+      const firstPair = data?.pairs[0];
+      dispatch({
+        type: 'SET_TOKEN_DATA',
+        tokenData: firstPair,
+      })
+    }
+    fetchTokenData();
+  }, [])
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
