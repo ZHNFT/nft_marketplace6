@@ -100,8 +100,8 @@ export default function EditProfileModal(props) {
                     <span className="sr-only">Change profile image</span>
                     <Image
                       className="h-8 w-8"
-                      src={user.imageUrl || DefaultLogo}
-                      alt={user.username}
+                      src={values["imageUrl"] || DefaultLogo}
+                      alt={values["username"]}
                       width={"100%"}
                       height={"100%"}
                     />
