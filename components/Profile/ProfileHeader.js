@@ -13,6 +13,7 @@ import { ellipseAddress } from "../../Utils";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import DefaultLogo from "../../images/default-collection-logo.png";
+import HNYicon from "../../images/icon-hny.png";
 
 export default function ProfileHeader({ chainIdHex, userData, address, total }) {
   const { setShowEditProfileModal } = useContext(AppGlobalContext);
@@ -97,14 +98,26 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
             <li>
               <h4 className="text-xs mb-1.5">Volume</h4>
               <span className="text-xl font-medium">
-                <BeeIcon className="w-[31px] relative -top-[3px]" />
+                <Image
+                  className=""
+                  src={HNYicon}
+                  alt="hny-icon"
+                  width={"15px"}
+                  height={"18px"}
+                />
                 16.7K
               </span>
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Est. Value</h4>
               <span className="text-xl font-medium">
-                <BeeIcon className="w-[31px] relative -top-[3px]" />
+              <Image
+                  className=""
+                  src={HNYicon}
+                  alt="hny-icon"
+                  width={"15px"}
+                  height={"18px"}
+                />
                 16.7K
               </span>
             </li>

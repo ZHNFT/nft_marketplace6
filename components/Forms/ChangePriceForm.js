@@ -68,7 +68,7 @@ export default function ChangePriceForm(props) {
           <TransactionList
             steps={[
               {
-                title: 'Transaction to cancel old price',
+                title: 'Transaction to cancel previous price',
                 status: cancellationStatus,
                 isDefaultOpen: true,
                 description: cancellationError ? cancellationError : 'Description here'
@@ -82,7 +82,7 @@ export default function ChangePriceForm(props) {
               },
               {
                 className: 'my-2',
-                title: 'Requesting signature',
+                title: 'Requesting Signature',
                 status: signatureStatus,
                 isDefaultOpen: false,
                 description: signatureError ? signatureError : 'Description here'
