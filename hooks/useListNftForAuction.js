@@ -46,6 +46,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       setSignatureStatus(TRANSACTION_STATUS.FAILED);
       setSignatureError(error?.data?.message || error?.message);
       alert(error?.data?.message || error?.message)
+      return;
     }
 
     // handle api call
@@ -64,6 +65,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       setTransactionStatus(TRANSACTION_STATUS.FAILED);
       setTransactionError(error?.data?.message || error?.message);
       alert(error?.data?.message || error?.message)
+      return;
     }
 
   }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall])

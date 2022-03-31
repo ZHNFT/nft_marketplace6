@@ -29,6 +29,7 @@ export default function useTokenApproval({ ethersProvider, marketplaceAddress, o
       setApprovalStatus(TRANSACTION_STATUS.FAILED)
       setApprovalError(error?.data?.message || error?.message);
       alert(error?.data?.message || error?.message)
+      return;
     }
   }, [ethersProvider, marketplaceAddress, owner, collectionId])
 

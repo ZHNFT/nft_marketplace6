@@ -29,6 +29,7 @@ export default function useTokenAllowance({ tokenContract, marketplaceAddress, a
       setAllowanceStatus(TRANSACTION_STATUS.FAILED)
       setAllowanceError(error?.data?.message || error?.message);
       alert(error?.data?.message || error?.message)
+      return;
     }
   }, [address, marketplaceAddress, tokenContract]);
 

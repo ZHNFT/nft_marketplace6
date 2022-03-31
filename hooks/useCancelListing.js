@@ -33,6 +33,7 @@ export default function useCancelListing({ marketplaceContract, setIsCancelling 
         setCancellationError(error?.data?.message || error?.message);
         setIsCancelling && setIsCancelling(false);
         alert(error?.data?.message || error?.message)
+        return;
       }
   
     }, [marketplaceContract, setIsCancelling])

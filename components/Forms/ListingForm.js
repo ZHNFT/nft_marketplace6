@@ -44,6 +44,12 @@ const validate = (values) => {
     errors.price = 'Invalid amount';
   }
 
+  if (!values.percent) {
+    errors.percent = 'Required';
+  } else if (Number(values.percent) < 5) {
+    errors.percent = 'Minimum price increase on each bid must be 5% or more';
+  }
+
   return errors;
 }
 
@@ -56,7 +62,7 @@ export default function Listing(props) {
     currency: currencies[0],
     price: '',
     duration: durations[0],
-    percent: '',
+    percent: 5,
   };
 
   async function handleSubmit(values, actions) {
@@ -87,7 +93,7 @@ export default function Listing(props) {
       validate={validate}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
-      {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
+      {({ values, setSubmitting, handleSubmit, errors, touched, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
         return isSubmitting ? (
           <div className="max-w-lg mt-5">
             <div className="flex justify-between mb-6">
@@ -106,7 +112,7 @@ export default function Listing(props) {
               </div>
               <div>
                 <p className="text-sm text-manatee">Price</p>
-                <ItemPrice value={values.price} />
+                <ItemPrice value={Number(values.price) * 10 ** 18} />
               </div>
             </div>
             <div className="my-6">
@@ -219,7 +225,7 @@ export default function Listing(props) {
 
                 {
                   values.type.value === 'auction' && (
-                    <div className="my-10">
+                    <div className="my-10 relative">
                       { /* Method */}
                       {/* 
                       the percent increment is in a ratio of percent/1000 in contract
@@ -232,10 +238,12 @@ export default function Listing(props) {
                         id="percent"
                         value={values.percent || ''}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         min="5"
                         max="100"
                         className="text-ink rounded-xl flex flex-1"
                       />
+                      <ErrorMessage name="percent">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
                     </div>
                   )
                 }
@@ -302,7 +310,7 @@ export default function Listing(props) {
                 </div>
 
                 <div className="my-6">
-                  { /* Fees */}
+                  { /* TODO GET DATA FROM COLLECTION Fees */}
                   <p>Fees</p>
                   <div className="mt-1 text-sm text-manatee flex justify-between">
                     <span>Service Fee</span>

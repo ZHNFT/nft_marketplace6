@@ -45,6 +45,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         setSignatureStatus(TRANSACTION_STATUS.FAILED);
         setSignatureError(error?.data?.message || error?.message);
         alert(error?.data?.message || error?.message)
+        return;
       }
 
       // handle api call

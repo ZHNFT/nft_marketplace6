@@ -5,12 +5,14 @@ import { useRouter } from 'next/router'
 import Dropdown from './Dropdown/Dropdown';
 
 const sortOptions = [
-  { label: 'Most Popular', sortBy: '#', current: true },
-  { label: 'Best Rating', sortBy: '#', current: false },
-  { label: 'Newest', sortBy: '#', current: false },
   { label: 'Price: Low to High', sortBy: 'lowestPrice', current: false },
   { label: 'Price: High to Low', sortBy: '-highestPrice', current: false },
   { label: 'Bids: High to Low', sortBy: '-highestBid', current: false },
+  { label: 'Bids: Low to High', sortBy: '-lowestBid', current: false },
+  { label: 'Rarity: High to Low', sortBy: '#', current: false },
+  { label: 'Rarity: Low to High', sortBy: '#', current: false },
+  { label: 'Recently Listed', sortBy: '#', current: true },
+  { label: 'Recently Sold', sortBy: '#', current: false },
 ]
 
 export default function SortOptions({ className }) {

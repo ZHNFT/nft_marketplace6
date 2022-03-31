@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { ethers } from "ethers";
 import jwt from 'jsonwebtoken'
+import { add, getUnixTime } from 'date-fns';
 import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { BeeIcon } from '../icons';
@@ -17,10 +18,10 @@ import PriceInputField from './Fields/PriceInputField';
 import ItemPrice from '../ItemPrice/ItemPrice';
 
 const expirationOptions = [
-  { label: '1 day', value: 'day1' },
-  { label: '3 days', value: 'day3' },
-  { label: '7 days', value: 'day7' },
-  { label: '1 month', value: 'month1' }
+  { label: '1 day', value: { unit: 'days', number: 1 } },
+  { label: '3 days', value: { unit: 'days', number: 3 } },
+  { label: '7 days', value: { unit: 'days', number: 7 } },
+  { label: '1 month', value: { unit: 'months', number: 1 } }
 ];
 
 // number = 60, percentage = 50, returns = 30;
@@ -68,10 +69,11 @@ export default function MakeOfferForm(props) {
 
    async function handleSubmit(values, actions) {
     const { price, expiration, time } = values;
-    // TODO: combine and convert time and expiration to unix timestamp with https://date-fns.org/v2.28.0/docs/getUnixTime
+    // TODO add time to expiration
+    const expirationDate = getUnixTime(add(new Date(), { [expiration?.value?.unit]: expiration?.value?.number }));
 
     if (activeModal === NFT_MODALS.MAKE_OFFER) {
-      await handlePlaceBid({ price, expirationDate: '' });
+      await handlePlaceBid({ price, expirationDate });
     }
     if (activeModal === NFT_MODALS.PLACE_BID) {
       await handlePlaceAuctionBid({ price })
@@ -86,7 +88,7 @@ export default function MakeOfferForm(props) {
     // refetch data
     fetchData();
   }
-  console.log(`activeListing`, activeListing)
+
   return (
     <Formik
       initialValues={initialValues}
