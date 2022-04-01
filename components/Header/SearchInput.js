@@ -20,7 +20,7 @@ export default function SearchInput() {
   const buttonRef = useRef(null);
   const isPopoverOpen = buttonRef?.current?.getAttribute('aria-expanded');
   const didMount = useDidMount();
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState();
   const [isLoading, setIsLoading] = useState();
@@ -57,7 +57,7 @@ export default function SearchInput() {
       buttonRef.current?.click(); // close popover on route change
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [asPath]);
 
   return (
     <>
