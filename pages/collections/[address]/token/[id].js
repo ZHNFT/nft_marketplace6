@@ -507,7 +507,9 @@ export async function getServerSideProps(context) {
       body: JSON.stringify({ bids }),
     });
     const bidsData = await bidsRes?.json();
-    data = { ...data, bids: bidsData };
+    if (bidsData && bidsData?.length) {
+      data = { ...data, bids: bidsData };
+    }
   }
 
   return {
