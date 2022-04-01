@@ -21,8 +21,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         contractAddress: collectionId,
         tokenId: tokenId,
         userAddress: address,
-        // TODO fix this in correct formatting wei/gwei/eth in combination with the input value (price)
-        pricePerItem: (Number(price) * 10 ** 18).toString(),
+        pricePerItem: ethers.utils.parseEther(price.toString()),
         quantity: 1,
         expiry: expirationDate || new Date().getTime() + 864000000, // Whichever function triggers this is not returning expiry
         nonce: nonce

@@ -63,6 +63,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     const url = `https://hexagon-api.onrender.com/collections/${contractAddress}/token/${id}`;
     const res = await fetch(url)
     const data = await res?.json()
+
     setData(data);
   }, [contractAddress, id])
 
@@ -469,6 +470,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                 {/* Details tab */}
                 <Tab.Panel className="pt-7" as="dl">
+                  {console.log(data)}
                   <ProductDetails
                     description={data?.metadata?.description}
                     address={data?.collectionId}

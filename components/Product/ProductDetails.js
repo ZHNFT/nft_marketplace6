@@ -4,6 +4,16 @@ import { ellipseAddress } from '../../Utils';
 import { LinkIcon } from '../icons';
 
 export default function ProductDetails({ description, address, tokenId, tokenStandard, blockchain }) {
+
+  //TODO: make this reactive to both polygon and mumbai, blockchain variable passed in is null
+  let blockChainViewerAddress = "https://mumbai.polygonscan.com/address/" + address
+  // if(blockchain == 137) {
+
+  //   //polygon
+  //   blockChainViewerAddress = "https://polygonscan.com/address/" + address
+
+  // }
+
   return (
     <div className="text-xs">
       {
@@ -28,7 +38,8 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
       <div className="flex justify-between my-2">
         <span className="text-manatee">Contract address</span>
         <span className="font-medium">
-          <a target="_blank" href="#" className="hover:underline flex">
+          
+          <a target="_blank" href={blockChainViewerAddress} className="hover:underline flex">
             { ellipseAddress(address, 4) }
             <LinkIcon className="w-[12px] ml-2" />
           </a>
