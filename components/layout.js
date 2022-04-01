@@ -36,7 +36,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
       <div
         className={clsx(
           "min-h-full flex flex-col",
-          ['/', '/404'].includes(pathname) ? "bg-main-page bg-top-center" : "dark:bg-[#202225]"
+          ['/', '/404'].includes(pathname) ? "dark:bg-[#17191d] dark:bg-main-page bg-top-center" : "dark:bg-[#202225]"
         )}
       >
         <Header
