@@ -19,7 +19,7 @@ export default function BeeIcon({ className }) {
         <stop offset="1" stopColor="#FFCD50" stopOpacity="0.6"/>
         </radialGradient>
         <radialGradient id="paint1_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70 25.9299) scale(137)">
-        <stop stop-color="#FFCD50" stopOpacity="0.2"/>
+        <stop stopColor="#FFCD50" stopOpacity="0.2"/>
         <stop offset="0.19" stopColor="#FFCD50" stopOpacity="0.22"/>
         <stop offset="0.39" stopColor="#FFCD50" stopOpacity="0.27"/>
         <stop offset="0.6" stopColor="#FFCD50" stopOpacity="0.36"/>
@@ -36,7 +36,7 @@ export default function BeeIcon({ className }) {
         <stop offset="1" stopColor="#FFD64A"/>
         </radialGradient>
         <radialGradient id="paint3_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70.0496 95.0901) scale(68.0064 70.84)">
-        <stop stop-color="#FFB000"/>
+        <stop stopColor="#FFB000"/>
         <stop offset="0.18" stopColor="#FFB206" stopOpacity="0.98"/>
         <stop offset="0.39" stopColor="#FFB919" stopOpacity="0.93"/>
         <stop offset="0.6" stopColor="#FFC539" stopOpacity="0.84"/>
