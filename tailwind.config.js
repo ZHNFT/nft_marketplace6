@@ -35,6 +35,8 @@ module.exports = {
         search: 'rgba(255, 255, 255, 0.05)',
         header: 'rgba(255, 255, 255, 0.25)',
         tabButton: "#202225",
+        cardCaption: 'rgba(32, 34, 37, 0.3)',
+        tagDark: 'rgba(32, 34, 37, 0.3)'
       },
       boxShadow: {
         tab: '0px 1px 0px #282D34, inset 2px -3px 10px rgba(21, 23, 26, 0.2), inset 4px 4px 10px rgba(21, 23, 26, 0.7)',

@@ -56,7 +56,7 @@ export default function Hero() {
         </span>
       </div>
       
-      <div className="flex flex-col w-[439px]">
+      <div className="flex flex-col w-full max-w-[439px]">
         <div className="flex justify-between mb-2">
           <Link href={`/collections/${address}`} passHref>
             <a className="flex items-center cursor-pointer">
@@ -70,7 +70,7 @@ export default function Hero() {
         </div>
         <div className="flex relative">
           <Link href={`/collections/${address}/token/${id}`} passHref>
-            <a className="hero-image w-[439px] h-[439px] aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
+            <a className="hero-image w-full max-w-[439px] h-[439px] aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
               {
                 collection && nft && (
                   <>
@@ -121,7 +121,7 @@ export default function Hero() {
           </div>
           {
             expiry && (
-              <div className="text-xs text-manatee">
+              <div className="text-xs text-manatee ml-2 text-right">
                 { listingState === NFT_LISTING_STATE.IN_AUCTION && <AuctionIcon className="w-[14px] mr-2 relative -top-[1px]" /> }
                 { `Ends ${format(fromUnixTime(expiry), LISTING_END_DATE_FORMAT)} UTC` }
               </div>

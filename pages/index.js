@@ -28,6 +28,21 @@ const NftProjects = [
   },
 ];
 
+const featuredCollections = [
+  {
+    id: 1,
+    address: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
+    name: 'Bee Collection',
+    author: 'Hive Investments',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...',
+    totalSupply: 48000,
+    owners: 36100,
+    volume: 16700,
+    floorPrice: 23.4,
+    listed: 25
+  }
+];
+
 export default function Home(props) {
   const { collections } = props;
 
@@ -107,14 +122,14 @@ export default function Home(props) {
           <Hero />
           <HeroCards />
 
-          <section className="mt-14 mb-4">
+          <section className="mt-14 mb-10">
             <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
-            <ul role="list" className="grid grid-cols-1 gap-x-4 gap-y-8 lg:grid-cols-2 xl:gap-x-8">
-                {collections?.results?.map((collection, index) => (
+            <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8">
+                {featuredCollections?.map((collection, index) => (
                   <li
                     key={`${collection.id}_${index}`}
-                    className="mx-auto">
-                  <CollectionCard collection={collection} />
+                    className="mx-auto w-full">
+                    <CollectionCard collection={collection} />
                   </li>
                 ))}
             </ul>
