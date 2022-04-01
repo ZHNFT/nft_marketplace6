@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Gallery from '../Gallery/Gallery';
 import Activity from './Activity';
+import InfiniteGallery from '../../components/Gallery/InfiniteGallery';
 
 export default function ProfileContent({ data }) {
   const { query: { tab } } = useRouter();
@@ -18,5 +19,5 @@ export default function ProfileContent({ data }) {
   }
 
   // default content
-  return <Gallery items={data?.results} />;
+  return <InfiniteGallery collectionData={data} />;
 }

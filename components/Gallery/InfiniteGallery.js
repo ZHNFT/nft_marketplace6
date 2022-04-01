@@ -7,8 +7,8 @@ import { transformGalleryItem } from '../../Utils/helper'
 import { fetchData } from '../../pages/collections/[address]' 
 
 export default function InfiniteGallery({ collectionData }) {
-  const { pathname, query } = useRouter();
-  const { search, address, sort, tab } = query;
+  const { pathname, query, asPath } = useRouter();
+  const { search, address, sort, tab, filter } = query;
   const [data, setData] = useState(collectionData);
   const [results, setResults] = useState(data?.results);
   const endpoint = pathname.replace(/\[.*?\]\s?/g, address);
@@ -20,12 +20,14 @@ export default function InfiniteGallery({ collectionData }) {
     () => ({ activeModal, setActiveModal }), 
     [activeModal]
   );
+  const method = pathname.includes("users") ? "GET" : "POST";
+
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData(address, data?.nextPage, search, sort);
+    const json = await fetchData({ asPath, page: data?.nextPage, search, filter, sort, method });
     setData(json);
     setResults(prevState => [...prevState, ...json?.results]);
     setLoading(false)
-  }, [address, search, sort, data?.nextPage]);
+  }, [asPath, search, sort, data?.nextPage, method, filter]);
 
   // https://github.com/wellyshen/react-cool-inview
   const { observe, unobserve } = useInView({

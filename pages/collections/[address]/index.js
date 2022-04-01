@@ -17,7 +17,7 @@ import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
 import CollectionTab from '../../../components/Tabs/CollectionTab';
 
-const url = `https://hexagon-api.onrender.com/collections/`;
+const url = `https://hexagon-api.onrender.com`;
 
 const itemsFilterList = [
   { label: 'All Items' },
@@ -27,7 +27,7 @@ const itemsFilterList = [
   { label: 'Not Listed' }
 ];
 
-export async function fetchData(address, page = 0, query, filter, sort) {
+export async function fetchData({asPath, page = 0, query, filter, sort, method}) {
   const activeFilters = parse(query);
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
@@ -38,15 +38,15 @@ export async function fetchData(address, page = 0, query, filter, sort) {
       })
     }
   ));
-
+  console.log(`method`, method)
   const res = await fetch(
-    `${url}${address}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`,
+    `${url}${asPath}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`,
     {
-      method: 'POST',
+      method,
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ traits })
+      ...(traits && traits.length ? { body: JSON.stringify({ traits }) } : {})
     }
   );
   const json = await res.json();
@@ -60,7 +60,8 @@ export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
-  const { search, address, sort, filter, tab } = router.query;
+  const { pathname, query, asPath } = router;
+  const { search, address, sort, filter, tab } = query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [showFilters, setShowFilters] = useState(true);
@@ -72,7 +73,7 @@ export default function Collection(props) {
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData(address, 0, search, filter, sort);
+    const json = await fetchData({ asPath, page: 0, search, filter, sort, method: 'POST' });
     setData(json);
   // eslint-disable-next-line
   }, [address, search, filter, sort]);
