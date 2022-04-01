@@ -3,9 +3,15 @@ import Image from 'next/image';
 import { formatCurrency } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
+//TODO: uncomment when data added
+// import TransferIcon from '../icons/TransferIcon';
+// import MintIcon from '../icons/MintIcon';
+// import AuctionIcon from '../icons/AuctionIcon';
+// import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 
+//TODO: replace this with proper data
 const testActivities = [
   { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/1.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#1' },
   { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/2.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#2' },
@@ -38,10 +44,35 @@ export default function Activity() {
       </RowHeading>
       {
         testActivities.map(row => {
-          const { type, description, name, collection, imageUrl, price, priceUsd, from, to, date, url, transactionId } = row;
+
+          //TODO: need transactionHash, and activity type
+          const { type, description, name, collection, imageUrl, price, priceUsd, from, to, date, url, transactionId, tokenId } = row;
           return (
-            <Row key={transactionId} className="cursor-pointer" onClick={() => router.push('#')}>
+            <Row key={transactionId} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
               <Cell className="w-[30px]">
+
+                {//TODO: uncomment this when activity type is added
+                /*  {activityType == "transfer" ? isMinting ?
+
+                    <MintIcon className="w-[16px]" /> :
+
+                    <TransferIcon className="w-[16px]" /> :
+
+                    activityType == "sale" || activityType == "listing"? 
+
+                      <CartIcon className="w-[16px]" /> :
+
+                      activityType == "bid" ?
+
+                      <OfferIcon className="w-[16px]" /> :
+
+                      <AuctionIcon className="w-[16px]" />
+                  }
+
+                 */}
+                {
+                //TODO: remove this once activity type added
+                }
                 <CartIcon className="w-[16px]" />
               </Cell>
               <Cell className="w-[100px]">
@@ -90,6 +121,9 @@ export default function Activity() {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
+                {
+                  //TODO: set to transaction on polygonscan
+                }
                 <a href="#">
                   <LinkIcon className="w-[12px]" />
                 </a>

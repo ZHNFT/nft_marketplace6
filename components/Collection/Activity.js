@@ -3,7 +3,11 @@ import { useRouter } from 'next/router';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
-import { CartIcon, LinkIcon } from '../icons';
+import {LinkIcon, CartIcon } from '../icons';
+import TransferIcon from '../icons/TransferIcon';
+import MintIcon from '../icons/MintIcon';
+import AuctionIcon from '../icons/AuctionIcon';
+import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 
@@ -42,16 +46,52 @@ export default function Activity({ tokenPriceUsd }) {
       </RowHeading>
       {
         activities?.results?.map(row => {
-          const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress } = row;
+
+          console.log("row");
+          console.log(row);
+          const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
+
+          
           // TODO FIX DATE with correct formatting
-          const date = ''
+
+          const date = ""
+
+          let blockchainViewer;
+
+          if(chain == "mumbai") {
+            blockchainViewer = "https://mumbai.polygonscan.com/tx/"
+          } else {
+            blockchainViewer = "https://polygonscan.com/tx/"
+          }
+
+          let isMinting = false;
+          if(activityType == "transfer") {
+            if(fromAddress == "0x0000000000000000000000000000000000000000") {
+              isMinting = true;
+            }
+          }
           return (
-            <Row key={_id} className="cursor-pointer" onClick={() => router.push('#')}>
+            <Row key={_id} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
               <Cell className="w-[30px]">
-                <CartIcon className="w-[16px]" />
+              {activityType == "transfer" ? isMinting ?
+
+                <MintIcon className="w-[16px]" /> :
+
+                <TransferIcon className="w-[16px]" /> :
+
+                activityType == "sale" || activityType == "listing"? 
+
+                  <CartIcon className="w-[16px]" /> :
+
+                  activityType == "bid" ?
+
+                  <OfferIcon className="w-[16px]" /> :
+
+                  <AuctionIcon className="w-[16px]" />
+                }
               </Cell>
               <Cell className="w-[100px]">
                 <span className="block">{activityType}</span>
@@ -85,7 +125,9 @@ export default function Activity({ tokenPriceUsd }) {
                 </Cell>
               <Cell className="w-[100px] text-center">
                   {from ? (
-                    <a href="#">
+                    from == "0x0000000000000000000000000000000000000000" ?
+                    "-" :
+                    <a href="">
                       { ellipseAddress(from, 4) }
                     </a>
                   ) : '-'}
@@ -109,7 +151,7 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                <a href="#">
+                <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank" rel="noreferrer" >
                   <LinkIcon className="w-[12px]" />
                 </a>
               </Cell>

@@ -1,4 +1,3 @@
-
 export default function OfferIcon({ className }) {
     return ( 
         <svg className={`inline-block ${className}`} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -6,4 +5,4 @@ export default function OfferIcon({ className }) {
         <path d="M17.0001 2.60449L9.0001 10.6125L6.6001 8.21249" strokeLinecap="round" strokeLinejoin="round" fill="currentColor" stroke="currentColor"/>
         </svg>
     );
-  }
+}
