@@ -388,6 +388,11 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
                             Place Bid
                           </PrimaryButton>
+                          {getUnixTime(new Date()) >= activeAuction?.expiry && activeAuction?.highestBidder === address?.toLowerCase() ? (
+                            <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleConcludeAuction(activeAuction)}>
+                              Conclude auction
+                            </PrimaryButton>
+                          ) : null}
                         </div>
                       </div>
                     )
