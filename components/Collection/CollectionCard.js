@@ -18,7 +18,7 @@ export default function CollectionCard({ collection }) {
   return (
    <div className="mx-auto max-w-[378px] md:max-w-[555px] box-shadow-featuredCard rounded-xl bg-[#262a32]">
     <div className="relative w-[full] h-[300px] md:h-[439px] rounded-xl overflow-hidden">
-      <Link href={`collections/${address}`}>
+      <Link href={`/collections/${address}`}>
         <a>
           <Image
             className="block w-full object-center object-cover"
@@ -32,19 +32,19 @@ export default function CollectionCard({ collection }) {
       <div className="absolute right-[12px] top-[12px] md:right-[18px] md:top-[18px] w-[66px] box-shadow-featuredCard backdrop-blur-md rounded-md bg-cardCaption py-1 px-2 flex flex-col">
         <ul>
           <li className="relative w-[50px] h-[50px] my-2">
-            <Image src={nft1} layout="fill" />
+            <Image alt={name} src={nft1} layout="fill" />
           </li>
           <li className="relative w-[50px] h-[50px] my-2">
-            <Image src={nft2} layout="fill" />
+            <Image alt={name} src={nft2} layout="fill" />
           </li>
           <li className="relative w-[50px] h-[50px] my-2">
-            <Image src={nft3} layout="fill" />
+            <Image alt={name} src={nft3} layout="fill" />
           </li>
           <li className="relative hidden md:block w-[50px] h-[50px] my-2">
-            <Image src={nft4} layout="fill" />
+            <Image alt={name} src={nft4} layout="fill" />
           </li>
           <li className="relative hidden md:block w-[50px] h-[50px] my-2">
-            <Image src={nft5} layout="fill" />
+            <Image alt={name} src={nft5} layout="fill" />
           </li>
         </ul>
         <p className="md:mt-1 mb-1 md:mb-2 text-center leading-[1.5]">
@@ -103,7 +103,7 @@ export default function CollectionCard({ collection }) {
           { description }
         </p>
         <div className="hidden md:block">
-          <Link href={`collections/${address}`}>
+          <Link href={`/collections/${address}`}>
             <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] border-white hover:border-cornflower hover:bg-white/[0.15]">
               View collection
             </a>

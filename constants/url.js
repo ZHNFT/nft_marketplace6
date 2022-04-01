@@ -23,7 +23,19 @@ const API_HOST = 'https://hexagon-api.onrender.com';
   `${API_HOST}/collections/${address}/token/${id}`
 );
 
+/**
+ * Returns the URL for searching a collection.
+ *
+ * @param {Object} obj - An object.
+ * @param {String} obj.searchTerm - The search term.
+ * @returns {String} The collection search URL.
+ */
+ const searchCollectionUrl = ({ searchTerm }) => (
+  `${API_HOST}/collections/search?q=${searchTerm}`
+);
+
 export {
   collectionUrl,
-  nftUrl
+  nftUrl,
+  searchCollectionUrl
 };
