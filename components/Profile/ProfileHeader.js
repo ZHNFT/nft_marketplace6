@@ -6,6 +6,7 @@ import {
   TwitterIcon,
   ShareIcon,
   EditIcon,
+  BeeIcon,
 } from "../icons";
 import { getExplorer } from "../../config";
 import { ellipseAddress } from "../../Utils";
@@ -97,26 +98,14 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
             <li>
               <h4 className="text-xs mb-1.5">Volume</h4>
               <span className="text-xl font-medium">
-                <Image
-                  className=""
-                  src={HNYicon}
-                  alt="hny-icon"
-                  width={"15px"}
-                  height={"18px"}
-                />
+                <BeeIcon className="h-[17px] relative"/>
                 16.7K
               </span>
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Est. Value</h4>
               <span className="text-xl font-medium">
-              <Image
-                  className=""
-                  src={HNYicon}
-                  alt="hny-icon"
-                  width={"15px"}
-                  height={"18px"}
-                />
+                <BeeIcon className="h-[17px] relative"/>
                 16.7K
               </span>
             </li>
