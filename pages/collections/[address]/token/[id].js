@@ -128,6 +128,23 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     }
   }, [marketplaceContract, fetchData])
 
+  // Conclude an auction
+  const handleConcludeAuction = useCallback(async function (auction) {
+    try {
+      const tx = await marketplaceContract.concludeAuction({
+        collectionAddress: auction?.collectionAddress || auction?.contractAddress || auction?.collectionId,
+        tokenId: auction?.tokenId,
+        owner: auction?.owner,
+      });
+      const txResult = await tx?.wait();
+      if (txResult) {
+        fetchData()
+      }
+    } catch (error) {
+      alert(error?.data?.message || error?.message)
+    }
+  }, [fetchData, marketplaceContract])
+
   const handleCloseModal = useCallback(function (){
     setActiveModal(null)
   }, [])
@@ -478,9 +495,20 @@ export async function getServerSideProps(context) {
   const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}`;
   const tokensUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
   const [res, collectionRes, nftsRes] = await Promise.all([fetch(url), fetch(collectionUrl), fetch(tokensUrl, { method: 'POST' })]);
-  const data = await res?.json();
+  let data = await res?.json();
   const collection = await collectionRes?.json();
   const nfts = await nftsRes?.json();
+  const bidsUrls = `https://hexagon-api.onrender.com/bids/validate-balance?chain=mumbai`;
+  const bids = data?.bids?.map((bid) => bid?._id);
+  if (bids && bids?.length) {
+    const bidsRes = await fetch(bidsUrls, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bids }),
+    });
+    const bidsData = await bidsRes?.json();
+    data = { ...data, bids: bidsData };
+  }
 
   return {
     props: {
