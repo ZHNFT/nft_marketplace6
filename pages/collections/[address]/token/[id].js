@@ -381,7 +381,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           <span>Time remaining</span>
                           <CountdownTimer
                             date={fromUnixTime(activeAuction?.expiry)}
-                            log={console.log(`activeAuction`, activeAuction)}
                           />
                         </div>
                         <div>

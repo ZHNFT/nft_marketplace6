@@ -10,6 +10,8 @@ import SecondaryButton from '../Buttons/SecondaryButton';
 import ProgressCircle from '../ProgressCircle/ProgressCircle';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import DefaultImage from '../../images/No-Image-Placeholder.png';
+import CountdownTimer from '../CountdownTimer';
+import fromUnixTime from 'date-fns/fromUnixTime'
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
   const { setActiveModal } = useContext(GalleryContext);
@@ -87,8 +89,10 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                           Place Bid
                         </SecondaryButton>
                         <span className="text-center absolute left-0 right-0 -bottom-[21px] text-white">
-                          { /* TODO: time left */ }
-                          12h 32m 12s
+                          {listing?.expiry 
+                            ? <CountdownTimer date={fromUnixTime(listing?.expiry)} /> 
+                            : null
+                          }
                         </span>
                       </div>
                     </>
