@@ -120,7 +120,7 @@ export default function TraitsFilter({ filters, submitForm }) {
                     )
                     : (
                       <>
-                        { selectedTraitType && (
+                        { selectedTraitType && selectedTraitType.maxValue > selectedTraitType.minValue && (
                           <RangeField
                             step={1}
                             min={selectedTraitType.minValue}

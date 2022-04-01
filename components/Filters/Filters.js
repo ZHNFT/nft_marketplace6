@@ -87,17 +87,22 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
           />
 
-          {/* Rarity */}
-          <div className="mt-10 text-xs font-medium">Rarity</div>
-          <RangeField
-            step={1}
-            decimals={0}
-            min={minRarity}
-            max={maxRarity}
-            initialValues={[minRarity, maxRarity]}
-            isReset={isFormReset}
-            onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
-          />
+          { /* Rarity */
+            maxRarity > minRarity && (
+              <>
+                <div className="mt-10 text-xs font-medium">Rarity</div>
+                <RangeField
+                  step={1}
+                  decimals={0}
+                  min={minRarity}
+                  max={maxRarity}
+                  initialValues={[minRarity, maxRarity]}
+                  isReset={isFormReset}
+                  onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
+                />
+              </>
+            )
+          }
 
           {/* Listing */}
           <ListingFilter
