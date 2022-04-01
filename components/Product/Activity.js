@@ -13,8 +13,7 @@ import OfferIcon from '../icons/OfferIcon';
 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
-import fromUnixTime from 'date-fns/fromUnixTime'
-import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import { format, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -67,7 +66,14 @@ export default function Activity({ tokenPriceUsd }) {
             const to = activityType === 'sale' ? buyer : toAddress;
             // TODO FIX DATE with correct formatting
 
-            const date = ''
+            const date = new Date(blockTimestamp);
+
+            let timeAgo = formatDistanceToNowStrict(date, { addSuffix: true })
+
+            let formattedDate = format(date, "MMMM do yyyy")
+
+            let formattedTime = format(date, "h:mm aaa")
+
             let blockchainViewer;
 
             if(chain == "mumbai") {
@@ -138,12 +144,10 @@ export default function Activity({ tokenPriceUsd }) {
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   <div className="group relative">
-                    { /* TODO convert date to time ago */ }
-                    {/* formatDistanceToNowStrict(date, { addSuffix: true }) */}
-                    23 minutes ago
+                    {timeAgo}
                     <Tooltip position="bottom" className="z-10">
-                      <span className="block">13:01 UTC</span>
-                      <span>March 12th 2022</span>
+                      <span className="block">{formattedTime}</span>
+                      <span>{formattedDate}</span>
                     </Tooltip>
                   </div>
                 </Cell>

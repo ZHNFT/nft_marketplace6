@@ -10,6 +10,8 @@ import AuctionIcon from '../icons/AuctionIcon';
 import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
+import { format, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
+
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -47,17 +49,19 @@ export default function Activity({ tokenPriceUsd }) {
       {
         activities?.results?.map(row => {
 
-          console.log("row");
-          console.log(row);
           const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
 
-          
-          // TODO FIX DATE with correct formatting
+          const date = new Date(blockTimestamp);
 
-          const date = ""
+          let timeAgo = formatDistanceToNowStrict(date, { addSuffix: true })
+
+          let formattedDate = format(date, "MMMM do yyyy")
+
+          let formattedTime = format(date, "h:mm aaa")
+
 
           let blockchainViewer;
 
@@ -94,7 +98,7 @@ export default function Activity({ tokenPriceUsd }) {
                 }
               </Cell>
               <Cell className="w-[100px]">
-                <span className="block">{activityType}</span>
+                <span className="block">{isMinting ? "mint" : activityType}</span>
               </Cell>
               {/* <Cell className="w-[200px]">
                 <div className="flex items-center">
@@ -125,28 +129,26 @@ export default function Activity({ tokenPriceUsd }) {
                 </Cell>
               <Cell className="w-[100px] text-center">
                   {from ? (
-                    from == "0x0000000000000000000000000000000000000000" ?
+                    isMinting ?
                     "-" :
-                    <a href="">
+                    <a href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
                     </a>
                   ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   { to ? (
-                    <a href="#">
+                    <a href={"/users/" + to}>
                       { ellipseAddress(to, 4) }
                     </a>
                    ) : '-'}
                 </Cell>
               <Cell className="w-[100px] text-center">
                 <div className="group relative">
-                  { /* TODO convert date to time ago */ }
-                  {/* formatDistanceToNowStrict(date, { addSuffix: true }) */}
-                  23 minutes ago
+                  {timeAgo}
                   <Tooltip position="bottom">
-                    <span className="block">13:01 UTC</span>
-                    <span>March 12th 2022</span>
+                    <span className="block">{formattedTime}</span>
+                    <span>{formattedDate}</span>
                   </Tooltip>
                 </div>
               </Cell>
