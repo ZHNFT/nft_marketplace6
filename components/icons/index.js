@@ -7,6 +7,7 @@ import InstagramIcon from './InstagramIcon';
 import LinkIcon from './LinkIcon';
 import ShareIcon from './ShareIcon';
 import TwitterIcon from './TwitterIcon';
+import TwitterFillIcon from './TwitterFillIcon';
 import RefreshClockIcon from './RefreshClockIcon';
 import PulseIcon from './PulseIcon';
 import AuctionIcon from './AuctionIcon';
@@ -30,7 +31,9 @@ import PlusIcon from './PlusIcon';
 import CrossIcon from './CrossIcon';
 import CameraIcon from './CameraIcon';
 import TelegramIcon from './TelegramIcon';
+import TelegramFillIcon from './TelegramFillIcon';
 import DiscordIcon from './DiscordIcon';
+import DiscordFillIcon from './DiscordFillIcon';
 import TogaIcon from './TogaIcon';
 
 export {
@@ -43,6 +46,7 @@ export {
   LinkIcon,
   ShareIcon,
   TwitterIcon,
+  TwitterFillIcon,
   RefreshClockIcon,
   PulseIcon,
   AuctionIcon,
@@ -66,6 +70,8 @@ export {
   CrossIcon,
   CameraIcon,
   TelegramIcon,
+  TelegramFillIcon,
   DiscordIcon,
+  DiscordFillIcon,
   TogaIcon
 }

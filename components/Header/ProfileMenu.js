@@ -12,7 +12,7 @@ import {
   ReceiveIcon,
   FilesIcon,
 } from "../icons";
-import DarkModeSwitch from "./DarkModeSwitch";
+import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
 import { formatter } from "../../Utils/helper";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 

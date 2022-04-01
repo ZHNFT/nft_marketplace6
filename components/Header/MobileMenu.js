@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Popover } from '@headlessui/react'
 import { BellIcon } from '@heroicons/react/outline'
-import DarkModeSwitch from './DarkModeSwitch';
+import DarkModeSwitch from '../DarkModeSwitch/DarkModeSwitch';
 import { ellipseAddress } from '../../Utils';
 
 export default function MobileMenu(props) {

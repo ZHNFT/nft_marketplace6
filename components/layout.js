@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 // Components
 import Seo from "./seo";
 import Header from "./Header/Header";
+import Footer from "./Footer/Footer";
 import Sidebar from "./sidebar";
 import MobileFilters from "./Filters/mobileFilters";
 import Filters from "./Filters/Filters";
@@ -68,6 +69,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
             </main>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
