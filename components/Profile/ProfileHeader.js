@@ -1,11 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import {
   LinkIcon,
   InstagramIcon,
   TwitterIcon,
   ShareIcon,
-  BeeIcon,
   EditIcon,
 } from "../icons";
 import { getExplorer } from "../../config";

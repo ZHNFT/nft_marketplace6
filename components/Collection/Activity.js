@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
@@ -23,8 +22,6 @@ export default function Activity({ tokenPriceUsd }) {
   useEffect(() => {
     fetchData()
   }, [fetchData])
-
-  console.log(`activities`, activities)
 
   return (
     <Table className="text-xs">

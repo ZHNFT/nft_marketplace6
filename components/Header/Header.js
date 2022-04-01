@@ -12,7 +12,6 @@ import SearchInput from "./SearchInput";
 import Logo from "../../images/hive-logo.png";
 import EditProfileModal from "../Modals/EditProfileModal";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
-import DefaultLogo from '../../images/default-collection-logo-2.png';
 
 export default function Header(props) {
   const { navigation, connect, disconnect, address, withBorder } = props;

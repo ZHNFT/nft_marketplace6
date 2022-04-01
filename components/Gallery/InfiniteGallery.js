@@ -1,8 +1,7 @@
-import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import useInView from "react-cool-inview";
 import { useRouter } from 'next/router'
 import GalleryContext from '../../contexts/GalleryContext';
-import { NFT_MODALS } from '../../constants/nft';
 import GalleryItem from './GalleryItem';
 import { transformGalleryItem } from '../../Utils/helper'
 import { fetchData } from '../../pages/collections/[address]' 

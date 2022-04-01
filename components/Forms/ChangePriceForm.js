@@ -1,10 +1,8 @@
 import { useCallback } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { TRANSACTION_STATUS } from '../../constants/nft';
+import { Formik, Form, Field } from 'formik';
 import TransactionList from '../Transactions/TransactionList';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import PrimaryAltButton from '../Buttons/PrimaryAltButton';
-import Dropdown from '../Dropdown/Dropdown';
 import PriceInputField from './Fields/PriceInputField';
 import useCancelListing from '../../hooks/useCancelListing';
 import useListNft from '../../hooks/useListNft';

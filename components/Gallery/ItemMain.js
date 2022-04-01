@@ -2,7 +2,7 @@ import { Fragment, useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
 import GalleryContext from '../../contexts/GalleryContext';
-import { resolveLink, resolveBunnyLink } from '../../Utils';
+import { resolveBunnyLink } from '../../Utils';
 import { NFT_LISTING_STATE, NFT_MODALS } from '../../constants/nft';
 import { PulseIcon } from '../icons';
 import PrimaryButton from '../Buttons/PrimaryButton';

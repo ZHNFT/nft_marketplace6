@@ -1,17 +1,11 @@
-import { useState, useCallback } from 'react';
-import { ethers } from "ethers";
-import jwt from 'jsonwebtoken'
 import { add, getUnixTime } from 'date-fns';
 import { formatEther, usdFormatter } from '../../Utils/helper';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { BeeIcon } from '../icons';
+import { Formik, Form, Field } from 'formik';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import PrimaryAltButton from '../Buttons/PrimaryAltButton';
 import TransactionList from '../Transactions/TransactionList';
 import Dropdown from '../Dropdown/Dropdown';
-import { getSignatureOffer } from '../../Utils/marketplaceSignatures';
-import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
-import { getTransactionStatus } from '../../Utils/helper';
+import { NFT_MODALS } from '../../constants/nft';
 import usePlaceBid from '../../hooks/usePlaceBid';
 import usePlaceAuctionBid from '../../hooks/usePlaceAuctionBid';
 import PriceInputField from './Fields/PriceInputField';

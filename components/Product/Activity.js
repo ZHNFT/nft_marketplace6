@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ethers } from "ethers";
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';

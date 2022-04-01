@@ -1,6 +1,5 @@
 import { Fragment, useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
-import { ethers } from "ethers";
 import clsx from "clsx";
 import { Tab } from '@headlessui/react'
 import Link from 'next/link';

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { Table, RowHeading, Row, Cell } from '../../Table';
-import { BeeIcon, DiamondIcon, LinkIcon } from '../../icons';
+import { BeeIcon } from '../../icons';
 
 const results = [
   { id: 1, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },

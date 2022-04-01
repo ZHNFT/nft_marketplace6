@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { NFT_LISTING_STATE } from '../../constants/nft';
 import Gallery from '../Gallery/Gallery';
 import Activity from './Activity';
 

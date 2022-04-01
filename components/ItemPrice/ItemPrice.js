@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import { BeeIcon } from '../icons';
 import { formatEther } from '../../Utils/helper';
 

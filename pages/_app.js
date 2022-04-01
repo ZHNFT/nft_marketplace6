@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import { ThemeProvider } from "next-themes";
-import { useCallback, useEffect, useReducer, createContext, useState, useMemo} from 'react'
+import { useCallback, useEffect, useReducer, useState, useMemo} from 'react'
 import { providers, ethers } from 'ethers'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Web3Modal from "web3modal";

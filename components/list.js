@@ -1,8 +1,4 @@
-import { Fragment } from 'react';
-import clsx from "clsx";
-import Image from 'next/image';
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon, FilterIcon, SearchIcon } from '@heroicons/react/solid';
+import { FilterIcon, SearchIcon } from '@heroicons/react/solid';
 import ListItem from './listItem';
 import CollectionHeader from './collectionHeader';
 import SortOptions from './sortOptions';

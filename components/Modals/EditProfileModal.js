@@ -1,6 +1,5 @@
 import Image from "next/image";
 import DefaultLogo from "../../images/default-collection-logo-2.png";
-import { useForm } from "../../hooks/useForm";
 import Modal from "./Modal";
 import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon } from "../icons";
 import InputField from "../Forms/InputField";

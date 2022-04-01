@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { ethers } from "ethers";
 import { ellipseAddress } from '../../Utils';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import TransactionList from '../Transactions/TransactionList';
 import { BeeIcon } from '../icons';
-import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {

@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { ethers } from "ethers";
 import { ellipseAddress } from '../../Utils';
 import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';

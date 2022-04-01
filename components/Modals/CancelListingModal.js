@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getTransactionStatus } from '../../Utils/helper';
+import { useState } from 'react';
 import TransactionList from '../Transactions/TransactionList';
-import { TRANSACTION_STATUS, NFT_MODALS } from '../../constants/nft';
 import useCancelListing from '../../hooks/useCancelListing';
 import PrimaryButton from '../Buttons/PrimaryButton';
 

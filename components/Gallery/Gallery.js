@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import GalleryContext from '../../contexts/GalleryContext';
-import { NFT_MODALS } from '../../constants/nft';
 import GalleryItem from './GalleryItem';
 import { transformGalleryItem } from '../../Utils/helper'
 

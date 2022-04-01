@@ -1,6 +1,5 @@
 import { useState, useContext, forwardRef } from 'react';
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Web3Context from '../../contexts/Web3Context';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { HexagonBeeIcon, DiamondIcon } from '../icons';

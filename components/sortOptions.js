@@ -1,5 +1,4 @@
-import { Fragment, useState } from 'react';
-import clsx from "clsx";
+import { useState } from 'react';
 import { stringify, parse } from 'qs';
 import { useRouter } from 'next/router'
 import Dropdown from './Dropdown/Dropdown';

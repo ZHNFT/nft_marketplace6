@@ -1,10 +1,8 @@
 import { useState, useCallback } from 'react';
-import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
 import Web3Token from 'web3-token';
 import useApiCall from './useApiCall';
 import useTokenApproval from './useTokenApproval';
-import { getSignatureListing } from '../Utils/marketplaceSignatures';
 
 export default function useListNftForAuction({ ethersProvider, marketplaceAddress, owner, collectionId, tokenId, marketplaceContract }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();

@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import clsx from 'clsx';
 import { Popover, Transition } from '@headlessui/react';
 import { BellIcon } from '../icons';

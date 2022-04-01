@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
 
 export default function useAcceptListing({ marketplaceContract, setIsConfirming }) {
