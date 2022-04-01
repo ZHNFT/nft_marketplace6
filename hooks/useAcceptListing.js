@@ -1,15 +1,20 @@
 import { useState, useCallback } from 'react';
 import { TRANSACTION_STATUS } from '../constants/nft';
+import useTokenAllowance from './useTokenAllowance';
+import { formatEther } from '../Utils/helper';
 
-export default function useAcceptListing({ marketplaceContract, setIsConfirming }) {
+export default function useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address, setIsConfirming }) {
+  const { handleAllowance, allowanceStatus, allowanceError, allowanceTx } = useTokenAllowance({ tokenContract, marketplaceAddress, address });
   const [acceptationStatus, setAcceptationStatus] = useState();
   const [acceptationError, setAcceptationError] = useState(null);
   const [transaction, setTransaction] = useState(null);
 
   // For the non-owners of the NFT to buy now/accept the listing of the owner
   const handleAcceptListing = useCallback(async function (listing) {
+
+    await handleAllowance(formatEther(listing?.pricePerItem));
+
     try {      
-      // TODO increase allowance?
       const tx = await marketplaceContract.AcceptListing({
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,
@@ -34,7 +39,7 @@ export default function useAcceptListing({ marketplaceContract, setIsConfirming 
       alert(error?.data?.message || error?.message)
       return;
     }
-  }, [marketplaceContract, setIsConfirming])
+  }, [marketplaceContract, setIsConfirming, handleAllowance])
 
-    return { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError }
+    return { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError }
 }

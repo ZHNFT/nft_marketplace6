@@ -8,9 +8,9 @@ import { BeeIcon } from '../icons';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd } = props;
+  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
   const [isConfirming, setIsConfirming] = useState(false);
-  const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError } = useAcceptListing({ marketplaceContract, setIsConfirming });
+  const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, setIsConfirming, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
 
   async function handleConfirm() {
@@ -23,6 +23,12 @@ export default function BuyNowForm(props) {
     return (
       <TransactionList
         steps={[
+          {
+            title: `Increase Allowance`,
+            status: allowanceStatus,
+            isDefaultOpen: true,
+            description: allowanceError ? allowanceError : 'Description here'
+          },
           {
             title: `Approval to transfer ${price} HNY`,
             status: acceptationStatus,
