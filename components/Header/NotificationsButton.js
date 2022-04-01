@@ -1,29 +1,36 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { Popover, Transition } from '@headlessui/react';
 import { BellIcon } from '../icons';
+import { resolveBunnyLink } from '../../Utils';
+import { usdFormatter, formatEther } from '../../Utils/helper';
+import fromUnixTime from 'date-fns/fromUnixTime'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 
 const NOTIFICATION_TYPES = {
   AUCTION_BID: 'auctionBid'
 };
 
-const notifications = [
-  { id: 1, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: true, dateTime: 1647891797 },
-  { id: 2, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: true, dateTime: 1647891797 },
-  { id: 3, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: true, dateTime: 1647891797 },
-  { id: 4, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 5, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 6, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 7, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 8, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 9, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 },
-  { id: 10, notificationType: NOTIFICATION_TYPES.AUCTION_BID, address: '#', name: 'Bee #452', imageUrl: '/test/gallery/1.png', receiver: '0x2f0aF27f10c0Ec7152bC6022DA80AE727a0Af268', value: 1500000000000000000, unread: false, dateTime: 1647891797 }
-];
-
 export default function NotificationsButton({ currentUserAddress }) {
-  const unreadNotifications = notifications?.filter(item => item.unread)?.length;
+  const [notifications, setNotifications] = useState([]);
+  const unreadNotifications = notifications?.results?.filter(item => !item?.read)?.length;
+
+  const fetchData = useCallback(async function() {
+    const url = `https://hexagon-api.onrender.com/users/${currentUserAddress}/notifications`;
+    const res = await fetch(url)
+    const data = await res?.json()
+    setNotifications(data);
+  }, [currentUserAddress])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  // TODO implement mark as read for notifications
+  // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read
+  
   return (
     <Popover className="relative">
       {({ open }) => (
@@ -55,13 +62,15 @@ export default function NotificationsButton({ currentUserAddress }) {
                 <div className="mt-2 max-h-[392px] -ml-[20px] overflow-y-auto scroller">
                   <ul className="text-white mr-[10px]">
                     {
-                      notifications.map(item => {
-                        const { id, notificationType, address, name, receiver, value, dateTime, imageUrl, unread } = item;
+                      notifications?.results?.map(item => {
+                        const { info, read, message, notificationType, receiver, value, _id } = item;
+                        const { tokenImage, tokenId } = info;
+                        const imageUrl = resolveBunnyLink(tokenImage);
                         return (
-                          <li key={id}>
+                          <li key={_id}>
                             <div className={clsx(
                               'ml-[10px] relative flex items-center justify-between my-1 hover:bg-white/[0.05] py-2.5 px-2.5 rounded-md',
-                              unread ? 'before:bg-cornflower before:block before:w-[3px] before:h-[30px] before:absolute before:-left-[10px] before:rounded-r-md before:top-[20px]' : ''
+                              !read ? 'before:bg-cornflower before:block before:w-[3px] before:h-[30px] before:absolute before:-left-[10px] before:rounded-r-md before:top-[20px]' : ''
                             )}>
                               <div className="relative">
                                 <div className="rounded-xl overflow-hidden" >
@@ -72,16 +81,10 @@ export default function NotificationsButton({ currentUserAddress }) {
                               </div>
                               <div className="ml-4 mr-2 leading-[18px]">
                                 <p>
-                                  <span>Offer received for </span>
-                                  <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
+                                  <span>{message}</span>
+                                  {/* <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
                                     <a className="text-cornflower hover:underline">{ name }</a>
-                                  </Link>
-                                </p>
-                                <p>
-                                  <span className="text-manatee">Made by </span>
-                                  <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-                                    <a className="text-cornflower hover:underline">Bob Geldof</a>
-                                  </Link>
+                                  </Link> */}
                                 </p>
                                 <p>
                                   <button type="button" className="text-[#3CA075] hover:underline">
@@ -93,7 +96,8 @@ export default function NotificationsButton({ currentUserAddress }) {
                                 </p>
                               </div>
                               <div className="no-shrink w-[100px] ml-auto text-right">
-                                <span className="absolute right-[10px] top-[15px]">{ value / 1000000000000000 } HNY</span>
+                                <span className="absolute right-[10px] top-[15px]">{ formatEther(value) } HNY</span>
+                                {/* formatDistanceToNowStrict(date, { addSuffix: true }) */}
                                 <span className="block absolute right-[10px] bottom-[12px] text-manatee text-xxs">23m ago</span>
                               </div>
                             </div>

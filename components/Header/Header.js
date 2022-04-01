@@ -85,7 +85,7 @@ export default function Header(props) {
                   </Popover.Button>
                 </div>
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                  <NotificationsButton />
+                  <NotificationsButton currentUserAddress={address} />
 
                   {/* Profile dropdown */}
                   {address ? (
