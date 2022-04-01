@@ -34,7 +34,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                 </Cell>
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px]">
-                    <BeeIcon className="w-[26px] relative -top-[2px]" />
+                    <BeeIcon className="h-[26px] relative -top-[2px]" />
                     { formatEther(pricePerItem) }
                   </span>
                   <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(pricePerItem)) * tokenPriceUsd)}</span>

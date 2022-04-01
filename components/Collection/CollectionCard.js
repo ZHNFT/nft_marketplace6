@@ -60,14 +60,14 @@ export default function CollectionCard({ collection }) {
         <div className="flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
           <span className="mr-1 font-light">Volume</span>
           <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
-            <BeeIcon className="w-[26px] relative -top-[1px]" />
+            <BeeIcon className="h-[26px] relative -top-[1px]" />
             <span className="font-medium">{ formatCompact(volume) }</span>
           </span>
         </div>
         <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
           <span className="mr-1 font-light">Floor</span>
           <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
-            <BeeIcon className="w-[26px] relative -top-[1px]" />
+            <BeeIcon className="h-[26px] relative -top-[1px]" />
             <span className="font-medium">{ floorPrice }</span>
           </span>
         </div>

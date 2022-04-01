@@ -244,7 +244,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           </button>
                         </p>
                         <div className="flex items-baseline relative">
-                          <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                          <BeeIcon className="absolute h-[28px] -left-[4px] -top-[3px]" />
                           <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
                           <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
                         </div>
@@ -272,7 +272,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                               <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
                             </p>
                             <div className="flex items-baseline relative">
-                              <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                              <BeeIcon className="absolute h-[28px] -left-[4px] -top-[3px]" />
                               <span className="text-base font-medium ml-6">{formatEther(activeAuction?.highestBid)}</span>
                               <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd))}</span>
                             </div>
@@ -328,7 +328,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                             <span className="text-xs text-manatee mr-2.5 font-medium">Price</span>
                           </p>
                           <div className="flex items-baseline relative">
-                            <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                            <BeeIcon className="absolute h-[28px] -left-[4px] -top-[3px]" />
                             <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
                             <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
                           </div>
@@ -367,7 +367,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                                 <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
                               </p>
                               <div className="flex items-baseline relative">
-                                <BeeIcon className="absolute w-[28px] -left-[4px] -top-[3px]" />
+                                <BeeIcon className="absolute h-[28px] -left-[4px] -top-[3px]" />
                                 <span className="text-base font-medium ml-6">{formatEther(activeAuction?.highestBid)}</span>
                                 <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd))}</span>
                               </div>

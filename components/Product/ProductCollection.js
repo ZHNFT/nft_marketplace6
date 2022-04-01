@@ -50,7 +50,7 @@ export default function ProductCollection({ collectionId, itemCount, ownerCount,
           <div className="relative">
             <span className="text-manatee text-xs font-medium">Volume</span>
             <span className="block flex text-base font-medium">
-              <BeeIcon className="w-[26px] relative -top-[2px]" />
+              <BeeIcon className="h-[26px] relative -top-[2px]" />
               { volume }
             </span> 
             <span className="text-manatee text-xxs absolute left-0 right-0 w-[74px]">Last 30 days</span>
@@ -58,7 +58,7 @@ export default function ProductCollection({ collectionId, itemCount, ownerCount,
           <div>
             <span className="text-manatee text-xs font-medium">Floor</span>
             <span className="block flex text-base font-medium">
-              <BeeIcon className="w-[26px] relative -top-[2px]" />
+              <BeeIcon className="h-[26px] relative -top-[2px]" />
               { floorPrice }
             </span> 
           </div>

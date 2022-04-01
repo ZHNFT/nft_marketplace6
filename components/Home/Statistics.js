@@ -71,7 +71,7 @@ export default function Statistics({ collections }) {
                 <Cell className="w-[150px] text-center flex justify-between">
                   <div className="w-[100px]">
                     <span className="-ml-[8px]">
-                      <BeeIcon className="w-[22px] -top-[2px] relative" />
+                      <BeeIcon className="h-[22px] -top-[2px] relative" />
                       {
                         volume?.total
                           ? <span className="text-sm">{formatCompact(volume?.total)}</span>
@@ -89,7 +89,7 @@ export default function Statistics({ collections }) {
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   <span className="-ml-[8px]">
-                    <BeeIcon className="w-[22px] -top-[2px] relative" />
+                    <BeeIcon className="h-[22px] -top-[2px] relative" />
                     <span className="text-sm">24</span>
                   </span>
                   <span className="block text-[10px] text-manatee">

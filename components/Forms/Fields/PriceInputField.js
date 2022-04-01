@@ -19,7 +19,7 @@ export default function PriceInputField(props) {
     <div className="mt-1 relative">
       <div className="flex items-center rounded-lg bg-[#1F2225]">
         <div className="py-2 pl-2 pr-4">
-          <BeeIcon className="w-[25px] h-[25px]" />
+          <BeeIcon className="h-[25px] h-[25px]" />
           <span className="text-xs">HNY</span>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" width="2" height="15" viewBox="0 0 2 15" fill="none">
