@@ -54,13 +54,7 @@ export default function Activity({ tokenPriceUsd }) {
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
 
-          let blockchainViewer;
-
-          if(chain == "mumbai") {
-            blockchainViewer = "https://mumbai.polygonscan.com/tx/"
-          } else {
-            blockchainViewer = "https://polygonscan.com/tx/"
-          }
+          
           // TODO FIX DATE with correct formatting
 
           const date = ""
@@ -68,9 +62,9 @@ export default function Activity({ tokenPriceUsd }) {
           let blockchainViewer;
 
           if(chain == "mumbai") {
-            blockchainViewer = "https://mumbai.polygonscan.com/"
+            blockchainViewer = "https://mumbai.polygonscan.com/tx/"
           } else {
-            blockchainViewer = "https://polygonscan.com/"
+            blockchainViewer = "https://polygonscan.com/tx/"
           }
 
           let isMinting = false;
