@@ -157,10 +157,10 @@ export default function Collection(props) {
                   </div>
                 )
                 : (
-                  <>
+                  <div>
                     <FiltersTags />
                     <InfiniteGallery collectionData={collectionData} />
-                  </>
+                  </div>
                 )
             }
           </>

@@ -25,7 +25,7 @@ export default function Footer() {
         </li>
       </ul>
       <div>
-        <DarkModeSwitch />
+        {/* <DarkModeSwitch /> */}
       </div>
     </div>
   );
