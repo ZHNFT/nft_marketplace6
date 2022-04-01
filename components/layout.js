@@ -35,8 +35,8 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
       <Seo />
       <div
         className={clsx(
-          "min-h-full",
-          pathname === "/" ? "bg-main-page bg-top-center" : "dark:bg-[#202225]"
+          "min-h-full flex flex-col",
+          ['/', '/404'].includes(pathname) ? "bg-main-page bg-top-center" : "dark:bg-[#202225]"
         )}
       >
         <Header
@@ -46,7 +46,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
           address={address}
           withBorder={pathname !== "/"}
         />
-        <div className="py-10">
+        <div className="py-10 h-full">
           <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
             <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white text-black">
               {React.Children.map(children, (child) => {

@@ -3,7 +3,7 @@ import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
 
 export default function Footer() {
   return (
-    <div className="mt-20 pb-14 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+    <div className="w-full mt-20 pb-14 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
       <ul className="flex">
         <li>
           <a href="https://twitter.com/hiveinvestments" target="_blank" rel="noreferrer">

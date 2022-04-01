@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+[data-reactroot] {
+  height: 100%;
+}
+
 .gradient-border:before {
   content: '';
   position: absolute;
