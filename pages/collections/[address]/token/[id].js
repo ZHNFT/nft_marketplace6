@@ -23,6 +23,7 @@ import ItemPrice from '../../../../components/ItemPrice/ItemPrice';
 import TraitsTable from '../../../../components/Product/TraitsTable';
 import CountdownTimer from '../../../../components/CountdownTimer';
 import fromUnixTime from 'date-fns/fromUnixTime'
+import getUnixTime from 'date-fns/getUnixTime'
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -128,15 +129,16 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     }
   }, [marketplaceContract, fetchData])
 
-  // Conclude an auction
+  // Conclude an auction, expects collectionAddress, tokenId and owner
   const handleConcludeAuction = useCallback(async function (auction) {
     try {
-      const tx = await marketplaceContract.concludeAuction({
-        collectionAddress: auction?.collectionAddress || auction?.contractAddress || auction?.collectionId,
-        tokenId: auction?.tokenId,
-        owner: auction?.owner,
-      });
+      const tx = await marketplaceContract.concludeAuction(
+        auction?.collectionAddress || auction?.contractAddress || auction?.collectionId,
+        auction?.tokenId,
+        auction?.owner,
+      );
       const txResult = await tx?.wait();
+      console.log(`txResult`, txResult)
       if (txResult) {
         fetchData()
       }
@@ -287,7 +289,11 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         />
                       </div>
                       <div>
-
+                        {getUnixTime(new Date()) >= activeAuction?.expiry ? (
+                          <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleConcludeAuction(activeAuction)}>
+                            Conclude auction
+                          </PrimaryButton>
+                        ) : null}
                       </div>
                     </div>
                   )
