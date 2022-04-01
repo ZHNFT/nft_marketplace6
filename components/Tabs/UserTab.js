@@ -13,7 +13,7 @@ export default function Tab({ href, name, total, totalOnAuction, address }) {
       <a
         className={clsx(isActive ? 'font-medium' : 'font-light')}
       >
-        { name } { numberOfItems && <span className="text-xs">({ numberOfItems })</span> }
+        { name } { numberOfItems ? <span className="text-xs">({ numberOfItems })</span> : null }
       </a>
     </Link>
   );
