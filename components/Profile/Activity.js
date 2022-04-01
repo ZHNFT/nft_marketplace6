@@ -8,8 +8,8 @@ import { CartIcon, LinkIcon } from '../icons';
 // import MintIcon from '../icons/MintIcon';
 // import AuctionIcon from '../icons/AuctionIcon';
 // import OfferIcon from '../icons/OfferIcon'; 
-// import ItemPrice from '../ItemPrice/ItemPrice';
-// import Tooltip from '../Tooltip/Tooltip';
+import ItemPrice from '../ItemPrice/ItemPrice';
+import Tooltip from '../Tooltip/Tooltip';
 
 //TODO: replace this with proper data
 const testActivities = [

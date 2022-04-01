@@ -64,6 +64,21 @@ export default function Activity({ tokenPriceUsd }) {
           // TODO FIX DATE with correct formatting
 
           const date = ""
+
+          let blockchainViewer;
+
+          if(chain == "mumbai") {
+            blockchainViewer = "https://mumbai.polygonscan.com/"
+          } else {
+            blockchainViewer = "https://polygonscan.com/"
+          }
+
+          let isMinting = false;
+          if(activityType == "transfer") {
+            if(fromAddress == "0x0000000000000000000000000000000000000000") {
+              isMinting = true;
+            }
+          }
           return (
             <Row key={_id} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
               <Cell className="w-[30px]">
@@ -142,7 +157,7 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                <a href="#">
+                <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank" rel="noreferrer" >
                   <LinkIcon className="w-[12px]" />
                 </a>
               </Cell>

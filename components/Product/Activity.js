@@ -148,7 +148,7 @@ export default function Activity({ tokenPriceUsd }) {
                   </div>
                 </Cell>
                 <Cell className="w-[50px] text-right">
-                  <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank">
+                  <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank" rel="noreferrer">
                     <LinkIcon className="w-[12px]" />
                   </a>
                 </Cell>

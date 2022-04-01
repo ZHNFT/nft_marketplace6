@@ -17,7 +17,6 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
 
   }
 
-
   return (
     <div className="text-xs">
       {
@@ -43,7 +42,7 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
         <span className="text-manatee">Contract address</span>
         <span className="font-medium">
           
-          <a target="_blank" href={blockChainViewerAddress} className="hover:underline flex">
+          <a target="_blank" href={blockChainViewerAddress} rel="noreferrer" className="hover:underline flex">
             { ellipseAddress(address, 4) }
             <LinkIcon className="w-[12px] ml-2" />
           </a>
