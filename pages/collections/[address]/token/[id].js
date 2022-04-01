@@ -284,7 +284,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         <span>Time remaining</span>
                         <CountdownTimer
                           date={fromUnixTime(activeAuction?.expiry)}
-                          log={console.log(`activeAuction`, activeAuction)}
                         />
                       </div>
                       <div>
@@ -377,7 +376,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           )}
                         </div>
                         <div className='flex flex-col'>
-                          <span>Time remaining</span>
+                          {!(getUnixTime(new Date()) >= activeAuction?.expiry) ? (
+                            <span>Time remaining</span>
+                          ) : null}
                           <CountdownTimer
                             date={fromUnixTime(activeAuction?.expiry)}
                           />
