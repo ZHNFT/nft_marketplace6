@@ -20,6 +20,7 @@ import CollectionTab from '../../../components/Tabs/CollectionTab';
 const url = `https://hexagon-api.onrender.com/collections/`;
 
 const itemsFilterList = [
+  { label: 'All Items' },
   { label: 'For Sale' },
   { label: 'Auction' },
   { label: 'Has Offers' },
