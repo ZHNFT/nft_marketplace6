@@ -142,7 +142,7 @@ export default function Collection(props) {
                 minRarity={minRarity}
                 maxRarity={maxRarity}
                 filters={collection?.traits}
-                total={collectionData?.total}
+                total={totalSupply || collectionData?.total}
               />
             </div>
           </Sidebar>

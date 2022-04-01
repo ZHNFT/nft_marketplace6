@@ -20,7 +20,7 @@ const GalleryItem = forwardRef((props, ref) => {
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
-        className="relative cursor-pointer w-[210px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
+        className="relative cursor-pointer w-[210px] h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         ref={ref}
