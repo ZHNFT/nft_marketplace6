@@ -119,10 +119,12 @@ export default function ProfileMenu({ address, disconnect }) {
           </Link>
         </li>
       </ul>
-
-      <div className="mt-4 text-right">
-        <DarkModeSwitch />
-      </div>
+      
+      {/*
+        <div className="mt-4 text-right">
+          <DarkModeSwitch />
+        </div>
+      */}
     </>
   );
 }
