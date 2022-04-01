@@ -470,13 +470,14 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                 {/* Details tab */}
                 <Tab.Panel className="pt-7" as="dl">
-                  {console.log(data)}
+                  {console.log(collection)}
                   <ProductDetails
                     description={data?.metadata?.description}
                     address={data?.collectionId}
                     tokenId={data?.tokenId}
                     tokenStandard={data?.contractType}
                     blockchain={data?.blockchain}
+                    chain={collection?.chain}
                   />
                 </Tab.Panel>
               </Tab.Panels>
