@@ -1,6 +1,5 @@
 function getDomain(marketplaceAddress, chainId) {
-
-    //TODO: change the chain id, currently this is the development chainId
+    
     return {
 
         name : "HEXAGONMarketplace",
@@ -62,13 +61,6 @@ export async function getSignatureListing(listing, signer, ethers, marketplaceAd
     };
 
     let signature = await signer._signTypedData(domain, types, value);
-
-    // const verifiedAddress = ethers.utils.verifyTypedData(
-    //     domain,
-    //     types,
-    //     value,
-    //     signature
-    // );
 
     let splitSignature = ethers.utils.splitSignature(signature);
 
