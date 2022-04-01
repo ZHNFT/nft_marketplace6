@@ -38,7 +38,7 @@ export async function fetchData({asPath, page = 0, query, filter, sort, method})
       })
     }
   ));
-  console.log(`method`, method)
+
   const res = await fetch(
     `${url}${asPath}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`,
     {
