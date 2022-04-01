@@ -1,13 +1,15 @@
 
 export default function BeeIcon({ className }) {
     return ( 
-        <svg className={`inline-block ${className}`} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.00029 10.3291C11.7901 10.3291 14.0516 8.69331 14.0516 6.67552C14.0516 4.65772 11.7901 3.02197 9.00029 3.02197C6.21053 3.02197 3.94897 4.65772 3.94897 6.67552C3.94897 8.69331 6.21053 10.3291 9.00029 10.3291Z" fill="url(#paint0_radial_2124_298)"/>
-        <path d="M9.00029 14.9762C11.7901 14.9762 14.0516 12.7146 14.0516 9.92485C14.0516 7.13509 11.7901 4.87354 9.00029 4.87354C6.21053 4.87354 3.94897 7.13509 3.94897 9.92485C3.94897 12.7146 6.21053 14.9762 9.00029 14.9762Z" fill="url(#paint1_radial_2124_298)"/>
-        <path d="M7.66329 4.9559C7.30465 5.0728 6.96621 5.24888 6.66024 5.47763C6.26408 5.74102 6.00213 6.1776 5.94873 6.66541C6.00069 7.15539 6.26191 7.59413 6.66024 7.85824C6.96621 8.08627 7.30465 8.26235 7.66329 8.37997C8.09626 8.52213 8.54727 8.59718 9.00117 8.60223C9.45218 8.60223 9.90174 8.53367 10.3333 8.39657C10.6941 8.28039 11.0347 8.10431 11.3421 7.87484C11.744 7.60712 12.006 7.16116 12.0536 6.66469C12.0002 6.17687 11.739 5.7403 11.3421 5.47691C11.0347 5.24743 10.6941 5.07136 10.3333 4.95518C9.90463 4.81807 9.45939 4.7488 9.01127 4.74952C8.65407 4.74952 8.29831 4.79137 7.94977 4.87147L7.66329 4.95446V4.9559Z" fill="url(#paint2_radial_2124_298)"/>
-        <path d="M7.66329 5.01645C7.30465 5.13335 6.96621 5.30942 6.66024 5.53817C6.26408 5.80156 6.00213 6.23814 5.94873 6.72595C6.00069 7.21593 6.26191 7.65468 6.66024 7.91879C6.96621 8.14682 7.30465 8.32289 7.66329 8.44052C8.09626 8.58267 8.54727 8.65772 9.00117 8.66277C9.45218 8.66277 9.90174 8.59422 10.3333 8.45711C10.6941 8.34093 11.0347 8.16486 11.3421 7.93538C11.744 7.66766 12.006 7.22171 12.0536 6.72523C12.0002 6.23742 11.739 5.80084 11.3421 5.53745C11.0347 5.30798 10.6941 5.1319 10.3333 5.01572C9.90463 4.87862 9.45939 4.80934 9.01127 4.81006C8.65407 4.81006 8.29831 4.85192 7.94977 4.93202L7.66329 5.015V5.01645Z" fill="url(#paint3_radial_2124_298)"/>
+        <svg className={`inline-block ${className}`} viewBox="0 0 140 166" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_2118_261)">
+        <path d="M70 101.26C108.66 101.26 140 78.5922 140 50.63C140 22.6678 108.66 0 70 0C31.3401 0 0 22.6678 0 50.63C0 78.5922 31.3401 101.26 70 101.26Z" fill="url(#paint0_radial_2118_261)"/>
+        <path d="M70 165.68C108.66 165.68 140 134.34 140 95.6799C140 57.02 108.66 25.6799 70 25.6799C31.3401 25.6799 0 57.02 0 95.6799C0 134.34 31.3401 165.68 70 165.68Z" fill="url(#paint1_radial_2118_261)"/>
+        <path d="M51.4599 26.79C46.4899 28.41 41.8 30.85 37.56 34.02C32.07 37.67 28.44 43.72 27.7 50.48C28.42 57.27 32.04 63.35 37.56 67.01C41.8 70.17 46.4899 72.61 51.4599 74.24C57.4599 76.21 63.71 77.25 70 77.32C76.25 77.32 82.4799 76.37 88.4599 74.47C93.4599 72.86 98.18 70.42 102.44 67.24C108.01 63.53 111.64 57.35 112.3 50.47C111.56 43.71 107.94 37.66 102.44 34.01C98.18 30.83 93.4599 28.39 88.4599 26.78C82.5199 24.88 76.3499 23.92 70.1399 23.93C65.1899 23.93 60.26 24.51 55.43 25.62L51.4599 26.77V26.79Z" fill="url(#paint2_radial_2118_261)"/>
+        <path d="M51.4599 27.6201C46.4899 29.2401 41.8 31.6801 37.56 34.8501C32.07 38.5001 28.44 44.5501 27.7 51.3101C28.42 58.1001 32.04 64.1801 37.56 67.8401C41.8 71.0001 46.4899 73.4401 51.4599 75.0701C57.4599 77.0401 63.71 78.0801 70 78.1501C76.25 78.1501 82.4799 77.2001 88.4599 75.3001C93.4599 73.6901 98.18 71.2501 102.44 68.0701C108.01 64.3601 111.64 58.1801 112.3 51.3001C111.56 44.5401 107.94 38.4901 102.44 34.8401C98.18 31.6601 93.4599 29.2201 88.4599 27.6101C82.5199 25.7101 76.3499 24.7501 70.1399 24.7601C65.1899 24.7601 60.26 25.3401 55.43 26.4501L51.4599 27.6001V27.6201Z" fill="url(#paint3_radial_2118_261)"/>
+        </g>
         <defs>
-        <radialGradient id="paint0_radial_2124_298" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8.91189 5.6068) rotate(90) scale(3.64633 5.46949)">
+        <radialGradient id="paint0_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(68.78 35.83) rotate(90) scale(50.53 75.795)">
         <stop stopColor="#FFCD50" stopOpacity="0.2"/>
         <stop offset="0.24" stopColor="#FFCD50" stopOpacity="0.21"/>
         <stop offset="0.43" stopColor="#FFCD50" stopOpacity="0.25"/>
@@ -16,7 +18,7 @@ export default function BeeIcon({ className }) {
         <stop offset="0.92" stopColor="#FFCD50" stopOpacity="0.53"/>
         <stop offset="1" stopColor="#FFCD50" stopOpacity="0.6"/>
         </radialGradient>
-        <radialGradient id="paint1_radial_2124_298" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.00029 4.89158) scale(9.88615)">
+        <radialGradient id="paint1_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70 25.9299) scale(137)">
         <stop stopColor="#FFCD50" stopOpacity="0.2"/>
         <stop offset="0.19" stopColor="#FFCD50" stopOpacity="0.22"/>
         <stop offset="0.39" stopColor="#FFCD50" stopOpacity="0.27"/>
@@ -24,7 +26,7 @@ export default function BeeIcon({ className }) {
         <stop offset="0.82" stopColor="#FFCD50" stopOpacity="0.47"/>
         <stop offset="1" stopColor="#FFCD50" stopOpacity="0.6"/>
         </radialGradient>
-        <radialGradient id="paint2_radial_2124_298" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.01782 9.82464) scale(4.90745 5.11193)">
+        <radialGradient id="paint2_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70.0496 94.26) scale(68.0064 70.84)">
         <stop stopColor="#FFE48F" stopOpacity="0.6"/>
         <stop offset="0.08" stopColor="#FFE181" stopOpacity="0.68"/>
         <stop offset="0.23" stopColor="#FFDD6D" stopOpacity="0.8"/>
@@ -33,7 +35,7 @@ export default function BeeIcon({ className }) {
         <stop offset="0.75" stopColor="#FFD64C" stopOpacity="0.99"/>
         <stop offset="1" stopColor="#FFD64A"/>
         </radialGradient>
-        <radialGradient id="paint3_radial_2124_298" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.01782 9.88519) scale(4.90745 5.11193)">
+        <radialGradient id="paint3_radial_2118_261" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(70.0496 95.0901) scale(68.0064 70.84)">
         <stop stopColor="#FFB000"/>
         <stop offset="0.18" stopColor="#FFB206" stopOpacity="0.98"/>
         <stop offset="0.39" stopColor="#FFB919" stopOpacity="0.93"/>
@@ -41,6 +43,9 @@ export default function BeeIcon({ className }) {
         <stop offset="0.83" stopColor="#FFD566" stopOpacity="0.71"/>
         <stop offset="1" stopColor="#FFE48F" stopOpacity="0.6"/>
         </radialGradient>
+        <clipPath id="clip0_2118_261">
+        <rect width="140" height="165.68" fill="white"/>
+        </clipPath>
         </defs>
         </svg>
     );
