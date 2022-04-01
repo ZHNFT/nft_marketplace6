@@ -6,11 +6,17 @@ import { LinkIcon } from '../icons';
 export default function ProductDetails({ description, address, tokenId, tokenStandard, blockchain, chain}) {
 
   let blockChainViewerAddress;
-  if(chain == "mumbai")
+  if(chain == "mumbai") {
     blockChainViewerAddress = "https://mumbai.polygonscan.com/address/" + address
-  if(chain == "polygon") {
-    blockChainViewerAddress = "https://polygonscan.com/address/" + address
   }
+  else if (chain == "polygon") {
+    blockChainViewerAddress = "https://polygonscan.com/address/" + address
+  } else {
+
+    blockChainViewerAddress = "/"
+
+  }
+
 
   return (
     <div className="text-xs">
