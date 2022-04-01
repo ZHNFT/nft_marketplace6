@@ -46,7 +46,7 @@ export default function Collections() {
                 </Cell>
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px] text-white">
-                    <BeeIcon className="h-[18px] relative -top-[2px]" />
+                    <BeeIcon className="h-[16px] relative -top-[2px]" />
                     { price }
                   </span>
                   <p className="text-manatee text-xxs -mt-[7px]">{ priceUsd }</p>
