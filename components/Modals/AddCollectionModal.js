@@ -26,7 +26,7 @@ const categories = [
 ];
 
 const tokens = [
-  { label: 'HNY', value: 'hny', icon: () => <BeeIcon className="h-[30px] -mt-[4px] -mb-[7px]" /> },
+  { label: 'HNY', value: 'hny', icon: () => <BeeIcon className="h-[18px] -mt-[4px] -mb-[7px]" /> },
   { label: 'wETH', value: 'weth', icon: () => <Image src={EthIcon} alt={name} width={10} height={15} /> },
   { label: 'wMATIC', value: 'wmatic', icon: () => <Image src={MaticIcon} alt={name} width={17} height={17} /> }
 ];

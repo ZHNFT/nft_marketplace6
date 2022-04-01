@@ -33,7 +33,7 @@ export default function Collections({ results }) {
                     </Cell>
                     <Cell className="w-[100px] flex flex-col justify-center items-center">
                       <span className="relative -left-[5px] text-white">
-                        <BeeIcon className="h-[26px] relative -top-[2px]" />
+                        <BeeIcon className="h-[18px] relative -top-[2px]" />
                         { floor }
                       </span>
                     </Cell>
