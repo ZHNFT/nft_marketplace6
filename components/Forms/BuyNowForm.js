@@ -19,7 +19,9 @@ export default function BuyNowForm(props) {
     fetchData();
   }
 
-  if (isConfirming) {
+  const hasError = allowanceError || acceptationError;
+
+  if (isConfirming || hasError) {
     return (
       <TransactionList
         steps={[

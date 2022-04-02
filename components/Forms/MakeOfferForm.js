@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { add, getUnixTime } from 'date-fns';
 import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Formik, Form, Field } from 'formik';
@@ -51,15 +52,22 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 }
 
 export default function MakeOfferForm(props) {
+  const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData, activeListing, activeAuction } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
-  const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
+  const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
   const initialValues = {
     price: "",
     expiration: expirationOptions[0],
     time: `${date.getHours().toString().length < 2 ? '0' : ''}${date.getHours()}:${date.getMinutes()}`
   };
+
+  const hasError = activeModal === NFT_MODALS.MAKE_OFFER 
+    ? allowanceError || apiError || signatureError 
+    : activeModal === NFT_MODALS.PLACE_BID 
+      ? auctionAllowanceError || transactionError
+      : false;
 
    async function handleSubmit(values, actions) {
     const { price, expiration, time } = values;
@@ -75,13 +83,17 @@ export default function MakeOfferForm(props) {
 
     // set form submitting status to false
     actions.setSubmitting(false);
-    
-    // close modal here
-    handleClose();
 
-    // refetch data
-    fetchData();
+    setFormSubmittingDone(true)
   }
+
+  useEffect(() => {
+    if (!hasError && formSubmittingDone && auctionTx) {
+      fetchData();
+      handleClose();
+    }
+
+  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx]);
 
   return (
     <Formik
@@ -92,7 +104,7 @@ export default function MakeOfferForm(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting ? (
+        return isSubmitting || hasError ? (
           <TransactionList
             steps={activeModal === NFT_MODALS.MAKE_OFFER ? [
               {

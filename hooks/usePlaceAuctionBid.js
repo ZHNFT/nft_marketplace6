@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
 import useTokenAllowance from './useTokenAllowance';
 
@@ -14,7 +15,7 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         collectionAddress: collectionId,
         owner: owner,
         tokenId: tokenId,
-        amount: (Number(price) * 10 ** 18).toString(),
+        amount: ethers.utils.parseEther(price).toString(),
       };
   
       await handleAllowance(price);
@@ -32,11 +33,10 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
       } catch (error) {
         setTransactionStatus(TRANSACTION_STATUS.FAILED);
         setTransactionError(error?.data?.message || error?.message);
-        alert(error?.data?.message || error?.message)
         return;
       }
   
     }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner]);
 
-    return { handlePlaceAuctionBid, allowanceStatus, allowanceError, transactionStatus, transactionError }
+    return { handlePlaceAuctionBid, allowanceStatus, allowanceError, transactionStatus, transactionError, auctionTx: transaction }
 }

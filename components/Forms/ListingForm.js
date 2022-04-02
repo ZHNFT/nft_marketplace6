@@ -79,6 +79,12 @@ export default function Listing(props) {
     fetchData();
   }
 
+  const hasError = (type) => type === 'fixed' 
+    ? approvalError || signatureError || apiError 
+    : type === 'auction'
+      ? auctionApprovalError || auctionSignatureError || auctionApiError || transactionError
+      : false;
+
   return (
     <Formik
       initialValues={initialValues}
@@ -88,7 +94,7 @@ export default function Listing(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, touched, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting ? (
+        return isSubmitting || hasError ? (
           <div className="max-w-lg mt-5">
             <div className="flex justify-between mb-6">
               <div className="flex items-center">

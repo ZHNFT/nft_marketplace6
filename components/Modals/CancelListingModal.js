@@ -19,7 +19,7 @@ export default function CancelListingModal(props) {
     handleClose();
   }
 
-  if (isCanceling) {
+  if (isCanceling || cancellationError) {
     return (
       <TransactionList
         steps={[

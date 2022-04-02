@@ -31,7 +31,6 @@ export default function useCancelListing({ marketplaceContract, setIsCancelling 
         setCancellationStatus(TRANSACTION_STATUS.FAILED);
         setCancellationError(error?.data?.message || error?.message);
         setIsCancelling && setIsCancelling(false);
-        alert(error?.data?.message || error?.message)
         return;
       }
   

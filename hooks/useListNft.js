@@ -21,7 +21,7 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
       contractAddress: collectionId,
       tokenId: tokenId,
       userAddress: owner,
-      pricePerItem: ethers.utils.parseEther(price.toString()),
+      pricePerItem: ethers.utils.parseEther(price).toString(),
       quantity: 1,
       expiry: expirationDate,
       nonce: nonce
@@ -43,7 +43,6 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
     } catch (error) {
       setSignatureStatus(TRANSACTION_STATUS.FAILED);
       setSignatureError(error?.data?.message || error?.message);
-      alert(error?.data?.message || error?.message)
       return;
     }
 

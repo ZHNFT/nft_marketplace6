@@ -53,6 +53,8 @@ export default function ChangePriceForm(props) {
     handleChangePrice(activeListing, values.price, actions)
   }
 
+  const hasError = cancellationError || approvalError || signatureError || apiError;
+
   return (
     <Formik
       initialValues={initialValues}
@@ -62,7 +64,7 @@ export default function ChangePriceForm(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting ? (
+        return isSubmitting || hasError ? (
           <TransactionList
             steps={[
               {

@@ -36,7 +36,6 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
       setAcceptationStatus(TRANSACTION_STATUS.FAILED);
       setAcceptationError(error?.data?.message || error?.message);
       setIsConfirming && setIsConfirming(false);
-      alert(error?.data?.message || error?.message)
       return;
     }
   }, [marketplaceContract, setIsConfirming, handleAllowance])

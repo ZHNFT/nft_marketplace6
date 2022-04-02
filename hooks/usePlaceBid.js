@@ -21,7 +21,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         contractAddress: collectionId,
         tokenId: tokenId,
         userAddress: address,
-        pricePerItem: ethers.utils.parseEther(price.toString()),
+        pricePerItem: ethers.utils.parseEther(price).toString(),
         quantity: 1,
         expiry: expirationDate || new Date().getTime() + 864000000, // Whichever function triggers this is not returning expiry
         nonce: nonce
@@ -43,7 +43,6 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
       } catch (error) {
         setSignatureStatus(TRANSACTION_STATUS.FAILED);
         setSignatureError(error?.data?.message || error?.message);
-        alert(error?.data?.message || error?.message)
         return;
       }
 
