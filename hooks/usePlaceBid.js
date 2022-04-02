@@ -14,6 +14,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
 
   // For non-owners to place a bid on an listing
     const handlePlaceBid = useCallback(async function ({ price, expirationDate }) {
+      // TODO replace nonce with random number, between lets say 0-10000? It's just to prevent collisions for erc1155 collections so it could have a bit more range
       const signer = ethersProvider.getSigner();
       const nonce = await signer.getTransactionCount();
   
