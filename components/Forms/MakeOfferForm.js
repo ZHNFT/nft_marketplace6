@@ -89,7 +89,9 @@ export default function MakeOfferForm(props) {
 
   useEffect(() => {
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-      // TODO I think we need to timeout the fetching because the data fetched from the server is not updated yet for auction, but after page refresh it is updated
+      // TODO I think we need to timeout the fetching for auctionbid
+      // because the data fetched from the server is not updated yet for auction bid
+      // event listener takes some time I assume, but after page refresh it is updated
       fetchData();
       handleClose();
     }
