@@ -15,7 +15,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
   const [transaction, setTransaction] = useState(null);
 
   // For the owner of the NFT to create an auction, its not possible to cancel an auction
-  const handleCreateAuction = useCallback(async function ({ price, expirationDate, percent }) {
+  const handleCreateAuction = useCallback(async function ({ price, expirationDate}) {
     const signer = ethersProvider.getSigner();
 
     let auction = {
@@ -25,7 +25,6 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       expiry: expirationDate,
       quantity: 1,
       minBid: ethers.utils.parseEther(price).toString(),
-      percentIncrement: Number(percent) * 10, // for example 5% should be passed to the contract as 50
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
     }

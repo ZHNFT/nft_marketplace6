@@ -53,6 +53,56 @@ export default function Listing(props) {
   const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
+  const [fees, setFees] = useState({"marketplaceFee": "0", "royaltyFee" : "0"});
+
+  const fetchFees = async function() {
+
+    let collection = await marketplaceContract.getCollectionInfo(collectionId);
+
+    let royaltyFee = collection.royaltyFee;
+
+
+    if(royaltyFee != 0) {
+
+      royaltyFee = royaltyFee.toString();
+
+      royaltyFee = ((parseFloat(royaltyFee) * 99) / 10000).toFixed(1);
+
+    } else {
+      royaltyFee = "0"
+    }
+
+    let marketplaceFee;
+    if ("paymentTokens" in marketplaceContract) {
+      let token = await marketplaceContract.paymentTokens(collection.currencyType)
+      marketplaceFee = token.fee;
+
+    } else {
+
+      marketplaceFee = 0;
+
+    }
+
+    if(marketplaceFee != 0) {
+
+      marketplaceFee = marketplaceFee.toString();
+
+      marketplaceFee = ((parseFloat(marketplaceFee) * 100) / 10000).toFixed(1)
+
+    } else {
+      marketplaceFee = "0";
+    }
+
+    let data = {"marketplaceFee": marketplaceFee, "royaltyFee" : royaltyFee}
+
+    setFees(data);
+
+  }
+
+  useEffect(() => {
+    fetchFees()
+  })
+  
   const initialValues = {
     type: listTypes[0],
     currency: currencies[0],
@@ -63,20 +113,19 @@ export default function Listing(props) {
 
   const hasError = approvalError || signatureError || apiError || auctionApprovalError || auctionSignatureError || auctionApiError || transactionError;
 
-  let marketplaceFee = "5"
-  let royaltyFee = "5"
-
   //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
 
   async function handleSubmit(values, actions) {
     const { duration, type, currency, price, percent } = values;
     const expirationDate = getUnixTime(add(new Date(), { [duration?.value?.unit]: duration?.value?.number }));
 
+
+
     if (type?.value === 'fixed') {
       await handleList({ price, expirationDate });
     }
     if (type?.value === 'auction') {
-      await handleCreateAuction({ price, expirationDate, percent })
+      await handleCreateAuction({ price, expirationDate})
     }
     // set form submitting status to false
     actions.setSubmitting(false);
@@ -234,28 +283,28 @@ export default function Listing(props) {
                 }
 
                 {
-                  values.type.value === 'auction' && (
-                    <div className="my-10 relative">
-                      { /* Method */}
-                      {/* 
-                      the percent increment is in a ratio of percent/1000 in contract
-                      so 5% is the minimum which is passed into the contract function as 50 (50 / 1000 = 0.05 = 5%)
-                    */}
-                      <p>Percent Increment</p>
-                      <input
-                        type="number"
-                        name="percent"
-                        id="percent"
-                        value={values.percent || ''}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        min="5"
-                        max="100"
-                        className="text-ink rounded-xl flex flex-1"
-                      />
-                      <ErrorMessage name="percent">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
-                    </div>
-                  )
+                  // values.type.value === 'auction' && (
+                  //   <div className="my-10 relative">
+                  //     { /* Method */}
+                  //     {/* 
+                  //     the percent increment is in a ratio of percent/1000 in contract
+                  //     so 5% is the minimum which is passed into the contract function as 50 (50 / 1000 = 0.05 = 5%)
+                  //   */}
+                  //     <p>Percent Increment</p>
+                  //     <input
+                  //       type="number"
+                  //       name="percent"
+                  //       id="percent"
+                  //       value={values.percent || ''}
+                  //       onChange={handleChange}
+                  //       onBlur={handleBlur}
+                  //       min="5"
+                  //       max="100"
+                  //       className="text-ink rounded-xl flex flex-1"
+                  //     />
+                  //     <ErrorMessage name="percent">{msg => <p className="mt-1 absolute text-sm text-red-600">{msg}</p>}</ErrorMessage>
+                  //   </div>
+                  // )
                 }
 
                 <div className="my-10">
@@ -323,11 +372,11 @@ export default function Listing(props) {
                   <p>Fees</p>
                   <div className="mt-1 text-sm text-manatee flex justify-between">
                     <span>Service Fee</span>
-                    <span>{marketplaceFee + "%"}</span>
+                    <span>{fees.marketplaceFee + "%"}</span>
                   </div>
                   <div className="text-sm text-manatee flex justify-between">
                     <span>Creator Fee</span>
-                    <span>{royaltyFee + "%"}</span>
+                    <span>{fees.royaltyFee + "%"}</span>
                   </div>
                 </div>
 
