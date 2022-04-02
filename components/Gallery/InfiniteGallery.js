@@ -8,7 +8,7 @@ import { fetchData } from '../../pages/collections/[address]'
 
 export default function InfiniteGallery({ collectionData }) {
   const { pathname, query, asPath } = useRouter();
-  const { search, address, sort, tab, filter } = query;
+  const { search, address, sort, tab, filter, priceFrom, priceTo, rarityFrom, rarityTo } = query;
   const [data, setData] = useState(collectionData);
   const [results, setResults] = useState(data?.results);
   const endpoint = pathname.replace(/\[.*?\]\s?/g, address);
@@ -23,11 +23,11 @@ export default function InfiniteGallery({ collectionData }) {
   const method = pathname.includes("users") ? "GET" : "POST";
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData({ asPath, page: data?.nextPage, search, filter, sort, method });
+    const json = await fetchData({ asPath, page: data?.nextPage, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method });
     setData(json);
     setResults(prevState => [...prevState, ...json?.results]);
     setLoading(false)
-  }, [asPath, search, sort, data?.nextPage, method, filter]);
+  }, [asPath, search, sort, data?.nextPage, method, filter, priceFrom, priceTo, rarityFrom, rarityTo]);
 
   // https://github.com/wellyshen/react-cool-inview
   const { observe, unobserve } = useInView({

@@ -12,7 +12,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
   const { push, query, pathname } = useRouter()
   const { search } = query;
   const formRef = useRef();
-  const { setTraitFilters, isFormReset, setIsFormReset } = useContext(FiltersContext);
+  const { setTraitFilters, setQueryFilters, isPriceReset, setIsPriceReset, isRarityReset, setIsRarityReset, isFormReset, setIsFormReset } = useContext(FiltersContext);
 
   const handleSubmit = useCallback(function(values) {
     if (!values) {
@@ -44,11 +44,33 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
       ...searchQuery
     };
 
+    // set query filters for FilterTags
+    setQueryFilters(Object.keys(newQuery)
+      .reduce((acc, key) => {
+        if (newQuery[key] !== undefined) {
+          if (key === 'priceFrom' || key === 'priceTo') {
+            acc.price[key] = newQuery[key];
+            return acc;
+          }
+
+          if (key === 'rarityFrom' || key === 'rarityTo') {
+            acc.rarity[key] = newQuery[key];
+            return acc;
+          }
+
+          if (key === 'filter') {
+            acc[key] = newQuery[key];
+            return acc;
+          }
+        }
+        return acc;
+    }, { filter: '', price: {}, rarity: {} }));
+
     push({
       pathname,
       query: newQuery,
     }, undefined, { scroll: false });
-  }, [push, pathname, query, setTraitFilters]);
+  }, [push, pathname, query, setTraitFilters, setQueryFilters]);
 
   useEffect(() => {
     if (isFormReset && formRef.current) {
@@ -57,6 +79,18 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
       setIsFormReset(false);
     }
   }, [isFormReset, setIsFormReset, handleSubmit]);
+
+  useEffect(() => {
+    if (isPriceReset) {
+      setIsPriceReset(false);
+    }
+  }, [isPriceReset]);
+
+  useEffect(() => {
+    if (isRarityReset) {
+      setIsRarityReset(false);
+    }
+  }, [isRarityReset]);
 
   return (
     <Formik
@@ -83,7 +117,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             step={.1}
             decimals={1}
             initialValues={[0, 100]}
-            isReset={isFormReset}
+            isReset={isPriceReset || isFormReset}
             onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
           />
 
@@ -97,7 +131,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
                   min={minRarity}
                   max={maxRarity}
                   initialValues={[minRarity, maxRarity]}
-                  isReset={isFormReset}
+                  isReset={isRarityReset || isFormReset}
                   onChange={([min, max]) => handleSubmit({ query: { rarityFrom: min, rarityTo: max } })}
                 />
               </>

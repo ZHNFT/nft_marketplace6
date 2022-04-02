@@ -27,8 +27,9 @@ const itemsFilterList = [
   { label: 'Not Listed' }
 ];
 
-export async function fetchData({asPath, page = 0, query, filter, sort, method}) {
-  const activeFilters = parse(query);
+export async function fetchData({asPath, page = 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method}) {
+  const basePath = asPath.split('?')[0];
+  const activeFilters = parse(search);
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
     trait => {
@@ -38,9 +39,12 @@ export async function fetchData({asPath, page = 0, query, filter, sort, method})
       })
     }
   ));
-
+  
+  let apiUrl = `${url}${basePath}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`;
+  apiUrl = `${apiUrl}${priceFrom ? `&priceFrom=${priceFrom}` : ''}${priceTo ? `&priceTo=${priceTo}` : ''}`;
+  apiUrl = `${apiUrl}${rarityFrom ? `&rarityFrom=${rarityFrom}` : ''}${rarityTo ? `&rarityTo=${rarityTo}` : ''}`;
   const res = await fetch(
-    `${url}${asPath}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`,
+    apiUrl,
     {
       method,
       headers: {
@@ -61,7 +65,7 @@ export default function Collection(props) {
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
   const { pathname, query, asPath } = router;
-  const { search, address, sort, filter, tab } = query;
+  const { search, address, sort, filter, tab, priceFrom, priceTo, rarityFrom, rarityTo } = query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [showFilters, setShowFilters] = useState(true);
@@ -73,16 +77,19 @@ export default function Collection(props) {
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
 
   const fetchCollection = useCallback(async function() {
-    const json = await fetchData({ asPath, page: 0, search, filter, sort, method: 'POST' });
+    const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
     setData(json);
   // eslint-disable-next-line
-  }, [address, search, filter, sort]);
+  }, [address, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo]);
 
   const [traitFilters, setTraitFilters] = useState();
+  const [queryFilters, setQueryFilters] = useState();
+  const [isPriceReset, setIsPriceReset] = useState();
+  const [isRarityReset, setIsRarityReset] = useState();
   const [isFormReset, setIsFormReset] = useState();
   const filtersContextValue = useMemo(
-    () => ({ traitFilters, setTraitFilters, isFormReset, setIsFormReset }), 
-    [traitFilters, isFormReset]
+    () => ({ traitFilters, setTraitFilters, queryFilters, setQueryFilters, isPriceReset, setIsPriceReset, isRarityReset, setIsRarityReset, isFormReset, setIsFormReset }), 
+    [traitFilters, queryFilters, isPriceReset, isRarityReset, isFormReset]
   );
 
   useEffect(() => {
@@ -144,7 +151,7 @@ export default function Collection(props) {
                 minRarity={minRarity}
                 maxRarity={maxRarity}
                 filters={collection?.traits}
-                total={totalSupply || collectionData?.total}
+                total={collectionData?.total}
               />
             </div>
           </Sidebar>
@@ -195,6 +202,8 @@ export async function getStaticProps({ params }) {
     method: 'POST'
   });
   const nfts = await nftsRes?.json();
+
+  console.log('AAAA', data);
 
   return { props: { data: nfts, collection: data } };
 }

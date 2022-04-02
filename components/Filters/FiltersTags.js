@@ -1,18 +1,22 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { stringify } from 'qs';
-import { CrossIcon } from '../icons';
 import FiltersContext from '../../contexts/FiltersContext';
+import FilterTag from './FilterTag';
 
 export default function FiltersTags() {
   const { push, query, pathname } = useRouter();
-  const { traitFilters, setIsFormReset } = useContext(FiltersContext);
+  const { traitFilters, queryFilters, setIsPriceReset, setIsRarityReset, setIsFormReset } = useContext(FiltersContext);
 
-  const refresh = () => {
+  const refresh = ({ removeKey }) => {
     const stringifiedSearch = stringify(traitFilters, { encode: false, arrayFormat: 'indices' });
 
+    const filteredQuery = query && removeKey
+      ? Object.keys(query).filter(key => !removeKey.includes(key)).reduce((acc, key) => ({ ...acc, [key]: query[key] }), {})
+      : query;
+
     const newQuery = {
-      ...query,
+      ...filteredQuery,
       ...(stringifiedSearch?.length ? { search: stringifiedSearch } : {})
     };
 
@@ -25,37 +29,72 @@ export default function FiltersTags() {
   return (
     <div>
       {
+        queryFilters && Object.keys(queryFilters)?.map(key => {
+          if (key === 'price' && queryFilters.price?.priceFrom !== undefined) {
+            return (
+              <FilterTag
+                key="tag_price"
+                name="Price"
+                value={`$${queryFilters.price.priceFrom} - ${queryFilters.price.priceTo}`}
+                onHandleClick={() => {
+                  delete queryFilters.price;
+                  setIsPriceReset(true);
+                  refresh({ removeKey: ['priceFrom', 'priceTo'] });
+                }}
+              />
+            );
+          }
+          if (key === 'rarity' && queryFilters.rarity?.rarityFrom !== undefined) {
+            return (
+              <FilterTag
+                key="tag_rarity"
+                name="Rarity"
+                value={`${queryFilters.rarity.rarityFrom} - ${queryFilters.rarity.rarityTo}`}
+                onHandleClick={() => {
+                  delete queryFilters.rarity;
+                  setIsRarityReset(true);
+                  refresh({ removeKey: ['rarityFrom', 'rarityTo'] });
+                }}
+              />
+            );
+          }
+          return '';
+        })
+      }
+      {
         traitFilters?.stringTraits?.map((type, typeIndex) => {
-          if (type?.name && type?.values?.length ) {
+          if (type?.name && type?.values?.length) {
             return type.values.map((value, index) => (
-              <button 
+              <FilterTag
                 key={`${type}-${index}`}
-                type="button" className="tag text-xs py-2.5 px-4 rounded-md mr-4 mb-4"
-                onClick={() => { 
+                name={type.name}
+                value={value}
+                onHandleClick={() => { 
                   type.values.splice(index, 1);
                   if(type.values?.length === 0) {
                     traitFilters.stringTraits.splice(typeIndex, 1);
                   }
                   refresh();
                 }}
-              >
-                <span className="flex">
-                  <span className="text-white mr-2">{type.name}</span>
-                  <span className="text-manatee">{value}</span>
-                  <CrossIcon className="w-[10px] text-manatee ml-3" />
-                </span>
-              </button>
+              />
             ))
           }
           return '';
         })
       }
       { 
-        traitFilters?.stringTraits?.length > 0 && (
+        (
+          queryFilters?.price?.priceFrom !== undefined || 
+          queryFilters?.rarity?.rarityFrom !== undefined || 
+          traitFilters?.stringTraits?.length > 0) && (
           <button
             type="button"
             className="text-xs text-white ml-1 hover:underline"
-            onClick={() => setIsFormReset(true)}
+            onClick={() => {
+              delete queryFilters.price;
+              delete queryFilters.rarity;
+              setIsFormReset(true)
+            }}
           >
             Clear all filters
           </button>
