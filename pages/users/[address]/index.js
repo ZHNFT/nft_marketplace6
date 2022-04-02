@@ -22,7 +22,7 @@ const sortList = [
 ];
 
 export default function UserAssets(props) {
-  const { chainIdHex, data } = props;
+  const { chainIdHex, data, tokenData } = props;
   const router = useRouter();
   const { address, tab } = router.query;
 
@@ -106,7 +106,7 @@ export default function UserAssets(props) {
           </div>
         </section>
         <section className="mt-14">
-          <ProfileContent data={data} />
+          <ProfileContent data={data} tokenPriceUsd={tokenData?.priceUsd} />
         </section>
       </div>
     </>

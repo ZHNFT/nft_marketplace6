@@ -1,36 +1,48 @@
+import { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Image from 'next/image';
+import { format, isValid, formatDistanceToNowStrict } from 'date-fns';
+import { usdFormatter, formatEther } from '../../Utils/helper';
+import { ellipseAddress } from '../../Utils';
+import { userUrl } from '../../constants/url';
 import { formatCurrency } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { CartIcon, LinkIcon } from '../icons';
-//TODO: uncomment when data added
-// import TransferIcon from '../icons/TransferIcon';
-// import MintIcon from '../icons/MintIcon';
-// import AuctionIcon from '../icons/AuctionIcon';
-// import OfferIcon from '../icons/OfferIcon'; 
+import TransferIcon from '../icons/TransferIcon';
+import MintIcon from '../icons/MintIcon';
+import AuctionIcon from '../icons/AuctionIcon';
+import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
+import Spinner from '../Spinner/Spinner';
 
-//TODO: replace this with proper data
-const testActivities = [
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/1.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#1' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/2.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#2' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/3.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#3' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/4.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#4' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/5.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#5' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/6.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#6' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/7.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#7' },
-  { type: 'List', description: 'For sale', name: 'Bee #622', collection: 'Hive Investments', imageUrl: '/test/gallery/8.png', price: 16700, priceUsd: 167000, from: 'Bob Geldof', to: null, date: '2021-03-19T00:13:11.110680Z', url: '#', transactionId: '#8' }
-];
-
-export default function Activity() {
+export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
+  const { query: { address } } = router;
+  const [activities, setActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const fetchData = useCallback(async function() {
+    setIsLoading(true);
+    const url = userUrl({ address, resourceType: 'activity' });
+    const res = await fetch(url);
+    const data = await res?.json();
+    setIsLoading(false);
+    setActivities(data);
+  }, [address]);
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData]);
+
+  console.log(activities);
+
   return (
     <Table className="text-xs">
       <RowHeading>
         <Cell className="w-[30px]" />
         <Cell className="w-[100px]">Type</Cell>
-        <Cell className="w-[200px]">Item</Cell>
         <Cell className="w-[100px] text-center">Price</Cell>
         <Cell className="w-[100px] text-center">From</Cell>
         <Cell className="w-[100px] text-center">To</Cell>
@@ -42,43 +54,48 @@ export default function Activity() {
         </Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
+      { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div> }
       {
-        testActivities.map(row => {
+        !isLoading && activities?.results?.map((row, index) => {
 
-          //TODO: need transactionHash, and activity type
-          const { type, description, name, collection, imageUrl, price, priceUsd, from, to, date, url, transactionId, tokenId } = row;
+          //TODO: need transactionHash
+          const { activityType, fromAddress, toAddress, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash } = row;
+          const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
+          const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
+          const to = activityType === 'sale' ? buyer : toAddress;
+          const blockchainViewer = chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/";
+          const isMinting = activityType == "transfer" && fromAddress == "0x0000000000000000000000000000000000000000";
+          const date = new Date(timestamp);
+          const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
+            timeAgo: formatDistanceToNowStrict(date, { addSuffix: true }),
+            formattedDate: format(date, "MMMM do yyyy"),
+            formattedTime: format(date, "h:mm aaa")
+          } : {};
+
           return (
-            <Row key={transactionId} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
+            <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
               <Cell className="w-[30px]">
+                {activityType == "transfer" ? isMinting ?
+                  <MintIcon className="w-[16px]" /> :
 
-                {//TODO: uncomment this when activity type is added
-                /*  {activityType == "transfer" ? isMinting ?
+                  <TransferIcon className="w-[16px]" /> :
 
-                    <MintIcon className="w-[16px]" /> :
+                  activityType == "sale" || activityType == "listing"? 
 
-                    <TransferIcon className="w-[16px]" /> :
+                    <CartIcon className="w-[16px]" /> :
 
-                    activityType == "sale" || activityType == "listing"? 
+                    activityType == "bid" ?
 
-                      <CartIcon className="w-[16px]" /> :
+                    <OfferIcon className="w-[16px]" /> :
 
-                      activityType == "bid" ?
-
-                      <OfferIcon className="w-[16px]" /> :
-
-                      <AuctionIcon className="w-[16px]" />
-                  }
-
-                 */}
-                {
-                //TODO: remove this once activity type added
+                    <AuctionIcon className="w-[16px]" />
                 }
-                <CartIcon className="w-[16px]" />
               </Cell>
               <Cell className="w-[100px]">
-                <span className="block">List</span>
-                <span className="text-manatee">For sale</span>
+                <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
+                {/*<span className="text-manatee">For sale</span>*/}
               </Cell>
+              {/*}
               <Cell className="w-[200px]">
                 <div className="flex items-center">
                   <div className="h-[42px]">
@@ -96,35 +113,46 @@ export default function Activity() {
                   </div>
                 </div>
               </Cell>
+              */}
               <Cell className="w-[100px] text-center leading-none">
-                <span className="-ml-[8px]"><ItemPrice value={price} /></span>
+                {
+                  price ? <span className="-ml-[8px]"><ItemPrice value={price} /></span> : ''
+                }
                 <span className="block text-[10px] text-manatee">
-                  { formatCurrency({ value: priceUsd }) }
+                { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                 </span>
               </Cell>
               <Cell className="w-[100px] text-center">
-                <a href="#">
-                  { from }
-                </a>
+                {
+                  from && !isMinting &&  (
+                    <Link href={`/users/${from}`}>
+                      <a>{ ellipseAddress(from, 4) }</a>
+                    </Link>
+                  )
+                } 
+                { !from || isMinting && '-' }
               </Cell>
               <Cell className="w-[100px] text-center">
-                { to ? <a href="#">{ to }</a> : '-'}
+                {
+                  to ? (
+                    <Link href={`/users/${to}`}>
+                      <a>{ ellipseAddress(to, 4) }</a>
+                    </Link>
+                  ) : '-'
+                }
               </Cell>
               <Cell className="w-[100px] text-center">
                 <div className="group relative">
-                  { /*TODO convert date to time ago */ }
-                  23 minutes ago
+                  {timeAgo}
                   <Tooltip position="bottom">
-                    <span className="block">13:01 UTC</span>
-                    <span>March 12th 2022</span>
+                    <span className="block">{formattedTime}</span>
+                    <span>{formattedDate}</span>
                   </Tooltip>
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                {
-                  //TODO: set to transaction on polygonscan
-                }
-                <a href="#">
+                <a href={`${blockchainViewer}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+                  <span className="sr-only">View transaction in blockchain explorer</span>
                   <LinkIcon className="w-[12px]" />
                 </a>
               </Cell>

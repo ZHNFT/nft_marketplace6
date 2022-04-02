@@ -10,7 +10,7 @@ import AuctionIcon from '../icons/AuctionIcon';
 import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
-import { format, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
+import { format, isValid, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
 
 
 export default function Activity({ tokenPriceUsd }) {
@@ -55,13 +55,11 @@ export default function Activity({ tokenPriceUsd }) {
           const to = activityType === 'sale' ? buyer : toAddress;
 
           const date = new Date(blockTimestamp);
-
-          let timeAgo = formatDistanceToNowStrict(date, { addSuffix: true })
-
-          let formattedDate = format(date, "MMMM do yyyy")
-
-          let formattedTime = format(date, "h:mm aaa")
-
+          const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
+            timeAgo: formatDistanceToNowStrict(date, { addSuffix: true }),
+            formattedDate: format(date, "MMMM do yyyy"),
+            formattedTime: format(date, "h:mm aaa")
+          } : {};
 
           let blockchainViewer;
 
@@ -98,7 +96,7 @@ export default function Activity({ tokenPriceUsd }) {
                 }
               </Cell>
               <Cell className="w-[100px]">
-                <span className="block">{isMinting ? "mint" : activityType}</span>
+                <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
               </Cell>
               {/* <Cell className="w-[200px]">
                 <div className="flex items-center">
@@ -154,6 +152,7 @@ export default function Activity({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[50px] text-right">
                 <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank" rel="noreferrer" >
+                  <span className="sr-only">View transaction in blockchain explorer</span>
                   <LinkIcon className="w-[12px]" />
                 </a>
               </Cell>

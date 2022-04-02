@@ -3,11 +3,11 @@ import Gallery from '../Gallery/Gallery';
 import Activity from './Activity';
 import InfiniteGallery from '../../components/Gallery/InfiniteGallery';
 
-export default function ProfileContent({ data }) {
+export default function ProfileContent({ data, tokenPriceUsd }) {
   const { query: { tab } } = useRouter();
 
   if (tab === 'activity') {
-    return <Activity />;
+    return <Activity tokenPriceUsd={tokenPriceUsd} />;
   }
 
   if (tab === 'offers') {

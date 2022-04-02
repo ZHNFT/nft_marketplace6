@@ -20,7 +20,7 @@ export default function TraitsTable({ traits }) {
       </RowHeading>
       <div className="max-h-[250px] overflow-y-auto scroller">
         {
-          traits.map((row, index) => {
+          traits?.map((row, index) => {
             const { trait_type: type, value, rarityScore, rarityPercent } = row;
             return (
               <Row key={`${type}-${index}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>

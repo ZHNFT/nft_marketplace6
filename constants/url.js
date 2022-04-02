@@ -34,8 +34,28 @@ const API_HOST = 'https://hexagon-api.onrender.com';
   `${API_HOST}/collections/search?q=${searchTerm}`
 );
 
+/**
+ * Returns the URL for user's data.
+ *
+ * @param {Object} obj - An object.
+ * @param {String} obj.address - The user's address.
+ * @param {('activity')} [obj.resourceType] - The resource type name.
+ * @returns {String} The user's data URL.
+ */
+ const userUrl = ({ address, resourceType }) => {
+  const resourcePath = resourceType ? `/${resourceType}` : '';
+  const url = new URL(`${API_HOST}/users/${address}${resourcePath}`);
+
+  if (resourceType === 'activity') {
+    url.searchParams.append('include', ['transfers', 'auctions', 'listings', 'bids', 'sales']);
+  }
+
+  return url.toString();
+ };
+
 export {
   collectionUrl,
   nftUrl,
-  searchCollectionUrl
+  searchCollectionUrl,
+  userUrl
 };

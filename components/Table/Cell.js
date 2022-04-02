@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 export default function Cell({ children, className, grow }) {
   return (
-    <div className={clsx('w-auto', className, { grow })}>
+    <div className={clsx(className, { grow })}>
       { children }
     </div>
   );

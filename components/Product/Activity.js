@@ -13,7 +13,7 @@ import OfferIcon from '../icons/OfferIcon';
 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
-import { format, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
+import { format, isValid, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -67,12 +67,11 @@ export default function Activity({ tokenPriceUsd }) {
             // TODO FIX DATE with correct formatting
 
             const date = new Date(blockTimestamp);
-
-            let timeAgo = formatDistanceToNowStrict(date, { addSuffix: true })
-
-            let formattedDate = format(date, "MMMM do yyyy")
-
-            let formattedTime = format(date, "h:mm aaa")
+            const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
+              timeAgo: formatDistanceToNowStrict(date, { addSuffix: true }),
+              formattedDate: format(date, "MMMM do yyyy"),
+              formattedTime: format(date, "h:mm aaa")
+            } : {};
 
             let blockchainViewer;
 
@@ -113,7 +112,7 @@ export default function Activity({ tokenPriceUsd }) {
                 
                 </Cell>
                 <Cell className="w-[75px]">
-                  <span className="block">{isMinting ? "Mint" : activityType}</span>
+                  <span className="block capitalize">{isMinting ? "Mint" : activityType}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
                   <span className="-ml-[8px]">
