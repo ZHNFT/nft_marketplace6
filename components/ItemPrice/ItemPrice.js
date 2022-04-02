@@ -5,7 +5,7 @@ export default function ItemPrice({ label, value }) {
   return (
     <>
       { label && <span className="text-silver dark:text-manatee">{ label }</span> }
-      <BeeIcon className="h-[12px] -top-[2px] relative px-[5px]" />
+      <BeeIcon className="h-[14px] -top-[2px] relative px-[5px]" />
       <span className="text-xs">{ value ? formatEther(value) : value }</span>
     </>
   );

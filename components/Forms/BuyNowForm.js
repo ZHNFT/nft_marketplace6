@@ -66,7 +66,7 @@ export default function BuyNowForm(props) {
           </div>
           <div className="text-right">
             <div>
-              <BeeIcon className="h-[18px] -top-[3px] relative" />
+              <BeeIcon className="h-[14px] -top-[2px] relative pr-[5px]" />
               <span>{price ? formatEther(price) : price}</span>
             </div>
             <p className="text-manatee text-sm">{usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd))}</p>
@@ -79,7 +79,7 @@ export default function BuyNowForm(props) {
           <p className="font-medium text-xl">Total</p>
           <div className="text-right">
             <div>
-              <BeeIcon className="h-[18px] -top-[4px] relative" />
+              <BeeIcon className="h-[16px] -top-[3px] relative pr-[5px]" />
               <span className="font-medium text-xl text-cornflower">{price ? formatEther(price) : price}</span>
             </div>
             <p className="text-manatee text-sm">{usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd))}</p>
