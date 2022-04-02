@@ -59,7 +59,8 @@ export default function Listing(props) {
     percent: 5,
   };
 
-  
+  let marketplaceFee = "5"
+  let royaltyFee = "5"
 
   //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
 
