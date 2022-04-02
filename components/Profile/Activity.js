@@ -116,7 +116,7 @@ export default function Activity({ tokenPriceUsd }) {
               */}
               <Cell className="w-[100px] text-center leading-none">
                 {
-                  price ? <span className="-ml-[8px]"><ItemPrice value={price} /></span> : ''
+                  price ? <span className="-ml-[8px]"><ItemPrice value={price} /></span> : '-'
                 }
                 <span className="block text-[10px] text-manatee">
                 { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
