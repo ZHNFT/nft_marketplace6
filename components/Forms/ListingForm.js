@@ -59,28 +59,7 @@ export default function Listing(props) {
     percent: 5,
   };
 
-  let collection = await marketplaceContract.getCollectionInfo(address);
-
-  let royaltyFee = collection.royaltyFee;
-
-  if(royaltyFee != 0) {
-
-    royaltyFee = (royaltyFee / 10000).toFixed(1);
-  } else {
-    royaltyFee = "0"
-  }
-
-  let token = await marketplaceContract.paymentTokens(collection.currencyType);
-
-  let marketplaceFee = token.fee;
-
-  if(marketplaceFee != 0) {
-
-    marketplaceFee = (marketplaceFee / 10000).toFixed(1)
-
-  } else {
-    marketplaceFee = "0";
-  }
+  
 
   //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
 
