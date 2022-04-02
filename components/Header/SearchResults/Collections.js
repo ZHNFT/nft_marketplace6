@@ -34,7 +34,7 @@ export default function Collections({ results }) {
                     <Cell className="w-[100px] flex flex-col justify-center items-center">
                       <span className="relative -left-[5px] text-white">
                         <BeeIcon className="h-[18px] relative -top-[2px]" />
-                        { floor }
+                        { floor ? floor : "0" }
                       </span>
                     </Cell>
                     <Cell className="w-[80px] text-center leading-none text-white">

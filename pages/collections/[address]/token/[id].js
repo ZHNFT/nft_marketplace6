@@ -39,6 +39,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   // these are all bids on an item that are on auction
   const activeAuctionbids = activeAuction?.bids;
 
+  console.log("collection = ");
+  console.log(collection);
+
   // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
   const isOwner = activeAuction ? activeAuction.owner === address?.toLowerCase() : data?.owner === address?.toLowerCase() || false;
   const owner = activeAuction ? activeAuction?.owner : data?.owner;
@@ -245,8 +248,8 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         </p>
                         <div className="flex items-baseline relative">
                           <BeeIcon className="absolute h-[12px] -left-[4px] -top-[3px]" />
-                          <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
-                          <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
+                          <span className="text-base font-medium ml-6">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0"}</span>
+                          <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd)) : "0" }</span>
                         </div>
                       </div>
                       <div className="ml-auto items-center flex">
@@ -273,8 +276,8 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                             </p>
                             <div className="flex items-baseline relative">
                               <BeeIcon className="absolute h-[12px] -left-[4px] -top-[3px]" />
-                              <span className="text-base font-medium ml-6">{formatEther(activeAuction?.highestBid)}</span>
-                              <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd))}</span>
+                              <span className="text-base font-medium ml-6">{activeAuction.highestBid ? formatEther(activeAuction?.highestBid) : "0"}</span>
+                              <span className="text-xs text-manatee ml-2">{activeAuction.highestBid ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd)) : "0" }</span>
                             </div>
                           </div>
                         ) : (
@@ -329,8 +332,8 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           </p>
                           <div className="flex items-baseline relative">
                             <BeeIcon className="absolute h-[12px] -left-[4px] -top-[3px]" />
-                            <span className="text-base font-medium ml-6">{formatEther(activeListing?.pricePerItem)}</span>
-                            <span className="text-xs text-manatee ml-2">{usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd))}</span>
+                            <span className="text-base font-medium ml-6">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0" }</span>
+                            <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd)) : "0" }</span>
                           </div>
                         </div>
                         <div className="ml-auto flex">
@@ -465,6 +468,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                     instagram="#"
                     twitter="#"
                     website="#"
+                    description={collection.description}
                   />
                 </Tab.Panel>
 

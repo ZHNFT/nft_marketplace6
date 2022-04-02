@@ -110,15 +110,15 @@ export default function CollectionHeader(props) {
                 <li>
                     <h4 className="text-xs mb-1.5">Volume</h4>
                     <span className="text-xl font-medium">
-                      <BeeIcon className="h-[17px] relative -top-[2px] pr-[5px]" />
-                      {formatEther(volume)}
+                      <BeeIcon className="h-[18px] relative -top-[2px] pr-[5px]" />
+                      {volume ? formatEther(volume) : "0"}
                     </span>
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Floor</h4>
                     <span className="text-xl font-medium">
-                      <BeeIcon className="h-[17px] relative -top-[2px] pr-[5px]" />
-                      {formatEther(floorPrice)}
+                      <BeeIcon className="h-[18px] relative -top-[2px] pr-[5px]" />
+                      {floorPrice == undefined ? "0" : formatEther(floorPrice)}
                     </span>
                 </li>
             </ul>

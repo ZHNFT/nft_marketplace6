@@ -33,7 +33,7 @@ export default function ProductBids({ bids, tokenPriceUsd }) {
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px]">
                     <BeeIcon className="h-[18px] relative -top-[2px]" />
-                    { formatEther(value) }
+                    { value ? formatEther(value) : "0" }
                   </span>
                   <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(value)) * tokenPriceUsd)}</span>
                 </Cell>

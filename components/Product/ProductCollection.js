@@ -1,6 +1,6 @@
 import { HexagonBeeIcon, InstagramIcon, TwitterIcon, ChainIcon, BeeIcon } from '../icons';
 
-export default function ProductCollection({ collectionId, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website }) {
+export default function ProductCollection({ collectionId, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website, description }) {
   return (
     <div>
       <div className="flex justify-between items-center text-xs">
@@ -51,7 +51,7 @@ export default function ProductCollection({ collectionId, itemCount, ownerCount,
             <span className="text-manatee text-xs font-medium">Volume</span>
             <span className="block flex text-base font-medium">
               <BeeIcon className="h-[18px] relative -top-[2px]" />
-              { volume }
+              { volume ? volume : "" }
             </span> 
             <span className="text-manatee text-xxs absolute left-0 right-0 w-[74px]">Last 30 days</span>
           </div>
@@ -59,12 +59,13 @@ export default function ProductCollection({ collectionId, itemCount, ownerCount,
             <span className="text-manatee text-xs font-medium">Floor</span>
             <span className="block flex text-base font-medium">
               <BeeIcon className="h-[18px] relative -top-[2px]" />
-              { floorPrice }
+              
+             { floorPrice ? floorPrice : "0" }
             </span> 
           </div>
         </div>
         <div className="text-xxs text-manatee mt-8">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          {description}
         </div>
       </div>
     </div>

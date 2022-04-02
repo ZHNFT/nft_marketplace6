@@ -38,11 +38,11 @@ export default function Collections() {
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
                   <span className="relative -left-[5px] text-white">
                     <BeeIcon className="h-[18px] relative -top-[2px]" />
-                    { value }
+                    { value ? value : "0" }
                   </span>
                 </Cell>
                 <Cell className="w-[80px] text-center leading-none text-white">
-                  { itemCount }
+                  { itemCount ? itemCount : "0" }
                 </Cell>
               </Row>
             );
