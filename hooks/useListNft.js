@@ -51,6 +51,6 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
 
   }, [ethersProvider, chainId, tokenId, collectionId, owner, marketplaceAddress, handleApproval, handleApiCall])
 
-  return { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError };
+  return { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse: response };
 
 }

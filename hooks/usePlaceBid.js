@@ -51,5 +51,5 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
   
     }, [ethersProvider, chainId, tokenId, collectionId, address, marketplaceAddress, handleAllowance, handleApiCall]);
 
-    return { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError }
+    return { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse: response }
 }

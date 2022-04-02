@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { ellipseAddress } from '../../Utils';
 
@@ -48,9 +49,10 @@ const validate = (values) => {
 }
 
 export default function Listing(props) {
+  const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
-  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
-  const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
+  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+  const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const initialValues = {
     type: listTypes[0],
     currency: currencies[0],
@@ -58,6 +60,8 @@ export default function Listing(props) {
     duration: durations[0],
     percent: 5,
   };
+
+  const hasError = approvalError || signatureError || apiError || auctionApprovalError || auctionSignatureError || auctionApiError || transactionError;
 
   let marketplaceFee = "5"
   let royaltyFee = "5"
@@ -77,19 +81,17 @@ export default function Listing(props) {
     // set form submitting status to false
     actions.setSubmitting(false);
 
-    // close modal here
-    handleClose();
-
-    // refetch data
-    fetchData();
-
+    setFormSubmittingDone(true)
   }
 
-  const hasError = (type) => type === 'fixed' 
-    ? approvalError || signatureError || apiError 
-    : type === 'auction'
-      ? auctionApprovalError || auctionSignatureError || auctionApiError || transactionError
-      : false;
+  useEffect(() => {
+    if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
+      // TODO I think we need to timeout the fetching because the data fetched from the server is not updated yet, but after page refresh it is updated
+      fetchData();
+      handleClose();
+    }
+
+  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
 
   return (
     <Formik

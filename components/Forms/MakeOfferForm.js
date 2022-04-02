@@ -54,7 +54,7 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 export default function MakeOfferForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData, activeListing, activeAuction } = props;
-  const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
+  const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
   const initialValues = {
@@ -88,12 +88,13 @@ export default function MakeOfferForm(props) {
   }
 
   useEffect(() => {
-    if (!hasError && formSubmittingDone && auctionTx) {
+    if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
+      // TODO I think we need to timeout the fetching because the data fetched from the server is not updated yet for auction, but after page refresh it is updated
       fetchData();
       handleClose();
     }
 
-  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx]);
+  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
 
   return (
     <Formik

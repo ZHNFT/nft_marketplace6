@@ -23,7 +23,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       tokenId: tokenId,
       expiry: expirationDate,
       quantity: 1,
-      minBid: (Number(price) * 10 ** 18).toString(),
+      minBid: ethers.utils.parseEther(price).toString(),
       percentIncrement: Number(percent) * 10, // for example 5% should be passed to the contract as 50
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
@@ -66,6 +66,6 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
 
   }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall])
 
-  return { handleCreateAuction, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, transactionStatus, transactionError };
+  return { handleCreateAuction, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, transactionStatus, transactionError, auctionTx: transaction };
 
 }
