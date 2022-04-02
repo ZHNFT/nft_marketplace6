@@ -59,6 +59,31 @@ export default function Listing(props) {
     percent: 5,
   };
 
+  let collection = await marketplaceContract.getCollectionInfo(address);
+
+  let royaltyFee = collection.royaltyFee;
+
+  if(royaltyFee != 0) {
+
+    royaltyFee = (royaltyFee / 10000).toFixed(1);
+  } else {
+    royaltyFee = "0"
+  }
+
+  let token = await marketplaceContract.paymentTokens(collection.currencyType);
+
+  let marketplaceFee = token.fee;
+
+  if(marketplaceFee != 0) {
+
+    marketplaceFee = (marketplaceFee / 10000).toFixed(1)
+
+  } else {
+    marketplaceFee = "0";
+  }
+
+  //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
+
   async function handleSubmit(values, actions) {
     const { duration, type, currency, price, percent } = values;
     const expirationDate = getUnixTime(add(new Date(), { [duration?.value?.unit]: duration?.value?.number }));
@@ -77,6 +102,7 @@ export default function Listing(props) {
 
     // refetch data
     fetchData();
+
   }
 
   return (
@@ -217,6 +243,9 @@ export default function Listing(props) {
                   </div>
                 </RadioGroup>
 
+                {//TODO: remove percent Increment
+                }
+
                 {
                   values.type.value === 'auction' && (
                     <div className="my-10 relative">
@@ -304,15 +333,14 @@ export default function Listing(props) {
                 </div>
 
                 <div className="my-6">
-                  { /* TODO GET DATA FROM COLLECTION Fees */}
                   <p>Fees</p>
                   <div className="mt-1 text-sm text-manatee flex justify-between">
                     <span>Service Fee</span>
-                    <span>2.5%</span>
+                    <span>{marketplaceFee + "%"}</span>
                   </div>
                   <div className="text-sm text-manatee flex justify-between">
                     <span>Creator Fee</span>
-                    <span>5.0%</span>
+                    <span>{royaltyFee + "%"}</span>
                   </div>
                 </div>
 
