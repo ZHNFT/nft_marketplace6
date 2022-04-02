@@ -12,8 +12,10 @@ import UserTab from '../../../components/Tabs/UserTab';
 
 const itemsFilterList = [
   { label: "All items" },
-  { label: "Single items" },
-  { label: "Bundles" },
+  { label: "For Sale" },
+  { label: "Auction" },
+  { label: "Has Offers" },
+  { label: "Not Listed" },
 ];
 
 const sortList = [
