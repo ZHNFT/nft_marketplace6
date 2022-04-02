@@ -59,6 +59,11 @@ export default function Listing(props) {
     percent: 5,
   };
 
+  let marketplaceFee = "5"
+  let royaltyFee = "5"
+
+  //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
+
   async function handleSubmit(values, actions) {
     const { duration, type, currency, price, percent } = values;
     const expirationDate = getUnixTime(add(new Date(), { [duration?.value?.unit]: duration?.value?.number }));
@@ -77,6 +82,7 @@ export default function Listing(props) {
 
     // refetch data
     fetchData();
+
   }
 
   const hasError = (type) => type === 'fixed' 
@@ -223,6 +229,9 @@ export default function Listing(props) {
                   </div>
                 </RadioGroup>
 
+                {//TODO: remove percent Increment
+                }
+
                 {
                   values.type.value === 'auction' && (
                     <div className="my-10 relative">
@@ -310,15 +319,14 @@ export default function Listing(props) {
                 </div>
 
                 <div className="my-6">
-                  { /* TODO GET DATA FROM COLLECTION Fees */}
                   <p>Fees</p>
                   <div className="mt-1 text-sm text-manatee flex justify-between">
                     <span>Service Fee</span>
-                    <span>2.5%</span>
+                    <span>{marketplaceFee + "%"}</span>
                   </div>
                   <div className="text-sm text-manatee flex justify-between">
                     <span>Creator Fee</span>
-                    <span>5.0%</span>
+                    <span>{royaltyFee + "%"}</span>
                   </div>
                 </div>
 

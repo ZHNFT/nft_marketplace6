@@ -64,7 +64,6 @@ export default function Activity({ tokenPriceUsd }) {
             const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
             const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
             const to = activityType === 'sale' ? buyer : toAddress;
-            // TODO FIX DATE with correct formatting
 
             const date = new Date(blockTimestamp);
             const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {

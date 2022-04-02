@@ -58,7 +58,6 @@ export default function Activity({ tokenPriceUsd }) {
       {
         !isLoading && activities?.results?.map((row, index) => {
 
-          //TODO: need transactionHash
           const { activityType, fromAddress, toAddress, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
