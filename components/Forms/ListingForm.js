@@ -86,7 +86,6 @@ export default function Listing(props) {
 
   useEffect(() => {
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-     // TODO I think we need to timeout the fetching because the data fetched from the server is not updated yet for auction, but after page refresh it is updated
       fetchData();
       handleClose();
     }

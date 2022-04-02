@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { TRANSACTION_STATUS } from '../constants/nft';
 import Web3Token from 'web3-token';
+import { ethers } from "ethers";
 import useApiCall from './useApiCall';
 import useTokenApproval from './useTokenApproval';
 
