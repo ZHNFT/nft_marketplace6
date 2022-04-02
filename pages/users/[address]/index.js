@@ -38,7 +38,7 @@ export default function UserAssets(props) {
   );
   const [selectedSort, setSelectedSort] = useState(sortList[0]);
   const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
-  const total = data?.results?.length;
+  const total = data?.total;
   const totalOnAuction = data?.auctioned?.length;
   const [userData, setUserData] = useState({});
 
