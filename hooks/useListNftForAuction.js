@@ -29,14 +29,10 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       highestBidder: '0x0000000000000000000000000000000000000000',
     }
 
-    console.log(auction);
-
     const chainId = (await ethersProvider.getNetwork()).chainId;
 
-    if(chainId == 80001) {
-
+    if (chainId == 80001) {
       auction["percentIncrement"] = 50
-
     }
 
     // handle approval

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { TRANSACTION_STATUS } from '../constants/nft';
 
-export default function useCancelListing({ marketplaceContract, setIsCancelling }) {
+export default function useCancelListing({ marketplaceContract }) {
   const [cancellationStatus, setCancellationStatus] = useState();
   const [cancellationError, setCancellationError] = useState(null);
   const [transaction, setTransaction] = useState(null);
@@ -30,11 +30,10 @@ export default function useCancelListing({ marketplaceContract, setIsCancelling 
       } catch (error) {
         setCancellationStatus(TRANSACTION_STATUS.FAILED);
         setCancellationError(error?.data?.message || error?.message);
-        setIsCancelling && setIsCancelling(false);
         return;
       }
   
-    }, [marketplaceContract, setIsCancelling])
+    }, [marketplaceContract])
 
     return { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError }
 }

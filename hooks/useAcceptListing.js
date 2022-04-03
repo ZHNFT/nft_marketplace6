@@ -3,7 +3,7 @@ import { TRANSACTION_STATUS } from '../constants/nft';
 import useTokenAllowance from './useTokenAllowance';
 import { formatEther } from '../Utils/helper';
 
-export default function useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address, setIsConfirming }) {
+export default function useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address }) {
   const { handleAllowance, allowanceStatus, allowanceError, allowanceTx } = useTokenAllowance({ tokenContract, marketplaceAddress, address });
   const [acceptationStatus, setAcceptationStatus] = useState();
   const [acceptationError, setAcceptationError] = useState(null);
@@ -35,10 +35,9 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
     } catch (error) {
       setAcceptationStatus(TRANSACTION_STATUS.FAILED);
       setAcceptationError(error?.data?.message || error?.message);
-      setIsConfirming && setIsConfirming(false);
       return;
     }
-  }, [marketplaceContract, setIsConfirming, handleAllowance])
+  }, [marketplaceContract, handleAllowance])
 
     return { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError }
 }
