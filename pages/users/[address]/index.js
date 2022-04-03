@@ -8,6 +8,7 @@ import Dropdown from "../../../components/Dropdown/Dropdown";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import AddCollectionModal from "../../../components/Modals/AddCollectionModal";
 import { getUserDetails, transformUserData } from "../../../Utils/helper";
+import {getUserOffers} from "../../../Utils/helper"
 import UserTab from '../../../components/Tabs/UserTab';
 
 const itemsFilterList = [
@@ -43,6 +44,8 @@ export default function UserAssets(props) {
   const total = data?.total;
   const totalOnAuction = data?.auctioned?.length;
   const [userData, setUserData] = useState({});
+
+  const [userOffers, setUserOffers] = useState({})
 
   useEffect(async () => {
     const data = await getUserDetails(address);

@@ -2,16 +2,21 @@ import { useRouter } from 'next/router';
 import Gallery from '../Gallery/Gallery';
 import Activity from './Activity';
 import InfiniteGallery from '../../components/Gallery/InfiniteGallery';
+import Offers from './Offers'
 
-export default function ProfileContent({ data, tokenPriceUsd }) {
+export default function ProfileContent({ data, offers, tokenPriceUsd }) {
   const { query: { tab } } = useRouter();
+
+  console.log("Profile content data = ")
+  console.log(data);
+
 
   if (tab === 'activity') {
     return <Activity tokenPriceUsd={tokenPriceUsd} />;
   }
 
   if (tab === 'offers') {
-    return <div>Offers content here</div>;
+    return <Offers tokenPriceUsd={tokenPriceUsd} />
   }
 
   if (tab === 'auction') {
