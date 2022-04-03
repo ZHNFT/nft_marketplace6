@@ -466,9 +466,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                     ownerCount={collection?.ownerCount}
                     volume={formatEther(collection?.volume?.total)}
                     floorPrice={formatEther(collection?.floorPrice)}
-                    instagram="#"
-                    twitter="#"
-                    website="#"
+                    instagram={collection?.instagram}
+                    twitter={collection?.twitter}
+                    website={collection?.website}
                     description={collection.description}
                   />
                 </Tab.Panel>

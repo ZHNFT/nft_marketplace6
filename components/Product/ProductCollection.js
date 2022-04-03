@@ -11,7 +11,7 @@ export default function ProductCollection({name, collectionId, itemCount, ownerC
         <div className="flex items-center text-manatee shrink-0 ml-1 mr-2">
           {
             instagram && (
-              <a href={instagram} target="_blank" className="hover:text-cornflower" rel="noreferrer">
+              <a href={instagram} target="_blank" rel="noreferrer" className="hover:text-cornflower" >
                 <span className="sr-only">Instagram</span>
                 <InstagramIcon className="w-[16px]" />
               </a>  
@@ -20,7 +20,7 @@ export default function ProductCollection({name, collectionId, itemCount, ownerC
 
           {
             twitter && (
-              <a href={instagram} target="_blank" rel="noreferrer" className="ml-4 hover:text-cornflower">
+              <a href={twitter} target="_blank" rel="noreferrer" className="ml-4 hover:text-cornflower">
                 <span className="sr-only">Twitter</span>
                 <TwitterIcon className="w-[18px]" />
               </a>  
@@ -29,7 +29,7 @@ export default function ProductCollection({name, collectionId, itemCount, ownerC
 
           {
             website && (
-              <a href={instagram} target="_blank" rel="noreferrer" className="ml-4 hover:text-cornflower">
+              <a href={website} target="_blank" rel="noreferrer" className="ml-4 hover:text-cornflower">
                 <span className="sr-only">Website</span>
                 <ChainIcon className="w-[13px]" />
               </a>  

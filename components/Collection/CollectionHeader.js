@@ -41,9 +41,8 @@ export default function CollectionHeader(props) {
                 {
                   socials?.instagram && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={socials.instagram} target="_blank" rel="noreferrer" >
                         <InstagramIcon className="w-[18px] mr-2" />
-                        { socials.instagram }
                       </a>
                     </li>
                   )
@@ -51,9 +50,8 @@ export default function CollectionHeader(props) {
                 {
                   socials?.twitter && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={socials.twitter} target="_blank" rel="noreferrer">
                         <TwitterIcon className="w-[19px] mr-2" />
-                        { socials.twitter }
                       </a>
                     </li>
                   )
@@ -61,9 +59,8 @@ export default function CollectionHeader(props) {
                  {
                   socials?.discord && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={socials.discord} target="_blank" rel="noreferrer">
                         <DiscordIcon className="w-[19px] mr-2" />
-                        { socials.discord }
                       </a>
                     </li>
                   )
@@ -71,9 +68,8 @@ export default function CollectionHeader(props) {
                 {
                   socials?.telegram && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={socials.telegram} target="_blank" rel="noreferrer">
                         <TelegramIcon className="w-[19px] mr-2" />
-                        { socials.telegram }
                       </a>
                     </li>
                   )
@@ -81,9 +77,8 @@ export default function CollectionHeader(props) {
                  {
                   socials?.link && (
                     <li className="mr-6">
-                      <a href="#">
+                      <a href={socials.link} target="_blank" rel="noreferrer">
                         <LinkIcon className="w-[19px] mr-2" />
-                        { socials.link }
                       </a>
                     </li>
                   )
