@@ -144,7 +144,14 @@ const transformUserData = (user) => {
       website: '',
       twitter: '',
       instagram: '',
-      imageUrl: ''
+      imageUrl: '',
+      estimatedValue: 0,
+      volume: {
+        total: 0,
+        day: 0,
+        week: 0,
+        month: 0
+      }
     }
   }
 
@@ -154,6 +161,8 @@ const transformUserData = (user) => {
   const username = user.username;
   const description = user.description;
   const imageUrl = user.imageUrl;
+  const estimatedValue = user.estimatedValue;
+  const volume = user.volume;
 
   return {
     username,
@@ -161,7 +170,9 @@ const transformUserData = (user) => {
     website,
     twitter,
     instagram,
-    imageUrl
+    imageUrl,
+    estimatedValue,
+    volume
   }
 }
 

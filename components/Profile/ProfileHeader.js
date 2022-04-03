@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import {
   LinkIcon,
@@ -10,17 +10,45 @@ import {
 } from "../icons";
 import { getExplorer } from "../../config";
 import { ellipseAddress } from "../../Utils";
+import { formatEther, formatCompact } from "../../Utils/helper";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import DefaultLogo from "../../images/default-collection-logo.png";
 import HNYicon from "../../images/icon-hny.png";
+import AddCollectionModal from "../Modals/AddCollectionModal";
+import PrimaryButton from "../Buttons/PrimaryButton";
+import Web3Context from "../../contexts/Web3Context";
 
-export default function ProfileHeader({ chainIdHex, userData, address, total }) {
+export default function ProfileHeader({
+  chainIdHex,
+  userData,
+  address,
+  total,
+}) {
   const { setShowEditProfileModal } = useContext(AppGlobalContext);
+  const {
+    state: { tokenData },
+  } = useContext(Web3Context);
+  const tokenPriceUsd = tokenData?.priceUsd;
+
+  const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
 
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
+
+      
+          <PrimaryButton
+            className="flex items-center absolute right-30 -top-[70px] text-xs font-medium"
+            onClick={() => setShowAddCollectionModal(true)}
+          >
+            Add collection
+          </PrimaryButton>
+        <AddCollectionModal
+          isOpen={showAddCollectionModal}
+          onClose={() => setShowAddCollectionModal(false)}
+        />
+          
         <SecondaryButton
           className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
           onClick={() => setShowEditProfileModal(true)}
@@ -75,12 +103,12 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
                 </li>
               )}
               {
-              // <li>
-              //   <a href="#">
-              //     <span className="hidden">Share</span>
-              //     <ShareIcon className="w-[14px]" />
-              //   </a>
-              // </li>
+                // <li>
+                //   <a href="#">
+                //     <span className="hidden">Share</span>
+                //     <ShareIcon className="w-[14px]" />
+                //   </a>
+                // </li>
               }
             </ul>
           </div>
@@ -98,15 +126,21 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
             <li>
               <h4 className="text-xs mb-1.5">Volume</h4>
               <span className="text-xl font-medium">
-                <BeeIcon className="h-[17px] relative -top-[2px] pr-[5px]"/>
-                16.7K
+                <BeeIcon className="h-[17px] relative -top-[2px] pr-[5px]" />
+                {userData.volume?.total
+                  ? formatEther(userData.volume.total)
+                  : 0}
               </span>
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Est. Value</h4>
               <span className="text-xl font-medium">
-                <BeeIcon className="h-[17px] relative -top-[2px] pr-[5px]"/>
-                16.7K
+                ${userData.estimatedValue && tokenPriceUsd
+                  ? formatCompact(
+                      Number(formatEther(userData.estimatedValue)) *
+                        Number(tokenPriceUsd)
+                    )
+                  : 0}
               </span>
             </li>
           </ul>

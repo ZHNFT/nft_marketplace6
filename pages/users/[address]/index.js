@@ -5,7 +5,7 @@ import ProfileContent from "../../../components/Profile/ProfileContent";
 import Tabs from "../../../components/Tabs/Tabs";
 import FilterButton from "../../../components/FilterButton/FilterButton";
 import Dropdown from "../../../components/Dropdown/Dropdown";
-import PrimaryButton from "../../../components/Buttons/PrimaryButton";
+
 import AddCollectionModal from "../../../components/Modals/AddCollectionModal";
 import { getUserDetails, transformUserData } from "../../../Utils/helper";
 import {getUserOffers} from "../../../Utils/helper"
@@ -34,7 +34,6 @@ export default function UserAssets(props) {
     { href: "?tab=activity", name: "Activity" },
     { href: "?tab=offers", name: "Offers" },
     { href: "?tab=auction", name: "On Auction" },
-    { href: "?tab=collections", name: "Collections" },
   ];
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(
     itemsFilterList[0]
@@ -44,8 +43,6 @@ export default function UserAssets(props) {
   const total = data?.total;
   const totalOnAuction = data?.auctioned?.length;
   const [userData, setUserData] = useState({});
-
-  const [userOffers, setUserOffers] = useState({})
 
   useEffect(async () => {
     const data = await getUserDetails(address);
@@ -72,22 +69,7 @@ export default function UserAssets(props) {
             />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-            {tab === "collections" ? (
-              <>
-                <div>
-                  <PrimaryButton
-                    className="text-xs !px-5"
-                    onClick={() => setShowAddCollectionModal(true)}
-                  >
-                    Add collection
-                  </PrimaryButton>
-                </div>
-                <AddCollectionModal
-                  isOpen={showAddCollectionModal}
-                  onClose={() => setShowAddCollectionModal(false)}
-                />
-              </>
-            ) : (
+            
               <>
                 <span className="mr-4">
                   <FilterButton />
@@ -107,7 +89,7 @@ export default function UserAssets(props) {
                   list={sortList}
                 />
               </>
-            )}
+            
           </div>
         </section>
         <section className="mt-14">
