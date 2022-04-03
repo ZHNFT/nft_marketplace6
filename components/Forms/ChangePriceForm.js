@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import TransactionList from '../Transactions/TransactionList';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -23,9 +23,10 @@ const validate = (values) => {
 }
 
 export default function ChangePriceForm(props) {
+  const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const { tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
-  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+  const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
   const initialValues = {
     currency: currencies[0],
@@ -41,9 +42,7 @@ export default function ChangePriceForm(props) {
     // set form submitting status to false
     actions.setSubmitting(false);
 
-    fetchData();
-
-    handleClose();
+    setFormSubmittingDone(true)
 
     // eslint-disable-next-line
   }, [handleCancelListing, handleList])
@@ -53,6 +52,16 @@ export default function ChangePriceForm(props) {
   }
 
   const hasError = cancellationError || approvalError || signatureError || apiError;
+
+  useEffect(() => {
+    if (!hasError && formSubmittingDone && apiResponse) {
+      fetchData();
+      handleClose();
+    }
+
+    return () => clearTimeout(timer);
+
+  }, [hasError, handleClose, fetchData, formSubmittingDone, apiResponse]);
 
   return (
     <Formik

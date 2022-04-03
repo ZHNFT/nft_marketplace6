@@ -10,7 +10,7 @@ export default function CancelListingModal(props) {
     fetchData
   } = props;
   const [isCanceling, setIsCancelling] = useState(false);
-  const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract, setIsCancelling })
+  const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
 
   async function handleConfirm() {
     setIsCancelling(true);

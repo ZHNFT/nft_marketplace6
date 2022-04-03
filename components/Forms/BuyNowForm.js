@@ -10,7 +10,7 @@ import useAcceptListing from '../../hooks/useAcceptListing';
 export default function BuyNowForm(props) {
   const { handleClose, imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
   const [isConfirming, setIsConfirming] = useState(false);
-  const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, setIsConfirming, tokenContract, marketplaceAddress, address });
+  const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
 
   async function handleConfirm() {
