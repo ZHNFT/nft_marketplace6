@@ -33,7 +33,7 @@ const textFields = [
 
 export default function EditProfileModal(props) {
   const { isOpen, onClose } = props;
-  const { user } = useContext(AppGlobalContext);
+  const { user, setUser } = useContext(AppGlobalContext);
   const {
     state: { ethersProvider },
   } = useContext(Web3Context);
@@ -78,6 +78,18 @@ export default function EditProfileModal(props) {
       const error = await response?.json();
       console.log("API error message:", error?.message);
     }
+
+    // update the user object with the updated fields.
+    let tmpUser = user;
+    Object.keys(data).forEach((value, idx) => {
+      if (data[value]) {
+        tmpUser[value] = data[value];
+      }
+    })
+    setUser(tmpUser);
+
+    // close the modal
+    onClose();
   }
 
   return (
