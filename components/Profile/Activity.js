@@ -62,7 +62,11 @@ export default function Activity({ tokenPriceUsd }) {
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
-          const blockchainViewer = chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/";
+
+          const blockchainViewer = (chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/");
+
+          const link = blockchainViewer + transactionHash
+
           const isMinting = activityType == "transfer" && fromAddress == "0x0000000000000000000000000000000000000000";
           const date = new Date(timestamp);
           const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
@@ -150,7 +154,7 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                <a href={`${blockchainViewer}/tx/${transactionHash}`} target="_blank" rel="noreferrer">
+                <a href={link} target="_blank" rel="noreferrer">
                   <span className="sr-only">View transaction in blockchain explorer</span>
                   <LinkIcon className="w-[12px]" />
                 </a>

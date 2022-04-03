@@ -132,7 +132,7 @@ export default function MakeOfferForm(props) {
               }
             ] : [
               {
-                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
+                title: `Increase Allowance / Approval to transfer ${formatEther(values?.price)} HNY`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
                 description: auctionAllowanceError ? auctionAllowanceError : 'Description here'
