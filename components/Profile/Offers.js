@@ -25,8 +25,6 @@ export default function Offers({ tokenPriceUsd }) {
     const url = offerUrl({ address });
     const res = await fetch(url);
     const data = await res?.json();
-    console.log(data);
-    console.log(data)
     setIsLoading(false);
     setOffers(data);
   }, [address]);
@@ -57,8 +55,6 @@ export default function Offers({ tokenPriceUsd }) {
       { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div> }
       {
         !isLoading && offers?.results?.map((row, index) => {
-
-            console.log(row);
 
           const { activityType, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = row;
 

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import {
   LinkIcon,
@@ -14,13 +14,30 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import DefaultLogo from "../../images/default-collection-logo.png";
 import HNYicon from "../../images/icon-hny.png";
+import AddCollectionModal from "../Modals/AddCollectionModal";
+import PrimaryButton from "../Buttons/PrimaryButton";
 
 export default function ProfileHeader({ chainIdHex, userData, address, total }) {
   const { setShowEditProfileModal } = useContext(AppGlobalContext);
 
+  const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
+
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
+
+      
+          <PrimaryButton
+            className="flex items-center absolute right-30 -top-[70px] text-xs font-medium"
+            onClick={() => setShowAddCollectionModal(true)}
+          >
+            Add collection
+          </PrimaryButton>
+        <AddCollectionModal
+          isOpen={showAddCollectionModal}
+          onClose={() => setShowAddCollectionModal(false)}
+        />
+          
         <SecondaryButton
           className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
           onClick={() => setShowEditProfileModal(true)}
