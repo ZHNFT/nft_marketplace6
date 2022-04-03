@@ -74,12 +74,14 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
                   </a>
                 </li>
               )}
-              <li>
-                <a href="#">
-                  <span className="hidden">Share</span>
-                  <ShareIcon className="w-[14px]" />
-                </a>
-              </li>
+              {
+              // <li>
+              //   <a href="#">
+              //     <span className="hidden">Share</span>
+              //     <ShareIcon className="w-[14px]" />
+              //   </a>
+              // </li>
+              }
             </ul>
           </div>
         </div>

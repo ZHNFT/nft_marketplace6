@@ -58,7 +58,7 @@ export default function InfiniteGallery({ collectionData }) {
       <div className="grid justify-center sm:grid-cols-2 sm:justify-between md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-5 mx-auto">
         {
           results?.map((item, index) => (
-            <GalleryItem ref={index === results.length - 1 ? observe : null} key={index} item={transformGalleryItem(item)} />
+            <GalleryItem ref={index === results.length - 1 ? observe : null} key={index} item={transformGalleryItem(item)} showRarity={true} />
           ))
         }
          <div>{loading && 'Loading...'}</div>
