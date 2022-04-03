@@ -64,7 +64,6 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
                 <li className="mr-6">
                   <a href={userData.instagram}>
                     <InstagramIcon className="w-[18px] mr-2" />
-                    {userData.instagram}
                   </a>
                 </li>
               )}
@@ -72,7 +71,6 @@ export default function ProfileHeader({ chainIdHex, userData, address, total }) 
                 <li className="mr-6">
                   <a href={userData.twitter}>
                     <TwitterIcon className="w-[19px] mr-2" />
-                    {userData.twitter}
                   </a>
                 </li>
               )}

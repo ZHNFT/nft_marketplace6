@@ -49,12 +49,12 @@ export default function Activity({ tokenPriceUsd }) {
       {
         activities?.results?.map(row => {
 
-          const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain } = row;
+          const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain, timestamp } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
 
-          const date = new Date(blockTimestamp);
+          const date = new Date(timestamp);
           const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
             timeAgo: formatDistanceToNowStrict(date, { addSuffix: true }),
             formattedDate: format(date, "MMMM do yyyy"),
