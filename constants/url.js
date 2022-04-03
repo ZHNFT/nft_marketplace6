@@ -53,9 +53,21 @@ const API_HOST = 'https://hexagon-api.onrender.com';
   return url.toString();
  };
 
+ const offerUrl = ({ address, resourceType }) => {
+  
+  const url = new URL(`${API_HOST}/users/${address}/offers`);
+
+  if (resourceType === 'tokens') {
+    url.searchParams.append('include', ["tokens"]);
+  }
+
+  return url.toString();
+ };
+
 export {
   collectionUrl,
   nftUrl,
   searchCollectionUrl,
-  userUrl
+  userUrl,
+  offerUrl
 };

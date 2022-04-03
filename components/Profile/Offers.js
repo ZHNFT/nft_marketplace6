@@ -2,34 +2,33 @@ import { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import { format, isValid, formatDistanceToNowStrict } from 'date-fns';
+import { format, isValid, formatDistanceToNowStrict, formatDistance } from 'date-fns';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
-import { userUrl } from '../../constants/url';
+import { offerUrl } from '../../constants/url';
 import { formatCurrency } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
-import { CartIcon, LinkIcon } from '../icons';
-import TransferIcon from '../icons/TransferIcon';
-import MintIcon from '../icons/MintIcon';
-import AuctionIcon from '../icons/AuctionIcon';
-import OfferIcon from '../icons/OfferIcon'; 
+import { ReceiveIcon } from '../icons';
+import OfferIcon from '../icons/OfferIcon';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 import Spinner from '../Spinner/Spinner';
 
-export default function Activity({ tokenPriceUsd }) {
+export default function Offers({ tokenPriceUsd }) {
   const router = useRouter();
   const { query: { address } } = router;
-  const [activities, setActivities] = useState([]);
+  const [offers, setOffers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   
   const fetchData = useCallback(async function() {
     setIsLoading(true);
-    const url = userUrl({ address, resourceType: 'activity' });
+    const url = offerUrl({ address });
     const res = await fetch(url);
     const data = await res?.json();
+    console.log(data);
+    console.log(data)
     setIsLoading(false);
-    setActivities(data);
+    setOffers(data);
   }, [address]);
 
   useEffect(() => {
@@ -51,23 +50,34 @@ export default function Activity({ tokenPriceUsd }) {
             <span className="inline-block w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-manatee mb-[1px] ml-1"></span>
           </button>
         </Cell>
+        <Cell className="w-[100px] text-center">Expires</Cell>
+        <Cell className="w-[100px] text-center">Options</Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
       { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div> }
       {
-        !isLoading && activities?.results?.map((row, index) => {
+        !isLoading && offers?.results?.map((row, index) => {
 
-          const { activityType, fromAddress, toAddress, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash } = row;
-          const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
-          const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
-          const to = activityType === 'sale' ? buyer : toAddress;
+            console.log(row);
 
-          const blockchainViewer = (chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/");
+          const { activityType, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = row;
 
-          const link = blockchainViewer + transactionHash
+          const price = pricePerItem;
 
-          const isMinting = activityType == "transfer" && fromAddress == "0x0000000000000000000000000000000000000000";
+
           const date = new Date(timestamp);
+
+          const expired = expiry < (date.getTime()/1000) ? true : false;
+
+          const expiryDate = new Date(expiry * 1000);
+
+          const { timeTillExpiry, formattedExpiryDate, formattedExpiryTime } = isValid(expiryDate) ? {
+            timeTillExpiry : formatDistance(expiryDate, new Date()),
+            formattedExpiryDate: format(expiryDate, "MMMM do yyyy"),
+            formattedExpiryTime: format(expiryDate, "h:mm aaa")
+          } : {};
+
+          
           const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
             timeAgo: formatDistanceToNowStrict(date, { addSuffix: true }),
             formattedDate: format(date, "MMMM do yyyy"),
@@ -77,25 +87,34 @@ export default function Activity({ tokenPriceUsd }) {
           return (
             <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
               <Cell className="w-[30px]">
-                {activityType == "transfer" ? isMinting ?
-                  <MintIcon className="w-[16px]" /> :
-
-                  <TransferIcon className="w-[16px]" /> :
-
-                  activityType == "sale" || activityType == "listing"? 
-
-                    <CartIcon className="w-[16px]" /> :
-
-                    activityType == "bid" ?
-
+                {activityType == "offerMade" ?
+                  
                     <OfferIcon className="w-[16px]" /> :
 
-                    <AuctionIcon className="w-[16px]" />
+                    <ReceiveIcon className="w-[16px]" />
+
                 }
               </Cell>
               <Cell className="w-[100px]">
-                <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
-                {/*<span className="text-manatee">For sale</span>*/}
+                <span className="block capitalize">{activityType == "offerMade" ? "Made" : "Recieved"}</span>
+                {accepted ?
+                
+                    <span className="text-green">Accepted</span> :
+
+                    canceled ?
+
+                    <span className="text-manatee">Declined</span>
+                    
+                    : expired ? 
+
+                    <span className="text-manatee">Expired</span> 
+                    
+                    : 
+
+                    <span className="text-manatee">Active</span>
+
+                }
+               
               </Cell>
               {/*}
               <Cell className="w-[200px]">
@@ -126,13 +145,13 @@ export default function Activity({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px] text-center">
                 {
-                  from && !isMinting &&  (
+                  from  &&  (
                     <Link href={`/users/${from}`}>
                       <a>{ ellipseAddress(from, 4) }</a>
                     </Link>
                   )
                 } 
-                { !from || isMinting && '-' }
+                { !from  && '-' }
               </Cell>
               <Cell className="w-[100px] text-center">
                 {
@@ -152,12 +171,36 @@ export default function Activity({ tokenPriceUsd }) {
                   </Tooltip>
                 </div>
               </Cell>
-              <Cell className="w-[50px] text-right">
-                <a href={link} target="_blank" rel="noreferrer">
-                  <span className="sr-only">View transaction in blockchain explorer</span>
-                  <LinkIcon className="w-[12px]" />
-                </a>
+              <Cell className="w-[100px] text-center">
+                <div className="group relative">
+                  {timeTillExpiry}
+                  <Tooltip position="bottom">
+                    <span className="block">{formattedExpiryTime}</span>
+                    <span>{formattedExpiryDate}</span>
+                  </Tooltip>
+                </div>
               </Cell>
+
+
+              {  
+
+                //TODO: add on click functionality
+                activityType == "offerMade" ?
+
+                <> <Cell className="w-[100px] text-center">
+                        <div className="group relative text-green-500">
+                            Accept
+                        </div>
+                    </Cell>
+                    <Cell className="w-[100px] text-center">
+                        <div className="group relative text-red-500">
+                            reject
+                        </div>
+                    </Cell></> : <span>-</span>
+
+                }
+
+             
             </Row>
           );
         })

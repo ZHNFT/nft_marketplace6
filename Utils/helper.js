@@ -120,6 +120,22 @@ async function getUserDetails(address) {
   }
 }
 
+async function getUserOffers(address) {
+
+  if (address) {
+    try {
+      const response = await fetch(`https://hexagon-api.onrender.com/users/${address}/offers?include=tokens`);
+      if (!response.status == 200) {
+        return {}
+      }
+      return response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
+
+
 const transformUserData = (user) => {
   if (!user) {
     return {
@@ -162,5 +178,6 @@ export {
   transformUserData,
   usdFormatter,
   formatEther,
-  formatCompact
+  formatCompact,
+  getUserOffers
 };
