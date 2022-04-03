@@ -62,6 +62,7 @@ export default function BuyNowForm(props) {
             <div className="leading-none">
               <a href="#" className="text-sm text-cornfllower">{ellipseAddress(collectionId, 4)}</a>
               <p className="leading-2 mb-1">{name}</p>
+              {/* TODO replace hardcoded fee */}
               <p className="text-[11px] text-manatee">Creator Fees: 2.5%</p>
             </div>
           </div>
