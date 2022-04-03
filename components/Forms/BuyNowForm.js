@@ -8,7 +8,7 @@ import { BeeIcon } from '../icons';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
+  const { handleClose, imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, setIsConfirming, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
@@ -16,6 +16,7 @@ export default function BuyNowForm(props) {
   async function handleConfirm() {
     setIsConfirming(true);
     await handleAcceptListing(activeListing);
+    handleClose();
     fetchData();
   }
 

@@ -7,6 +7,7 @@ import { resolveBunnyLink } from '../../Utils';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import fromUnixTime from 'date-fns/fromUnixTime'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import NotFoundImage from "../../images/No-Image-Placeholder.png";
 
 const NOTIFICATION_TYPES = {
   AUCTION_BID: 'auctionBid'
@@ -73,7 +74,17 @@ export default function NotificationsButton({ currentUserAddress }) {
                             )}>
                               <div className="relative">
                                 <div className="rounded-xl overflow-hidden" >
-                                  <Image className="rounded-xl" src={imageUrl} alt={name} height="50" width="50" />
+                                  {imageUrl ? (
+                                    <Image className="rounded-xl" src={imageUrl} alt={name} height="50" width="50" />
+                                    ) : (
+                                      <Image
+                                        src={NotFoundImage}
+                                        alt={item?.tokenId}
+                                        className="rounded-xl"
+                                        width={"50"}
+                                        height={"50"}
+                                      />
+                                    )}
                                 </div>
                                 { currentUserAddress === receiver && <span className="absolute">Owner</span> }
                                 { true && <span className="text-xxs absolute -bottom-[5px] left-[4px] mx-auto bg-[#2A2F37] py-[1px] px-1.5 rounded-xl">Owner</span> }
@@ -96,7 +107,7 @@ export default function NotificationsButton({ currentUserAddress }) {
                               </div>
                               <div className="no-shrink w-[100px] ml-auto text-right">
                                 <span className="absolute right-[10px] top-[15px]">{ formatEther(value) } HNY</span>
-                                {/* formatDistanceToNowStrict(date, { addSuffix: true }) */}
+                                {/* TODO formatDistanceToNowStrict(date, { addSuffix: true }) */}
                                 <span className="block absolute right-[10px] bottom-[12px] text-manatee text-xxs">23m ago</span>
                               </div>
                             </div>
