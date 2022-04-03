@@ -34,7 +34,7 @@ export default function ChangePriceForm(props) {
 
   // For the owner of the NFT to change the price of an listing
   // we first cancel the current listing and then create a new listing
-  const handleChangePrice = useCallback(async function (listing, price) {
+  const handleChangePrice = useCallback(async function (listing, price, actions) {
     await handleCancelListing(listing);
     await handleList({ price, expirationDate: listing?.expiry });
 
