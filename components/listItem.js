@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { resolveLink } from '../Utils';
+import { resolveLink, resolveBunnyLink } from '../Utils';
 import NotFoundImage from "../images/No-Image-Placeholder.png";
 
 export default function ListItem({ item }) {
@@ -15,7 +15,7 @@ export default function ListItem({ item }) {
           <div className="block w-full min-h-80 bg-gray-200 aspect-w-1 lg:aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
              {/* https://nextjs.org/docs/api-reference/next/image */}
             <Image
-              src={resolveLink(item?.image)}
+              src={resolveBunnyLink(item?.image)}
               alt={item?.tokenId}
               className="w-full h-full object-center object-cover lg:w-full lg:h-full"
               // layout="fill"

@@ -8,7 +8,7 @@ import { BeeIcon } from '../icons';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
+  const { handleClose, imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, setIsConfirming, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
@@ -16,6 +16,7 @@ export default function BuyNowForm(props) {
   async function handleConfirm() {
     setIsConfirming(true);
     await handleAcceptListing(activeListing);
+    handleClose();
     fetchData();
   }
 
@@ -61,6 +62,7 @@ export default function BuyNowForm(props) {
             <div className="leading-none">
               <a href="#" className="text-sm text-cornfllower">{ellipseAddress(collectionId, 4)}</a>
               <p className="leading-2 mb-1">{name}</p>
+              {/* TODO replace hardcoded fee */}
               <p className="text-[11px] text-manatee">Creator Fees: 2.5%</p>
             </div>
           </div>

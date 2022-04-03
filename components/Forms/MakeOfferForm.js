@@ -53,6 +53,7 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 
 export default function MakeOfferForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData, activeListing, activeAuction } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
@@ -71,6 +72,7 @@ export default function MakeOfferForm(props) {
 
    async function handleSubmit(values, actions) {
     const { price, expiration, time } = values;
+    setIsLoading(true);
     // TODO add time to expiration
     const expirationDate = getUnixTime(add(new Date(), { [expiration?.value?.unit]: expiration?.value?.number }));
 
@@ -88,13 +90,20 @@ export default function MakeOfferForm(props) {
   }
 
   useEffect(() => {
+    let timer;
+    
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-      // TODO I think we need to timeout the fetching for auctionbid
+      // We need to timeout the fetching for auctionbid
       // because the data fetched from the server is not updated yet for auction bid
-      // event listener takes some time I assume, but after page refresh it is updated
-      fetchData();
-      handleClose();
+      // event listener takes some time I assume
+      timer = setTimeout(() => {
+        fetchData();
+        setIsLoading(false)
+        handleClose();
+      }, 3000);
     }
+
+    return () => clearTimeout(timer);
 
   }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
 
@@ -107,7 +116,7 @@ export default function MakeOfferForm(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting || hasError ? (
+        return isSubmitting || hasError || isLoading ? (
           <TransactionList
             steps={activeModal === NFT_MODALS.MAKE_OFFER ? [
               {
@@ -132,7 +141,7 @@ export default function MakeOfferForm(props) {
               }
             ] : [
               {
-                title: `Increase Allowance / Approval to transfer ${formatEther(values?.price)} HNY`,
+                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
                 description: auctionAllowanceError ? auctionAllowanceError : 'Description here'
