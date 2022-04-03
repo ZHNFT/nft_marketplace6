@@ -57,9 +57,6 @@ export default function Activity({ tokenPriceUsd }) {
       <div className="max-h-[280px] overflow-y-auto scroller">
         {
           activities?.results?.map(row => {
-            console.log("activities map");
-            console.log("row = ");
-            console.log(row);
             const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain } = row;
             const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
             const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;

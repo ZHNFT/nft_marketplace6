@@ -33,14 +33,14 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
   } else if (Number(values.price) > Number(tokenBalance)) {
     errors.price = 'Insufficient balance';
   } else if (activeModal === NFT_MODALS.PLACE_BID) {
-    const valueToIncrease = percentage(Number(formatEther(activeAuction?.highestBid)), activeAuction?.percentIncrement);
+    const valueToIncrease = percentage(Number(formatEther(activeAuction?.highestBid)), 5);
 
     if (Number(values.price) < Number(formatEther(activeAuction?.minBid))) {
       errors.price = 'Must be greater than minimum bid';
     } else if (Number(values.price) <= Number(formatEther(activeAuction?.highestBid))) {
       errors.price = 'Must be greater than highest bid';
     } else if (Number(values.price) < Number(formatEther(activeAuction?.highestBid)) + valueToIncrease) {
-      errors.price = `Must be greater than highest bid + a ${activeAuction?.percentIncrement}% increase`;
+      errors.price = `Must be greater than highest bid + a 5% increase`;
     }
   } else if (activeModal === NFT_MODALS.MAKE_OFFER) {
     if (Number(values.price) <= Number(formatEther(activeListing?.highestBid))) {
@@ -200,10 +200,10 @@ export default function MakeOfferForm(props) {
                     label="Highest Bid"
                     value={activeAuction?.highestBid}
                   />
-                  <span>{`Percentage to increase ${activeAuction?.percentIncrement}%`}</span>
+                  <span>{`Percentage to increase 5%`}</span>
                   <span>
                     {`Minimum bid ${activeAuction?.highestBid ? 
-                      Number(formatEther(activeAuction?.highestBid)) + percentage(Number(formatEther(activeAuction?.highestBid)), activeAuction?.percentIncrement)
+                      Number(formatEther(activeAuction?.highestBid)) + percentage(Number(formatEther(activeAuction?.highestBid)), 5)
                     : formatEther(activeAuction?.minBid)}`}
                   </span>
                 </div>

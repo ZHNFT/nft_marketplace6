@@ -37,10 +37,10 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   // there can be multiple active bids on a token at the same time, these are all bids on an item: listed, non-listed
   const activeBids = data?.bids?.filter(bid => bid?.active);
   // these are all bids on an item that are on auction
-  const activeAuctionbids = activeAuction?.bids;
+  const activeAuctionbids = activeAuction?.bids.reverse();
 
-  console.log("collection = ");
-  console.log(collection);
+  console.log("active auction bids")
+  console.log(activeAuctionbids)
 
   // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
   const isOwner = activeAuction ? activeAuction.owner === address?.toLowerCase() : data?.owner === address?.toLowerCase() || false;
@@ -460,6 +460,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                 {/* Collection tab */}
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductCollection
+                    name={collection?.name}
                     collectionId={data?.collectionId}
                     itemCount={collection?.totalSupply}
                     ownerCount={collection?.ownerCount}

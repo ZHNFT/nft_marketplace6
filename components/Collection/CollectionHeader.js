@@ -118,7 +118,7 @@ export default function CollectionHeader(props) {
                     <h4 className="text-xs mb-1.5">Floor</h4>
                     <span className="text-xl font-medium">
                       <BeeIcon className="h-[18px] relative -top-[2px] pr-[5px]" />
-                      {floorPrice == undefined ? "0" : formatEther(floorPrice)}
+                      {floorPrice ? formatEther(floorPrice) : "0"}
                     </span>
                 </li>
             </ul>

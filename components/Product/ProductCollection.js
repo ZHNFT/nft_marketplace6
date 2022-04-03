@@ -1,12 +1,12 @@
 import { HexagonBeeIcon, InstagramIcon, TwitterIcon, ChainIcon, BeeIcon } from '../icons';
 
-export default function ProductCollection({ collectionId, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website, description }) {
+export default function ProductCollection({name, collectionId, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website, description }) {
   return (
     <div>
       <div className="flex justify-between items-center text-xs">
         <div>
           <HexagonBeeIcon className="w-[26px] mr-1.5" />
-          <span className="font-medium">Hive Investments</span>
+          <span className="font-medium">{name}</span>
         </div>
         <div className="flex items-center text-manatee shrink-0 ml-1 mr-2">
           {
