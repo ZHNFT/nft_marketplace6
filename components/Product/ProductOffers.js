@@ -37,7 +37,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                     <BeeIcon className="h-[18px] relative -top-[2px]" />
                     { formatEther(pricePerItem) }
                   </span>
-                  <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(pricePerItem)) * tokenPriceUsd)}</span>
+                  <span className="text-manatee text-xxs">{pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(pricePerItem)) * tokenPriceUsd) : null}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
                   {/* https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict */}

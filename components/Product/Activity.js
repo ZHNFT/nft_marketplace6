@@ -117,7 +117,7 @@ export default function Activity({ tokenPriceUsd }) {
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">
-                    { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
+                    { price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                   </span>
                 </Cell>
                 <Cell className="w-[100px] text-center">

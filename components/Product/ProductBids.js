@@ -35,7 +35,7 @@ export default function ProductBids({ bids, tokenPriceUsd }) {
                     <BeeIcon className="h-[18px] relative -top-[2px]" />
                     { value ? formatEther(value) : "0" }
                   </span>
-                  <span className="text-manatee text-xxs">{usdFormatter.format(Number(formatEther(value)) * tokenPriceUsd)}</span>
+                  <span className="text-manatee text-xxs">{value && tokenPriceUsd ? usdFormatter.format(Number(formatEther(value)) * tokenPriceUsd) : null}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
                   {/* https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict */}

@@ -34,7 +34,7 @@ export default function PriceInputField(props) {
           {...field}
         />
         <span className="p-2 text-sm w-[80px] text-right">
-          <span className="overflow-hidden text-xs truncate text-[#969EAB]">{usdFormatter.format(Number(field?.value) * tokenPriceUsd)}</span>
+          <span className="overflow-hidden text-xs truncate text-[#969EAB]">{tokenPriceUsd && field?.value ? usdFormatter.format(Number(field?.value) * tokenPriceUsd) : null}</span>
         </span>
       </div>
       {/* https://formik.org/docs/api/errormessage#props-1 */}
