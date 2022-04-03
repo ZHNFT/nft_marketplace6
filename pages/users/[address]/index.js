@@ -69,7 +69,7 @@ export default function UserAssets(props) {
             />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-            (
+            
               <>
                 <span className="mr-4">
                   <FilterButton />
@@ -89,7 +89,7 @@ export default function UserAssets(props) {
                   list={sortList}
                 />
               </>
-            )
+            
           </div>
         </section>
         <section className="mt-14">
