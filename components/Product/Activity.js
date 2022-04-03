@@ -72,10 +72,12 @@ export default function Activity({ tokenPriceUsd }) {
             let blockchainViewer;
 
             if(chain == "mumbai") {
-              blockchainViewer = "https://mumbai.polygonscan.com/"
+              blockchainViewer = "https://mumbai.polygonscan.com/tx"
             } else {
-              blockchainViewer = "https://polygonscan.com/"
+              blockchainViewer = "https://polygonscan.com/tx"
             }
+
+            const link = blockchainViewer + transactionHash;
 
             let isMinting = false;
             if(activityType == "transfer") {
@@ -147,7 +149,7 @@ export default function Activity({ tokenPriceUsd }) {
                   </div>
                 </Cell>
                 <Cell className="w-[50px] text-right">
-                  <a href={blockchainViewer + "/tx/" + transactionHash} target="_blank" rel="noreferrer">
+                  <a href={link} target="_blank" rel="noreferrer">
                     <LinkIcon className="w-[12px]" />
                   </a>
                 </Cell>
