@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import TransactionList from '../Transactions/TransactionList';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -58,9 +58,6 @@ export default function ChangePriceForm(props) {
       fetchData();
       handleClose();
     }
-
-    return () => clearTimeout(timer);
-
   }, [hasError, handleClose, fetchData, formSubmittingDone, apiResponse]);
 
   return (

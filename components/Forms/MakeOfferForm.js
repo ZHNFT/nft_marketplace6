@@ -100,7 +100,7 @@ export default function MakeOfferForm(props) {
         fetchData();
         setIsLoading(false)
         handleClose();
-      }, 3000);
+      }, 5000);
     }
 
     return () => clearTimeout(timer);
