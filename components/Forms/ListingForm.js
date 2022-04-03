@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { RadioGroup } from '@headlessui/react';
 import { ellipseAddress } from '../../Utils';
 
@@ -53,56 +53,44 @@ export default function Listing(props) {
   const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
-  const [fees, setFees] = useState({"marketplaceFee": "0", "royaltyFee" : "0"});
+  const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
 
-  const fetchFees = async function() {
-
+  const fetchFees = useCallback(async function () {
     let collection = await marketplaceContract.getCollectionInfo(collectionId);
-
     let royaltyFee = collection.royaltyFee;
+    let marketplaceFee;
 
-
-    if(royaltyFee != 0) {
-
+    if (royaltyFee != 0) {
       royaltyFee = royaltyFee.toString();
-
       royaltyFee = ((parseFloat(royaltyFee) * 99) / 10000).toFixed(1);
-
     } else {
       royaltyFee = "0"
     }
 
-    let marketplaceFee;
     if ("paymentTokens" in marketplaceContract) {
       let token = await marketplaceContract.paymentTokens(collection.currencyType)
       marketplaceFee = token.fee;
-
     } else {
-
       marketplaceFee = 0;
-
     }
 
-    if(marketplaceFee != 0) {
-
+    if (marketplaceFee != 0) {
       marketplaceFee = marketplaceFee.toString();
-
       marketplaceFee = ((parseFloat(marketplaceFee) * 100) / 10000).toFixed(1)
-
     } else {
       marketplaceFee = "0";
     }
 
-    let data = {"marketplaceFee": marketplaceFee, "royaltyFee" : royaltyFee}
+    let data = { "marketplaceFee": marketplaceFee, "royaltyFee": royaltyFee }
 
     setFees(data);
 
-  }
+  }, [marketplaceContract, collectionId]);
 
   useEffect(() => {
-    fetchFees()
-  })
-  
+    fetchFees();
+  }, [fetchFees])
+
   const initialValues = {
     type: listTypes[0],
     currency: currencies[0],
@@ -113,19 +101,17 @@ export default function Listing(props) {
 
   const hasError = approvalError || signatureError || apiError || auctionApprovalError || auctionSignatureError || auctionApiError || transactionError;
 
-  //TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
+  // TODO: need to generate the token contract object corrisponding to token.contractAddress, so we can support multiple tokens other than honey
 
   async function handleSubmit(values, actions) {
     const { duration, type, currency, price, percent } = values;
     const expirationDate = getUnixTime(add(new Date(), { [duration?.value?.unit]: duration?.value?.number }));
 
-
-
     if (type?.value === 'fixed') {
       await handleList({ price, expirationDate });
     }
     if (type?.value === 'auction') {
-      await handleCreateAuction({ price, expirationDate})
+      await handleCreateAuction({ price, expirationDate })
     }
     // set form submitting status to false
     actions.setSubmitting(false);
@@ -184,14 +170,14 @@ export default function Listing(props) {
                     className: 'my-2',
                     title: 'Requesting Signature',
                     status: signatureStatus,
-                    isDefaultOpen: false,
+                    isDefaultOpen: true,
                     description: signatureError ? signatureError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: apiStatus,
-                    isDefaultOpen: false,
+                    isDefaultOpen: true,
                     description: apiError ? apiError : 'Description here'
                   }
                 ] : [
@@ -205,21 +191,21 @@ export default function Listing(props) {
                     className: 'my-2',
                     title: 'Requesting Signature',
                     status: auctionSignatureStatus,
-                    isDefaultOpen: false,
+                    isDefaultOpen: true,
                     description: auctionSignatureError ? auctionSignatureError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: auctionApiStatus,
-                    isDefaultOpen: false,
+                    isDefaultOpen: true,
                     description: auctionApiError ? auctionApiError : 'Description here'
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: transactionStatus,
-                    isDefaultOpen: false,
+                    isDefaultOpen: true,
                     description: transactionError ? transactionError : 'Description here'
                   }
                 ]}

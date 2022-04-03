@@ -41,10 +41,9 @@ export default function ChangePriceForm(props) {
     // set form submitting status to false
     actions.setSubmitting(false);
 
-    // close modal here
-    handleClose();
-
     fetchData();
+
+    handleClose();
 
     // eslint-disable-next-line
   }, [handleCancelListing, handleList])
@@ -77,21 +76,21 @@ export default function ChangePriceForm(props) {
                 className: 'my-2',
                 title: 'Approval',
                 status: approvalStatus,
-                isDefaultOpen: false,
+                isDefaultOpen: true,
                 description: approvalError ? approvalError : 'Description here'
               },
               {
                 className: 'my-2',
                 title: 'Requesting Signature',
                 status: signatureStatus,
-                isDefaultOpen: false,
+                isDefaultOpen: true,
                 description: signatureError ? signatureError : 'Description here'
               },
               {
                 className: 'my-2',
                 title: 'Completion',
                 status: apiStatus,
-                isDefaultOpen: false,
+                isDefaultOpen: true,
                 description: apiError ? apiError : 'Description here'
               }
             ]}
