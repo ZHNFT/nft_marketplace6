@@ -121,7 +121,9 @@ export default function ProfileHeader({
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Transactions</h4>
-              <span className="text-xl font-medium">28</span>
+              <span className="text-xl font-medium">
+                { userData.sales?.total || 0 }
+              </span>
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Volume</h4>
