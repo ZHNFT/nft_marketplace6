@@ -1,6 +1,4 @@
 import clsx from "clsx";
-import PrimaryButton from "../Buttons/PrimaryButton";
-import SecondaryButton from "../Buttons/SecondaryButton";
 import { useRouter } from "next/router";
 
 export default function HeroCards( {connect, address }) {

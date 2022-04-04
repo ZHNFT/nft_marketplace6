@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image'
 import { ellipseAddress } from '../../Utils';
-import { formatEther, usdFormatter } from '../../Utils/helper';
+import { formatEther } from '../../Utils/helper';
 import DefaultLogo from '../../images/default-collection-logo.png';
 import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon, DiscordIcon, TelegramIcon } from '../icons';
 import { getExplorer } from '../../config';
