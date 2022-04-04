@@ -90,7 +90,7 @@ export default function Offers({ tokenPriceUsd }) {
           return (
             <Link key={`offer_results_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${contractAddress}/token/${tokenId}`} passHref>
             <a>
-            <Row key={`user_activity_${index}`} className="cursor-pointer relative mb-6 z-0">
+            <Row key={`offer_results_${index}`} className="cursor-pointer relative mb-6 z-0">
               <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "offerMade" ?
 

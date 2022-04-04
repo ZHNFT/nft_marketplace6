@@ -266,7 +266,7 @@ export default function Listing(props) {
                   </div>
                 </RadioGroup>
 
-                {//TODO: remove percent Increment
+                {
                 }
 
                 {

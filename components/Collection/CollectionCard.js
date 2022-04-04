@@ -14,7 +14,7 @@ import { BeeIcon, ViewIcon } from "../icons";
 import SecondaryButton from "../Buttons/SecondaryButton";
 
 export default function CollectionCard({ collection }) {
-  const { id, name, description, author, address, owners, volume, floorPrice, totalSupply, listed  } = collection
+  const { id, name, description, author, address, ownerCount, volume, floorPrice, totalSupply, listed  } = collection
   return (
    <div className="mx-auto max-w-[378px] md:max-w-[555px] box-shadow-featuredCard rounded-xl bg-[#262a32]">
     <div className="relative w-[full] h-[300px] md:h-[439px] rounded-xl overflow-hidden">
@@ -55,13 +55,13 @@ export default function CollectionCard({ collection }) {
       <div className="flex absolute bottom-0 left-0 h-[46px] w-full bg-cardCaption backdrop-blur-md text-sm justify-center md:justify-between items-center rounded-xl">
         <div className="ml-6 md:ml-[130px] flex flex-col md:flex-row text-center md:text-left leading-[1.25]">
           <span className="font-light">Owners</span>
-          <span className="font-medium ml-2">{ formatCompact(owners) }</span>
+          <span className="font-medium ml-2">{ formatCompact(ownerCount) }</span>
         </div>
         <div className="flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
           <span className="mr-1 font-light">Volume</span>
           <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
             <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
-            <span className="font-medium">{volume ? formatCompact(volume) : "0" }</span>
+            <span className="font-medium">{volume.total ? formatCompact(volume.total) : "0" }</span>
           </span>
         </div>
         <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
