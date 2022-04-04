@@ -62,8 +62,6 @@ export default function Offers({ tokenPriceUsd }) {
           const { activityType, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = row;
 
           const price = pricePerItem;
-          const link = '';
-
 
           const date = new Date(timestamp);
 
