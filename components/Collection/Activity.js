@@ -81,9 +81,8 @@ export default function Activity({ tokenPriceUsd }) {
           }
           return (
 
-            <Link key={`user_activity`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-            <a>
-            <Row key={_id} className="cursor-pointer">
+            <Link key={_id} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+            <Row className="cursor-pointer">
               <Cell className="w-[30px] mobile-only:hidden">
               {activityType == "transfer" ? isMinting ?
 
@@ -185,7 +184,6 @@ export default function Activity({ tokenPriceUsd }) {
                 </a>
               </Cell>
             </Row>
-            </a>
             </Link>
           );
         })
