@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import Image from "next/image";
-import DefaultLogo from "../../images/default-collection-logo-2.png";
+import DefaultLogo from "../../images/default-collection-logo.png";
 import Modal from "./Modal";
 import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon } from "../icons";
 import InputField from "../Forms/InputField";
@@ -9,8 +10,9 @@ import { useContext, useEffect } from "react";
 import Web3Context from "../../contexts/Web3Context";
 import Web3Token from "web3-token";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
-import { transformUserData } from "../../Utils/helper";
+import { transformUserData, uploadToIpfs } from "../../Utils/helper";
 import { Formik } from "formik";
+import { PencilIcon } from "@heroicons/react/outline";
 
 const textFields = [
   { id: "username", label: "Username", isRequired: true },
@@ -37,6 +39,15 @@ export default function EditProfileModal(props) {
   const {
     state: { ethersProvider },
   } = useContext(Web3Context);
+  const [images, setImages] = useState({});
+  const [preview, setPreview] = useState({});
+
+  const onSelectImage = event => {
+    const name = event.target.name;
+    const file = event.target.files[0];
+    setPreview({...preview, [name]: URL.createObjectURL(file) });
+    setImages({...images, [name]: file })
+  };
 
   async function saveUserDetails(data) {
     const signer = ethersProvider.getSigner();
@@ -44,6 +55,12 @@ export default function EditProfileModal(props) {
       async (msg) => await signer.signMessage(msg),
       "1d"
     );
+    
+    // upload images to ipfs
+    const [profileImageUrl, coverImageUrl] = await Promise.all([
+      images.profileImage ? uploadToIpfs(images.profileImage) : Promise.resolve(null),
+      images.coverImage ? await uploadToIpfs(images.coverImage) : Promise.resolve(null)
+    ]);
 
     const transformedData = {
       username: data["username"],
@@ -62,7 +79,10 @@ export default function EditProfileModal(props) {
           href: data["instagram"],
         },
       ],
-      imageUrl: "",
+      images: {
+        profile: profileImageUrl || data.images?.profile,
+        banner: coverImageUrl || data.images?.banner
+      }
     };
 
     const response = await fetch(`https://hexagon-api.onrender.com/users/me`, {
@@ -103,32 +123,28 @@ export default function EditProfileModal(props) {
             <div className="px-4">
               <div className="mt-3 flex justify-between items-end">
                 <div className="relative">
-                  <button
-                    type="button"
-                    className="w-[74px] h-[74px] border-[1px] border-malibu rounded-full p-[1.5px] overflow-hidden"
-                    onClick={() => console.log("change image")}
-                  >
+                  <label className="group block cursor-pointer w-[74px] h-[74px] border-[1px] border-malibu rounded-full p-[1.5px] overflow-hidden">
+                    <input type="file" name="profileImage" className="hidden" accept="image/*" onChange={onSelectImage} />
                     <span className="sr-only">Change profile image</span>
                     <Image
-                      className="h-8 w-8"
-                      src={values["imageUrl"] || DefaultLogo}
+                      className="aspect-w-1 object-cover object-center justify-center rounded-full overflow-hidden"
+                      src={preview.profileImage || values.images?.profile || DefaultLogo}
                       alt={values["username"]}
-                      width={"100%"}
-                      height={"100%"}
+                      layout="fill" 
                     />
                     <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
                       <CameraIcon className="text-white w-[13px]" />
                     </span>
-                  </button>
+                    <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                      <PencilIcon className="w-5 h-5" />
+                    </div>
+                  </label>
                 </div>
                 <div>
-                  <button
-                    type="button"
-                    className="border-[0.5px] inline-block border-manatee py-2 px-4 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium"
-                    onClick={() => console.log("change cover")}
-                  >
+                  <label className="block cursor-pointer border-[0.5px] inline-block border-manatee py-2 px-4 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium">
+                    <input type="file" name="coverImage" className="hidden" accept="image/*" onChange={onSelectImage} />
                     Change cover
-                  </button>
+                  </label>
                 </div>
               </div>
             </div>

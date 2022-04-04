@@ -81,7 +81,7 @@ export default function Header(props) {
                     <ProfileMenuButton
                       address={address}
                       name={user?.username}
-                      imageUrl={user?.imageUrl}
+                      imageUrl={user?.images?.profile}
                       disconnect={disconnect}
                     >
                       <ProfileMenu
