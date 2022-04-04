@@ -121,7 +121,7 @@ export default function AddCollectionModal(props) {
       currency: data.paymentTokens
     };
 
-    const response = await fetch(`https://hexagon-api.onrender.com/collections`, {
+    const response = await fetch(`https://api.hexag0n.io/collections`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
