@@ -1,7 +1,10 @@
 import { ethers } from "ethers";
+import { create } from 'ipfs-http-client';
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 import _ from "lodash";
+
+const ipfsClient = create('https://ipfs.infura.io:5001/api/v0');
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -144,7 +147,7 @@ const transformUserData = (user) => {
       website: '',
       twitter: '',
       instagram: '',
-      imageUrl: '',
+      images: { profile: '', banner: '' },
       estimatedValue: 0,
       volume: {
         total: 0,
@@ -166,7 +169,7 @@ const transformUserData = (user) => {
   const instagram = _.find(user.socials, { name: "instagram" })?.href;
   const username = user.username;
   const description = user.description;
-  const imageUrl = user.imageUrl;
+  const images = user.images;
   const estimatedValue = user.estimatedValue;
   const volume = user.volume;
   const sales = user.sales;
@@ -177,11 +180,22 @@ const transformUserData = (user) => {
     website,
     twitter,
     instagram,
-    imageUrl,
+    images,
     estimatedValue,
     volume,
     sales
   }
+}
+
+const uploadToIpfs = async file => {
+  try {
+    const added = await ipfsClient.add(file);
+    const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+    return url;
+  } catch (error) {
+    console.log('Error uploading to IPFS', error)
+    return null;
+  }  
 }
 
 export {
@@ -198,5 +212,6 @@ export {
   usdFormatter,
   formatEther,
   formatCompact,
-  getUserOffers
+  getUserOffers,
+  uploadToIpfs
 };

@@ -3,7 +3,7 @@ import { Popover, Transition } from '@headlessui/react';
 import Image from 'next/image';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
 import { ellipseAddress } from '../../Utils';
-import DefaultLogo from '../../images/default-collection-logo-2.png';
+import DefaultLogo from "../../images/default-collection-logo.png";
 
 export default function ProfileMenuButton({ address, name, imageUrl, children }) {
   return (
