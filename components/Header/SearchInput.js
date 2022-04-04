@@ -105,7 +105,7 @@ export default function SearchInput() {
               leaveFrom="transform scale-100 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Popover.Panel className="absolute z-10 w-[390px] left-0 mt-[8px]">
+              <Popover.Panel className="absolute z-10 w-[390px] -left-[56px] md:left-0 mt-[8px]">
                 <div className="popover-container overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5">
                   {
                     !searchTerm || !searchResults || isLoading

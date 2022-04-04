@@ -20,7 +20,7 @@ const GalleryItem = forwardRef((props, ref) => {
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
-        className="relative cursor-pointer w-[210px] h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
+        className="relative cursor-pointer w-[170px] h-[290px] sm:w-[210px] sm:h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         ref={ref}
@@ -53,7 +53,7 @@ const GalleryItem = forwardRef((props, ref) => {
           listing={listing}
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
-          <div className="flex h-[24px] justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
+          <div className="flex sm:h-[24px] flex-col sm:flex-row justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
             <ItemListingState 
               listingState={listingState}
               price={listingState === NFT_LISTING_STATE.IN_AUCTION ? listing?.highestBid : listing?.lowestPrice}

@@ -53,7 +53,7 @@ export default function Slider({ className, arrowSize, children }) {
       <div className="relative">
         <div className={clsx(
           'flex justify-between absolute -left-[10px] -right-[10px] w-auto h-full',
-          arrowSize === 'sml' ? 'lg:-left-[28px] lg:-right-[45px]' : 'lg:-left-[60px] lg:-right-[60px]'
+          arrowSize === 'sml' ? '-left-[32px] -right-[46px] lg:-left-[28px] lg:-right-[45px]' : 'lg:-left-[60px] lg:-right-[60px]'
         )}>
           <button
             onClick={event => { event.preventDefault(); movePrev(); }}
