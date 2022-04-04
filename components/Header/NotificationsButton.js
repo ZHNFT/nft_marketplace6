@@ -31,8 +31,10 @@ export default function NotificationsButton({ currentUserAddress }) {
   }, [currentUserAddress])
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    if (currentUserAddress) {
+      fetchData()
+    }
+  }, [fetchData, currentUserAddress])
 
   const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ owner: currentUserAddress, marketplaceAddress, ethersProvider, marketplaceContract, fetchData });
 
