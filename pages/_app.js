@@ -145,12 +145,12 @@ function MyApp({ Component, pageProps }) {
     let erc20TokenContract;
 
     if (network.chainId === 80001) {
-      marketplaceTestContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
+      marketplaceContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
       erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
     }
     if (network.chainId === 137) {
       // TODO initialize contracts with correct addresses from config
-      marketplaceTestContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
+      marketplaceContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
       erc20TokenContract = new ethers.Contract(honeyTokenAddress, TestErc20ABI, ethersSigner);
     }
 

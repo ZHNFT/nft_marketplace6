@@ -1,4 +1,4 @@
-export const mumbaiMarketplaceContractAddress = "0x20ed209B16EF395db0F0031A1bbf0F17CA5Aaca4"
+export const mumbaiMarketplaceAddress = "0x20ed209B16EF395db0F0031A1bbf0F17CA5Aaca4"
 export const mumbaiHoneyTokenAddress = "0x7c4Fcdc9263620c57958b309633C5d42b7c3502D";
 export const honeyTokenAddress = "0x3df2632C893D2790e0e9031Fc10559ab809c6b17";
 export const marketplaceAddress = "0xcd3b66f97B5461318FeDC291c0DBBb2e6590F029"
