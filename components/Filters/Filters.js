@@ -8,7 +8,7 @@ import RangeField from '../Forms/RangeField';
 import ListingFilter from './ListingFilter';
 import TraitsFilter from './TraitsFilter';
 
-export default function Filters({ minRarity = 0, maxRarity = 100, filters, total, placement }) {
+export default function Filters({ minRarity = 0, maxRarity = 100, filters, total, placement, minPrice = 0, maxPrice = 100 }) {
   const { push, query, pathname } = useRouter()
   const { search } = query;
   const formRef = useRef();
@@ -43,6 +43,14 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
       ...appendQuery,
       ...searchQuery
     };
+
+    console.log("butt")
+
+    console.log("min price = ")
+    console.log(minPrice)
+
+    console.log("max price = ")
+    console.log(maxPrice)
 
     // set query filters for FilterTags
     setQueryFilters(Object.keys(newQuery)
@@ -105,7 +113,9 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             { total } { total === 1 ? 'item' : 'items' }
           </span>
           
-          {/* Price */}
+          {/* Price */
+              maxPrice > minPrice && (
+              <>
           <div className="mt-10 text-xs flex justify-between">
             <span className="font-medium">Price</span>
             <div>
@@ -113,13 +123,24 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
               <button type="button" className="text-manatee ml-4">USD</button>
             </div>
           </div>
-          <RangeField
-            step={.1}
-            decimals={1}
-            initialValues={[0, 100]}
-            isReset={isPriceReset || isFormReset}
-            onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
-          />
+
+       
+              
+            <RangeField
+              step={0.1}
+              decimals={1}
+              min={minPrice}
+              max={maxPrice}
+              initialValues={[minPrice, maxPrice]}
+              isReset={isPriceReset || isFormReset}
+              onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
+            /> 
+
+            </>
+            )
+          }
+
+          
 
           { /* Rarity */
             maxRarity > minRarity && (

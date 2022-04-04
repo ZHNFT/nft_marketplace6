@@ -17,6 +17,7 @@ import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
 import CollectionTab from '../../../components/Tabs/CollectionTab';
 import PrimaryButton from '../../../components/Buttons/PrimaryButton';
+import { formatEther } from '../../../Utils/helper';
 
 const url = `https://hexagon-api.onrender.com`;
 
@@ -81,8 +82,25 @@ export default function Collection(props) {
 
   console.log(`collection`, collection)
 
+  let minPrice = collection.floorPrice ? formatEther(collection.floorPrice) : 0;
+  let maxPrice = collection.highestPrice ? formatEther(collection.highestPrice) : 0;
+
+  
+
+  maxPrice = parseFloat(maxPrice);
+  minPrice = parseFloat(minPrice)
+
+  console.log("min price")
+  console.log("maxPrice")
+
+  console.log(minPrice)
+  console.log(maxPrice);
+
+
+
   const fetchCollection = useCallback(async function() {
     const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
+    console.log(collection);
     setData(json);
   // eslint-disable-next-line
   }, [address, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo]);
@@ -164,6 +182,8 @@ export default function Collection(props) {
                 maxRarity={maxRarity}
                 filters={collection?.traits}
                 total={collectionData?.total}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
               />
             </div>
           </Sidebar>

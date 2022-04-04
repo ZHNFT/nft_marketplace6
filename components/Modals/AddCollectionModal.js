@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Formik, Form, Field } from 'formik';
+import { uploadToIpfs } from '../../Utils/helper';
 import Modal from './Modal';
 import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon, TelegramIcon, DiscordIcon, BeeIcon } from '../icons';
 import InputField from '../Forms/InputField';
@@ -11,6 +13,8 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 import PlaceholderImage from '../../images/placeholder-image.png';
 import EthIcon from '../../images/icon-eth.png';
 import MaticIcon from '../../images/icon-matic.png';
+import { PencilIcon } from '@heroicons/react/outline';
+import Spinner from '../Spinner/Spinner';
 
 const socialMediaFields = [
   { id: 'instagram', label: 'Instagram', placeholder: 'e.g. hiveinvestments', icon: () => <InstagramIcon className="w-[12px] mr-1.5" /> },
@@ -71,9 +75,72 @@ export default function AddCollectionModal(props) {
     royaltyPercent: 2,
     payoutAddress: null
   };
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [images, setImages] = useState({});
+  const [preview, setPreview] = useState({});
 
-  const handleSubmit = () => {
-    console.log('submit');
+  const onSelectImage = event => {
+    const name = event.target.name;
+    const file = event.target.files[0];
+    setPreview({...preview, [name]: URL.createObjectURL(file) });
+    setImages({...images, [name]: file })
+  };
+
+  const getSocials = ({ platforms, data }) => platforms.reduce((acc, name) => {
+    const href = data[name];
+    if (href) {
+      acc.push({ name, href });
+    }
+    return acc;
+  }, []);
+
+  const handleSubmit = async data => {
+    setError(null);
+    setIsLoading(true);
+    const platforms = ['website', 'instagram', 'telegram', 'twitter', 'discord'];
+    const [profileImageUrl, coverImageUrl, featuredImageUrl] = await Promise.all([
+      images.profileImage ? uploadToIpfs(images.profileImage) : Promise.resolve(null),
+      images.coverImage ? await uploadToIpfs(images.coverImage) : Promise.resolve(null),
+      images.featuredImage ? await uploadToIpfs(images.featuredImage) : Promise.resolve(null)
+    ]);
+    const payload = {
+      address: data.address,
+      chain: 'polygon',
+      payoutAddress: data.payoutAddress,
+      name: data.name,
+      category: [data.category?.value],
+      description: data.description,
+      images: {
+        logo: profileImageUrl,
+        banner: coverImageUrl,
+        featured: featuredImageUrl
+      },
+      socials: getSocials({ platforms, data }),
+      royaltyPercent: data.royaltyPercent,
+      currency: data.paymentTokens
+    };
+
+    const response = await fetch(`https://hexagon-api.onrender.com/collections`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const error = await response?.json();
+      setError(error?.message);
+    } else {
+      // reset
+      setImages(null);
+      setPreview(null);
+
+      onClose();
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -183,33 +250,28 @@ export default function AddCollectionModal(props) {
                         <span className="text-cornflower ml-1">*</span>
                       </p>
                       <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo.</p>
-                      <div className="mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
+                      <div className="relative mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
+                        { preview?.coverImage && <Image className="aspect-w-1 object-cover object-center justify-center overflow-hidden" src={preview.coverImage} alt={name} layout="fill" /> }
+
                         <div className="relative">
-                          <label htmlFor="userAvatar">
-                            <button
-                              type="button"
-                              className="w-[74px] h-[74px] bg-[#333840] border-[1px] border-dashed border-malibu rounded-full p-[1.5px] overflow-hidden"
-                              onClick={() => console.log('change image')}
-                            >
-                              <span className="sr-only">Change profile image</span>
-                              <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={35} height={40} />
-                              <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
-                                <CameraIcon className="text-white w-[13px]" />
-                              </span>
-                              
-                            </button>
+                          <label className="group block cursor-pointer w-[74px] h-[74px] bg-[#333840] border-[1px] border-dashed border-malibu rounded-full p-[1.5px] overflow-hidden">
+                            <input type="file" name="profileImage" className="hidden" accept="image/*" onChange={onSelectImage} />
+                            <span className="sr-only">Change profile image</span>
+                            <Image className="aspect-w-1 object-cover object-center justify-center rounded-full overflow-hidden" src={preview?.profileImage || PlaceholderImage} alt={name} layout="fill" />
+                            <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                              <CameraIcon className="text-white w-[13px]" />
+                            </span>
+                            <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                              <PencilIcon className="w-5 h-5" />
+                            </div>
                           </label>
-                          <input type="file" className='w-10' id="userAvatar"/>
                         </div>
                         
-                        <div>
-                          <button 
-                            type="button"
-                            className="border-[0.5px] inline-block border-manatee py-2 px-6 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium"
-                            onClick={() => console.log('change cover')}
-                          >
+                        <div className="z-10">
+                          <label className="block cursor-pointer border-[0.5px] inline-block border-manatee py-2 px-6 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium">
                             Add cover
-                          </button>
+                            <input type="file" name="coverImage" className="hidden" accept="image/*" onChange={onSelectImage} />
+                          </label>
                         </div>
                       </div>
                     </div>
@@ -220,17 +282,26 @@ export default function AddCollectionModal(props) {
                       </p>
                       <p className="text-xs text-manatee">Recommended size 1,100px x 880px. This will be used on collection cards.</p>
                       <div className="relative mt-4">
-                        <button
-                          type="button"
-                          className="w-full h-[240px] bg-white/[0.02] border-[1px] border-dashed border-malibu rounded-md p-[1.5px] overflow-hidden"
-                          onClick={() => console.log('change image')}
-                        >
-                          <span className="sr-only">Change profile image</span>
-                          <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={67} height={75} />
+                        <label className="group flex items-center justify-center block cursor-pointer w-full h-[240px] bg-white/[0.02] border-[1px] border-dashed border-malibu rounded-md p-[1.5px] overflow-hidden">
+                          { 
+                            preview?.featuredImage && (
+                              <div>
+                                <Image className="aspect-w-1 object-cover object-center justify-center overflow-hidden" src={preview.featuredImage} alt={name} layout="fill" />
+                              </div>
+                            )
+                          }
+                          <input type="file" name="featuredImage" className="hidden" accept="image/*" onChange={onSelectImage} />
+                          <span className="sr-only">Change featured image</span>
+                          <div>
+                            <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={67} height={75} />
+                          </div>
                           <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
                             <CameraIcon className="text-white w-[13px]" />
                           </span>
-                        </button>
+                          <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                            <PencilIcon className="w-5 h-5" />
+                          </div>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -313,12 +384,17 @@ export default function AddCollectionModal(props) {
                     />
                   </div>
 
+                  {
+                    error && <p className="mt-2 text-sm text-center text-red-400">{ error }</p>
+                  }
+
                   <PrimaryButton
-                    className="text-xs !px-4 text-center block ml-auto mt-8"
+                    className="relative text-xs !px-6 text-center block ml-auto mt-8"
                     size="sm"
                     onClick={handleSubmit}
                   >
                     Submit application
+                    { isLoading && <Spinner className="absolute w-[21px] right-1 top-[6px]" /> }
                   </PrimaryButton>
                 </Form>
               );
