@@ -137,7 +137,7 @@ export default function Collection(props) {
         <>
           <Sidebar className={clsx(
             'w-full sm:w-[200px] flex-shrink-0 transition-all duration-300 ease-in-out lg:mr-2',
-            'fixed z-10 sm:relative top-0 sm:top-auto bottom-0 left-0 sm:left-auto mobile-only:bg-[#1f2225] mobile-only:overflow-y-auto mobile-only:overflow-x-hidden',
+            'fixed z-2 sm:relative top-0 sm:top-auto bottom-0 left-0 sm:left-auto mobile-only:bg-[#1f2225] mobile-only:overflow-y-auto mobile-only:overflow-x-hidden',
             showFilters ? 'delay-75' : '-ml-2 w-0 sm:w-0 mobile-only:px-0'
           )}>
             <button

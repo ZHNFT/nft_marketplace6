@@ -185,18 +185,23 @@ export default function AddCollectionModal(props) {
                       <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo.</p>
                       <div className="mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
                         <div className="relative">
-                          <button
-                            type="button"
-                            className="w-[74px] h-[74px] bg-[#333840] border-[1px] border-dashed border-malibu rounded-full p-[1.5px] overflow-hidden"
-                            onClick={() => console.log('change image')}
-                          >
-                            <span className="sr-only">Change profile image</span>
-                            <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={35} height={40} />
-                            <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
-                              <CameraIcon className="text-white w-[13px]" />
-                            </span>
-                          </button>
+                          <label for="userAvatar">
+                            <button
+                              type="button"
+                              className="w-[74px] h-[74px] bg-[#333840] border-[1px] border-dashed border-malibu rounded-full p-[1.5px] overflow-hidden"
+                              onClick={() => console.log('change image')}
+                            >
+                              <span className="sr-only">Change profile image</span>
+                              <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={35} height={40} />
+                              <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                                <CameraIcon className="text-white w-[13px]" />
+                              </span>
+                              
+                            </button>
+                          </label>
+                          <input type="file" className='w-10'  id="userAvatar"/>
                         </div>
+                        
                         <div>
                           <button 
                             type="button"
