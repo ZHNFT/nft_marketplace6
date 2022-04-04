@@ -22,7 +22,7 @@ export default function HeroCards( {connect, address }) {
       buttonClass: 'secondary',
       action: () => { 
 
-        router.push("/collections/0x19E46Be2e3aD8968a6230C8fb140C4CCaBC3ce0d") 
+        router.push("/collections/0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d") 
       
       }
     },

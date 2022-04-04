@@ -12,7 +12,7 @@ export default function Home(props) {
 
   const fetchData = useCallback(async function() {
     //TODO: quer multiple collections
-    const url = `https://api.hexag0n.io/collections/0x19E46Be2e3aD8968a6230C8fb140C4CCaBC3ce0d`;
+    const url = `https://api.hexag0n.io/collections/0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d`;
     const res = await fetch(url)
     const data = await res?.json()
 

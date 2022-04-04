@@ -15,7 +15,7 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 
 export default function Hero() {
   // featured NFT
-  const address = '0x16c3fbda29713b1766128980b65d92807151d710';
+  const address = '0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d';
   const id = '1';
   const { data: collection } = useSWRImmutable(collectionUrl({ address }), fetcher);
   const { data: nft } = useSWRImmutable(nftUrl({ address, id }), fetcher);
@@ -41,7 +41,7 @@ export default function Hero() {
           </p>
         </div>
         <span className="block mb-4">
-          <Link href="/collections/0x16c3fbda29713b1766128980b65d92807151d710">
+          <Link href="/collections/0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d">
             <a className="gradient-bg-blue rounded-[10px] text-xs text-white px-10 py-2.5 border-[0.5px] border-transparent hover:border-white">
               Explore
             </a>
