@@ -13,6 +13,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
   if (!offers || offers.length === 0) {
     return <p className="text-center text-xs mt-2">No offers available</p>
   }
+
   return (
     <Table className="text-xs">
       <RowHeading>

@@ -19,8 +19,6 @@ const GalleryItem = forwardRef((props, ref) => {
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
   const listing = activeAuction ? activeAuction : lowestPrice !== 0 ? { highestPrice, lowestPrice } : null;
   
-  console.log(`item`, item)
-  
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 

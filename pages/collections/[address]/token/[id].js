@@ -28,7 +28,7 @@ import useAcceptBid from '../../../../hooks/useAcceptBid';
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance, tokenData }) {
+export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance, tokenData, loadBalance }) {
   const [data, setData] = useState(serverData)
 
   // there can only be one active listing or auction for a token at the same time
@@ -158,6 +158,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
         activeAuction={activeAuction}
         tokenPriceUsd={tokenData?.priceUsd}
         tokenBalance={tokenBalance}
+        loadBalance={loadBalance}
       />
       <div className="mx-auto py-16 sm:py-24 sm:px-6 lg:max-w-6xl">
         {/* Product */}

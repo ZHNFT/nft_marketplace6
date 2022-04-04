@@ -79,6 +79,8 @@ export default function Collection(props) {
   const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
 
+  console.log(`collection`, collection)
+
   const fetchCollection = useCallback(async function() {
     const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
     setData(json);

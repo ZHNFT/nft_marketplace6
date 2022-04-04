@@ -73,7 +73,7 @@ export default function MakeOfferForm(props) {
    async function handleSubmit(values, actions) {
     const { price, expiration, time } = values;
     setIsLoading(true);
-    // TODO add time to expiration
+    // TODO add time to expiration for make offer form
     const expirationDate = getUnixTime(add(new Date(), { [expiration?.value?.unit]: expiration?.value?.number }));
 
     if (activeModal === NFT_MODALS.MAKE_OFFER) {

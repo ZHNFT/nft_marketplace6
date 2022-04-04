@@ -63,8 +63,8 @@ export default function Offers({ tokenPriceUsd }) {
       {
         !isLoading && offers?.results?.map((offer, index) => {
 
-          const { activityType, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = offer;
-
+          const { activityType, contractAddress, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = offer;
+          
           const price = pricePerItem;
 
           const date = new Date(timestamp);
@@ -87,7 +87,9 @@ export default function Offers({ tokenPriceUsd }) {
           } : {};
 
           return (
-            <Row key={`user_activity_${index}`} className="cursor-pointer relative mb-6" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
+            <Link key={`offer_results_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${contractAddress}/token/${tokenId}`} passHref>
+            <a>
+            <Row key={`user_activity_${index}`} className="cursor-pointer relative mb-6 z-0">
               <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "offerMade" ?
 
@@ -206,10 +208,16 @@ export default function Offers({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px] text-center mobile-only:absolute mobile-only:right-0 mobile-only:-bottom-[12px]">
               {  
-                activityType == "offerMade"
+                activityType == "offerReceived"
                   ? (
                     <div className="flex">
-                      <div className="group relative text-green-500 hover:underline" onClick={() => handleAcceptBid(offer)}>
+                      <div 
+                        className="group relative text-green-500 hover:underline z-10" 
+                        onClick={(event) => {
+                          event.preventDefault();
+                          handleAcceptBid(offer);
+                        }}
+                      >
                         Accept
                       </div>
                       {/* <div className="group relative text-red-500 ml-4 hover:underline">
@@ -220,8 +228,9 @@ export default function Offers({ tokenPriceUsd }) {
                   : <span className="mobile-only:hidden">-</span>
               }
               </Cell>
-             
             </Row>
+          </a>
+          </Link>
           );
         })
       }

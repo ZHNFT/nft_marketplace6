@@ -8,8 +8,6 @@ import Web3Context from '../contexts/Web3Context';
 import router from 'next/router';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
-import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
-import { honeyTokenAddress } from '../config'
 import { getUserDetails } from '../Utils/helper';
 import AppGlobalContext from '../contexts/AppGlobalContext';
 
@@ -17,7 +15,8 @@ import AppGlobalContext from '../contexts/AppGlobalContext';
 import Layout from '../components/layout';
 
 // Config
-import { networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
+import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
+import { honeyTokenAddress, networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
 
 const providerOptions = {
   walletconnect: {
@@ -54,12 +53,16 @@ function reducer(state, action) {
         ethersProvider: action.ethersProvider,
         marketplaceContract: action.marketplaceContract,
         tokenContract: action.tokenContract,
-        tokenBalance: action.tokenBalance,
       }
     case 'SET_ADDRESS':
       return {
         ...state,
         address: action.address,
+      }
+    case 'SET_BALANCE':
+      return {
+        ...state,
+        tokenBalance: action.tokenBalance,
       }
     case 'SET_TOKEN_DATA':
       return {
@@ -86,7 +89,7 @@ function MyApp({ Component, pageProps }) {
   const contextValue = useMemo(() => {
     return { state, dispatch };
   }, [state, dispatch]);
-  const { provider, web3Provider, address, chainId } = state;
+  const { provider, web3Provider, address, chainId, tokenContract } = state;
   const mainnetChainId = "0x89";
   const testnetChainId = "0x13881";
 
@@ -109,6 +112,17 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
+  const loadBalance = useCallback(async function(erc20TokenContract, address) {
+    if (!erc20TokenContract || !address) return;
+    let erc20TokenBalance = await erc20TokenContract?.balanceOf(address);
+    erc20TokenBalance = ethers.utils.formatEther(erc20TokenBalance.toString());
+
+    dispatch({
+      type: 'SET_BALANCE',
+      tokenBalance: erc20TokenBalance
+    });
+  }, []);
+
   const connect = useCallback(async function () {
     // This is the initial `provider` that is returned when
     // using web3Modal to connect. Can be MetaMask or WalletConnect.
@@ -129,8 +143,6 @@ function MyApp({ Component, pageProps }) {
     
     let marketplaceTestContract;
     let erc20TokenContract;
-    
-    console.log(`network.chainId`, network.chainId)
 
     if (network.chainId === 80001) {
       marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
@@ -140,8 +152,7 @@ function MyApp({ Component, pageProps }) {
       // TODO initialize contracts with correct addresses
     }
 
-    let erc20TokenBalance = await erc20TokenContract?.balanceOf(address);
-    erc20TokenBalance = ethers.utils.formatEther(erc20TokenBalance.toString());
+    await loadBalance(erc20TokenContract, address);
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -157,14 +168,13 @@ function MyApp({ Component, pageProps }) {
           : null,
       marketplaceContract: marketplaceTestContract,
       tokenContract: erc20TokenContract,
-      tokenBalance: erc20TokenBalance
     })
 
     // Pull in user details once the user has connected
     // and we have their address.
     const userData = await getUserDetails(address);
     setUser(userData.user);
-  }, []);
+  }, [loadBalance]);
 
   const disconnect = useCallback(
     async function () {
@@ -205,11 +215,13 @@ function MyApp({ Component, pageProps }) {
           type: 'SET_ADDRESS',
           address: accounts[0],
         })
+        loadBalance(tokenContract, accounts[0]);
       }
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
       const handleChainChanged = (_hexChainId) => {
         window.location.reload()
+        loadBalance(tokenContract, address);
       }
 
       const handleDisconnect = (error) => {
@@ -231,7 +243,7 @@ function MyApp({ Component, pageProps }) {
         }
       }
     }
-  }, [provider, disconnect])
+  }, [provider, disconnect, loadBalance, tokenContract, address])
 
 
   // Will ask the user to switch chains if they are connected to the wrong chain
@@ -270,12 +282,12 @@ function MyApp({ Component, pageProps }) {
     <ThemeProvider enableSystem={true} attribute="class">
       <Web3Context.Provider value={contextValue}>
         <AppGlobalContext.Provider value={globalContextValue}>
-          <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>
+          <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} loadBalance={loadBalance} {...contextValue.state}>
             {/*
               Component here is the page, for example index.js
               So if we want a sidebar or main menu on every page of the website its best to put these components in layout.js
             */}
-            <Component {...pageProps} {...contextValue.state} connect={connect} />
+            <Component {...pageProps} {...contextValue.state} connect={connect} loadBalance={loadBalance} />
           </Layout>
         </AppGlobalContext.Provider>
       </Web3Context.Provider>
