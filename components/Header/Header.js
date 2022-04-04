@@ -51,27 +51,30 @@ export default function Header(props) {
                     </div>
                   </div>
                 </div>
-                <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
-                  <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                    <ul className="flex flex-1 justify-around">
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Collections
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Marketplace
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Drops
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+
+                {
+                // <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
+                //   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+                //     <ul className="flex flex-1 justify-around">
+                //       <li>
+                //         <a href="#" className="text-base hover:underline">
+                //           Collections
+                //         </a>
+                //       </li>
+                //       <li>
+                //         <a href="#" className="text-base hover:underline">
+                //           Marketplace
+                //         </a>
+                //       </li>
+                //       <li>
+                //         <a href="#" className="text-base hover:underline">
+                //           Drops
+                //         </a>
+                //       </li>
+                //     </ul>
+                //   </div>
+                // </div>
+                }
                 <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden xl:col-span-4">
                   {/* Mobile menu button */}
                   <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-malibu">
