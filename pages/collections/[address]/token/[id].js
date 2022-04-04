@@ -23,6 +23,7 @@ import TraitsTable from '../../../../components/Product/TraitsTable';
 import CountdownTimer from '../../../../components/CountdownTimer';
 import fromUnixTime from 'date-fns/fromUnixTime'
 import getUnixTime from 'date-fns/getUnixTime'
+import useAcceptBid from '../../../../hooks/useAcceptBid';
 
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
@@ -82,30 +83,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
-  // For the owner of the NFT to accept a bid
-  const handleAcceptBid = useCallback(async function (offer) {
-    try {
-      const tx = await marketplaceContract.AcceptBid({
-        contractAddress: offer?.contractAddress || offer?.collectionId,
-        userAddress: offer.userAddress,
-        tokenId: offer.tokenId,
-        pricePerItem: offer.pricePerItem.toString(),
-        quantity: offer.quantity,
-        expiry: offer.expiry,
-        nonce: offer.nonce,
-        r: offer.r,
-        s: offer.s,
-        v: offer.v,
-      });
-      const txResult = await tx?.wait();
-      console.log(`txResult`, txResult)
-      if (txResult) {
-        fetchData()
-      }
-    } catch (error) {
-      alert(error?.data?.message || error?.message)
-    }
-  }, [marketplaceContract, fetchData])
+  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData });
 
   // For non-owners to cancel their bid
   const handleCancelBid = useCallback(async function (offer) {

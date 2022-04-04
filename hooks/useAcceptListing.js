@@ -5,7 +5,7 @@ import { formatEther } from '../Utils/helper';
 
 export default function useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address }) {
   const { handleAllowance, allowanceStatus, allowanceError, allowanceTx } = useTokenAllowance({ tokenContract, marketplaceAddress, address });
-  const [acceptationStatus, setAcceptationStatus] = useState();
+  const [acceptationStatus, setAcceptationStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [acceptationError, setAcceptationError] = useState(null);
   const [transaction, setTransaction] = useState(null);
 
@@ -14,7 +14,9 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
 
     await handleAllowance(formatEther(listing?.pricePerItem));
 
-    try {      
+    try {
+      setAcceptationStatus(TRANSACTION_STATUS.IN_PROGRESS);
+      
       const tx = await marketplaceContract.AcceptListing({
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,

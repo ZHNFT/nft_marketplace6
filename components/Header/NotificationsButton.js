@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useCallback } from 'react';
+import { Fragment, useState, useEffect, useCallback, useContext } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Popover, Transition } from '@headlessui/react';
@@ -8,12 +8,17 @@ import { usdFormatter, formatEther } from '../../Utils/helper';
 import fromUnixTime from 'date-fns/fromUnixTime'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import NotFoundImage from "../../images/No-Image-Placeholder.png";
+import Web3Context from "../../contexts/Web3Context";
+import useAcceptBid from '../../hooks/useAcceptBid';
 
 const NOTIFICATION_TYPES = {
   AUCTION_BID: 'auctionBid'
 };
 
 export default function NotificationsButton({ currentUserAddress }) {
+  const {
+    state: { marketplaceContract },
+  } = useContext(Web3Context);
   const [notifications, setNotifications] = useState([]);
   const unreadNotifications = notifications?.results?.filter(item => !item?.read)?.length;
 
@@ -27,6 +32,8 @@ export default function NotificationsButton({ currentUserAddress }) {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData });
 
   // TODO implement mark as read for notifications
   // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read
@@ -97,12 +104,14 @@ export default function NotificationsButton({ currentUserAddress }) {
                                   </Link> */}
                                 </p>
                                 <p>
-                                  <button type="button" className="text-[#3CA075] hover:underline">
-                                    Accept
-                                  </button>
-                                  <button type="button" className="ml-4 text-[#DE5353] hover:underline">
+                                  {notificationType === "bid" && info?.active ? (
+                                   <button type="button" className="text-[#3CA075] hover:underline" onClick={() => handleAcceptBid(item?.info)}>
+                                      Accept
+                                    </button>
+                                  ) : null}
+                                  {/* <button type="button" className="ml-4 text-[#DE5353] hover:underline">
                                     Decline
-                                  </button>
+                                  </button> */}
                                 </p>
                               </div>
                               <div className="no-shrink w-[100px] ml-auto text-right">

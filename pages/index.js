@@ -21,6 +21,8 @@ const featuredCollections = [
 
 export default function Home(props) {
   const { collections } = props;
+  
+  console.log(`collections`, collections)
 
   if (!collections && !collections?.length) {
     return  (
