@@ -16,7 +16,18 @@ import Layout from '../components/layout';
 
 // Config
 import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
-import { honeyTokenAddress, marketplaceAddress, networkConfigs, getChainById, mumbaiMarketplaceAddress, marketPlaceTestABI, TestErc20ABI, mumbaiHoneyTokenAddress } from '../config';
+import { 
+  honeyTokenAddress,
+  marketplaceAddress, 
+  networkConfigs,
+  getChainById, 
+  mumbaiMarketplaceAddress,
+  marketPlaceTestABI, 
+  TestErc20ABI, 
+  mumbaiHoneyTokenAddress,
+  honeyAbi,
+  marketplaceAbi
+} from '../config';
 
 const providerOptions = {
   walletconnect: {
@@ -148,8 +159,8 @@ function MyApp({ Component, pageProps }) {
     }
     if (network.chainId === 137) {
       // TODO initialize contracts with correct addresses from config
-      marketplaceContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
-      erc20TokenContract = new ethers.Contract(honeyTokenAddress, TestErc20ABI, ethersSigner);
+      marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
+      erc20TokenContract = new ethers.Contract(honeyTokenAddress, honeyAbi, ethersSigner);
     }
 
     await loadBalance(erc20TokenContract, address);
