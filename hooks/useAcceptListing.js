@@ -12,9 +12,9 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
   // For the non-owners of the NFT to buy now/accept the listing of the owner
   const handleAcceptListing = useCallback(async function (listing) {
 
-    await handleAllowance(formatEther(listing?.pricePerItem));
+    const allowance = await handleAllowance(formatEther(listing?.pricePerItem));
 
-    if (allowanceError) return;
+    if (allowance) return;
 
     try {
       setAcceptationStatus(TRANSACTION_STATUS.IN_PROGRESS);
@@ -41,7 +41,7 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
       setAcceptationError(error?.data?.message || error?.message);
       return;
     }
-  }, [marketplaceContract, handleAllowance, allowanceError])
+  }, [marketplaceContract, handleAllowance])
 
     return { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError }
 }
