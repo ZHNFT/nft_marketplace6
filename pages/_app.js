@@ -95,12 +95,10 @@ function MyApp({ Component, pageProps }) {
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [user, setUser] = useState({});
-  const globalContextValue = {
-    showEditProfileModal,
-    setShowEditProfileModal,
-    user,
-    setUser
-  }
+  const globalContextValue = useMemo(
+    () => ({ showEditProfileModal, setShowEditProfileModal, user, setUser }), 
+    [showEditProfileModal, user]
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
