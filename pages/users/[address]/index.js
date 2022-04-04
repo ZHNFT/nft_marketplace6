@@ -35,19 +35,17 @@ export default function UserAssets(props) {
     { href: "?tab=offers", name: "Offers" },
     { href: "?tab=auction", name: "On Auction" },
   ];
-  const [selectedItemsFilter, setSelectedItemsFilter] = useState(
-    itemsFilterList[0]
-  );
-  const [selectedSort, setSelectedSort] = useState(sortList[0]);
-  const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
   const total = data?.total;
   const totalOnAuction = data?.auctioned?.length;
   const [userData, setUserData] = useState({});
 
-  useEffect(async () => {
-    const data = await getUserDetails(address);
-    setUserData(transformUserData(data.user));
-  }, []);
+  useEffect(() => {
+    async function getUserData() {
+      const data = await getUserDetails(address);
+      setUserData(transformUserData(data.user));
+    }
+    getUserData()
+  }, [address]);
 
   return (
     <>

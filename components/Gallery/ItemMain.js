@@ -1,7 +1,6 @@
 import { Fragment, useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import Image from 'next/image';
-import GalleryContext from '../../contexts/GalleryContext';
 import { resolveBunnyLink } from '../../Utils';
 import { NFT_LISTING_STATE, NFT_MODALS } from '../../constants/nft';
 import { PulseIcon } from '../icons';
@@ -14,8 +13,6 @@ import CountdownTimer from '../CountdownTimer';
 import fromUnixTime from 'date-fns/fromUnixTime'
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
-  const { setActiveModal } = useContext(GalleryContext);
-
   return (
     <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] sm:w-[210px]">
       <Image

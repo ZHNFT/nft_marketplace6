@@ -128,8 +128,8 @@ export default function Collection(props) {
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
             {/*<span className="mr-4"><FilterButton filters={traits} /></span>*/}
             
-            <Dropdown className="hidden mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
-            <SortOptions className="hidden max-w-[180px]" />
+            {/* <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} /> */}
+            <SortOptions className="max-w-[180px]" />
             
           </div>
         </section>

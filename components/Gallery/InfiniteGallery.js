@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import useInView from "react-cool-inview";
 import { useRouter } from 'next/router'
-import GalleryContext from '../../contexts/GalleryContext';
 import GalleryItem from './GalleryItem';
 import { transformGalleryItem } from '../../Utils/helper'
 import { fetchData } from '../../pages/collections/[address]' 
@@ -14,12 +13,7 @@ export default function InfiniteGallery({ collectionData }) {
   const endpoint = pathname.replace(/\[.*?\]\s?/g, address);
   const hasMore = data?.nextPage ? true : false;
   const [loading, setLoading] = useState(false)
-  const defaultActiveModal = { type: '' };
-  const [activeModal, setActiveModal] = useState(defaultActiveModal);
-  const value = useMemo(
-    () => ({ activeModal, setActiveModal }), 
-    [activeModal]
-  );
+
   const method = pathname.includes("users") ? "GET" : "POST";
 
   const fetchCollection = useCallback(async function() {
@@ -52,19 +46,20 @@ export default function InfiniteGallery({ collectionData }) {
       setResults(data?.results);
     }
   }, [data?.page, data?.results]);
-  
-  console.log(`results`, results)
 
   return (
-    <GalleryContext.Provider value={value}>
-      <div className="grid justify-center grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-2 sm:gap-x-5 mx-auto max-w-[390px] sm:max-w-none">
-        {
-          results?.map((item, index) => (
-            <GalleryItem ref={index === results.length - 1 ? observe : null} key={index} item={transformGalleryItem(item)} showRarity={true} />
-          ))
-        }
-         <div>{loading && 'Loading...'}</div>
-      </div>
-    </GalleryContext.Provider>
+    <div className="grid justify-center grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-2 sm:gap-x-5 mx-auto max-w-[390px] sm:max-w-none">
+      {
+        results?.map((item, index) => (
+          <GalleryItem
+            ref={index === results.length - 1 ? observe : null}
+            key={index}
+            item={transformGalleryItem(item)}
+            showRarity={true}
+          />
+        ))
+      }
+       <div>{loading && 'Loading...'}</div>
+    </div>
   );
 }

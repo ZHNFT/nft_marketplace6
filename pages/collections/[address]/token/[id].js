@@ -9,7 +9,7 @@ import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
 import { usdFormatter, formatEther } from '../../../../Utils/helper';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import SecondaryButton from '../../../../components/Buttons/SecondaryButton';
-import SingleNftPageModal from '../../../../components/Modals/SingleNftPageModal';
+import NftActionsModal from '../../../../components/Modals/NftActionsModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
 import ProductDetails from '../../../../components/Product/ProductDetails';
@@ -135,7 +135,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
-      <SingleNftPageModal
+      <NftActionsModal
         isOpen={activeModal !== null}
         onClose={handleCloseModal}
         activeModal={activeModal}
