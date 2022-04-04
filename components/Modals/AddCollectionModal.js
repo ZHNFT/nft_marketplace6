@@ -25,8 +25,12 @@ const socialMediaFields = [
 
 const categories = [
   { label: 'Select an option', value: '' },
-  { label: 'Utility', value: 'utility' },
-  { label: 'Another category', value: 'anotherCategory' }
+  { label: 'Art', value: 'art' },
+  { label: 'Collectibles', value: 'collectibles' },
+  { label: 'Music', value: 'music' },
+  { label: 'Photography', value: 'photography' },
+  { label: 'Sport', value: 'sport' },
+  { label: 'Utility', value: 'utility' }
 ];
 
 const tokens = [
@@ -285,7 +289,7 @@ export default function AddCollectionModal(props) {
                         <label className="group flex items-center justify-center block cursor-pointer w-full h-[240px] bg-white/[0.02] border-[1px] border-dashed border-malibu rounded-md p-[1.5px] overflow-hidden">
                           { 
                             preview?.featuredImage && (
-                              <div>
+                              <div className="z-10">
                                 <Image className="aspect-w-1 object-cover object-center justify-center overflow-hidden" src={preview.featuredImage} alt={name} layout="fill" />
                               </div>
                             )
@@ -298,7 +302,7 @@ export default function AddCollectionModal(props) {
                           <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
                             <CameraIcon className="text-white w-[13px]" />
                           </span>
-                          <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                          <div className="z-20 opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center">
                             <PencilIcon className="w-5 h-5" />
                           </div>
                         </label>
