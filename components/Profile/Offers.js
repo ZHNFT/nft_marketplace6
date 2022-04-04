@@ -13,6 +13,7 @@ import OfferIcon from '../icons/OfferIcon';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 import Spinner from '../Spinner/Spinner';
+import { LinkIcon } from '../icons';
 
 export default function Offers({ tokenPriceUsd }) {
   const router = useRouter();
@@ -29,6 +30,8 @@ export default function Offers({ tokenPriceUsd }) {
     setOffers(data);
   }, [address]);
 
+  console.log('AAAA', offers);
+
   useEffect(() => {
     fetchData()
   }, [fetchData]);
@@ -37,20 +40,20 @@ export default function Offers({ tokenPriceUsd }) {
   return (
     <Table className="text-xs">
       <RowHeading>
-        <Cell className="w-[30px]" />
+        <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
         <Cell className="w-[100px] text-center">Price</Cell>
-        <Cell className="w-[100px] text-center">From</Cell>
-        <Cell className="w-[100px] text-center">To</Cell>
-        <Cell className="w-[100px] text-center">
+        <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">To</Cell>
+        <Cell className="w-[120px] text-center sm:hidden">From/To</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">
           <button type="button">
             Date
             <span className="inline-block w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-manatee mb-[1px] ml-1"></span>
           </button>
         </Cell>
         <Cell className="w-[100px] text-center">Expires</Cell>
-        <Cell className="w-[100px] text-center">Options</Cell>
-        <Cell className="w-[50px]" />
+        <Cell className="w-[100px] text-center mobile-only:hidden">Options</Cell>
       </RowHeading>
       { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div> }
       {
@@ -59,6 +62,7 @@ export default function Offers({ tokenPriceUsd }) {
           const { activityType, from, to, minBid, _id, expiry, timestamp, pricePerItem, seller, buyer, value, userAddress, tokenId, chain, transactionHash, active, accepted, canceled } = row;
 
           const price = pricePerItem;
+          const link = '';
 
 
           const date = new Date(timestamp);
@@ -81,8 +85,8 @@ export default function Offers({ tokenPriceUsd }) {
           } : {};
 
           return (
-            <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
-              <Cell className="w-[30px]">
+            <Row key={`user_activity_${index}`} className="cursor-pointer relative mb-6" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
+              <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "offerMade" ?
                   
                     <OfferIcon className="w-[16px]" /> :
@@ -139,17 +143,18 @@ export default function Offers({ tokenPriceUsd }) {
                 { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                 </span>
               </Cell>
-              <Cell className="w-[100px] text-center">
+              <Cell className="w-[100px] text-center mobile-only:hidden">
+                {/* From address */}
                 {
-                  from  &&  (
+                  from  ?  (
                     <Link href={`/users/${from}`}>
                       <a>{ ellipseAddress(from, 4) }</a>
                     </Link>
-                  )
-                } 
-                { !from  && '-' }
+                  ) : '-'
+                }
               </Cell>
-              <Cell className="w-[100px] text-center">
+              <Cell className="w-[100px] text-center mobile-only:hidden">
+                {/* To address */}
                 {
                   to ? (
                     <Link href={`/users/${to}`}>
@@ -158,7 +163,28 @@ export default function Offers({ tokenPriceUsd }) {
                   ) : '-'
                 }
               </Cell>
-              <Cell className="w-[100px] text-center">
+              <Cell className="w-[120px] text-center sm:hidden">
+                {/* From/To addresses (mobile) */}
+                <div>
+                  {
+                    from ?  (
+                      <Link href={`/users/${from}`}>
+                        <a>{ ellipseAddress(from, 4) }</a>
+                      </Link>
+                    ) : '-'
+                  } 
+                </div>
+                <div className="mt-1">
+                  {
+                    to ? (
+                      <Link href={`/users/${to}`}>
+                        <a>{ ellipseAddress(to, 4) }</a>
+                      </Link>
+                    ) : '-'
+                  }
+                </div>
+              </Cell>
+              <Cell className="w-[100px] text-center mobile-only:hidden">
                 <div className="group relative">
                   {timeAgo}
                   <Tooltip position="bottom">
@@ -177,25 +203,25 @@ export default function Offers({ tokenPriceUsd }) {
                 </div>
               </Cell>
 
-
+              
+              <Cell className="w-[100px] text-center mobile-only:absolute mobile-only:right-0 mobile-only:-bottom-[12px]">
               {  
 
                 //TODO: add on click functionality
-                activityType == "offerMade" ?
-
-                <> <Cell className="w-[100px] text-center">
-                        <div className="group relative text-green-500">
-                            Accept
-                        </div>
-                    </Cell>
-                    <Cell className="w-[100px] text-center">
-                        <div className="group relative text-red-500">
-                            reject
-                        </div>
-                    </Cell></> : <span>-</span>
-
-                }
-
+                activityType == "offerMade"
+                  ? (
+                    <div className="flex">
+                      <div className="group relative text-green-500 hover:underline">
+                        Accept
+                      </div>
+                      <div className="group relative text-red-500 ml-4 hover:underline">
+                        Decline
+                      </div>
+                    </div>
+                  )
+                  : <span className="mobile-only:hidden">-</span>
+              }
+              </Cell>
              
             </Row>
           );

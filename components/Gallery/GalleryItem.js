@@ -42,7 +42,7 @@ const GalleryItem = forwardRef((props, ref) => {
           {
             showRarity && rarityRank && (
               <div className="ml-auto flex">
-                <DiamondIcon className="w-[12px] h-[12px]" />
+                <DiamondIcon className="w-[12px] h-[15px]" />
                 <span className="text-xs ml-1.5">{ rarityRank }</span>
               </div>
             )
