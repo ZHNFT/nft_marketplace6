@@ -15,8 +15,8 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 
 export default function Hero() {
   // featured NFT
-  const address = '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a';
-  const id = '8';
+  const address = '0x16c3fbda29713b1766128980b65d92807151d710';
+  const id = '1';
   const { data: collection } = useSWRImmutable(collectionUrl({ address }), fetcher);
   const { data: nft } = useSWRImmutable(nftUrl({ address, id }), fetcher);
   const { name, imageHosted, listings, auctions } = nft || {};
@@ -116,8 +116,12 @@ export default function Hero() {
             }
           </div>
           */}
+
+        
         </div>
-        <div className="flex justify-between items-center mt-2">
+
+
+        {/* <div className="flex justify-between items-center mt-2">
           <div className="flex text-xxs">
             <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
             
@@ -130,7 +134,7 @@ export default function Hero() {
               </div>
             )
           } 
-        </div>
+        </div> */}
       </div>
     </div>
   );
