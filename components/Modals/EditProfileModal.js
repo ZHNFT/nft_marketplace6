@@ -6,7 +6,7 @@ import { CameraIcon, ChainIcon, InstagramIcon, TwitterIcon } from "../icons";
 import InputField from "../Forms/InputField";
 import TextareaField from "../Forms/TextareaField";
 import PrimaryButton from "../Buttons/PrimaryButton";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Web3Context from "../../contexts/Web3Context";
 import Web3Token from "web3-token";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
