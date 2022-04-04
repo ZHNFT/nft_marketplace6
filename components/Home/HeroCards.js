@@ -3,7 +3,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import { useRouter } from "next/router";
 
-export default function HeroCards( {connect }) {
+export default function HeroCards( {connect, address }) {
 
   const router = useRouter();
 
@@ -14,9 +14,7 @@ export default function HeroCards( {connect }) {
       button: 'Connect',
       buttonClass: 'secondary',
       action: () => {
-
         connect()
-
       }
     },
     {
@@ -36,7 +34,11 @@ export default function HeroCards( {connect }) {
       description: 'Build your collection and your portfolio',
       button: 'Profile',
       buttonClass: 'secondary',
-      action: () => {}
+      action: () => {
+
+        router.push("/users/" + address);
+        
+      }
     }
   ];
   

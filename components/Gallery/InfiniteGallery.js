@@ -52,6 +52,8 @@ export default function InfiniteGallery({ collectionData }) {
       setResults(data?.results);
     }
   }, [data?.page, data?.results]);
+  
+  console.log(`results`, results)
 
   return (
     <GalleryContext.Provider value={value}>
