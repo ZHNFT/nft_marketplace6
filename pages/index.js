@@ -2,25 +2,32 @@
 import Hero from '../components/Home/Hero';
 import HeroCards from '../components/Home/HeroCards';
 import CollectionCard from '../components/Collection/CollectionCard'
+import { useState, useCallback, useEffect } from 'react';
 
-// TODO REPLACE with Real data
-const featuredCollections = [
-  {
-    id: 1,
-    address: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
-    name: 'Bee Collection',
-    author: 'Hive Investments',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...',
-    totalSupply: 48000,
-    owners: 36100,
-    volume: 16700,
-    floorPrice: 23.4,
-    listed: 25
-  }
-];
 
 export default function Home(props) {
-  const { collections, connect } = props;
+
+
+  const [featuredCollections, setCollections] = useState([]);
+
+  const fetchData = useCallback(async function() {
+    //TODO: quer multiple collections
+    const url = `https://hexagon-api.onrender.com/collections/0x16c3fbda29713b1766128980b65d92807151d710`;
+    const res = await fetch(url)
+    const data = await res?.json()
+    console.log("data")
+    console.log(data)
+
+    let array = [data]
+    setCollections(array);
+
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const { collections, connect, address } = props;
   console.log(`collections`, collections)
 
   if (!collections && !collections?.length) {
@@ -35,14 +42,14 @@ export default function Home(props) {
       <div>
         <div className="flex flex-col">
           <Hero />
-          <HeroCards connect={connect} />
+          <HeroCards connect={connect} address={address} />
 
           <section className="mt-14 mb-10">
             <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
             <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8">
                 {featuredCollections?.map((collection, index) => (
                   <li
-                    key={`${collection.id}_${index}`}
+                    key={`${collection.address}_${index}`}
                     className="mx-auto w-full">
                     <CollectionCard collection={collection} />
                   </li>

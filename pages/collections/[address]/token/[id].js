@@ -80,7 +80,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
   const handleModal = modal => address ? setActiveModal(modal) : connect();
 
-  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData, ethersProvider, marketplaceAddress, owner, collectionId });
+  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData, ethersProvider, marketplaceAddress, owner });
 
   // For non-owners to cancel their bid
   const handleCancelBid = useCallback(async function (offer) {

@@ -1,38 +1,52 @@
 import clsx from "clsx";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
+import { useRouter } from "next/router";
 
-const CARDS = [
-  {
-    title: 'Connect your wallet',
-    description: 'All it takes is a connection',
-    button: 'Connect',
-    buttonClass: 'secondary',
-    action: () => {}
-  },
-  {
-    title: 'Explore collections',
-    description: 'Check out everything Hexagon has to offer',
-    button: 'Explore',
-    buttonClass: 'secondary',
-    action: () => {}
-  },
-  {
-    title: 'Buy, sell and auction',
-    description: 'Build your collection and your portfolio',
-    button: 'Profile',
-    buttonClass: 'secondary',
-    action: () => {}
-  }
-];
+export default function HeroCards( {connect, address }) {
 
-const CARD_CLASSES = [
-  'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px] w-full',
-  'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px] w-full',
-  'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px] w-full'
-];
+  const router = useRouter();
 
-export default function HeroCards({ connect }) {
+  const CARDS = [
+    {
+      title: 'Connect your wallet',
+      description: 'All it takes is a connection',
+      button: 'Connect',
+      buttonClass: 'secondary',
+      action: () => {
+        connect()
+      }
+    },
+    {
+      title: 'Explore collections',
+      description: 'Check out everything Hexagon has to offer',
+      button: 'Explore',
+      buttonClass: 'secondary',
+      action: () => { 
+        
+        console.log("clicked")
+        router.push("/collections/0x16c3fbda29713b1766128980b65d92807151d710") 
+      
+      }
+    },
+    {
+      title: 'Buy, sell and auction',
+      description: 'Build your collection and your portfolio',
+      button: 'Profile',
+      buttonClass: 'secondary',
+      action: () => {
+
+        router.push("/users/" + address);
+        
+      }
+    }
+  ];
+  
+  const CARD_CLASSES = [
+    'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px] w-full',
+    'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px] w-full',
+    'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px] w-full'
+  ];
   return (  
     <ul className=" mt-16 mb-20 flex flex-col md:flex-row justify-between">
       {
@@ -52,7 +66,11 @@ export default function HeroCards({ connect }) {
               'font-medium text-xs rounded-[10px] py-2 px-8 border-[0.5px] border-transparent mt-8',
               { 'bg-white/[0.1] border-white hover:border-cornflower hover:bg-white/[0.15]': buttonClass === 'secondary' },
               { 'gradient-bg-blue hover:border-white': buttonClass === 'primary' }
-            )}>
+            )} onClick={ () => {
+                action();
+            }
+              
+             }>
               {button}
             </button>
           </li>
