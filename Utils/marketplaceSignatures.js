@@ -13,14 +13,6 @@ function getDomain(marketplaceAddress, chainId) {
 
 export async function getSignatureListing(listing, signer, ethers, marketplaceAddress, chainId) {
 
-    console.log("get signature listing")
-
-    console.log("chainId = ")
-
-    console.log(chainId)
-
-    console.log("marketplace contract");
-
     const domain = getDomain(marketplaceAddress, chainId);
 
     const types = {

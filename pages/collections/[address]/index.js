@@ -76,11 +76,8 @@ export default function Collection(props) {
     { href: "?tab=activity", name: 'Activity' }
   ];
 
-  console.log(tab);
   const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
-
-  console.log(`collection`, collection)
 
   let minPrice = collection.floorPrice ? formatEther(collection.floorPrice) : 0;
   let maxPrice = collection.highestPrice ? formatEther(collection.highestPrice) : 0;
@@ -90,17 +87,8 @@ export default function Collection(props) {
   maxPrice = parseFloat(maxPrice);
   minPrice = parseFloat(minPrice)
 
-  console.log("min price")
-  console.log("maxPrice")
-
-  console.log(minPrice)
-  console.log(maxPrice);
-
-
-
   const fetchCollection = useCallback(async function() {
     const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
-    console.log(collection);
     setData(json);
   // eslint-disable-next-line
   }, [address, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo]);

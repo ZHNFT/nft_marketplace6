@@ -24,7 +24,6 @@ export default function HeroCards( {connect, address }) {
       buttonClass: 'secondary',
       action: () => { 
         
-        console.log("clicked")
         router.push("/collections/0x16c3fbda29713b1766128980b65d92807151d710") 
       
       }
@@ -37,7 +36,7 @@ export default function HeroCards( {connect, address }) {
       action: () => {
 
         router.push("/users/" + address);
-        
+
       }
     }
   ];

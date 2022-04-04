@@ -15,8 +15,6 @@ export default function Home(props) {
     const url = `https://hexagon-api.onrender.com/collections/0x16c3fbda29713b1766128980b65d92807151d710`;
     const res = await fetch(url)
     const data = await res?.json()
-    console.log("data")
-    console.log(data)
 
     let array = [data]
     setCollections(array);
@@ -28,7 +26,6 @@ export default function Home(props) {
   }, [])
 
   const { collections, connect, address } = props;
-  console.log(`collections`, collections)
 
   if (!collections && !collections?.length) {
     return  (

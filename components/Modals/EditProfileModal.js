@@ -96,7 +96,6 @@ export default function EditProfileModal(props) {
 
     if (!response.ok) {
       const error = await response?.json();
-      console.log("API error message:", error?.message);
     }
 
     // update the user object with the updated fields

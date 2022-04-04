@@ -34,8 +34,6 @@ export default function Offers({ tokenPriceUsd }) {
     setOffers(data);
   }, [address]);
 
-  console.log('AAAA', offers);
-
   useEffect(() => {
     fetchData()
   }, [fetchData]);

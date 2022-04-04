@@ -7,17 +7,6 @@ export default function RangeField(props) {
   const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, isReset, onChange } = props;
   const [values, setValues] = useState(initialValues);
 
-  console.log("max")
-  console.log(max)
-
-  console.log("min")
-  console.log(min)
-
-  console.log("initialValues")
-  console.log(initialValues)
-
-  console.log("hi")
-
   useEffect(() => {
     if(isReset) {
       setValues(initialValues);

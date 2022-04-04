@@ -7,10 +7,6 @@ import Offers from './Offers'
 export default function ProfileContent({ data, offers, tokenPriceUsd }) {
   const { query: { tab } } = useRouter();
 
-  console.log("Profile content data = ")
-  console.log(data);
-
-
   if (tab === 'activity') {
     return <Activity tokenPriceUsd={tokenPriceUsd} />;
   }

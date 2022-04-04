@@ -19,10 +19,6 @@ export default function CollectionCard({ collection }) {
   let totalVolume = formatEther(volume.total);
   let formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
 
-  console.log(collection)
-
-  console.log("formatted floor price")
-  console.log(formattedFloorPrice)
   return (
    <div className="mx-auto max-w-[378px] md:max-w-[555px] box-shadow-featuredCard rounded-xl bg-[#262a32]">
     <div className="relative w-[full] h-[300px] md:h-[439px] rounded-xl overflow-hidden">
