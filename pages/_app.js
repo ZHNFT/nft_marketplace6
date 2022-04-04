@@ -16,7 +16,7 @@ import Layout from '../components/layout';
 
 // Config
 import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
-import { honeyTokenAddress, networkConfigs, getChainById, marketplaceTestContractAddress, marketPlaceTestABI, TestErc20ABI, TestErc20TokenAddress } from '../config';
+import { honeyTokenAddress, marketplaceAddress, networkConfigs, getChainById, mumbaiMarketplaceAddress, marketPlaceTestABI, TestErc20ABI, mumbaiHoneyTokenAddress } from '../config';
 
 const providerOptions = {
   walletconnect: {
@@ -141,15 +141,17 @@ function MyApp({ Component, pageProps }) {
     const ethersProvider = new ethers.providers.Web3Provider(provider)
     const ethersSigner = ethersProvider.getSigner();
     
-    let marketplaceTestContract;
+    let marketplaceContract;
     let erc20TokenContract;
 
     if (network.chainId === 80001) {
-      marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
-      erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
+      marketplaceTestContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
+      erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
     }
     if (network.chainId === 137) {
-      // TODO initialize contracts with correct addresses
+      // TODO initialize contracts with correct addresses from config
+      marketplaceTestContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
+      erc20TokenContract = new ethers.Contract(honeyTokenAddress, TestErc20ABI, ethersSigner);
     }
 
     await loadBalance(erc20TokenContract, address);
@@ -166,7 +168,7 @@ function MyApp({ Component, pageProps }) {
         : network.chainId === 80001 
           ? testnetChainId 
           : null,
-      marketplaceContract: marketplaceTestContract,
+      marketplaceContract,
       tokenContract: erc20TokenContract,
     })
 
