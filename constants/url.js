@@ -1,4 +1,4 @@
-const API_HOST = 'https://https://api.hexag0n.io';
+const API_HOST = 'https://api.hexag0n.io';
 
 /**
  * Returns the URL for a collection.
