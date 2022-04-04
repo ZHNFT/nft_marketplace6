@@ -18,9 +18,10 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         amount: ethers.utils.parseEther(price).toString(),
       };
   
-      await handleAllowance(price);
+      // handle allowance
+      const allowance = await handleAllowance(price);
 
-      if (allowanceError) return;
+      if (allowance) return;
   
       try {
         setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
@@ -38,7 +39,7 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         return;
       }
   
-    }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner, allowanceError]);
+    }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner]);
 
     return { handlePlaceAuctionBid, allowanceStatus, allowanceError, transactionStatus, transactionError, auctionTx: transaction }
 }

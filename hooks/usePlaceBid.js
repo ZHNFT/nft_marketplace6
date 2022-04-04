@@ -28,9 +28,10 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         nonce: nonce
       }
   
-      await handleAllowance(price);
- 
-      if (allowanceError) return;
+      // handle allowance
+      const allowance = await handleAllowance(price);
+
+      if (allowance) return;
   
       let signature;
       let token;
@@ -52,7 +53,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
       // handle api call
       await handleApiCall({ token, endpoint: 'bids', data: offer });
   
-    }, [ethersProvider, chainId, tokenId, collectionId, address, marketplaceAddress, handleAllowance, handleApiCall, allowanceError]);
+    }, [ethersProvider, chainId, tokenId, collectionId, address, marketplaceAddress, handleAllowance, handleApiCall]);
 
     return { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse: response }
 }

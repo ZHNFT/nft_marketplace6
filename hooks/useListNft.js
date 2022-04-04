@@ -29,9 +29,10 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
     }
 
     // handle approval
-    await handleApproval();
-
-    if (approvalError) return;
+    const approval = await handleApproval();
+    console.log(`approval`, approval)
+    
+    if (approval) return;
 
     let signature;
     let token;
@@ -52,7 +53,7 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
     // handle api call
     await handleApiCall({ token, endpoint: 'listings', data: listing });
 
-  }, [ethersProvider, chainId, tokenId, collectionId, owner, marketplaceAddress, handleApproval, handleApiCall, approvalError])
+  }, [ethersProvider, chainId, tokenId, collectionId, owner, marketplaceAddress, handleApproval, handleApiCall])
 
   return { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse: response };
 

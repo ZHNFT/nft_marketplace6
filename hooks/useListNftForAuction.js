@@ -36,9 +36,9 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
     }
 
     // handle approval
-    await handleApproval();
+    const approval = await handleApproval();
 
-    if (approvalError) return;
+    if (approval) return;
 
     let token;
 
@@ -72,7 +72,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       return;
     }
 
-  }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall, approvalError])
+  }, [collectionId, owner, tokenId, ethersProvider, marketplaceContract, handleApproval, handleApiCall])
 
   return { handleCreateAuction, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, transactionStatus, transactionError, auctionTx: transaction };
 
