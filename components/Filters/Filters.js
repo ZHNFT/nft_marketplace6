@@ -113,7 +113,9 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             { total } { total === 1 ? 'item' : 'items' }
           </span>
           
-          {/* Price */}
+          {/* Price */
+              maxPrice > minPrice && (
+              <>
           <div className="mt-10 text-xs flex justify-between">
             <span className="font-medium">Price</span>
             <div>
@@ -122,7 +124,8 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             </div>
           </div>
 
-          {
+       
+              
             <RangeField
               step={0.1}
               decimals={1}
@@ -133,6 +136,8 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
               onChange={([min, max]) => handleSubmit({ query: { priceFrom: min, priceTo: max } })}
             /> 
 
+            </>
+            )
           }
 
           
