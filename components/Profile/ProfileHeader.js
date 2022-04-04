@@ -63,7 +63,7 @@ export default function ProfileHeader({
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
                 <Image
                   className="h-8 w-8"
-                  src={userData?.imageUrl || DefaultLogo}
+                  src={userData?.images?.profile || DefaultLogo}
                   alt="Profile photo"
                   width={"100%"}
                   height={"100%"}

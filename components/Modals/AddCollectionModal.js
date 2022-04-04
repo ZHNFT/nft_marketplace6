@@ -185,7 +185,7 @@ export default function AddCollectionModal(props) {
                       <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo.</p>
                       <div className="mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
                         <div className="relative">
-                          <label for="userAvatar">
+                          <label htmlFor="userAvatar">
                             <button
                               type="button"
                               className="w-[74px] h-[74px] bg-[#333840] border-[1px] border-dashed border-malibu rounded-full p-[1.5px] overflow-hidden"
@@ -199,7 +199,7 @@ export default function AddCollectionModal(props) {
                               
                             </button>
                           </label>
-                          <input type="file" className='w-10'  id="userAvatar"/>
+                          <input type="file" className='w-10' id="userAvatar"/>
                         </div>
                         
                         <div>
