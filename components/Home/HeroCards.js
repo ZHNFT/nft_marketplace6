@@ -5,36 +5,36 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 const CARDS = [
   {
     title: 'Connect your wallet',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
+    description: 'All it takes is a connection',
     button: 'Connect',
     buttonClass: 'secondary',
     action: () => {}
   },
   {
     title: 'Explore collections',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
+    description: 'Check out everything Hexagon has to offer',
     button: 'Explore',
     buttonClass: 'secondary',
     action: () => {}
   },
   {
     title: 'Buy, sell and auction',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
-    button: 'Collect',
+    description: 'Build your collection and your portfolio',
+    button: 'Profile',
     buttonClass: 'secondary',
     action: () => {}
   }
 ];
 
 const CARD_CLASSES = [
-  'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px]',
-  'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px]',
-  'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px]'
+  'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px] w-full',
+  'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px] w-full',
+  'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px] w-full'
 ];
 
 export default function HeroCards() {
   return (  
-    <ul className="mt-16 mb-20 flex flex-col md:flex-row justify-between">
+    <ul className=" mt-16 mb-20 flex flex-col md:flex-row justify-between">
       {
         CARDS.map(({ title, description, button, buttonClass, action }, index) => (
           <li key={index} className={clsx(

@@ -32,12 +32,12 @@ export default function Hero() {
   return (
     <div className="flex flex-col lg:flex-row mt-12 mb-10 items-center">
       <div className="md:mr-12 lg:mr-24 mb-8 lg:mb-0 text-center lg:text-left">
-        <h1 className="text-4xl md:text-6xl font-medium gradient-heading leading-normal mb-6">
-          This is an impactful headline
+        <h1 className="text-4xl md:text-6xl font-medium gradient-heading leading-normal mb-6 py-[10px]">
+          Welcome to Hexagon
         </h1>
         <div className="mb-10 lg:max-w-sm">
           <p className="text-manatee text-xs">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore...
+            
           </p>
         </div>
         <span className="block mb-4">
@@ -114,10 +114,7 @@ export default function Hero() {
         <div className="flex justify-between items-center mt-2">
           <div className="flex text-xxs">
             <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
-            <span className="flex ml-2 rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-2.5">
-              <ViewIcon className="w-[16px] h-[16px]" />
-              <span className="ml-1">9K</span>
-            </span>
+            
           </div>
           {
             expiry && (

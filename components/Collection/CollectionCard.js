@@ -92,10 +92,6 @@ export default function CollectionCard({ collection }) {
         <div className="absolute -top-[287px] left-[12px] md:relative md:top-auto md:left-auto text-xxs">
           <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3">Utility</span>
           <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span>
-          <span className="align-middle ml-2 rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-2.5">
-            <ViewIcon className="w-[16px]" />
-            <span className="ml-1">9K</span>
-          </span>
         </div>
       </div>
       <div className="flex mt-4 mb-1.5 items-center">

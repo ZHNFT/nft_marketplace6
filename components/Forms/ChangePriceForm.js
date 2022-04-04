@@ -76,28 +76,28 @@ export default function ChangePriceForm(props) {
                 title: 'Transaction to cancel previous price',
                 status: cancellationStatus,
                 isDefaultOpen: true,
-                description: cancellationError ? cancellationError : 'Description here'
+                description: cancellationError ? cancellationError : ''
               },
               {
                 className: 'my-2',
                 title: 'Approval',
                 status: approvalStatus,
                 isDefaultOpen: true,
-                description: approvalError ? approvalError : 'Description here'
+                description: approvalError ? approvalError : ''
               },
               {
                 className: 'my-2',
                 title: 'Requesting Signature',
                 status: signatureStatus,
                 isDefaultOpen: true,
-                description: signatureError ? signatureError : 'Description here'
+                description: signatureError ? signatureError : ''
               },
               {
                 className: 'my-2',
                 title: 'Completion',
                 status: apiStatus,
                 isDefaultOpen: true,
-                description: apiError ? apiError : 'Description here'
+                description: apiError ? apiError : ''
               }
             ]}
           />
