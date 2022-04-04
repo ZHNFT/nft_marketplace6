@@ -63,7 +63,8 @@ export default function EditCollectionModal(props) {
               </span>
             </button>
           </div>
-          <div>
+
+          {/*<div>
             <button 
               type="button"
               className="border-[0.5px] inline-block border-manatee py-2 px-4 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium"
@@ -71,7 +72,7 @@ export default function EditCollectionModal(props) {
             >
               Change cover
             </button>
-          </div>
+          </div>*/}
         </div>
 
         <h2 className="mt-5 mb-4 text-xs">Details</h2>

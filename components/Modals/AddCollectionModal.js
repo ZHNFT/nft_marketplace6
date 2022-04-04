@@ -275,12 +275,12 @@ export default function AddCollectionModal(props) {
                           </label>
                         </div>
                         
-                        <div className="z-10">
+                        {/*<div className="z-10">
                           <label className="block cursor-pointer border-[0.5px] inline-block border-manatee py-2 px-6 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium">
                             Add cover
                             <input type="file" name="coverImage" className="hidden" accept="image/*" onChange={onSelectImage} />
                           </label>
-                        </div>
+                         </div>*/}
                       </div>
                     </div>
                     <div className="basis-5/12 ml-6">
