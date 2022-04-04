@@ -76,7 +76,10 @@ export default function Activity({ tokenPriceUsd }) {
           } : {};
 
           return (
-            <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
+
+            <Link key={`user_activity_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+            <a>
+            <Row key={`user_activity_${index}`} className="cursor-pointer">
               <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "transfer" ? isMinting ?
                   <MintIcon className="w-[16px]" /> :
@@ -181,6 +184,8 @@ export default function Activity({ tokenPriceUsd }) {
                 </a>
               </Cell>
             </Row>
+            </a>
+            </Link>
           );
         })
       }

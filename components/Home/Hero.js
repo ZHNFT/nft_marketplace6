@@ -41,18 +41,20 @@ export default function Hero() {
           </p>
         </div>
         <span className="block mb-4">
-          <Link href="#">
+          <Link href="/collections/0x16c3fbda29713b1766128980b65d92807151d710">
             <a className="gradient-bg-blue rounded-[10px] text-xs text-white px-10 py-2.5 border-[0.5px] border-transparent hover:border-white">
               Explore
             </a>
           </Link>
 
-          <Link href="#">
-            <a className="text-xs hover:underline ml-8">
-              Learn more
-              <TogaIcon className="text-white w-[16px] ml-2.5" />
-            </a>
-          </Link>
+          {
+            // <Link href="#">
+            //   <a className="text-xs hover:underline ml-8">
+            //     Learn more
+            //     <TogaIcon className="text-white w-[16px] ml-2.5" />
+            //   </a>
+            // </Link>
+          }
         </span>
       </div>
       

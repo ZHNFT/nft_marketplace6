@@ -10,7 +10,8 @@ import AuctionIcon from '../icons/AuctionIcon';
 import OfferIcon from '../icons/OfferIcon'; 
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
-import { format, isValid, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
+import { format, isValid, formatDistanceToNowStrict } from 'date-fns'
+import Link from 'next/link';
 
 
 export default function Activity({ tokenPriceUsd }) {
@@ -79,7 +80,10 @@ export default function Activity({ tokenPriceUsd }) {
             }
           }
           return (
-            <Row key={_id} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
+
+            <Link key={`user_activity_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+            <a>
+            <Row key={_id} className="cursor-pointer">
               <Cell className="w-[30px] mobile-only:hidden">
               {activityType == "transfer" ? isMinting ?
 
@@ -181,6 +185,8 @@ export default function Activity({ tokenPriceUsd }) {
                 </a>
               </Cell>
             </Row>
+            </a>
+            </Link>
           );
         })
       }
