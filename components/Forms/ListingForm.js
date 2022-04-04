@@ -171,14 +171,14 @@ export default function Listing(props) {
                     title: 'Requesting Signature',
                     status: signatureStatus,
                     isDefaultOpen: true,
-                    description: signatureError ? signatureError : 'Description here'
+                    description: signatureError ? signatureError : ''
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: apiStatus,
                     isDefaultOpen: true,
-                    description: apiError ? apiError : 'Description here'
+                    description: apiError ? apiError : ''
                   }
                 ] : [
                   {
@@ -192,21 +192,21 @@ export default function Listing(props) {
                     title: 'Requesting Signature',
                     status: auctionSignatureStatus,
                     isDefaultOpen: true,
-                    description: auctionSignatureError ? auctionSignatureError : 'Description here'
+                    description: auctionSignatureError ? auctionSignatureError : ''
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: auctionApiStatus,
                     isDefaultOpen: true,
-                    description: auctionApiError ? auctionApiError : 'Description here'
+                    description: auctionApiError ? auctionApiError : ''
                   },
                   {
                     className: 'my-2',
                     title: 'Listing of Auction has Completed',
                     status: transactionStatus,
                     isDefaultOpen: true,
-                    description: transactionError ? transactionError : 'Description here'
+                    description: transactionError ? transactionError : ''
                   }
                 ]}
               />
