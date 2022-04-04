@@ -98,7 +98,7 @@ export default function CollectionCard({ collection }) {
           {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
         </div>
       </div>
-      <div className="flex mt-4 mb-1.5 items-center">
+      <div className="flex mt-8 mb-1.5 align-center">
         <p className="text-manatee text-xxs mr-8">
           { description }
         </p>
