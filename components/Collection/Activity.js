@@ -81,7 +81,7 @@ export default function Activity({ tokenPriceUsd }) {
           }
           return (
 
-            <Link key={`user_activity_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+            <Link key={`user_activity`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
             <a>
             <Row key={_id} className="cursor-pointer">
               <Cell className="w-[30px] mobile-only:hidden">
