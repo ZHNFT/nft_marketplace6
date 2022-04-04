@@ -18,10 +18,6 @@ export default function ProductPreview({ className, name, image, expiry, listing
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
         <div className="flex text-xxs">
           <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
-          <span className="flex ml-2 rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-2.5">
-            <ViewIcon className="w-[16px] h-[16px]" />
-            <span className="ml-1">9K</span>
-          </span>
         </div>
         {
           expiry && (

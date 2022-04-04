@@ -61,10 +61,6 @@ export default function Statistics({ collections }) {
                 <Cell className="w-[250px]">
                   <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
                   <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3 ml-2">25% listed</span>
-                  <span className="ml-2 rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-2.5">
-                    <ViewIcon className="w-[16px]" />
-                    <span className="ml-1 text-xxs">9K</span>
-                  </span>
                 </Cell>
                 <Cell className="w-[100px] text-center">{ itemCount || 0 }</Cell>
                 <Cell className="w-[100px] text-center">36.2K</Cell>

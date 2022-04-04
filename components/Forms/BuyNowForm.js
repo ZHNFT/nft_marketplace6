@@ -30,13 +30,13 @@ export default function BuyNowForm(props) {
             title: `Increase Allowance`,
             status: allowanceStatus,
             isDefaultOpen: true,
-            description: allowanceError ? allowanceError : 'Description here'
+            description: allowanceError ? allowanceError : ''
           },
           {
             title: `Approval to transfer ${price} HNY`,
             status: acceptationStatus,
             isDefaultOpen: true,
-            description: acceptationError ? acceptationError : 'Description here'
+            description: acceptationError ? acceptationError : ''
           }
         ]}
       />

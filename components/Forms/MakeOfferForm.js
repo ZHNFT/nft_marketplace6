@@ -123,35 +123,35 @@ export default function MakeOfferForm(props) {
                 title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: allowanceStatus,
                 isDefaultOpen: true,
-                description: allowanceError ? allowanceError : 'Description here'
+                description: allowanceError ? allowanceError : ''
               },
               {
                 className: 'my-2',
                 title: 'Requesting Signature',
                 status: signatureStatus,
                 isDefaultOpen: true,
-                description: signatureError ? signatureError : 'Description here'
+                description: signatureError ? signatureError : ''
               },
               {
                 className: 'my-2',
                 title: 'Completion',
                 status: apiStatus,
                 isDefaultOpen: true,
-                description: apiError ? apiError : 'Description here'
+                description: apiError ? apiError : ''
               }
             ] : [
               {
                 title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
-                description: auctionAllowanceError ? auctionAllowanceError : 'Description here'
+                description: auctionAllowanceError ? auctionAllowanceError : ''
               },
               {
                 className: 'my-2',
                 title: 'Transaction status',
                 status: transactionStatus,
                 isDefaultOpen: true,
-                description: transactionError ? transactionError : 'Description here'
+                description: transactionError ? transactionError : ''
               }]
             }
           />
