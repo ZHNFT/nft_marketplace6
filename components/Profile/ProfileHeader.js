@@ -7,6 +7,7 @@ import {
   ShareIcon,
   EditIcon,
   BeeIcon,
+  ChainIcon
 } from "../icons";
 import { getExplorer } from "../../config";
 import { ellipseAddress } from "../../Utils";
@@ -82,23 +83,32 @@ export default function ProfileHeader({
                     chainIdHex
                       ? `${getExplorer(chainIdHex)}address/${address}`
                       : `https://polygon-rpc.com/address/${address}`
-                  }
+                  } target="_blank" rel="noreferrer"
                   className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10"
                 >
                   {ellipseAddress(address, 4)}
-                  <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
-                </a>
-              </li>
+
+                  </a>
+
+                </li>
+
+                {userData?.website && (
+                <li className="mr-6">
+                  <a href={userData.website} target="_blank" rel="noreferrer">
+                    <LinkIcon className="w-[18px] mr-2" />
+                  </a>
+                </li>
+              )}
               {userData?.instagram && (
                 <li className="mr-6">
-                  <a href={userData.instagram}>
+                  <a href={userData.instagram} target="_blank" rel="noreferrer">
                     <InstagramIcon className="w-[18px] mr-2" />
                   </a>
                 </li>
               )}
               {userData?.twitter && (
                 <li className="mr-6">
-                  <a href={userData.twitter}>
+                  <a href={userData.twitter} target="_blank" rel="noreferrer">
                     <TwitterIcon className="w-[19px] mr-2" />
                   </a>
                 </li>
