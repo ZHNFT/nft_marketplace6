@@ -16,7 +16,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 export default function CollectionCard({ collection }) {
   const { id, name, description, author, address, ownerCount, volume, floorPrice, totalSupply, listed  } = collection
 
-  let totalVolume = formatEther(volume.total);
+  let totalVolume = volume ? volume.total ? formatEther(volume.total) : "0" : "0";
   let formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
 
   return (
@@ -65,7 +65,7 @@ export default function CollectionCard({ collection }) {
           <span className="mr-1 font-light">Volume</span>
           <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
             <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
-            <span className="font-medium">{totalVolume ? formatCompact(volume.total) : "0" }</span>
+            <span className="font-medium">{totalVolume}</span>
           </span>
         </div>
         <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
