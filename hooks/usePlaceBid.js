@@ -24,7 +24,7 @@ export default function usePlaceBid({ tokenContract, marketplaceAddress, address
         userAddress: address,
         pricePerItem: ethers.utils.parseEther(price).toString(),
         quantity: 1,
-        expiry: expirationDate || new Date().getTime() + 864000000, // Whichever function triggers this is not returning expiry
+        expiry: expirationDate,
         nonce: nonce
       }
   

@@ -7,7 +7,7 @@ import useTokenApproval from './useTokenApproval';
 
 export default function useListNftForAuction({ ethersProvider, marketplaceAddress, owner, collectionId, tokenId, marketplaceContract }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();
-  const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId });
+  const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner });
   const [signatureStatus, setSignatureStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [signatureError, setSignatureError] = useState(null);
   const [transactionStatus, setTransactionStatus] = useState(TRANSACTION_STATUS.INACTIVE);
@@ -36,7 +36,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
     }
 
     // handle approval
-    const approval = await handleApproval();
+    const approval = await handleApproval(collectionId);
 
     if (approval) return;
 

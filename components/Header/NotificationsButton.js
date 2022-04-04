@@ -17,8 +17,9 @@ const NOTIFICATION_TYPES = {
 
 export default function NotificationsButton({ currentUserAddress }) {
   const {
-    state: { marketplaceContract },
+    state: { marketplaceContract, ethersProvider },
   } = useContext(Web3Context);
+  const marketplaceAddress = marketplaceContract?.address;
   const [notifications, setNotifications] = useState([]);
   const unreadNotifications = notifications?.results?.filter(item => !item?.read)?.length;
 
@@ -33,7 +34,7 @@ export default function NotificationsButton({ currentUserAddress }) {
     fetchData()
   }, [fetchData])
 
-  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData });
+  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ owner: currentUserAddress, marketplaceAddress, ethersProvider, marketplaceContract, fetchData });
 
   // TODO implement mark as read for notifications
   // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read

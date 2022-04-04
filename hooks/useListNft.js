@@ -8,7 +8,7 @@ import { getSignatureListing } from '../Utils/marketplaceSignatures';
 
 export default function useListNft({ ethersProvider, marketplaceAddress, owner, collectionId, tokenId, chainId }) {
   const { response, handleApiCall, apiStatus, apiError } = useApiCall();
-  const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId });
+  const { handleApproval, approvalStatus, approvalError, approvalTx } = useTokenApproval({ ethersProvider, marketplaceAddress, owner });
   const [signatureStatus, setSignatureStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [signatureError, setSignatureError] = useState(null);
 
@@ -29,9 +29,8 @@ export default function useListNft({ ethersProvider, marketplaceAddress, owner, 
     }
 
     // handle approval
-    const approval = await handleApproval();
-    console.log(`approval`, approval)
-    
+    const approval = await handleApproval(collectionId);
+
     if (approval) return;
 
     let signature;

@@ -17,8 +17,9 @@ import Web3Context from "../../contexts/Web3Context";
 
 export default function Offers({ tokenPriceUsd }) {
   const {
-    state: { marketplaceContract },
+    state: { marketplaceContract, ethersProvider, address: currentUserAddress },
   } = useContext(Web3Context);
+  const marketplaceAddress = marketplaceContract?.address;
   const router = useRouter();
   const { query: { address } } = router;
   const [offers, setOffers] = useState([]);
@@ -39,7 +40,7 @@ export default function Offers({ tokenPriceUsd }) {
     fetchData()
   }, [fetchData]);
 
-  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData });
+  const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ owner: currentUserAddress, marketplaceAddress, ethersProvider, marketplaceContract, fetchData });
 
   return (
     <Table className="text-xs">

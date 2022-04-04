@@ -3,12 +3,12 @@ import { ethers } from "ethers";
 import { TRANSACTION_STATUS } from '../constants/nft';
 import { NftCollectionABI } from '../config';
 
-export default function useTokenApproval({ ethersProvider, marketplaceAddress, owner, collectionId }) {
+export default function useTokenApproval({ ethersProvider, marketplaceAddress, owner }) {
   const [approvalStatus, setApprovalStatus] = useState(TRANSACTION_STATUS.INACTIVE);
   const [approvalError, setApprovalError] = useState(null);
   const [transaction, setTransaction] = useState(null);
 
-  const handleApproval = useCallback(async function() {
+  const handleApproval = useCallback(async function(collectionId) {
     const signer = ethersProvider.getSigner();
     const nftContract = new ethers.Contract(collectionId, NftCollectionABI, signer);
     try {
@@ -30,7 +30,7 @@ export default function useTokenApproval({ ethersProvider, marketplaceAddress, o
       setApprovalError(error?.data?.message || error?.message);
       return error?.data?.message || error?.message;
     }
-  }, [ethersProvider, marketplaceAddress, owner, collectionId])
+  }, [ethersProvider, marketplaceAddress, owner])
 
   return { handleApproval, approvalStatus, approvalError, approvalTx: transaction }
 }
