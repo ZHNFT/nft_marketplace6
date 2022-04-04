@@ -99,14 +99,9 @@ export default function EditProfileModal(props) {
       console.log("API error message:", error?.message);
     }
 
-    // update the user object with the updated fields.
-    let tmpUser = user;
-    Object.keys(data).forEach((value, idx) => {
-      if (data[value]) {
-        tmpUser[value] = data[value];
-      }
-    })
-    setUser(tmpUser);
+    // update the user object with the updated fields
+    const updatedUser = await response.json();
+    setUser({ ...user, ...updatedUser });
 
     // close the modal
     onClose();
