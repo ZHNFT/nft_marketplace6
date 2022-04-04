@@ -94,6 +94,7 @@ export default function Hero() {
               }
             </a>
           </Link>
+          {/*
           <div className="flex absolute z-10 bottom-0 left-0 right-0 bg-shadow rounded-md text-xs py-4 px-4 text-white items-center justify-between">
             { 
               listingState === NFT_LISTING_STATE.IN_AUCTION && (
@@ -101,15 +102,18 @@ export default function Hero() {
                   <div>
                     <p>No bids yet</p>
                   </div>
+                  
                   <div>
                     <PrimaryButton className="!px-4" size="sm">
                       Place Bid
                     </PrimaryButton>
                   </div>
+                  
                 </>
               )
             }
           </div>
+          */}
         </div>
         <div className="flex justify-between items-center mt-2">
           <div className="flex text-xxs">

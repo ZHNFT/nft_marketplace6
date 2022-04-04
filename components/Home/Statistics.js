@@ -60,7 +60,6 @@ export default function Statistics({ collections }) {
                 </Cell>
                 <Cell className="w-[250px]">
                   <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
-                  <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3 ml-2">25% listed</span>
                 </Cell>
                 <Cell className="w-[100px] text-center">{ itemCount || 0 }</Cell>
                 <Cell className="w-[100px] text-center">36.2K</Cell>

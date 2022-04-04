@@ -27,7 +27,7 @@ export default function CancelListingModal(props) {
             title: 'Transaction to cancel list',
             status: cancellationStatus,
             isDefaultOpen: true,
-            description: cancellationError ? cancellationError : 'Description here'
+            description: cancellationError ? cancellationError : ''
           }
         ]}
       />
