@@ -19,7 +19,7 @@ import CollectionTab from '../../../components/Tabs/CollectionTab';
 import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 import { formatEther } from '../../../Utils/helper';
 
-const url = `https://hexagon-api.onrender.com`;
+const url = `https://https://api.hexag0n.io`;
 
 const itemsFilterList = [
   { label: 'All Items' },
