@@ -20,6 +20,40 @@ export default function BuyNowForm(props) {
     fetchData();
   }
 
+  const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
+
+  const fetchFees = useCallback(async function () {
+    let collection = await marketplaceContract.getCollectionInfo(collectionId);
+    let royaltyFee = collection.royaltyFee;
+    let marketplaceFee;
+
+    if (royaltyFee != 0) {
+      royaltyFee = royaltyFee.toString();
+      royaltyFee = ((parseFloat(royaltyFee) * 99) / 10000).toFixed(1);
+    } else {
+      royaltyFee = "0"
+    }
+
+    if ("paymentTokens" in marketplaceContract) {
+      let token = await marketplaceContract.paymentTokens(collection.currencyType)
+      marketplaceFee = token.fee;
+    } else {
+      marketplaceFee = 0;
+    }
+
+    if (marketplaceFee != 0) {
+      marketplaceFee = marketplaceFee.toString();
+      marketplaceFee = ((parseFloat(marketplaceFee) * 100) / 10000).toFixed(1)
+    } else {
+      marketplaceFee = "0";
+    }
+
+    let data = { "marketplaceFee": marketplaceFee, "royaltyFee": royaltyFee }
+
+    setFees(data);
+
+  }, [marketplaceContract, collectionId]);
+
   const hasError = allowanceError || acceptationError;
 
   if (isConfirming || hasError) {
@@ -62,8 +96,7 @@ export default function BuyNowForm(props) {
             <div className="leading-none">
               <a href="#" className="text-sm text-cornfllower">{ellipseAddress(collectionId, 4)}</a>
               <p className="leading-2 mb-1">{name}</p>
-              {/* TODO replace hardcoded fee */}
-              <p className="text-[11px] text-manatee">Creator Fees: 2.5%</p>
+              <p className="text-[11px] text-manatee">{"Creator Fees:" + fees.royaltyFee + "%"}</p>
             </div>
           </div>
           <div className="text-right">
