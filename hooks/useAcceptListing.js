@@ -14,9 +14,11 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
 
     await handleAllowance(formatEther(listing?.pricePerItem));
 
+    if (allowanceError) return;
+
     try {
       setAcceptationStatus(TRANSACTION_STATUS.IN_PROGRESS);
-      
+
       const tx = await marketplaceContract.AcceptListing({
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,
@@ -39,7 +41,7 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
       setAcceptationError(error?.data?.message || error?.message);
       return;
     }
-  }, [marketplaceContract, handleAllowance])
+  }, [marketplaceContract, handleAllowance, allowanceError])
 
     return { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError }
 }

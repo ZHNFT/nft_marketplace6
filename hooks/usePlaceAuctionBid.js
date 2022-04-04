@@ -19,6 +19,8 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
       };
   
       await handleAllowance(price);
+
+      if (allowanceError) return;
   
       try {
         setTransactionStatus(TRANSACTION_STATUS.IN_PROGRESS);
@@ -36,7 +38,7 @@ export default function usePlaceAuctionBid({ tokenContract, marketplaceAddress, 
         return;
       }
   
-    }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner]);
+    }, [tokenId, collectionId, handleAllowance, marketplaceContract, owner, allowanceError]);
 
     return { handlePlaceAuctionBid, allowanceStatus, allowanceError, transactionStatus, transactionError, auctionTx: transaction }
 }
