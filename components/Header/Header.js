@@ -3,7 +3,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { Popover } from "@headlessui/react";
-import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import MobileMenu from "./MobileMenu";
 import ProfileMenuButton from "./ProfileMenuButton";
 import ProfileMenu from "./ProfileMenu";
@@ -12,6 +11,7 @@ import SearchInput from "./SearchInput";
 import Logo from "../../images/hive-logo.png";
 import EditProfileModal from "../Modals/EditProfileModal";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
+import { MenuIcon } from "../icons";
 
 export default function Header(props) {
   const { navigation, connect, disconnect, address, withBorder } = props;
@@ -32,7 +32,7 @@ export default function Header(props) {
         {({ open }) => (
           <>
             <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
+              <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8 py-2">
                 <div className="flex md:inset-y-0 lg:static col-span-4">
                   <div className="flex-shrink-0 flex items-center w-full">
                     <Link href="/">
@@ -54,7 +54,7 @@ export default function Header(props) {
                 <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <ul className="flex flex-1 justify-around">
-                      <li>
+                      {/*<li>
                         <a href="#" className="text-base hover:underline">
                           Collections
                         </a>
@@ -68,24 +68,14 @@ export default function Header(props) {
                         <a href="#" className="text-base hover:underline">
                           Drops
                         </a>
-                      </li>
+                      </li>*/}
                     </ul>
                   </div>
                 </div>
-                <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden xl:col-span-4">
-                  {/* Mobile menu button */}
-                  <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-malibu">
-                    <span className="sr-only">Open menu</span>
-                    {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Popover.Button>
-                </div>
-                <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
+                <div className="flex lg:items-center lg:justify-end xl:col-span-4 justify-between lg:w-auto">
                   <NotificationsButton currentUserAddress={address} />
 
+                  <div className="hidden lg:block">
                   {/* Profile dropdown */}
                   {address ? (
                     <ProfileMenuButton
@@ -108,6 +98,15 @@ export default function Header(props) {
                       Connect
                     </button>
                   )}
+                  </div>
+
+                  <div className="flex items-center md:inset-y-0 lg:hidden xl:col-span-4">
+                    {/* Mobile menu button */}
+                    <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center">
+                      <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+                      <MenuIcon className={clsx('block h-6 w-6', open ? 'text-white' : 'text-manatee')} aria-hidden="true" />
+                    </Popover.Button>
+                  </div>
                 </div>
               </div>
             </div>

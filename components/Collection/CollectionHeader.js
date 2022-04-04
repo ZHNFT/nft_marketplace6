@@ -14,8 +14,9 @@ export default function CollectionHeader(props) {
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
+       
         <SecondaryButton
-          className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
+          className="hidden flex items-center absolute right-0 -top-[70px] text-xs font-medium"
           onClick={() => setShowEditModal(true)}
         >
           <EditIcon className="w-[14px] mr-2" />

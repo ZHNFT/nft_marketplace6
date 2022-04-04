@@ -37,9 +37,16 @@ export default function ProfileHeader({
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
 
+      <SecondaryButton
+          className="flex items-center absolute  -top-[70px] text-xs font-medium"
+          onClick={() => setShowEditProfileModal(true)}
+        >
+          <EditIcon className="w-[14px] mr-2" />
+          Edit profile
+        </SecondaryButton>
       
           <PrimaryButton
-            className="flex items-center absolute right-30 -top-[70px] text-xs font-medium"
+            className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
             onClick={() => setShowAddCollectionModal(true)}
           >
             Add collection
@@ -49,13 +56,7 @@ export default function ProfileHeader({
           onClose={() => setShowAddCollectionModal(false)}
         />
           
-        <SecondaryButton
-          className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
-          onClick={() => setShowEditProfileModal(true)}
-        >
-          <EditIcon className="w-[14px] mr-2" />
-          Edit profile
-        </SecondaryButton>
+        
         <div className="flex lg:col-span-7">
           <div className="mr-2.5">
             <div className="gradient-border relative p-2.5">
@@ -121,7 +122,9 @@ export default function ProfileHeader({
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Transactions</h4>
-              <span className="text-xl font-medium">28</span>
+              <span className="text-xl font-medium">
+                { userData.sales?.total || 0 }
+              </span>
             </li>
             <li>
               <h4 className="text-xs mb-1.5">Volume</h4>

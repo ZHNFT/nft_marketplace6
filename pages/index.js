@@ -33,7 +33,7 @@ export default function Home(props) {
   return (
     <div className="flex justify-center lg:max-w-6xl mx-auto">
 
-      <div className="px-4">
+      <div>
         <div className="flex flex-col">
           <Hero />
           <HeroCards />

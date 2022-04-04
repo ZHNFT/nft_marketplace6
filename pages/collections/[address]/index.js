@@ -16,6 +16,7 @@ import InfiniteGallery from '../../../components/Gallery/InfiniteGallery';
 import SortOptions from '../../../components/sortOptions';
 import { ArrowAltIcon } from '../../../components/icons';
 import CollectionTab from '../../../components/Tabs/CollectionTab';
+import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 
 const url = `https://hexagon-api.onrender.com`;
 
@@ -68,11 +69,13 @@ export default function Collection(props) {
   const { search, address, sort, filter, tab, priceFrom, priceTo, rarityFrom, rarityTo } = query;
   const [collectionData, setData] = useState(data);
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState();
   const tabs = [
     { href: "", name: 'NFTs' },
     { href: "?tab=activity", name: 'Activity' }
   ];
+
+  console.log(tab);
   const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
   const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
 
@@ -91,6 +94,10 @@ export default function Collection(props) {
     () => ({ traitFilters, setTraitFilters, queryFilters, setQueryFilters, isPriceReset, setIsPriceReset, isRarityReset, setIsRarityReset, isFormReset, setIsFormReset }), 
     [traitFilters, queryFilters, isPriceReset, isRarityReset, isFormReset]
   );
+
+  useEffect(() => {
+    setShowFilters(window?.innerWidth > 639);
+  }, []);
 
   useEffect(() => {
     fetchCollection();
@@ -117,7 +124,7 @@ export default function Collection(props) {
             <Tabs list={tabs} tabComponent={CollectionTab} address={address} />
           </div>
           <div className="flex lg:col-span-5 items-center justify-end mt-4 lg:mt-0">
-            <span className="mr-4"><FilterButton filters={traits} /></span>
+            {/*<span className="mr-4"><FilterButton filters={traits} /></span>*/}
             <Dropdown className="mr-4 max-w-[128px]" size="sml" selected={selectedItemsFilter} onSelect={setSelectedItemsFilter} list={itemsFilterList} />
             <SortOptions className="max-w-[180px]" />
           </div>
@@ -125,15 +132,16 @@ export default function Collection(props) {
       </div>
       <section className={clsx(
         'mt-14 flex justify-around lg:justify-between mx-auto transition-max-w duration-300 ease-in-out',
-        showFilters ? 'lg:max-w-[1400px]' : 'lg:max-w-6xl'
+        showFilters ? 'max-w-6xl lg:max-w-[1400px]' : 'max-w-6xl lg:max-w-6xl'
       )}>
         <>
           <Sidebar className={clsx(
-            'w-[200px] flex-shrink-0 transition-all duration-300 ease-in-out lg:mr-2',
-            showFilters ? 'delay-75' : '-ml-2 w-0 '
+            'w-full sm:w-[200px] flex-shrink-0 transition-all duration-300 ease-in-out lg:mr-2',
+            'fixed z-2 sm:relative top-0 sm:top-auto bottom-0 left-0 sm:left-auto mobile-only:bg-[#1f2225] mobile-only:overflow-y-auto mobile-only:overflow-x-hidden',
+            showFilters ? 'delay-75' : '-ml-2 w-0 sm:w-0 mobile-only:px-0'
           )}>
             <button
-              className="absolute right-0 top-0 w-[38px] h-[38px] border-[0.5px] border-silver rounded-full"
+              className="absolute right-0 top-0 w-[38px] h-[38px] border-[0.5px] border-silver rounded-full hidden sm:block"
               type="button"
               onClick={() => setShowFilters(!showFilters)}
             >
@@ -155,22 +163,31 @@ export default function Collection(props) {
               />
             </div>
           </Sidebar>
-          <>
-            {
-              tab === 'activity'
-                ? (
-                  <div className='flex flex-1 justify-center'>
-                    <Activity tokenPriceUsd={tokenData?.priceUsd} />
-                  </div>
-                )
-                : (
-                  <div>
-                    <FiltersTags />
-                    <InfiniteGallery collectionData={collectionData} />
-                  </div>
-                )
-            }
-          </>
+          {
+            tab === 'activity'
+              ? (
+                <div className='flex flex-1 justify-center'>
+                  <Activity tokenPriceUsd={tokenData?.priceUsd} />
+                </div>
+              )
+              : (
+                <div className={clsx('mobile-only:w-full')}>
+                  <FiltersTags />
+                  <InfiniteGallery collectionData={collectionData} />
+                </div>
+              )
+          }
+          {
+            !tab && (
+              <PrimaryButton
+                className="fixed bottom-[20px] z-20 sm:hidden !px-6"
+                type="button"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                Filter
+              </PrimaryButton>
+            )
+          }
         </>
       </section>
     </FiltersContext.Provider>
@@ -202,8 +219,6 @@ export async function getStaticProps({ params }) {
     method: 'POST'
   });
   const nfts = await nftsRes?.json();
-
-  console.log('AAAA', data);
 
   return { props: { data: nfts, collection: data } };
 }

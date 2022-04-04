@@ -159,7 +159,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
         tokenPriceUsd={tokenData?.priceUsd}
         tokenBalance={tokenBalance}
       />
-      <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-6xl">
+      <div className="mx-auto py-16 sm:py-24 sm:px-6 lg:max-w-6xl">
         {/* Product */}
         <div className="lg:grid lg:grid-cols-8 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
           {/* Product Image/Preview */}
@@ -245,7 +245,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                 { // Owner & in auction
                   activeAuction && (
-                    <div className='flex items-center justify-between w-full'>
+                    <div className='flex mobile-only:flex-wrap items-center justify-between w-full'>
                       <div>
                         {activeAuction?.highestBid ? (
                           <div>
@@ -340,7 +340,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 
                   { // Not owner & in auction
                     activeAuction && (
-                      <div className='flex items-center justify-between w-full'>
+                      <div className='flex mobile-only:flex-wrap items-center justify-between w-full'>
                         <div>
                           {activeAuction?.highestBid ? (
                             <div>
@@ -365,14 +365,14 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                             date={fromUnixTime(activeAuction?.expiry)}
                           />
                         </div>
-                        <div>
+                        <div className="mobile-only:w-full mobile-only:mt-2 mobile-only:mb-1">
                           {!(getUnixTime(new Date()) >= activeAuction?.expiry) ? (
-                            <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
+                            <PrimaryButton className="mr-4 !px-4 mobile-only:w-full" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
                               Place Bid
                             </PrimaryButton>
                           ) : null}
                           {getUnixTime(new Date()) >= activeAuction?.expiry && activeAuction?.highestBidder === address?.toLowerCase() ? (
-                            <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleConcludeAuction(activeAuction)}>
+                            <PrimaryButton className="mr-4 !px-4 mobile-only:w-full" size="sm" onClick={() => handleConcludeAuction(activeAuction)}>
                               Conclude auction
                             </PrimaryButton>
                           ) : null}

@@ -39,7 +39,7 @@ export default function NotificationsButton({ currentUserAddress }) {
   // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read
   
   return (
-    <Popover className="relative">
+    <Popover className="relative mr-[25px] lg:mr-0">
       {({ open }) => (
         <>
           <Popover.Button
@@ -58,7 +58,7 @@ export default function NotificationsButton({ currentUserAddress }) {
           <Transition
             as={Fragment}
           >
-            <Popover.Panel className="absolute z-10 lg:w-[450px] right-0 mt-[8px]">
+            <Popover.Panel className="absolute z-10 w-[350px] md:w-[450px] -right-[45px] md:right-0 mt-[8px]">
               <div className="popover-container overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5">
                 <div className="flex justify-between items-center">
                  <h3 className="text-xs text-manatee font-medium">Notifications</h3>

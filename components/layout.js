@@ -44,7 +44,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
           withBorder={pathname !== "/"}
         />
         <div className="py-10 h-full">
-          <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl lg:px-8">
+          <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-8xl px-4 lg:px-8">
             <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white text-black">
               {React.Children.map(children, (child) => {
                 if (!React.isValidElement(child)) {

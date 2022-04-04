@@ -14,7 +14,7 @@ const CARDS = [
     title: 'Explore collections',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.',
     button: 'Explore',
-    buttonClass: 'primary',
+    buttonClass: 'secondary',
     action: () => {}
   },
   {
@@ -27,9 +27,9 @@ const CARDS = [
 ];
 
 const CARD_CLASSES = [
-  'bg-cardOutline1 hover:saturate-150 hover:brightness-110',
-  'bg-cardOutline2 hover:saturate-120 hover:brightness-110',
-  'bg-cardOutline3 hover:saturate-150 hover:brightness-150'
+  'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px]',
+  'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px]',
+  'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px]'
 ];
 
 export default function HeroCards() {
@@ -40,7 +40,7 @@ export default function HeroCards() {
           <li key={index} className={clsx(
             'bg-cover px-4 pt-9 pb-10 shadow-featuredCard rounded-[20px] mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0 transition duration-300',
             CARD_CLASSES[index],
-            { 'md:-top-[12px] relative': index === 1 },
+            
             
           )}>
             <div className="block w-[90px] h-[90px] bg-frame bg-cover flex justify-center items-center mb-8 mx-auto ">

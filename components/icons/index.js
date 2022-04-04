@@ -35,6 +35,7 @@ import TelegramFillIcon from './TelegramFillIcon';
 import DiscordIcon from './DiscordIcon';
 import DiscordFillIcon from './DiscordFillIcon';
 import TogaIcon from './TogaIcon';
+import MenuIcon from './MenuIcon';
 
 export {
   BeeIcon,
@@ -73,5 +74,6 @@ export {
   TelegramFillIcon,
   DiscordIcon,
   DiscordFillIcon,
-  TogaIcon
+  TogaIcon,
+  MenuIcon
 }

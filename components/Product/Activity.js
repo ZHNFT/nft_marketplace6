@@ -35,17 +35,18 @@ export default function Activity({ tokenPriceUsd }) {
   }, [fetchData])
 
   if (!activities?.results || !activities?.results?.length) {
-    return <p className="text-center text-xs mt-2">No activity available</p>
+    return <p className="text-center text-xs mt-2 flex h-[100px] justify-center items-center">No activity available</p>
   }
 
   return (
     <Table className="text-xs">
       <RowHeading>
-        <Cell className="w-[30px]" />
+        <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[75px]">Type</Cell>
         <Cell className="w-[100px] text-center">Price</Cell>
-        <Cell className="w-[100px] text-center">From</Cell>
-        <Cell className="w-[100px] text-center">To</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">To</Cell>
+        <Cell className="w-[120px] text-center sm:hidden">From/To</Cell>
         <Cell className="w-[100px] text-center">
           <button type="button">
             Date
@@ -89,7 +90,7 @@ export default function Activity({ tokenPriceUsd }) {
             return (
               <Row key={_id}>
 
-                <Cell className="w-[30px]">
+                <Cell className="w-[30px] mobile-only:hidden">
                   
                   {activityType == "transfer" ? isMinting ?
 
@@ -122,7 +123,8 @@ export default function Activity({ tokenPriceUsd }) {
                     { price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                   </span>
                 </Cell>
-                <Cell className="w-[100px] text-center">
+                <Cell className="w-[100px] text-center mobile-only:hidden">
+                  {/* From address */}
                   {from ? (
 
                     isMinting ?
@@ -132,12 +134,32 @@ export default function Activity({ tokenPriceUsd }) {
                     </a>
                   ) : '-'}
                 </Cell>
-                <Cell className="w-[100px] text-center">
+                <Cell className="w-[100px] text-center mobile-only:hidden">
+                  {/* To address */}
                   { to ? (
                     <a href={"/users/" + to}>
                       { ellipseAddress(to, 4) }
                     </a>
                    ) : '-'}
+                </Cell>
+                <Cell className="w-[120px] text-center sm:hidden">
+                  {/* From/To addresses (mobile) */}
+                  <div>
+                    { from ? (
+                      isMinting ?
+                      "-" : 
+                      <a href={"/users/" + from}>
+                        { ellipseAddress(from, 4) }
+                      </a>
+                      ) : '-' }
+                  </div>
+                  <div className="mt-1">
+                    { to ? (
+                      <a href={"/users/" + to}>
+                        { ellipseAddress(to, 4) }
+                      </a>
+                    ) : '-' }
+                  </div>
                 </Cell>
                 <Cell className="w-[100px] text-center">
                   <div className="group relative">

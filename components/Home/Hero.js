@@ -115,7 +115,7 @@ export default function Hero() {
           <div className="flex text-xxs">
             <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
             <span className="flex ml-2 rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-2.5">
-              <ViewIcon className="w-[16px]" />
+              <ViewIcon className="w-[16px] h-[16px]" />
               <span className="ml-1">9K</span>
             </span>
           </div>

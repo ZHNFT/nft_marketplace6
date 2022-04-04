@@ -4,7 +4,7 @@ export default function Sidebar({ navigation, className, children }) {
 
   return (
     <div className={className}>
-      <nav aria-label="Sidebar" className="sticky top-4">
+      <nav aria-label="Sidebar" className="sm:sticky top-4 mobile-only:overflow-y-auto mobile-only:overflow-x-hidden mobile-only:h-5/6 mobile-only:px-10">
         { navigation && <div className="pb-8 space-y-1">
           {navigation?.map((item) => (
             <a

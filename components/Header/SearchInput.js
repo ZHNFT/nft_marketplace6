@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { Popover, Transition, Tab } from '@headlessui/react';
 import clsx from 'clsx';
-import { searchCollectionUrl } from '../../constants/url';
+import { searchCollectionUrl, searchTokenUrl } from '../../constants/url';
 import { useDidMount } from '../../hooks/useDidMount';
 import { useDebounce } from '../../hooks/useDebounce';
 import Collections from './SearchResults/Collections';
@@ -27,10 +27,11 @@ export default function SearchInput() {
   const debouncedSearchTerm = useDebounce({ value: searchTerm, delay: 500 });
   
   const searchData = useCallback(async function() {
-    const url = searchCollectionUrl({ searchTerm: debouncedSearchTerm });
-    const res = await fetch(url);
-    const data = await res?.json();
-    setSearchResults(data);
+    const collectionUrl = searchCollectionUrl({ searchTerm: debouncedSearchTerm });
+    const tokenUrl = searchTokenUrl({ searchTerm: debouncedSearchTerm });
+    const [collectionRes, tokenRes] = await Promise.all([fetch(collectionUrl), fetch(tokenUrl)]);
+    const [collectionData, tokenData] = await Promise.all([collectionRes?.json(), tokenRes?.json()]);
+    setSearchResults({ collections: collectionData, tokens: tokenData });
     setIsLoading(false);
   }, [debouncedSearchTerm]);
 
@@ -105,7 +106,7 @@ export default function SearchInput() {
               leaveFrom="transform scale-100 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Popover.Panel className="absolute z-10 w-[390px] left-0 mt-[8px]">
+              <Popover.Panel className="absolute z-10 w-[390px] -left-[56px] md:left-0 mt-[8px]">
                 <div className="popover-container overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5">
                   {
                     !searchTerm || !searchResults || isLoading
@@ -143,10 +144,10 @@ export default function SearchInput() {
                           </div>
                           <Tab.Panels as={Fragment}>
                             <Tab.Panel as="dl">
-                              <Collections results={searchResults?.results} />
+                              <Collections results={searchResults?.collections?.results} />
                             </Tab.Panel>
                             <Tab.Panel as="dl">
-                              <Items />
+                              <Items results={searchResults?.tokens?.results} />
                             </Tab.Panel>
                             <Tab.Panel as="dl">
                               <Profiles />

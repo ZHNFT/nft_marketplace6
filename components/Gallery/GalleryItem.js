@@ -1,5 +1,6 @@
 import { useState, useContext, forwardRef } from 'react';
 import Link from 'next/link'
+import clsx from 'clsx';
 import Web3Context from '../../contexts/Web3Context';
 import { NFT_LISTING_STATE } from '../../constants/nft';
 import { HexagonBeeIcon, DiamondIcon } from '../icons';
@@ -10,7 +11,7 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 import CountdownTimer from '../CountdownTimer';
 
 const GalleryItem = forwardRef((props, ref) => {
-  const { item, showRarity } = props;
+  const { item, showRarity, className } = props;
   const [isHovering, setIsHovering] = useState(false);
   const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
   const { state: web3State } = useContext(Web3Context);
@@ -23,7 +24,10 @@ const GalleryItem = forwardRef((props, ref) => {
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
-        className="relative cursor-pointer w-[210px] h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4"
+        className={clsx(
+          'relative cursor-pointer w-[170px] h-[290px] sm:w-[210px] sm:h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4',
+          className
+        )}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         ref={ref}
@@ -41,7 +45,7 @@ const GalleryItem = forwardRef((props, ref) => {
           {
             showRarity && rarityRank && (
               <div className="ml-auto flex">
-                <DiamondIcon className="w-[12px]" />
+                <DiamondIcon className="w-[12px] h-[15px]" />
                 <span className="text-xs ml-1.5">{ rarityRank }</span>
               </div>
             )
@@ -56,7 +60,7 @@ const GalleryItem = forwardRef((props, ref) => {
           listing={listing}
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
-          <div className="flex h-[24px] justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
+          <div className="flex h-[34px] sm:h-[24px] flex-col sm:flex-row justify-center sm:justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
             <ItemListingState 
               listingState={listingState}
               price={listingState === NFT_LISTING_STATE.IN_AUCTION ? listing?.highestBid : listing?.lowestPrice}
