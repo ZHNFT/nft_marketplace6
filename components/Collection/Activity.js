@@ -32,7 +32,7 @@ export default function Activity({ tokenPriceUsd }) {
   return (
     <Table className="text-xs">
       <RowHeading>
-        <Cell className="w-[30px]" />
+        <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
         {/* <Cell className="w-[200px]">Item</Cell> */}
         <Cell className="w-[100px] text-center">Price</Cell>
@@ -79,7 +79,7 @@ export default function Activity({ tokenPriceUsd }) {
           }
           return (
             <Row key={_id} className="cursor-pointer" onClick={() => router.push("/collections/" + address + "/token/" + tokenId)}>
-              <Cell className="w-[30px]">
+              <Cell className="w-[30px] mobile-only:hidden">
               {activityType == "transfer" ? isMinting ?
 
                 <MintIcon className="w-[16px]" /> :

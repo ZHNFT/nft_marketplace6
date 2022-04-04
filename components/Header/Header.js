@@ -72,7 +72,7 @@ export default function Header(props) {
                     </ul>
                   </div>
                 </div>
-                <div className="flex lg:items-center lg:justify-end xl:col-span-4 w-[100px] justify-between lg:w-auto">
+                <div className="flex lg:items-center lg:justify-end xl:col-span-4 justify-between lg:w-auto">
                   <NotificationsButton currentUserAddress={address} />
 
                   <div className="hidden lg:block">
@@ -100,7 +100,7 @@ export default function Header(props) {
                   )}
                   </div>
 
-                  <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden xl:col-span-4">
+                  <div className="flex items-center md:inset-y-0 lg:hidden xl:col-span-4">
                     {/* Mobile menu button */}
                     <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center">
                       <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
