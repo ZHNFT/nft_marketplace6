@@ -251,7 +251,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                               <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
                             </p>
                             <div className="flex items-baseline relative">
-                              <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]" />
+                              <BeeIcon className="relative h-[12px] top-[1px] pr-[5px]" />
                               <span className="text-base font-medium">{activeAuction.highestBid ? formatEther(activeAuction?.highestBid) : "0"}</span>
                               <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenData?.priceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd)) : null }</span>
                             </div>
