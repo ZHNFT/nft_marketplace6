@@ -20,8 +20,7 @@ const featuredCollections = [
 ];
 
 export default function Home(props) {
-  const { collections } = props;
-  
+  const { collections, connect } = props;
   console.log(`collections`, collections)
 
   if (!collections && !collections?.length) {
@@ -36,7 +35,7 @@ export default function Home(props) {
       <div>
         <div className="flex flex-col">
           <Hero />
-          <HeroCards />
+          <HeroCards connect={connect} />
 
           <section className="mt-14 mb-10">
             <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>

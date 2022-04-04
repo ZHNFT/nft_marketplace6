@@ -32,7 +32,7 @@ const CARD_CLASSES = [
   'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px] w-full'
 ];
 
-export default function HeroCards() {
+export default function HeroCards({ connect }) {
   return (  
     <ul className=" mt-16 mb-20 flex flex-col md:flex-row justify-between">
       {
