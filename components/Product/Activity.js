@@ -35,7 +35,7 @@ export default function Activity({ tokenPriceUsd }) {
   }, [fetchData])
 
   if (!activities?.results || !activities?.results?.length) {
-    return <p className="text-center text-xs mt-2">No activity available</p>
+    return <p className="text-center text-xs mt-2 flex h-[100px] justify-center items-center">No activity available</p>
   }
 
   return (

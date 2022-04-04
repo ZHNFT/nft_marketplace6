@@ -6,7 +6,7 @@ import DefaultLogo from "../../../images/default-collection-logo.png";
 
 export default function Collections({ results }) {
   if (!results || !results.length) {
-    return <div className="h-[272px] flex justify-center items-center">No items found</div>;
+    return <div className="h-[272px] flex justify-center items-center">No collections found</div>;
   }
 
   return (
@@ -22,7 +22,7 @@ export default function Collections({ results }) {
             const { id, address, symbol, name, images, floor, totalSupply } = row;
             return (
               <Link key={`collection_results_${index}`} href="/collections/[address]" as={`/collections/${address}`} passHref>
-                <div>
+                <a>
                   <Row className="cursor-pointer text-xs !py-2">
                     <Cell className="w-[280px] flex items-center">
                       <Image className="rounded-xl" src={images?.logo || DefaultLogo} alt={name} height="24" width="24" />
@@ -41,7 +41,7 @@ export default function Collections({ results }) {
                       { totalSupply }
                     </Cell>
                   </Row>
-                </div>
+                </a>
               </Link>
             );
           })
