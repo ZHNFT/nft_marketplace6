@@ -1,10 +1,22 @@
 import { ethers } from "ethers";
-import { create } from 'ipfs-http-client';
+import { create as createIpfsClient } from 'ipfs-http-client';
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 import _ from "lodash";
 
-const ipfsClient = create('https://ipfs.infura.io:5001/api/v0');
+//infura
+const infuraProjectId = '27LxOpvlH5CNPBnury4rWYmBHhY';
+const infuraProjectSecret = 'a23f152558dd3e275b87cc67f7c95dd1';
+const infuraAuth = 'Basic ' + Buffer.from(`${infuraProjectId}:${infuraProjectSecret}`).toString('base64');
+const infuraProd = {
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  headers: {
+      authorization: infuraAuth,
+  }
+};
+const ipfsClient = createIpfsClient(process.env.NODE_ENV === 'production' ? infuraProd : 'https://ipfs.infura.io:5001/api/v0');
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')

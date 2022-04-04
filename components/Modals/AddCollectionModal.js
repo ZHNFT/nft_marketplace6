@@ -57,6 +57,10 @@ const validate = values => {
     errors.address = 'Contract address is required';
   }
 
+  if (!values.payoutAddress) {
+    errors.address = 'Payout address is required';
+  }
+
   return errors;
 };
 
@@ -367,6 +371,8 @@ export default function AddCollectionModal(props) {
                       step={.1}
                       decimals={1}
                       initialValues={[2]}
+                      min={0}
+                      max={10}
                       suffix="%"
                       onChange={() => {}}
                     />
