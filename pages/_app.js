@@ -81,6 +81,7 @@ function reducer(state, action) {
 let web3Modal;
 
 function MyApp({ Component, pageProps }) {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
   const [state, dispatch] = useReducer(reducer, initialState);
   const contextValue = useMemo(() => {
     return { state, dispatch };
@@ -125,11 +126,21 @@ function MyApp({ Component, pageProps }) {
 
     const ethersProvider = new ethers.providers.Web3Provider(provider)
     const ethersSigner = ethersProvider.getSigner();
-    const marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
-    const erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
+    
+    let marketplaceTestContract;
+    let erc20TokenContract;
+    
+    console.log(`network.chainId`, network.chainId)
+
+    if (network.chainId === 80001) {
+      marketplaceTestContract = new ethers.Contract(marketplaceTestContractAddress, marketPlaceTestABI, ethersSigner);
+      erc20TokenContract = new ethers.Contract(TestErc20TokenAddress, TestErc20ABI, ethersSigner);
+    }
+    if (network.chainId === 137) {
+      // TODO initialize contracts with correct addresses
+    }
 
     let erc20TokenBalance = await erc20TokenContract?.balanceOf(address);
-
     erc20TokenBalance = ethers.utils.formatEther(erc20TokenBalance.toString());
 
     dispatch({
@@ -225,14 +236,21 @@ function MyApp({ Component, pageProps }) {
 
   // Will ask the user to switch chains if they are connected to the wrong chain
   useEffect(() => {
-    if (provider && chainId !== 80001) {
+    if (provider && chainId !== 80001 && chain === 'mumbai') {
       provider?.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: testnetChainId }],
       });
       return
     }
-  }, [chainId, provider, mainnetChainId, testnetChainId])
+    if (provider && chainId !== 137 && chain === 'polygon') {
+      provider?.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: mainnetChainId }],
+      });
+      return
+    }
+  }, [chainId, provider, mainnetChainId, testnetChainId, chain])
 
   useEffect(() => {
     async function fetchTokenData() {

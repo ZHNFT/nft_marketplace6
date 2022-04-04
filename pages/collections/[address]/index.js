@@ -195,7 +195,8 @@ export default function Collection(props) {
 }
 
 export async function getStaticPaths() {
-  const url = "https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=mumbai"
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
+  const url = `https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=${chain}`
   const res = await fetch(url)
   const collections = await res?.json()
 

@@ -487,6 +487,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 };
 
 export async function getServerSideProps(context) {
+  const chain = process.env.NEXT_PUBLIC_CHAIN;
   const { params: { address, id } } = context;
   const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
   const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}`;
@@ -495,7 +496,7 @@ export async function getServerSideProps(context) {
   let data = await res?.json();
   const collection = await collectionRes?.json();
   const nfts = await nftsRes?.json();
-  const bidsUrls = `https://hexagon-api.onrender.com/bids/validate-balance?chain=mumbai`;
+  const bidsUrls = `https://hexagon-api.onrender.com/bids/validate-balance?chain=${chain}`;
   const bids = data?.bids?.map((bid) => bid?._id);
   if (bids && bids?.length) {
     const bidsRes = await fetch(bidsUrls, {
