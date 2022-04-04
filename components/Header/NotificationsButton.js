@@ -32,7 +32,7 @@ export default function NotificationsButton({ currentUserAddress }) {
   // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read
   
   return (
-    <Popover className="relative mr-[25px] lg:mr-auto">
+    <Popover className="relative mr-[25px] lg:mr-0">
       {({ open }) => (
         <>
           <Popover.Button

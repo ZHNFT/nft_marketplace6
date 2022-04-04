@@ -43,8 +43,9 @@ export default function Activity({ tokenPriceUsd }) {
         <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
         <Cell className="w-[100px] text-center">Price</Cell>
-        <Cell className="w-[100px] text-center">From</Cell>
-        <Cell className="w-[100px] text-center">To</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
+        <Cell className="w-[100px] text-center mobile-only:hidden">To</Cell>
+        <Cell className="w-[120px] text-center sm:hidden">From/To</Cell>
         <Cell className="w-[100px] text-center">
           <button type="button">
             Date
@@ -124,7 +125,8 @@ export default function Activity({ tokenPriceUsd }) {
                 { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                 </span>
               </Cell>
-              <Cell className="w-[100px] text-center">
+              <Cell className="w-[100px] text-center mobile-only:hidden">
+                {/* From address */}
                 {
                   from && !isMinting &&  (
                     <Link href={`/users/${from}`}>
@@ -134,7 +136,8 @@ export default function Activity({ tokenPriceUsd }) {
                 } 
                 { !from || isMinting && '-' }
               </Cell>
-              <Cell className="w-[100px] text-center">
+              <Cell className="w-[100px] text-center mobile-only:hidden">
+                {/* To address */}
                 {
                   to ? (
                     <Link href={`/users/${to}`}>
@@ -142,6 +145,25 @@ export default function Activity({ tokenPriceUsd }) {
                     </Link>
                   ) : '-'
                 }
+              </Cell>
+              <Cell className="w-[120px] text-center sm:hidden">
+                {/* From/To addresses (mobile) */}
+                <div>
+                  { from ? (
+                    isMinting ?
+                    "-" :
+                    <a href={"/users/" + from}>
+                      { ellipseAddress(from, 4) }
+                    </a>
+                  ) : '-'}
+                </div>
+                <div>
+                  { to ? (
+                  <a href={"/users/" + to}>
+                    { ellipseAddress(to, 4) }
+                  </a>
+                  ) : '-' }
+                </div>
               </Cell>
               <Cell className="w-[100px] text-center">
                 <div className="group relative">
