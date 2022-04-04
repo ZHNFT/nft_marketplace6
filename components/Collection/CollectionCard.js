@@ -16,7 +16,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 export default function CollectionCard({ collection }) {
   const { id, name, description, author, address, ownerCount, volume, floorPrice, totalSupply, listed  } = collection
 
-  let totalVolume = formatEther(volume.total);
+  let totalVolume = volume?.total ? formatEther(volume?.total) : undefined;
   let formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
 
   return (
