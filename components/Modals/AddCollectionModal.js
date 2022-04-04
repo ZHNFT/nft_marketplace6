@@ -257,7 +257,7 @@ export default function AddCollectionModal(props) {
                         Profile image
                         <span className="text-cornflower ml-1">*</span>
                       </p>
-                      <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo.</p>
+                      <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo. The cover photo will be part of a future update.</p>
                       <div className="relative mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
                         { preview?.coverImage && <Image className="aspect-w-1 object-cover object-center justify-center overflow-hidden" src={preview.coverImage} alt={name} layout="fill" /> }
 
