@@ -28,7 +28,7 @@ export default function ProductDetailsHeader(props) {
           </button>
           <button type="button" className="py-1 pl-1 flex">
             <span className="sr-only">Share</span>
-            <ShareIcon className="w-[13px]" />
+            {/*<ShareIcon className="w-[13px]" />*/}
           </button>
         </div>
       </div>

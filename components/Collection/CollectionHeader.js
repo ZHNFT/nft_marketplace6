@@ -87,7 +87,7 @@ export default function CollectionHeader(props) {
                 <li>
                     <a href="#">
                       <span className="hidden">Share</span>
-                      <ShareIcon className="w-[14px]" />
+                      {/*<ShareIcon className="w-[14px]" />*/}
                     </a>
                 </li>
             </ul>
