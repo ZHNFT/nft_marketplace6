@@ -12,7 +12,7 @@ export default function Home(props) {
 
   const fetchData = useCallback(async function() {
     //TODO: quer multiple collections
-    const url = `https://hexagon-api.onrender.com/collections/0x16c3fbda29713b1766128980b65d92807151d710`;
+    const url = `https://api.hexag0n.io/collections/0x16c3fbda29713b1766128980b65d92807151d710`;
     const res = await fetch(url)
     const data = await res?.json()
 
@@ -61,7 +61,7 @@ export default function Home(props) {
 
 export async function getStaticProps() {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const url = `https://hexagon-api.onrender.com/collections?page=0&size=2&sort=name&chain=${chain}`;
+  const url = `https://api.hexag0n.io/collections?page=0&size=2&sort=name&chain=${chain}`;
   const res = await fetch(url)
   const data = await res?.json()
   return { props: { collections: data }, revalidate: 30 };

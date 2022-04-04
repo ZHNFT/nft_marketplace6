@@ -61,7 +61,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   const { address: contractAddress, id } = router.query;
 
   const fetchData = useCallback(async function() {
-    const url = `https://hexagon-api.onrender.com/collections/${contractAddress}/token/${id}`;
+    const url = `https://api.hexag0n.io/collections/${contractAddress}/token/${id}`;
     const res = await fetch(url)
     const data = await res?.json()
 
@@ -69,7 +69,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   }, [contractAddress, id])
 
   const refreshMetaData = useCallback(async function() {
-    const url = `https://hexagon-api.onrender.com/tokens/${data?._id}/refresh-metadata`;
+    const url = `https://api.hexag0n.io/tokens/${data?._id}/refresh-metadata`;
     await fetch(
       url,
       {
@@ -487,14 +487,14 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
 export async function getServerSideProps(context) {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
   const { params: { address, id } } = context;
-  const url = `https://hexagon-api.onrender.com/collections/${address}/token/${id}`;
-  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}`;
-  const tokensUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
+  const url = `https://api.hexag0n.io/collections/${address}/token/${id}`;
+  const collectionUrl = `https://api.hexag0n.io/collections/${address}`;
+  const tokensUrl = `https://api.hexag0n.io/collections/${address}/tokens?page=0&sort=tokenId&size=9`;
   const [res, collectionRes, nftsRes] = await Promise.all([fetch(url), fetch(collectionUrl), fetch(tokensUrl, { method: 'POST' })]);
   let data = await res?.json();
   const collection = await collectionRes?.json();
   const nfts = await nftsRes?.json();
-  const bidsUrls = `https://hexagon-api.onrender.com/bids/validate-balance?chain=${chain}`;
+  const bidsUrls = `https://api.hexag0n.io/bids/validate-balance?chain=${chain}`;
   const bids = data?.bids?.map((bid) => bid?._id);
   if (bids && bids?.length) {
     const bidsRes = await fetch(bidsUrls, {
