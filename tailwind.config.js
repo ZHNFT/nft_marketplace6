@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 
 module.exports = {
   content: [
@@ -68,5 +69,8 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/line-clamp'),
     require('@tailwindcss/aspect-ratio'),
+    plugin(function ({ addVariant }) {
+      addVariant('mobile-only', "@media screen and (max-width: theme('screens.sm'))");
+    })
   ],
 }

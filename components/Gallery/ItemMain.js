@@ -17,7 +17,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
   const { setActiveModal } = useContext(GalleryContext);
 
   return (
-    <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[210px]">
+    <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] sm:w-[210px]">
       <Image
         className="block w-full object-center object-cover"
         src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&aspect_ratio=1:1` : DefaultImage}

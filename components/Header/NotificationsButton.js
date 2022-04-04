@@ -51,7 +51,7 @@ export default function NotificationsButton({ currentUserAddress }) {
           <Transition
             as={Fragment}
           >
-            <Popover.Panel className="absolute z-10 lg:w-[450px] right-0 mt-[8px]">
+            <Popover.Panel className="absolute z-10 w-[350px] md:w-[450px] -right-[45px] md:right-0 mt-[8px]">
               <div className="popover-container overflow-hidden rounded-[21px] text-manatee text-xs py-6 px-5">
                 <div className="flex justify-between items-center">
                  <h3 className="text-xs text-manatee font-medium">Notifications</h3>
