@@ -164,7 +164,8 @@ export default function Listing(props) {
                     title: 'Approval to transfer',
                     status: approvalStatus,
                     isDefaultOpen: true,
-                    description: approvalError ? approvalError : 'To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.'
+                    description: approvalError ? approvalError : ''
+                    //To get set up for auction listings for the first time, you must approve this item for sale, which requires a one-time gas fee.
                   },
                   {
                     className: 'my-2',
