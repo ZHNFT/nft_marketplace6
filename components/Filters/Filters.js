@@ -44,14 +44,6 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
       ...searchQuery
     };
 
-    console.log("butt")
-
-    console.log("min price = ")
-    console.log(minPrice)
-
-    console.log("max price = ")
-    console.log(maxPrice)
-
     // set query filters for FilterTags
     setQueryFilters(Object.keys(newQuery)
       .reduce((acc, key) => {
@@ -127,7 +119,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
        
               
             <RangeField
-              step={0.1}
+              step={(maxPrice - minPrice) / 20}
               decimals={1}
               min={minPrice}
               max={maxPrice}
@@ -140,14 +132,12 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
             )
           }
 
-          
-
           { /* Rarity */
             maxRarity > minRarity && (
               <>
                 <div className="mt-10 text-xs font-medium">Rarity</div>
                 <RangeField
-                  step={1}
+                  step={(maxRarity - minRarity) / 20}
                   decimals={0}
                   min={minRarity}
                   max={maxRarity}
