@@ -368,14 +368,14 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
 
-                  <h4 className="mt-8 mb-4 text-base">Payments</h4>
+                  <h4 className="mt-8 mb-4 text-base">Currency Selection</h4>
                   <p className="text-manatee text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process.</p>
                   
                   <p className="text-xs text-manatee flex items-center mt-4 mb-2">
                     Payment tokens
                     <span className="text-cornflower ml-1">*</span>
                   </p>
-                  <p className="text-manatee text-xs mr-8">For all non-HNY currencies, there will be a royalty fee of 2%.</p>
+                  <p className="text-manatee text-xs mr-8">Choose the currency in which you will be listing your collection. Note that listing in HNY means you will not have to pay any royalty fees to Hexagon – additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a royalty fee of 2%.</p>
                   <p className='text-manatee text-xs mr-8'>Caution: Your currency choice can’t be changed once the collection has been accepted.</p>
                   
                   <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
@@ -393,10 +393,10 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
                   
-                  <p className="text-xs text-manatee flex items-center mt-6 mb-2">
-                    Royalty percentage
+                  <h4 className="mt-8 mb-4 text-base">Royalty Percentage</h4>
+                 
                     <span className="text-cornflower ml-1">*</span>
-                  </p>
+                  
                   <p className="text-manatee text-xs mr-8 mb-2">Caution: This can’t be changed once the collection has been accepted.</p>
                   <div className="-mx-[6px]">
                     <RangeField
