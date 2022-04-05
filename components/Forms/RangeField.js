@@ -8,17 +8,19 @@ import { useDebounce } from '../../hooks/useDebounce';
 export default function RangeField(props) {
   const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, isReset, onChange } = props;
   const [values, setValues] = useState(initialValues);
+  const [isDefaultValues, setIsDefaultValues] = useState();
   const didMount = useDidMount();
   const debouncedValue = useDebounce({ value: values, delay: 500 });
 
   useEffect(() => {
     if(isReset) {
+      setIsDefaultValues(true);
       setValues(initialValues);
     }
   }, [isReset, initialValues]);
 
   useEffect(() => {
-    if (didMount && debouncedValue) {
+    if (didMount && debouncedValue && !isDefaultValues) {
       onChange(debouncedValue);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,7 +33,7 @@ export default function RangeField(props) {
         step={step}
         min={min}
         max={max}
-        onChange={values => setValues(values)}
+        onChange={values => { setIsDefaultValues(false); setValues(values); }}
         renderTrack={({ props, children }) => (
           <div
             onMouseDown={props.onMouseDown}
