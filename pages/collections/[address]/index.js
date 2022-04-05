@@ -82,8 +82,6 @@ export default function Collection(props) {
   let minPrice = collection.floorPrice ? formatEther(collection.floorPrice) : 0;
   let maxPrice = collection.highestPrice ? formatEther(collection.highestPrice) : 0;
 
-  
-
   maxPrice = parseFloat(maxPrice);
   minPrice = parseFloat(minPrice)
 
@@ -233,5 +231,11 @@ export async function getStaticProps({ params }) {
   });
   const nfts = await nftsRes?.json();
 
-  return { props: { data: nfts, collection: data } };
+  return { 
+    props: { data: nfts, collection: data },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 10, // In seconds
+  };
 }
