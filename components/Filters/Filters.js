@@ -119,7 +119,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
        
               
             <RangeField
-              step={(maxPrice - minPrice) / 20}
+              step={0.1}
               decimals={1}
               min={minPrice}
               max={maxPrice}
@@ -137,7 +137,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
               <>
                 <div className="mt-10 text-xs font-medium">Rarity</div>
                 <RangeField
-                  step={(maxRarity - minRarity) / 20}
+                  step={1}
                   decimals={0}
                   min={minRarity}
                   max={maxRarity}
