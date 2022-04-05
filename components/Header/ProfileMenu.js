@@ -106,7 +106,8 @@ export default function ProfileMenu({ address, disconnect }) {
             </a>
           </Link>
         </li>
-        <li className="my-3">
+
+        {/*<li className="my-3">
           <Link
             href={`/users/[address]?tab=collections`}
             as={`/users/${address}?tab=collections`}
@@ -117,7 +118,8 @@ export default function ProfileMenu({ address, disconnect }) {
               <span className="text-white ml-4">My collections</span>
             </a>
           </Link>
-        </li>
+          </li>*/}
+
       </ul>
       
       {/*

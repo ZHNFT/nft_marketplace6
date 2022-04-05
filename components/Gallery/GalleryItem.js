@@ -37,7 +37,7 @@ const GalleryItem = forwardRef((props, ref) => {
             </div>
             <div className="leading-tight">
               <h3>{ name || 'Unnamed' }</h3>
-              <p className="text-silver dark:text-manatee">{ collectionName }</p>
+              {/*<p className="text-silver dark:text-manatee">{ collectionName }</p>*/}
             </div>
           </div>
           {

@@ -37,7 +37,7 @@ const tokens = [
   {
     label: 'HNY',
     value: 'hny',
-    icon: () => <BeeIcon className="h-[18px] -mt-[4px] -mb-[7px]" />,
+    icon: () => <BeeIcon className="h-[15px] -mt-[4px] -mb-[7px]" />,
     data: {
       contract: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
       symbol: 'HNY',
