@@ -44,7 +44,7 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
   
   let apiUrl = `${url}${basePath}/tokens?page=${page}&size=20${filter ? `&${stringify({ filter })}` : ''}${sort ? `&${stringify({ sort })}` : ''}`;
   apiUrl = `${apiUrl}${priceFrom ? `&priceFrom=${priceFrom}` : ''}${priceTo ? `&priceTo=${priceTo}` : ''}`;
-  apiUrl = `${apiUrl}${rarityFrom ? `&rarityFrom=${rarityFrom}` : ''}${rarityTo ? `&rarityTo=${rarityTo}` : ''}`;
+  apiUrl = `${apiUrl}${rarityFrom ? `&rarityRankFrom=${rarityTo}` : ''}${rarityTo ? `&rarityRankTo=${rarityFrom}` : ''}`;
   const res = await fetch(
     apiUrl,
     {
@@ -76,8 +76,8 @@ export default function Collection(props) {
     { href: "?tab=activity", name: 'Activity' }
   ];
 
-  const minRarity = toFixedOptional({ value: rarity?.lowest, decimals: 2 });
-  const maxRarity = toFixedOptional({ value: rarity?.highest, decimals: 2 });
+  const minRarity = toFixedOptional({ value: 1, decimals: 0 });
+  const maxRarity = toFixedOptional({ value: collection?.totalSupply, decimals: 0 });
 
   let minPrice = collection.floorPrice ? formatEther(collection.floorPrice) : 0;
   let maxPrice = collection.highestPrice ? formatEther(collection.highestPrice) : 0;

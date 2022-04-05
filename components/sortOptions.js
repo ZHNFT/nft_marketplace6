@@ -4,15 +4,15 @@ import { useRouter } from 'next/router'
 import Dropdown from './Dropdown/Dropdown';
 
 const sortOptions = [
-  { label: 'Token id', sortBy: 'tokenId', current: true },
+  { label: 'Token ID', sortBy: 'tokenId', current: true },
   { label: 'Price: Low to High', sortBy: 'lowestPrice', current: false },
   { label: 'Price: High to Low', sortBy: '-highestPrice', current: false },
   { label: 'Bids: High to Low', sortBy: '-highestBid', current: false },
-  { label: 'Bids: Low to High', sortBy: '-lowestBid', current: false },
-  { label: 'Rarity: High to Low', sortBy: '#', current: false },
-  { label: 'Rarity: Low to High', sortBy: '#', current: false },
-  { label: 'Recently Listed', sortBy: '#', current: false },
-  { label: 'Recently Sold', sortBy: '#', current: false },
+  { label: 'Bids: Low to High', sortBy: 'lowestBid', current: false },
+  { label: 'Rarity: Rarest to Common', sortBy: '-rarity', current: false },
+  { label: 'Rarity: Common to Rarest', sortBy: 'rarity', current: false },
+  { label: 'Recently Listed', sortBy: '-lastListedAt', current: false },
+  { label: 'Recently Sold', sortBy: '-lastSoldAt', current: false },
 ]
 
 export default function SortOptions({ className }) {
