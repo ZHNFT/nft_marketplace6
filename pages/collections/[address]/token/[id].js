@@ -176,7 +176,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
           {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
-              collection={{ name: collection?.name, logo: collection?.logo, address: collection?.address }}
+              collection={{ name: collection?.name, logo: collection?.images?.logo, address: collection?.address }}
               name={data?.name}
               owner={owner}
               isOwner={isOwner}
