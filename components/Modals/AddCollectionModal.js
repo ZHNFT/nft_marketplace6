@@ -186,7 +186,7 @@ export default function AddCollectionModal(props) {
     <Modal isOpen={isOpen} onClose={onClose} paddingX={0} title="Add a collection" className="!max-w-[900px]" titleClassname="text-[22px]">
       <div className="px-4">
         <div className="max-h-[430px] overflow-y-auto scroller">
-          <p className="text-manatee text-xs mr-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          <p className="text-manatee text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process. </p>
           
           <h4 className="mt-5 mb-4 text-base">Collection details</h4>
           
@@ -369,13 +369,14 @@ export default function AddCollectionModal(props) {
                   </div>
 
                   <h4 className="mt-8 mb-4 text-base">Payments</h4>
-                  <p className="text-manatee text-xs mr-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                  <p className="text-manatee text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process.</p>
                   
                   <p className="text-xs text-manatee flex items-center mt-4 mb-2">
                     Payment tokens
                     <span className="text-cornflower ml-1">*</span>
                   </p>
-                  <p className="text-manatee text-xs mr-8">Tokens that can be used to buy and sell your items.</p>
+                  <p className="text-manatee text-xs mr-8">For all non-HNY currencies, there will be a royalty fee of 2%.</p>
+                  <p className='text-manatee text-xs mr-8'>Caution: Your currency choice can’t be changed once the collection has been accepted.</p>
                   
                   <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
                     {
