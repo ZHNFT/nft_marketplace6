@@ -22,13 +22,31 @@ export default function ProfileMenu({ address, disconnect }) {
     state: { tokenBalance },
   } = useContext(Web3Context);
 
+  let balance = tokenBalance;
+
+  if(balance) {
+
+    if(typeof(balance) == "string") {
+
+      balance = parseFloat(balance);
+
+      balance = balance.toFixed(2);
+
+    }
+
+  } else {
+
+    balance = "0"
+
+  }
+  
   return (
     <>
       <h4 className="font-medium">Current balance</h4>
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
           <span className="font-medium text-white text-base">
-            {tokenBalance ? tokenBalance.toFixed(2) : 0} HNY
+            {balance} HNY
           </span>
           <button
             className="block hover:text-white"
