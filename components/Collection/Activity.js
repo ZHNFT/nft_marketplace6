@@ -31,7 +31,7 @@ export default function Activity({ tokenPriceUsd }) {
   }, [fetchData])
 
   return (
-    <Table className="text-xs mobile-only:w-[320px] mobile-only:mx-auto">
+    <Table className="text-xs mobile-only:w-[320px] lg:w-10/12 mobile-only:mx-auto">
       <RowHeading>
         <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>

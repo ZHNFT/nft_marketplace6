@@ -151,7 +151,7 @@ export default function SearchInput() {
                               <Items results={searchResults?.tokens?.results} />
                             </Tab.Panel>
                             <Tab.Panel as="dl">
-                              <Profiles results={searchResults?.tokens?.results} />
+                              <Profiles results={searchResults?.users?.results} />
                             </Tab.Panel>
                           </Tab.Panels>
                         </Tab.Group>
