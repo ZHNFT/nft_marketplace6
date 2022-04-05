@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { Popover, Transition, Tab } from '@headlessui/react';
 import clsx from 'clsx';
-import { searchCollectionUrl, searchTokenUrl } from '../../constants/url';
+import { searchCollectionUrl, searchTokenUrl, searchUserUrl } from '../../constants/url';
 import { useDidMount } from '../../hooks/useDidMount';
 import { useDebounce } from '../../hooks/useDebounce';
 import Collections from './SearchResults/Collections';
@@ -29,9 +29,10 @@ export default function SearchInput() {
   const searchData = useCallback(async function() {
     const collectionUrl = searchCollectionUrl({ searchTerm: debouncedSearchTerm });
     const tokenUrl = searchTokenUrl({ searchTerm: debouncedSearchTerm });
-    const [collectionRes, tokenRes] = await Promise.all([fetch(collectionUrl), fetch(tokenUrl)]);
-    const [collectionData, tokenData] = await Promise.all([collectionRes?.json(), tokenRes?.json()]);
-    setSearchResults({ collections: collectionData, tokens: tokenData });
+    const userUrl = searchUserUrl({ searchTerm: debouncedSearchTerm });
+    const [collectionRes, tokenRes, userRes] = await Promise.all([fetch(collectionUrl), fetch(tokenUrl), fetch(userUrl)]);
+    const [collectionData, tokenData, userData] = await Promise.all([collectionRes?.json(), tokenRes?.json(), userRes?.json()]);
+    setSearchResults({ collections: collectionData, tokens: tokenData, users: userData });
     setIsLoading(false);
   }, [debouncedSearchTerm]);
 
@@ -150,7 +151,7 @@ export default function SearchInput() {
                               <Items results={searchResults?.tokens?.results} />
                             </Tab.Panel>
                             <Tab.Panel as="dl">
-                              <Profiles />
+                              <Profiles results={searchResults?.tokens?.results} />
                             </Tab.Panel>
                           </Tab.Panels>
                         </Tab.Group>

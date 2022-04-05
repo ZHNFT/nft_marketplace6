@@ -3,21 +3,13 @@ import Image from 'next/image';
 import { Table, RowHeading, Row, Cell } from '../../Table';
 import { BeeIcon } from '../../icons';
 
-const results = [
-  { id: 1, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 2, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 3, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 4, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 5, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 6, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 7, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 8, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 9, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 },
-  { id: 10, address: '#', name: 'Bob Geldof', imageUrl: '/test/gallery/1.png', value: 38, itemCount: 14 }
-];
-
-export default function Collections() {
+export default function Profiles({ results }) {
   const router = useRouter();
+
+  if (!results || !results.length) {
+    return <div className="h-[272px] flex justify-center items-center">No users found</div>;
+  }
+
   return (
     <Table className="text-xs">
       <RowHeading>
@@ -30,7 +22,7 @@ export default function Collections() {
           results?.map((row, index) => {
             const { id, address, name, imageUrl, value, itemCount } = row;
             return (
-              <Row key={id} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
+              <Row key={`user_search_${index}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push(`/users/${address}`)}>
                 <Cell className="w-[280px] flex items-center">
                   <Image className="rounded-full" src={imageUrl} alt={name} height="24" width="24" />
                   <span className="text-white ml-3">{ name }</span>

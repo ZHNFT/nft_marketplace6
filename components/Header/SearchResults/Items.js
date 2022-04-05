@@ -5,22 +5,6 @@ import { ellipseAddress } from '../../../Utils';
 import { Table, RowHeading, Row, Cell } from '../../Table';
 import { BeeIcon, DiamondIcon, LinkIcon } from '../../icons';
 
-const results = [
-  { id: 1, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 2, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 3, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 4, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 5, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 6, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 7, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 8, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 9, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 10, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 11, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 12, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 },
-  { id: 13, address: '#', collection: 'Bee Collection', name: 'Bee #622', imageUrl: '/test/gallery/1.png', price: 38, priceUsd: 5852.22, rarity: 23 }
-];
-
 export default function Items({ results }) {
   const router = useRouter();
 

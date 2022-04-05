@@ -46,6 +46,17 @@ const API_HOST = 'https://api.hexag0n.io';
 );
 
 /**
+ * Returns the URL for searching a user.
+ *
+ * @param {Object} obj - An object.
+ * @param {String} obj.searchTerm - The search term.
+ * @returns {String} The user search URL.
+ */
+ const searchUserUrl = ({ searchTerm }) => (
+  `${API_HOST}/users/search?q=${searchTerm}`
+);
+
+/**
  * Returns the URL for user's data.
  *
  * @param {Object} obj - An object.
@@ -80,6 +91,7 @@ export {
   nftUrl,
   searchCollectionUrl,
   searchTokenUrl,
+  searchUserUrl,
   userUrl,
   offerUrl
 };
