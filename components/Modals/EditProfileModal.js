@@ -134,12 +134,13 @@ export default function EditProfileModal(props) {
                     </div>
                   </label>
                 </div>
-                <div>
+
+                {/*<div>
                   <label className="block cursor-pointer border-[0.5px] inline-block border-manatee py-2 px-4 bg-white[0.05] rounded-lg py-2 px-4 hover:border-cornflower hover:bg-white/[0.15] text-xs font-medium">
                     <input type="file" name="coverImage" className="hidden" accept="image/*" onChange={onSelectImage} />
                     Change cover
                   </label>
-                </div>
+                </div>*/}
               </div>
             </div>
 
