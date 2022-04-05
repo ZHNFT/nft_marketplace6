@@ -34,9 +34,39 @@ const categories = [
 ];
 
 const tokens = [
-  { label: 'HNY', value: 'hny', icon: () => <BeeIcon className="h-[18px] -mt-[4px] -mb-[7px]" /> },
-  { label: 'wETH', value: 'weth', icon: () => <Image src={EthIcon} alt={name} width={10} height={15} /> },
-  { label: 'wMATIC', value: 'wmatic', icon: () => <Image src={MaticIcon} alt={name} width={17} height={17} /> }
+  {
+    label: 'HNY',
+    value: 'hny',
+    icon: () => <BeeIcon className="h-[18px] -mt-[4px] -mb-[7px]" />,
+    data: {
+      contract: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
+      symbol: 'HNY',
+      name: 'Honey',
+      decimals: 18
+    }
+  },
+  {
+    label: 'wETH',
+    value: 'weth',
+    icon: () => <Image src={EthIcon} alt={name} width={10} height={15} />,
+    data: {
+      contract: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      symbol: 'WETH',
+      name: 'Wrapped Ether',
+      decimals: 18
+    }
+  },
+  {
+    label: 'wMATIC', 
+    value: 'wmatic',
+    icon: () => <Image src={MaticIcon} alt={name} width={17} height={17} />,
+    data: {
+      contract: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+      symbol: 'WMATIC',
+      name: 'Wrapped Matic',
+      decimals: 18
+    }
+  }
 ];
 
 const validate = values => {
@@ -112,6 +142,7 @@ export default function AddCollectionModal(props) {
       images.coverImage ? await uploadToIpfs(images.coverImage) : Promise.resolve(null),
       images.featuredImage ? await uploadToIpfs(images.featuredImage) : Promise.resolve(null)
     ]);
+    
     const payload = {
       address: data.address,
       chain: 'polygon',
@@ -126,7 +157,7 @@ export default function AddCollectionModal(props) {
       },
       socials: getSocials({ platforms, data }),
       royaltyPercent: data.royaltyPercent,
-      currency: data.paymentTokens
+      currency: tokens.find(token => token.value === data.paymentTokens)?.data
     };
 
     const response = await fetch(`https://api.hexag0n.io/collections`, {
@@ -303,7 +334,7 @@ export default function AddCollectionModal(props) {
                           <div>
                             <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={67} height={75} />
                           </div>
-                          <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                          <span className="z-30 bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
                             <CameraIcon className="text-white w-[13px]" />
                           </span>
                           <div className="z-20 opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center">
@@ -346,14 +377,14 @@ export default function AddCollectionModal(props) {
                   </p>
                   <p className="text-manatee text-xs mr-8">Tokens that can be used to buy and sell your items.</p>
                   
-                  <div role="group" className="mt-4 flex justify-between" aria-labelledby="checkbox-group">
+                  <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
                     {
                       tokens.map(({ label, value, icon }) => (
                         <label key={value} className={clsx(
                           'relative flex flex-1 cursor-pointer mx-6 first:ml-0 last:mr-0 flex-col items-center justify-center py-1.5 px-8 border-[0.5px] border-manatee rounded-md text-center overflow-hidden',
                           values?.paymentTokens.includes(value) ? 'border-cornflower after:bg-cornflower after:block after:m-auto after:h-[3px] after:w-full after:absolute after:left-0 after:bottom-0' : ''
                         )}>
-                          <Field type="checkbox" name="paymentTokens" className="absolute -left-[999px]" value={value} />
+                          <Field type="radio" name="paymentTokens" className="absolute -left-[999px]" value={value} />
                           { icon() }
                           <p className="text-xs mt-1">{ label }</p>
                         </label>
