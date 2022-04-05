@@ -2,16 +2,27 @@ import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { fromUnixTime, format } from 'date-fns';
 import clsx from 'clsx';
+import { useDidMount } from '../../hooks/useDidMount';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export default function RangeField(props) {
   const { initialValues = [0], suffix, step = 0.01, decimals, min = 0, max = 100, isDate, isReset, onChange } = props;
   const [values, setValues] = useState(initialValues);
+  const didMount = useDidMount();
+  const debouncedValue = useDebounce({ value: values, delay: 500 });
 
   useEffect(() => {
     if(isReset) {
       setValues(initialValues);
     }
   }, [isReset, initialValues]);
+
+  useEffect(() => {
+    if (didMount && debouncedValue) {
+      onChange(debouncedValue);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue]);
 
   return (
     <div className="flex justify-center">
@@ -20,7 +31,7 @@ export default function RangeField(props) {
         step={step}
         min={min}
         max={max}
-        onChange={values => { setValues(values); onChange(values); }}
+        onChange={values => setValues(values)}
         renderTrack={({ props, children }) => (
           <div
             onMouseDown={props.onMouseDown}

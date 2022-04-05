@@ -191,7 +191,7 @@ export default function Collection(props) {
             !tab && (
               <div className="fixed bottom-[20px] left-0 right-0 text-center sm:hidden z-20">
                 <PrimaryButton
-                  className="!px-6"
+                  className="!px-10"
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
                 >
