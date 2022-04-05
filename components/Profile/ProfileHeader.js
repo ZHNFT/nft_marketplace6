@@ -73,7 +73,7 @@ export default function ProfileHeader({
             </div>
           </div>
           <div className="flex flex-col">
-            <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">
+            <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2.5">
               {userData?.username || ellipseAddress(address, 4)}
             </h1>
             <ul className="flex justify-start items-center text-xs">
