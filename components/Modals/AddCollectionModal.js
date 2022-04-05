@@ -59,7 +59,7 @@ const tokens = [
   {
     label: 'wMATIC', 
     value: 'wmatic',
-    icon: () => <Image src={MaticIcon} alt={name} width={17} height={17} />,
+    icon: () => <Image src={MaticIcon} alt={name} width={15} height={15} />,
     data: {
       contract: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
       symbol: 'WMATIC',
