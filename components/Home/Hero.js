@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
         <div className="mb-10 lg:max-w-sm">
           <p className="text-manatee text-xs">
-            Polygon's Premier NFT Marketplace
+            Polygon&apos;s Premier NFT Marketplace
           </p>
         </div>
         <span className="block mb-4">
