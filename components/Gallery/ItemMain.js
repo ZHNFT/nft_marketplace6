@@ -41,13 +41,13 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                 {
                   listingState !== NFT_LISTING_STATE.IN_AUCTION && !isOwner && (
                     <div className="w-full mx-[14px] flex justify-center">
-                      {
+                      {/* {
                         listingState === NFT_LISTING_STATE.FOR_SALE && (
                           <PrimaryButton className="w-[85px] h-[30px] mr-[6px]" size="sm" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
                         )
-                      }
+                      } */}
                       <div className="relative flex flex-col ml-[6px]">
-                        <SecondaryButton
+                        {/* <SecondaryButton
                           className="h-[30px]"
                           size="xs"
                           onClick={event => {
@@ -56,7 +56,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                           }}
                         >
                           Make offer
-                        </SecondaryButton>
+                        </SecondaryButton> */}
                         {
                           listing?.highestPrice && (
                             <span className="text-center absolute left-0 right-0 -bottom-[28px]">
@@ -75,7 +75,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                         <ProgressCircle width="210" height="210" percent="80" />
                       </div>
                       <div className="relative flex flex-col">
-                        <SecondaryButton
+                        {/* <SecondaryButton
                           className="w-[85px]"
                           size="xs"
                           onClick={event => {
@@ -84,7 +84,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                           }}
                         >
                           Place Bid
-                        </SecondaryButton>
+                        </SecondaryButton> */}
                         <span className="text-center absolute left-0 right-0 -bottom-[21px] text-white">
                           {listing?.expiry 
                             ? <CountdownTimer date={fromUnixTime(listing?.expiry)} /> 
