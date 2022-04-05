@@ -14,7 +14,7 @@ import fromUnixTime from 'date-fns/fromUnixTime'
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
   return (
-    <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] sm:w-[210px]">
+    <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] md:w-[210px]">
       <Image
         className="block w-full object-center object-cover"
         src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&aspect_ratio=1:1` : DefaultImage}

@@ -139,13 +139,13 @@ export default function Collection(props) {
         </section>
       </div>
       <section className={clsx(
-        'mt-14 flex justify-around lg:justify-between mx-auto transition-max-w duration-300 ease-in-out',
+        'mt-14 flex justify-between md:justify-around lg:justify-between mx-auto transition-max-w duration-300 ease-in-out',
         showFilters ? 'max-w-6xl lg:max-w-[1400px]' : 'max-w-6xl lg:max-w-6xl'
       )}>
         <>
           <Sidebar className={clsx(
             'w-full sm:w-[200px] flex-shrink-0 transition-all duration-300 ease-in-out lg:mr-2',
-            'fixed z-2 sm:relative top-0 sm:top-auto bottom-0 left-0 sm:left-auto mobile-only:bg-[#1f2225] mobile-only:overflow-y-auto mobile-only:overflow-x-hidden',
+            'fixed z-20 sm:relative top-0 sm:top-auto bottom-0 left-0 sm:left-auto mobile-only:bg-[#1f2225] mobile-only:overflow-y-auto mobile-only:overflow-x-hidden',
             showFilters ? 'delay-75' : '-ml-2 w-0 sm:w-0 mobile-only:px-0'
           )}>
             <button
@@ -189,13 +189,15 @@ export default function Collection(props) {
           }
           {
             !tab && (
-              <PrimaryButton
-                className="fixed bottom-[20px] z-20 sm:hidden !px-6"
-                type="button"
-                onClick={() => setShowFilters(!showFilters)}
-              >
-                Filter
-              </PrimaryButton>
+              <div className="fixed bottom-[20px] left-0 right-0 text-center sm:hidden z-20">
+                <PrimaryButton
+                  className="!px-6"
+                  type="button"
+                  onClick={() => setShowFilters(!showFilters)}
+                >
+                  Filter
+                </PrimaryButton>
+              </div>
             )
           }
         </>
