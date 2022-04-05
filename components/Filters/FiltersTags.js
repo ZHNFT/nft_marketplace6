@@ -48,7 +48,7 @@ export default function FiltersTags() {
             return (
               <FilterTag
                 key="tag_rarity"
-                name="Rarity"
+                name="Rarity Rank"
                 value={`${queryFilters.rarity.rarityFrom} - ${queryFilters.rarity.rarityTo}`}
                 onHandleClick={() => {
                   delete queryFilters.rarity;
