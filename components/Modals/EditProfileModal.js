@@ -57,8 +57,9 @@ export default function EditProfileModal(props) {
 
     const signer = ethersProvider.getSigner();
 
+    let token;
     try {
-      const token = await Web3Token.sign(
+      token = await Web3Token.sign(
         async (msg) => await signer.signMessage(msg),
         "1d"
       );
