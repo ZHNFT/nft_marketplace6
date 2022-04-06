@@ -16,6 +16,7 @@ import OfferIcon from '../icons/OfferIcon';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 import Spinner from '../Spinner/Spinner';
+import { route } from 'next/dist/server/router';
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -65,8 +66,6 @@ export default function Activity({ tokenPriceUsd }) {
 
           const blockchainViewer = (chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/");
 
-          const link = blockchainViewer + transactionHash
-
           const isMinting = activityType == "transfer" && fromAddress == "0x0000000000000000000000000000000000000000";
           const date = new Date(timestamp);
           const { timeAgo, formattedDate, formattedTime } = isValid(date) ? {
@@ -76,10 +75,7 @@ export default function Activity({ tokenPriceUsd }) {
           } : {};
 
           return (
-
-            <Link key={`user_activity_${index}`} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-            <a>
-            <Row key={`user_activity_${index}`} className="cursor-pointer">
+            <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push(`/collections/${address}/token/${tokenId}`)}>
               <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "transfer" ? isMinting ?
                   <MintIcon className="w-[16px]" /> :
@@ -178,14 +174,16 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                <a href={link} target="_blank" rel="noreferrer">
-                  <span className="sr-only">View transaction in blockchain explorer</span>
-                  <LinkIcon className="w-[12px]" />
-                </a>
+                {
+                  transactionHash && (
+                    <a href={`${blockchainViewer}${transactionHash}`} target="_blank" rel="noreferrer">
+                      <span className="sr-only">View transaction in blockchain explorer</span>
+                      <LinkIcon className="w-[12px]" />
+                    </a>
+                  )
+                }
               </Cell>
             </Row>
-            </a>
-            </Link>
           );
         })
       }
