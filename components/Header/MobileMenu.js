@@ -28,7 +28,7 @@ export default function MobileMenu(props) {
         ))*/}
       </div>
 
-      <div className="mt-4 max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="flex justify-center mt-4 max-w-3xl mx-auto px-4 sm:px-6">
       {address ? (
         <div className="text-xs text-manatee mb-4">
           { children }
@@ -37,7 +37,7 @@ export default function MobileMenu(props) {
         <button
           type="button"
           onClick={connect}
-          className="text-cornflower mb-6"
+          className="mb-6 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
         >
           Connect
         </button>
