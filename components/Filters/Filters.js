@@ -65,7 +65,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
         }
         return acc;
     }, { filter: '', price: {}, rarity: {} }));
-
+    
     push({
       pathname,
       query: newQuery,
@@ -152,7 +152,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
           {/* Listing */}
           <ListingFilter
             isReset={isFormReset}
-            onChange={({ filters }) => handleSubmit({ query: { filter: stringify(filters) } })}
+            onChange={({ filters }) => handleSubmit({ query: { filter: filters } })}
           />
 
           {/* Traits */}
