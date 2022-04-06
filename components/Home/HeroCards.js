@@ -42,7 +42,7 @@ export default function HeroCards( {connect, address }) {
   const CARD_CLASSES = [
     'bg-cardOutline1 hover:saturate-150 hover:brightness-110 hover:-top-[12px] w-full',
     'bg-cardOutline2 hover:saturate-120 hover:brightness-110 hover:-top-[12px] w-full',
-    'bg-cardOutline3 hover:saturate-150 hover:brightness-150 hover:-top-[12px] w-full'
+    'bg-cardOutline3 hover:saturate-150 hover:brightness-110 hover:-top-[12px] w-full'
   ];
   return (  
     <ul className=" mt-16 mb-20 flex flex-col md:flex-row justify-between">
