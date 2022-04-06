@@ -73,9 +73,9 @@ export default function Activity({ tokenPriceUsd }) {
             let blockchainViewer;
 
             if(chain == "mumbai") {
-              blockchainViewer = "https://mumbai.polygonscan.com/tx"
+              blockchainViewer = "https://mumbai.polygonscan.com/tx/"
             } else {
-              blockchainViewer = "https://polygonscan.com/tx"
+              blockchainViewer = "https://polygonscan.com/tx/"
             }
 
             const link = blockchainViewer + transactionHash;

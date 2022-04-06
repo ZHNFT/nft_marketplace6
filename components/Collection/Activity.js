@@ -35,6 +35,7 @@ export default function Activity({ tokenPriceUsd }) {
       <RowHeading>
         <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
+        <Cell className="w-[100px]">Id</Cell>
         {/* <Cell className="w-[200px]">Item</Cell> */}
         <Cell className="w-[100px] text-center">Price</Cell>
         <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
@@ -50,7 +51,6 @@ export default function Activity({ tokenPriceUsd }) {
       </RowHeading>
       {
         activities?.results?.map(row => {
-
           const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain, timestamp } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
@@ -80,10 +80,7 @@ export default function Activity({ tokenPriceUsd }) {
             }
           }
           return (
-
-            <Link key={_id} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-            <a>
-            <Row className="cursor-pointer">
+            <Row key={_id}>
               <Cell className="w-[30px] mobile-only:hidden">
               {activityType == "transfer" ? isMinting ?
 
@@ -104,6 +101,13 @@ export default function Activity({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px]">
                 <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
+              </Cell>
+              <Cell className="w-[100px]">
+              <Link key={_id} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+                <a className='text-cornflower hover:underline'>
+                  #{tokenId}
+                </a>
+              </Link>
               </Cell>
               {/* <Cell className="w-[200px]">
                 <div className="flex items-center">
@@ -181,12 +185,10 @@ export default function Activity({ tokenPriceUsd }) {
               <Cell className="w-[50px] text-right">
                 <a href={link} target="_blank" rel="noreferrer" >
                   <span className="sr-only">View transaction in blockchain explorer</span>
-                  <LinkIcon className="w-[12px]" />
+                  <LinkIcon className="w-[12px] text-cornflower" />
                 </a>
               </Cell>
             </Row>
-            </a>
-            </Link>
           );
         })
       }
