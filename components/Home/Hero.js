@@ -36,7 +36,7 @@ export default function Hero() {
           Welcome to Hexagon
         </h1>
         <div className="mb-10 lg:max-w-sm">
-          <p className="text-manatee text-xs">
+          <p className="text-manatee text-sm">
             Polygon&apos;s Premier NFT Marketplace
           </p>
         </div>

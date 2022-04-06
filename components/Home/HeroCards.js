@@ -49,7 +49,7 @@ export default function HeroCards( {connect, address }) {
       {
         CARDS.map(({ title, description, button, buttonClass, action }, index) => (
           <li key={index} className={clsx(
-            'bg-cover px-4 pt-9 pb-10 shadow-featuredCard rounded-[20px] mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0 transition duration-300',
+            'flex flex-col justify-between bg-cover px-4 pt-9 shadow-featuredCard rounded-[20px] mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0 transition duration-300',
             CARD_CLASSES[index],
             
             
@@ -59,17 +59,19 @@ export default function HeroCards( {connect, address }) {
             </div>
             <h3 className="gradient-text text-base mb-4 font-medium">{title}</h3>
             <p className="text-manatee text-xs">{description}</p>
-            <button className={clsx(
-              'font-medium text-xs rounded-[10px] py-2 px-8 border-[0.5px] border-transparent mt-8',
-              { 'bg-white/[0.1] border-white hover:border-cornflower hover:bg-white/[0.15]': buttonClass === 'secondary' },
-              { 'gradient-bg-blue hover:border-white': buttonClass === 'primary' }
-            )} onClick={ () => {
-                action();
-            }
-              
-             }>
-              {button}
-            </button>
+            <div className="mt-auto">
+              <button className={clsx(
+                'mt-8 mb-9 font-medium text-xs rounded-[10px] py-2 px-8 border-[0.5px] border-transparent',
+                { 'bg-white/[0.1] border-white hover:border-cornflower hover:bg-white/[0.15]': buttonClass === 'secondary' },
+                { 'gradient-bg-blue hover:border-white': buttonClass === 'primary' }
+              )} onClick={ () => {
+                  action();
+              }
+                
+              }>
+                {button}
+              </button>
+            </div>
           </li>
         ))
       }
