@@ -86,6 +86,16 @@ const API_HOST = 'https://api.hexag0n.io';
   return url.toString();
  };
 
+ /**
+ * Returns the URL for uploading files to IPFS.
+ *
+ * @param {Object} obj - An object.
+ * @returns {String} The file upload URL.
+ */
+  const fileUploadUrl = () => (
+    `${API_HOST}/uploads/ipfs`
+  );
+
 export {
   collectionUrl,
   nftUrl,
@@ -93,5 +103,6 @@ export {
   searchTokenUrl,
   searchUserUrl,
   userUrl,
-  offerUrl
+  offerUrl,
+  fileUploadUrl
 };
