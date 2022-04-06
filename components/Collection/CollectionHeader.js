@@ -13,7 +13,7 @@ export default function CollectionHeader(props) {
   const [showEditModal, setShowEditModal] = useState(false);
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
+      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-10 lg:mt-32 mb-28">
        
         <SecondaryButton
           className="hidden flex items-center absolute right-0 -top-[70px] text-xs font-medium"
@@ -93,7 +93,7 @@ export default function CollectionHeader(props) {
             </ul>
           </div>
         </div>
-        <div className="lg:col-span-5 pt-1.5 lg:ml-8">
+        <div className="lg:col-span-5 mobile-only:mt-3 pt-1.5 lg:ml-8">
             <ul className="flex text-center justify-between">
                 <li>
                     <h4 className="text-xs mb-1.5">Items</h4>
