@@ -37,7 +37,7 @@ const tokens = [
   {
     label: 'HNY',
     value: 'hny',
-    icon: () => <BeeIcon className="h-[15px] -mt-[4px] -mb-[7px]" />,
+    icon: () => <BeeIcon className="h-[15px]" />,
     data: {
       contract: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
       symbol: 'HNY',
@@ -386,7 +386,7 @@ export default function AddCollectionModal(props) {
                     Payment tokens
                     <span className="text-cornflower ml-1">*</span>
                   </p>
-                  <p className="text-manatee text-xs mr-8">Choose the currency in which you will be listing your collection. Note that listing in HNY means you will not have to pay any royalty fees to Hexagon – additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a royalty fee of 2%.</p>
+                  <p className="text-manatee text-xs mr-8 mb-2">Choose the currency in which you will be listing your collection. Note that listing in HNY means you will not have to pay any royalty fees to Hexagon – additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a royalty fee of 2%.</p>
                   <p className='text-manatee text-xs mr-8'>Caution: Your currency choice can’t be changed once the collection has been accepted.</p>
                   
                   <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
@@ -404,17 +404,23 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
                   
-                  <h4 className="mt-8 mb-4 text-base">Royalty Percentage</h4>
-                 
+                  <h4 className="mt-8 mb-4 text-base">
+                    Royalty Percentage
                     <span className="text-cornflower ml-1">*</span>
+                  </h4>
                   
-                  <p className="text-manatee text-xs mr-8 mb-2">Caution: This can’t be changed once the collection has been accepted.</p>
+                  <p className="text-manatee text-xs mr-8 mb-2">
+                    If you have chosen a non-HNY currency, then the 2% Hexagon royalty will be deducted from the royalty percentage you choose below. For example, if you choose 8% then you would receive a net royalty of 6%.
+                  </p>
+                  <p className="text-manatee text-xs mr-8 mb-2">
+                    Caution: this percentage can’t be changed once the collection has been accepted.
+                  </p>
                   <div className="-mx-[6px]">
                     <RangeField
                       step={.1}
                       decimals={1}
                       initialValues={[2]}
-                      min={0}
+                      min={2}
                       max={10}
                       suffix="%"
                       onChange={() => {}}
