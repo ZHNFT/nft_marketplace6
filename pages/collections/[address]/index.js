@@ -181,9 +181,9 @@ export default function Collection(props) {
                 </div>
               )
               : (
-                <div className={clsx('mobile-only:w-full')}>
+                <div className={clsx('w-full lg:w-auto sm:ml-10 md:ml-20 lg:ml-6')}>
                   <FiltersTags />
-                  <InfiniteGallery collectionData={collectionData} />
+                  <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionData={collectionData} />
                 </div>
               )
           }

@@ -1,11 +1,12 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import useInView from "react-cool-inview";
 import { useRouter } from 'next/router'
+import clsx from 'clsx';
 import GalleryItem from './GalleryItem';
 import { transformGalleryItem } from '../../Utils/helper'
 import { fetchData } from '../../pages/collections/[address]' 
 
-export default function InfiniteGallery({ collectionData }) {
+export default function InfiniteGallery({ className, collectionData }) {
   const { pathname, query, asPath } = useRouter();
   const { search, address, sort, tab, filter, priceFrom, priceTo, rarityFrom, rarityTo } = query;
   const [data, setData] = useState(collectionData);
@@ -48,7 +49,10 @@ export default function InfiniteGallery({ collectionData }) {
   }, [data?.page, data?.results]);
 
   return (
-    <div className="grid justify-center grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-2 sm:gap-x-5 mx-auto max-w-[390px] sm:max-w-none">
+    <div className={clsx(
+      'grid justify-center gap-y-2 gap-x-2 sm:gap-x-8 mx-auto max-w-[390px] sm:max-w-none',
+      className
+    )}>
       {
         results?.map((item, index) => (
           <GalleryItem
