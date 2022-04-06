@@ -65,6 +65,7 @@ export default function EditProfileModal(props) {
       );
     } catch(error) {
       setIsLoading(false);
+      return;
     }
     
     
