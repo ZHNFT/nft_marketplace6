@@ -33,7 +33,7 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: process.env.REACT_APP_INFURA_ID, // required
+      infuraId: process.env.NEXT_PUBLIC_INFURA_ID, // required
     },
   },
 };
