@@ -30,7 +30,7 @@ export default function Hero() {
   }, [listings, auctions]);
   
   return (
-    <div className="flex flex-col lg:flex-row mt-12 mb-10 items-center">
+    <div className="flex flex-col lg:flex-row lg:mt-12 mb-10 items-center">
       <div className="md:mr-12 lg:mr-24 mb-8 lg:mb-0 text-center lg:text-left">
         <h1 className="text-4xl md:text-6xl font-medium gradient-heading leading-normal mb-6 py-[10px]">
           Welcome to Hexagon
