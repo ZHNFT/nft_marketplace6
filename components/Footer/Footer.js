@@ -11,12 +11,12 @@ export default function Footer() {
             <span className="sr-only">Twitter</span>
           </a>
         </li>
-        <li className="ml-6">
+        {/* <li className="ml-6">
           <a href="" target="_blank" rel="noreferrer">
             <TelegramFillIcon className="w-[17px] text-cornflower" />
             <span className="sr-only">Telegram</span>
           </a>
-        </li>
+        </li> */}
         <li className="ml-6">
           <a href="https://discord.gg/HiveInvestments" target="_blank" rel="noreferrer">
             <DiscordFillIcon className="w-[21px] text-black/[0.5] dark:text-[#C1CDEB]" />

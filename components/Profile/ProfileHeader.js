@@ -145,7 +145,7 @@ export default function ProfileHeader({
                   : 0}
               </span>
             </li>
-            <li>
+            {/* <li>
               <h4 className="text-xs mb-1.5">Est. Value</h4>
               <span className="text-xl font-medium">
                 ${userData.estimatedValue && tokenPriceUsd
@@ -155,7 +155,7 @@ export default function ProfileHeader({
                     )
                   : 0}
               </span>
-            </li>
+            </li> */}
           </ul>
         </div>
       </section>
