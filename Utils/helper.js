@@ -1,22 +1,8 @@
 import { ethers } from "ethers";
-import { create as createIpfsClient } from 'ipfs-http-client';
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 import _ from "lodash";
-
-//infura
-const infuraProjectId = '27LxOpvlH5CNPBnury4rWYmBHhY';
-const infuraProjectSecret = 'a23f152558dd3e275b87cc67f7c95dd1';
-const infuraAuth = 'Basic ' + Buffer.from(`${infuraProjectId}:${infuraProjectSecret}`).toString('base64');
-const infuraProd = {
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-  headers: {
-      authorization: infuraAuth,
-  }
-};
-const ipfsClient = createIpfsClient(process.env.NODE_ENV === 'production' ? infuraProd : 'https://ipfs.infura.io:5001/api/v0');
+import { fileUploadUrl } from "../constants/url";
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -199,11 +185,29 @@ const transformUserData = (user) => {
   }
 }
 
-const uploadToIpfs = async file => {
+/**
+ * @typedef {Object} SavedFile
+ * @property {String} fileName - The file name.
+ * @property {String} hash - The file hash key.
+ * @property {String} ipfsUrl - The IPFS url.
+ * 
+ * @typedef {Object} FileUploadResponse
+ * @property {String} message - File upload success message.
+ * @property {SavedFile[]} results - The array of saved files.
+ * 
+ * @returns {FileUploadResponse} The file upload response.
+ */
+const uploadToIpfs = async files => {
   try {
-    const added = await ipfsClient.add(file);
-    const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-    return url;
+    const formData = new FormData();
+    files.forEach(file => formData.append('img', file));
+
+    const response = await fetch(fileUploadUrl(), {
+      method: 'POST',
+      body: formData,
+      redirect: 'follow'
+    });
+    return await response.json();
   } catch (error) {
     console.log('Error uploading to IPFS', error)
     return null;
