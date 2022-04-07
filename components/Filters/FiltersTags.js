@@ -74,7 +74,8 @@ export default function FiltersTags() {
                   if(type.values?.length === 0) {
                     traitFilters.stringTraits.splice(typeIndex, 1);
                   }
-                  refresh({ removeKey: ['search'] });
+
+                  refresh({ removeKey: traitFilters?.stringTraits?.length === 0 ? 'search' : null });
                 }}
               />
             ))

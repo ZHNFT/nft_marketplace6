@@ -6,8 +6,37 @@ import { ArrowIcon, DiamondIcon } from '../icons';
 import Slider from '../Slider/Slider';
 import FilterCheckbox from './FilterCheckbox';
 
-export default function TraitsFilter({ filters, submitForm }) {
+export default function TraitsFilter({ formValues, setFieldValue, filters, submitForm }) {
   const [selectedTraitType, setSelectedTraitType] = useState(null);
+
+  const handleChange = ({ target, traitTypeIndex, traitType, traitTypeArrayHelpers }) => {
+    const { value, checked } = target;
+    const values = formValues?.stringTraits && formValues?.stringTraits[traitTypeIndex]?.values;
+    const currentValueIndex = values?.indexOf(value);
+
+    if (!formValues?.stringTraits || formValues?.stringTraits?.length === 0 || !formValues?.stringTraits[traitTypeIndex]) {
+      traitTypeArrayHelpers.push({ name: traitType, values: [ value ] });
+      submitForm();
+      return;
+    }
+
+    if (traitTypeIndex !== -1 && checked) {
+      formValues?.stringTraits[traitTypeIndex].values.push(value);
+      setFieldValue('stringTraits', formValues?.stringTraits);
+      submitForm();
+      return;
+    }
+
+    if (traitTypeIndex !== -1 && !checked) {
+      formValues?.stringTraits[traitTypeIndex].values.splice(currentValueIndex, 1);
+      if (values?.length === 0) {
+        formValues?.stringTraits.splice(traitTypeIndex, 1);
+      }
+      setFieldValue('stringTraits', formValues?.stringTraits);
+      submitForm();
+      return;
+    }
+  };
 
   return (
     <Disclosure as="div" className="mt-8 min-w-[200px]" defaultOpen>
@@ -91,25 +120,34 @@ export default function TraitsFilter({ filters, submitForm }) {
                                     value={selectedTraitType.type}
                                   />
                                   <FieldArray name={`stringTraits.${selectedTraitType.index}.values`}>
-                                    {(traitValueArrayHelpers) => (
-                                      <>
-                                        {selectedTraitType.attributes.map(({ id, value, count, rarityRank }) => (
-                                          <Field
-                                            key={`filter-${selectedTraitType.type}-${value}-${id}`}
-                                            component={FilterCheckbox}
-                                            name={`stringTraits.${selectedTraitType.index}.values.${id}`}
-                                            traitValue={value}
-                                            traitCount={count}
-                                            traitType={selectedTraitType.type}
-                                            traitRarity={rarityRank}
-                                            traitValueArrayHelpers={traitValueArrayHelpers}
-                                            traitTypeArrayHelpers={traitTypeArrayHelpers}
-                                            value={value}
-                                            submitForm={submitForm}
-                                          />
-                                        ))}
-                                      </>
-                                    )}
+                                    {() => {
+                                      const traitTypeIndex = formValues.stringTraits?.findIndex(trait => {
+                                        return trait?.name === selectedTraitType.type
+                                      });
+                                      return (
+                                        <>
+                                          {selectedTraitType.attributes.map(({ id, value, count, rarityRank }) => {
+                                            const values = formValues?.stringTraits && formValues?.stringTraits[traitTypeIndex]?.values;
+                                            return (
+                                              <Field
+                                                key={`filter-${selectedTraitType.type}-${value}-${id}`}
+                                                component={FilterCheckbox}
+                                                name={`stringTraits.${selectedTraitType.index}.values.${id}`}
+                                                traitValue={value}
+                                                traitCount={count}
+                                                traitType={selectedTraitType.type}
+                                                traitRarity={rarityRank}
+                                                traitTypeArrayHelpers={traitTypeArrayHelpers}
+                                                value={value}
+                                                submitForm={submitForm}
+                                                isChecked={values ? values?.indexOf(value) !== -1 : false}
+                                                onHandleChange={args => handleChange({ ...args, traitTypeIndex, traitTypeArrayHelpers })}
+                                              />
+                                            );
+                                          })}
+                                        </>
+                                      );
+                                    }}
                                   </FieldArray>
                                 </>
                               )}

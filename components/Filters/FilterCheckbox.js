@@ -1,39 +1,7 @@
 import clsx from "clsx";
 
 export default function FilterCheckbox(props) {
-  const { field, form, traitType, traitValue, traitCount, traitRarity, traitValueArrayHelpers, traitTypeArrayHelpers, submitForm, ...rest } = props;
-  const { name, value: formikValue } = field;
-  const traitTypeIndex = form?.values?.stringTraits?.findIndex(trait => {
-    return trait?.name === traitType
-  });
-  const values = form?.values?.stringTraits && form?.values?.stringTraits[traitTypeIndex]?.values;
-  const isChecked = values && values?.indexOf(rest.value) !== -1;
-
-  const handleChange = event => {
-    const { value, checked } = event.target;
-    const currentValueIndex = values?.indexOf(rest.value);
-
-    if (!form?.values?.stringTraits || form?.values?.stringTraits?.length === 0 || !form?.values?.stringTraits[traitTypeIndex]) {
-      traitTypeArrayHelpers.push({ name: traitType, values: [ value ] });
-      submitForm();
-      return;
-    }
-
-    if (traitTypeIndex !== -1 && checked) {
-      traitValueArrayHelpers.push(value)
-      submitForm();
-      return;
-    }
-
-    if (traitTypeIndex !== -1 && !checked) {
-      traitValueArrayHelpers.remove(currentValueIndex);
-      if (values?.length -1 === 0) {
-        traitTypeArrayHelpers.remove(traitTypeIndex);
-      }
-      submitForm();
-      return;
-    }
-  };
+  const { form, isChecked, onHandleChange, traitType, traitValue, traitCount, traitRarity, traitTypeArrayHelpers, submitForm, ...rest } = props;
 
   return (
     <div className={clsx(
@@ -47,7 +15,7 @@ export default function FilterCheckbox(props) {
           id={`filter-${traitValue}`}
           value={traitValue}
           type="checkbox"
-          onChange={handleChange}
+          onChange={({ target }) => onHandleChange({ target, traitType })}
           className="absolute -left-[999px]"
           checked={isChecked}
           {...rest}
