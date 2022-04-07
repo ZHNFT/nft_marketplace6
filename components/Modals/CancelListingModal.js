@@ -4,10 +4,14 @@ import useCancelListing from '../../hooks/useCancelListing';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 export default function CancelListingModal(props) {
-  const { isOpen, handleClose, activeListing, marketplaceContract, title,
+  const { 
+    isOpen,
+    activeListing,
+    marketplaceContract,
+    title,
     description,
     confirmLabel = 'OK',
-    fetchData
+    setShouldRefetch
   } = props;
   const [isCanceling, setIsCancelling] = useState(false);
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
@@ -15,8 +19,9 @@ export default function CancelListingModal(props) {
   async function handleConfirm() {
     setIsCancelling(true);
     await handleCancelListing(activeListing);
-    fetchData();
-    handleClose();
+    if (!cancellationError) {
+      setShouldRefetch(true)
+    }
   }
 
   if (isCanceling || cancellationError) {

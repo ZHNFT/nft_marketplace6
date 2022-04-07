@@ -11,8 +11,17 @@ import ItemPrice from '../ItemPrice/ItemPrice';
 import DefaultImage from '../../images/No-Image-Placeholder.png';
 import CountdownTimer from '../CountdownTimer';
 import fromUnixTime from 'date-fns/fromUnixTime'
+import AppGlobalContext from "../../contexts/AppGlobalContext";
 
-export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing }) {
+export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing, tokenId, collectionId }) {
+  const { handleModal, setNftData } = useContext(AppGlobalContext);
+
+  function setNft() {
+    setNftData({
+      tokenId: tokenId,
+      collectionId: collectionId
+    })
+  }
   return (
     <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] md:w-[210px]">
       <Image
@@ -41,22 +50,33 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                 {
                   listingState !== NFT_LISTING_STATE.IN_AUCTION && !isOwner && (
                     <div className="w-full mx-[14px] flex justify-center">
-                      {/* {
+                      {
                         listingState === NFT_LISTING_STATE.FOR_SALE && (
-                          <PrimaryButton className="w-[85px] h-[30px] mr-[6px]" size="sm" onClick={() => console.log('buy now')}>Buy now</PrimaryButton>
+                          <PrimaryButton
+                            className="w-[85px] h-[30px] mr-[6px]"
+                            size="sm"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setNft();
+                              handleModal(NFT_MODALS.BUY_NOW)
+                            }}
+                          >
+                            Buy now
+                          </PrimaryButton>
                         )
-                      } */}
+                      }
                       <div className="relative flex flex-col ml-[6px]">
-                        {/* <SecondaryButton
+                        <SecondaryButton
                           className="h-[30px]"
                           size="xs"
-                          onClick={event => {
+                          onClick={(event) => {
                             event.preventDefault();
-                            setActiveModal({ type: NFT_MODALS.MAKE_OFFER });
+                            setNft();
+                            handleModal(NFT_MODALS.MAKE_OFFER)
                           }}
                         >
                           Make offer
-                        </SecondaryButton> */}
+                        </SecondaryButton>
                         {
                           listing?.highestPrice && (
                             <span className="text-center absolute left-0 right-0 -bottom-[28px]">
@@ -75,16 +95,17 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                         <ProgressCircle width="210" height="210" percent="80" />
                       </div>
                       <div className="relative flex flex-col">
-                        {/* <SecondaryButton
+                        <SecondaryButton
                           className="w-[85px]"
                           size="xs"
-                          onClick={event => {
+                          onClick={(event) => {
                             event.preventDefault();
-                            setActiveModal({ type: NFT_MODALS.PLACE_BID });
+                            setNft();
+                            handleModal(NFT_MODALS.PLACE_BID)
                           }}
                         >
                           Place Bid
-                        </SecondaryButton> */}
+                        </SecondaryButton>
                         <span className="text-center absolute left-0 right-0 -bottom-[21px] text-white">
                           {listing?.expiry 
                             ? <CountdownTimer date={fromUnixTime(listing?.expiry)} /> 

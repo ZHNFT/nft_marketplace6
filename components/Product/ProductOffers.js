@@ -28,7 +28,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
           offers.map((offer, index) => {
             const { _id: id, pricePerItem, userAddress, expiry } = offer;
             return (
-              <Row key={id} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
+              <Row key={id} className="cursor-pointer text-xs !py-2">
                 <Cell className="w-[120px] flex items-center">
                   <span className="block bg-cornflower rounded-full w-[24px] h-[24px] mr-2"></span>
                   <span>{ ellipseAddress(userAddress, 4) }</span>
@@ -63,6 +63,7 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                   )}
                  </Cell>
                 <Cell className="w-[20px] text-right text-manatee">
+                  {/* TODO LINK */}
                   <a href="#">
                     <LinkIcon className="w-[13px]" />
                   </a>

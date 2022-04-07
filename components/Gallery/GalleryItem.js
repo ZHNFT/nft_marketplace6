@@ -18,7 +18,7 @@ const GalleryItem = forwardRef((props, ref) => {
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
   const listing = activeAuction ? activeAuction : lowestPrice !== 0 ? { highestPrice, lowestPrice } : null;
-  
+
   return (
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
@@ -56,6 +56,8 @@ const GalleryItem = forwardRef((props, ref) => {
           imageUrl={imageUrl}
           listingState={listingState}
           listing={listing}
+          tokenId={item?.tokenId}
+          collectionId={item?.collectionId}
         />
         <footer className="px-2.5 pt-[5px] pb-[2px]">
           <div className="flex h-[34px] sm:h-[24px] flex-col md:flex-row justify-center md:justify-between border-b-[0.5px] border-silver dark:border-manatee pb-[5px] items-baseline">
