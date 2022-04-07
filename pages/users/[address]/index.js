@@ -61,8 +61,8 @@ export default function UserAssets(props) {
     if (shouldRefetch) {
       timer = setTimeout(() => {
         fetchData();
-        handleCloseModal();
         setShouldRefetch(false)
+        handleCloseModal();
       }, 4000)
     }
     return () => clearTimeout(timer);

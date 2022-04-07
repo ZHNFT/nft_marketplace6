@@ -118,8 +118,8 @@ export default function Collection(props) {
     if (shouldRefetch) {
       timer = setTimeout(() => {
         fetchCollection();
-        handleCloseModal();
         setShouldRefetch(false)
+        handleCloseModal();
       }, 4000)
     }
     return () => clearTimeout(timer);
