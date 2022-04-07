@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { toast } from "react-toastify";
 import { TRANSACTION_STATUS } from '../constants/nft';
 import useTokenApproval from './useTokenApproval';
 
@@ -15,6 +16,8 @@ export default function useAcceptBid({ marketplaceContract, fetchData, ethersPro
 
     if (approval) return;
 
+    let id;
+
     try {      
       setAcceptationStatus(TRANSACTION_STATUS.IN_PROGRESS);
       const tx = await marketplaceContract.AcceptBid({
@@ -29,16 +32,20 @@ export default function useAcceptBid({ marketplaceContract, fetchData, ethersPro
         s: offer.s,
         v: offer.v,
       });
+      id = toast.loading("Processing transaction, please bee patient!");
       const txResult = await tx?.wait();
       if (txResult) {
         setTransaction(txResult);
         setAcceptationStatus(TRANSACTION_STATUS.SUCCESS);
-        fetchData()
+        setTimeout(fetchData(), 4000);
+        toast.update(id, { render: "Transaction succesfull", type: "success", isLoading: false });
       }
     } catch (error) {
       setAcceptationStatus(TRANSACTION_STATUS.FAILED);
       setAcceptationError(error?.data?.message || error?.message);
-      alert(error?.data?.message || error?.message)
+      id 
+        ? toast.update(id, { render: error?.data?.message || error?.message, type: "error", isLoading: false })
+        : toast.error(error?.data?.message || error?.message);
       return;
     }
   }, [marketplaceContract, fetchData, handleApproval])

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { ellipseAddress } from '../../Utils';
 import { usdFormatter, formatEther } from '../../Utils/helper';
@@ -8,16 +8,19 @@ import { BeeIcon } from '../icons';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { handleClose, imageUrl, name, collectionId, marketplaceContract, activeListing, fetchData, tokenPriceUsd, tokenContract, marketplaceAddress, address } = props;
+  const { imageUrl, name, collectionId, marketplaceContract, activeListing, tokenPriceUsd, tokenContract, marketplaceAddress, address, setShouldRefetch } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
 
+  const hasError = allowanceError || acceptationError;
+
   async function handleConfirm() {
     setIsConfirming(true);
     await handleAcceptListing(activeListing);
-    handleClose();
-    fetchData();
+    if (!hasError) {
+      setShouldRefetch(true)
+    }
   }
 
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
@@ -54,7 +57,9 @@ export default function BuyNowForm(props) {
 
   }, [marketplaceContract, collectionId]);
 
-  const hasError = allowanceError || acceptationError;
+  useEffect(() => {
+    fetchFees();
+  }, [fetchFees])
 
   if (isConfirming || hasError) {
     return (
@@ -67,7 +72,7 @@ export default function BuyNowForm(props) {
             description: allowanceError ? allowanceError : ''
           },
           {
-            title: `Approval to transfer ${price} HNY`,
+            title: `Approval to transfer ${formatEther(price)} HNY`,
             status: acceptationStatus,
             isDefaultOpen: true,
             description: acceptationError ? acceptationError : ''

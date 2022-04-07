@@ -50,7 +50,7 @@ const validate = (values) => {
 
 export default function Listing(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
+  const { tokenPriceUsd, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
@@ -121,11 +121,9 @@ export default function Listing(props) {
 
   useEffect(() => {
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-      fetchData();
-      handleClose();
+      setShouldRefetch(true);
     }
-
-  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
+  }, [hasError, formSubmittingDone, auctionTx, apiResponse, setShouldRefetch]);
 
   return (
     <Formik

@@ -16,7 +16,6 @@ import OfferIcon from '../icons/OfferIcon';
 import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 import Spinner from '../Spinner/Spinner';
-import { route } from 'next/dist/server/router';
 
 export default function Activity({ tokenPriceUsd }) {
   const router = useRouter();
@@ -43,6 +42,7 @@ export default function Activity({ tokenPriceUsd }) {
       <RowHeading>
         <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
+        <Cell className="w-[100px]">Id</Cell>
         <Cell className="w-[100px] text-center">Price</Cell>
         <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
         <Cell className="w-[100px] text-center mobile-only:hidden">To</Cell>
@@ -63,7 +63,6 @@ export default function Activity({ tokenPriceUsd }) {
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
           const to = activityType === 'sale' ? buyer : toAddress;
-
           const blockchainViewer = (chain == "mumbai" ? "https://mumbai.polygonscan.com/tx/" : "https://polygonscan.com/tx/");
 
           const isMinting = activityType == "transfer" && fromAddress == "0x0000000000000000000000000000000000000000";
@@ -75,7 +74,7 @@ export default function Activity({ tokenPriceUsd }) {
           } : {};
 
           return (
-            <Row key={`user_activity_${index}`} className="cursor-pointer" onClick={() => router.push(`/collections/${address}/token/${tokenId}`)}>
+            <Row key={`user_activity_${index}`}>
               <Cell className="w-[30px] mobile-only:hidden">
                 {activityType == "transfer" ? isMinting ?
                   <MintIcon className="w-[16px]" /> :
@@ -96,6 +95,13 @@ export default function Activity({ tokenPriceUsd }) {
               <Cell className="w-[100px]">
                 <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
                 {/*<span className="text-manatee">For sale</span>*/}
+              </Cell>
+              <Cell className="w-[100px]">
+                <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+                  <a className='text-cornflower hover:underline'>
+                    #{tokenId}
+                  </a>
+                </Link>
               </Cell>
               {/*}
               <Cell className="w-[200px]">
@@ -128,7 +134,7 @@ export default function Activity({ tokenPriceUsd }) {
                 {/* From address */}
                 {
                   from && !isMinting &&  (
-                    <Link href={`/users/${from}`}>
+                    <Link href={`/users/${from}`} passHref>
                       <a>{ ellipseAddress(from, 4) }</a>
                     </Link>
                   )
@@ -139,7 +145,7 @@ export default function Activity({ tokenPriceUsd }) {
                 {/* To address */}
                 {
                   to ? (
-                    <Link href={`/users/${to}`}>
+                    <Link href={`/users/${to}`} passHref>
                       <a>{ ellipseAddress(to, 4) }</a>
                     </Link>
                   ) : '-'
@@ -151,16 +157,16 @@ export default function Activity({ tokenPriceUsd }) {
                   { from ? (
                     isMinting ?
                     "-" :
-                    <a href={"/users/" + from}>
+                    <Link href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
-                    </a>
+                    </Link>
                   ) : '-'}
                 </div>
                 <div>
                   { to ? (
-                  <a href={"/users/" + to}>
+                  <Link href={"/users/" + to}>
                     { ellipseAddress(to, 4) }
-                  </a>
+                  </Link>
                   ) : '-' }
                 </div>
               </Cell>

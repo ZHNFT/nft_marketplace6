@@ -98,7 +98,7 @@ export default function EditProfileModal(props) {
       }
     };
 
-    const response = await fetch(`https://hexagon-api.onrender.com/users/me`, {
+    const response = await fetch(`https://api.hexag0n.io/users/me`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

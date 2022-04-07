@@ -19,7 +19,7 @@ import CollectionTab from '../../../components/Tabs/CollectionTab';
 import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 import { formatEther } from '../../../Utils/helper';
 
-const url = `https://hexagon-api.onrender.com`;
+const url = `https://api.hexag0n.io`;
 
 const itemsFilterList = [
   { label: 'All Items' },
@@ -63,7 +63,7 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
   const { pathname, query, asPath } = router;
@@ -109,7 +109,17 @@ export default function Collection(props) {
     fetchCollection();
   }, [search, fetchCollection])
 
-  console.log(`collectionData`, collectionData)
+  useEffect(() => {
+    let timer;
+    if (shouldRefetch) {
+      timer = setTimeout(() => {
+        fetchCollection();
+        handleCloseModal();
+        setShouldRefetch(false)
+      }, 4000)
+    }
+    return () => clearTimeout(timer);
+  }, [shouldRefetch, fetchCollection, handleCloseModal, setShouldRefetch])
 
   return (
     <FiltersContext.Provider value={filtersContextValue}>
@@ -210,7 +220,7 @@ export default function Collection(props) {
 
 export async function getStaticPaths() {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const url = `https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=${chain}`
+  const url = `https://api.hexag0n.io/collections?page=0&size=20&sort=name&chain=${chain}`
   const res = await fetch(url)
   const collections = await res?.json()
 
@@ -226,8 +236,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { address } = params;
-  const url = `https://hexagon-api.onrender.com/collections/${address}`;
-  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
+  const url = `https://api.hexag0n.io/collections/${address}`;
+  const collectionUrl = `https://api.hexag0n.io/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
   const res = await fetch(url)
   const data = await res?.json()
   const nftsRes = await fetch(collectionUrl, {

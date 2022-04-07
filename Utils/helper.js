@@ -109,7 +109,7 @@ const getListingState = ({ listings, auctions }) => {
 async function getUserDetails(address) {
   if (address) {
     try {
-      const response = await fetch(`https://hexagon-api.onrender.com/users/${address}`);
+      const response = await fetch(`https://api.hexag0n.io/users/${address}`);
       if (!response.status == 200) {
         return {}
       }
@@ -125,7 +125,7 @@ async function getUserOffers(address) {
 
   if (address) {
     try {
-      const response = await fetch(`https://hexagon-api.onrender.com/users/${address}/offers?include=tokens`);
+      const response = await fetch(`https://api.hexag0n.io/users/${address}/offers?include=tokens`);
       if (!response.status == 200) {
         return {}
       }

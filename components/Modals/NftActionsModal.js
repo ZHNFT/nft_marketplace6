@@ -1,4 +1,4 @@
-import { cloneElement } from 'react';
+import { cloneElement, useEffect, useCallback, useState } from 'react';
 
 // Components
 import Modal from './Modal';
@@ -10,6 +10,9 @@ import CancelListingModal from './CancelListingModal';
 // Constants
 import { NFT_MODALS } from '../../constants/nft';
 import BuyNowForm from '../Forms/BuyNowForm';
+
+// Utils
+import { resolveBunnyLink } from '../../Utils';
 
 const modalToTitleMap = {
   [NFT_MODALS.MAKE_OFFER]: 'Make an offer',
@@ -34,15 +37,47 @@ const modalToFormMap = {
   [NFT_MODALS.CHANGE_PRICE]: <ChangePriceForm />,
 }
 
-export default function SingleNftPageModal(props) {
-  const { isOpen, onClose, activeModal, ...rest } = props;
+export default function NftActionsModal(props) {
+  const { isOpen, onClose, activeModal, tokenId, collectionId, address, ...rest } = props;
   const title = modalToTitleMap[activeModal];
+  const [data, setData] = useState({});
+
+  // there can only be one active listing or auction for a token at the same time
+  const activeListing = data?.listings?.find(listing => listing?.active);
+  // there can only be one active auction or listing for a token at the same time
+  const activeAuction = data?.auctions?.find(auction => auction?.active);
+
+  // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
+  const isOwner = activeAuction ? activeAuction.owner === address : data?.owner === address || false;
+  const owner = activeAuction ? activeAuction?.owner : data?.owner;
+
+  const fetchData = useCallback(async function() {
+    const url = `https://api.hexag0n.io/collections/${collectionId}/token/${tokenId}`;
+    const res = await fetch(url)
+    const data = await res?.json()
+
+    setData(data);
+  }, [collectionId, tokenId])
+
+  useEffect(() => {
+    if (collectionId && tokenId) {
+    fetchData();
+    }
+  }, [fetchData, collectionId, tokenId])
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       {activeModal ? cloneElement(modalToFormMap[activeModal], {
         handleClose: onClose,
         activeModal,
+        activeListing: { ...activeListing, highestBid: data?.highestBid },
+        activeAuction: activeAuction,
+        imageUrl: resolveBunnyLink(data?.imageHosted),
+        owner,
+        name: data?.name,
+        collectionId: collectionId,
+        tokenId: tokenId,
+        address,
         ...rest,
       }) : null}
     </Modal>

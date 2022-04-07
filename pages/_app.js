@@ -8,8 +8,10 @@ import Web3Context from '../contexts/Web3Context';
 import router from 'next/router';
 import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { getUserDetails } from '../Utils/helper';
 import AppGlobalContext from '../contexts/AppGlobalContext';
+import NftActionsModal from '../components/Modals/NftActionsModal';
 
 // Components
 import Layout from '../components/layout';
@@ -100,16 +102,16 @@ function MyApp({ Component, pageProps }) {
   const contextValue = useMemo(() => {
     return { state, dispatch };
   }, [state, dispatch]);
-  const { provider, web3Provider, address, chainId, tokenContract } = state;
+  const { provider, web3Provider, address, chainId, tokenContract, ethersProvider, marketplaceContract, tokenData, tokenBalance } = state;
   const mainnetChainId = "0x89";
   const testnetChainId = "0x13881";
 
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [user, setUser] = useState({});
-  const globalContextValue = useMemo(
-    () => ({ showEditProfileModal, setShowEditProfileModal, user, setUser }), 
-    [showEditProfileModal, user]
-  );
+
+  const [activeModal, setActiveModal] = useState(null);
+  const [nftData, setNftData] = useState({});
+  const [shouldRefetch, setShouldRefetch] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -158,7 +160,6 @@ function MyApp({ Component, pageProps }) {
       erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
     }
     if (network.chainId === 137) {
-      // TODO initialize contracts with correct addresses from config
       marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
       erc20TokenContract = new ethers.Contract(honeyTokenAddress, honeyAbi, ethersSigner);
     }
@@ -170,7 +171,7 @@ function MyApp({ Component, pageProps }) {
       provider,
       web3Provider,
       ethersProvider,
-      address,
+      address: address,
       chainId: network.chainId,
       chainIdHex: network.chainId === 137 
         ? mainnetChainId 
@@ -289,16 +290,52 @@ function MyApp({ Component, pageProps }) {
     fetchTokenData();
   }, [])
 
+  const handleModal = useCallback(modal => address ? setActiveModal(modal) : connect(), [address, connect]);
+  
+  const handleCloseModal = useCallback(function (){
+    setActiveModal(null)
+  }, [])
+
+  const globalContextValue = useMemo(
+    () => ({ showEditProfileModal, setShowEditProfileModal, user, setUser, nftData, setNftData, handleModal, activeModal, handleCloseModal, shouldRefetch }), 
+    [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch]
+  );
+
   return (
     <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
       <Web3Context.Provider value={contextValue}>
         <AppGlobalContext.Provider value={globalContextValue}>
-          <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} loadBalance={loadBalance} {...contextValue.state}>
+          <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>
             {/*
               Component here is the page, for example index.js
               So if we want a sidebar or main menu on every page of the website its best to put these components in layout.js
             */}
-            <Component {...pageProps} {...contextValue.state} connect={connect} loadBalance={loadBalance} />
+            <Component
+              {...pageProps}
+              {...globalContextValue}
+              {...contextValue.state}
+              shouldRefetch={shouldRefetch}
+              handleCloseModal={handleCloseModal}
+              setShouldRefetch={setShouldRefetch}
+              connect={connect}
+            />
+            <NftActionsModal
+              isOpen={activeModal !== null}
+              onClose={handleCloseModal}
+              activeModal={activeModal}
+              marketplaceAddress={marketplaceContract?.address}
+              marketplaceContract={marketplaceContract}
+              address={address}
+              tokenContract={tokenContract}
+              chainId={chainId}
+              ethersProvider={ethersProvider}
+              tokenId={nftData?.tokenId}
+              collectionId={nftData?.collectionId}
+              tokenPriceUsd={tokenData?.priceUsd}
+              tokenBalance={tokenBalance}
+              loadBalance={loadBalance}
+              setShouldRefetch={setShouldRefetch}
+            />
           </Layout>
         </AppGlobalContext.Provider>
       </Web3Context.Provider>

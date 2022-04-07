@@ -54,7 +54,7 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 export default function MakeOfferForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, handleClose, owner, marketplaceContract, activeModal, fetchData, activeListing, activeAuction } = props;
+  const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, owner, marketplaceContract, activeModal, activeListing, activeAuction, setShouldRefetch } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
@@ -90,22 +90,11 @@ export default function MakeOfferForm(props) {
   }
 
   useEffect(() => {
-    let timer;
-    
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-      // We need to timeout the fetching for auctionbid
-      // because the data fetched from the server is not updated yet for auction bid
-      // event listener takes some time I assume
-      timer = setTimeout(() => {
-        fetchData();
-        setIsLoading(false)
-        handleClose();
-      }, 5000);
+      setShouldRefetch(true);
+      setIsLoading(false)
     }
-
-    return () => clearTimeout(timer);
-
-  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
+  }, [hasError, formSubmittingDone, auctionTx, apiResponse, setShouldRefetch]);
 
   return (
     <Formik

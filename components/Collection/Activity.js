@@ -20,7 +20,7 @@ export default function Activity({ tokenPriceUsd }) {
   const [activities, setActivities] = useState([]);
 
   const fetchData = useCallback(async function() {
-    const url = `https://hexagon-api.onrender.com/collections/${address}/activity?include=sales&include=listings&include=bids&include=transfers`;
+    const url = `https://api.hexag0n.io/collections/${address}/activity?include=sales&include=listings&include=bids&include=transfers`;
     const res = await fetch(url)
     const data = await res?.json()
     setActivities(data);
@@ -101,11 +101,11 @@ export default function Activity({ tokenPriceUsd }) {
                 <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
               </Cell>
               <Cell className="w-[100px]">
-              <Link key={_id} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-                <a className='text-cornflower hover:underline'>
-                  #{tokenId}
-                </a>
-              </Link>
+                <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+                  <a className='text-cornflower hover:underline'>
+                    #{tokenId}
+                  </a>
+                </Link>
               </Cell>
               {/* <Cell className="w-[200px]">
                 <div className="flex items-center">
@@ -139,17 +139,17 @@ export default function Activity({ tokenPriceUsd }) {
                 { from ? (
                   isMinting ?
                   "-" :
-                  <a href={"/users/" + from}>
+                  <Link href={"/users/" + from}>
                     { ellipseAddress(from, 4) }
-                  </a>
+                  </Link>
                 ) : '-' }
               </Cell>
               <Cell className="w-[100px] text-center mobile-only:hidden">
                 {/* To address */}
                 { to ? (
-                  <a href={"/users/" + to}>
+                  <Link href={"/users/" + to}>
                     { ellipseAddress(to, 4) }
-                  </a>
+                  </Link>
                   ) : '-' }
               </Cell>
               <Cell className="w-[120px] text-center sm:hidden">
@@ -158,16 +158,16 @@ export default function Activity({ tokenPriceUsd }) {
                   { from ? (
                     isMinting ?
                     "-" :
-                    <a href={"/users/" + from}>
+                    <Link href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
-                    </a>
+                    </Link>
                   ) : '-'}
                 </div>
                 <div>
                   { to ? (
-                  <a href={"/users/" + to}>
+                  <Link href={"/users/" + to}>
                     { ellipseAddress(to, 4) }
-                  </a>
+                  </Link>
                   ) : '-' }
                 </div>
               </Cell>
