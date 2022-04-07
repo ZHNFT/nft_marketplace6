@@ -189,7 +189,7 @@ export default function MakeOfferForm(props) {
                 </div>
               </div>
             ) : null}
-            <div className="flex justify-center mt-10 my-4">
+            <div className="flex justify-center mt-10 my-4 items-center">
               {activeModal === NFT_MODALS.MAKE_OFFER ? (
                 <ItemPrice
                   label="Highest Bid"
