@@ -102,7 +102,7 @@ export async function getServerSideProps(context) {
   const {
     params: { address },
   } = context;
-  const url = `https://api.hexag0n.io/users/${address}/tokens`;
+  const url = `https://hexagon-api.onrender.com/users/${address}/tokens`;
   const res = await fetch(url);
   const data = await res?.json();
 

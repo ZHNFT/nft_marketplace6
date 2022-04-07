@@ -19,7 +19,7 @@ import CollectionTab from '../../../components/Tabs/CollectionTab';
 import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 import { formatEther } from '../../../Utils/helper';
 
-const url = `https://api.hexag0n.io`;
+const url = `https://hexagon-api.onrender.com`;
 
 const itemsFilterList = [
   { label: 'All Items' },
@@ -108,6 +108,8 @@ export default function Collection(props) {
   useEffect(() => {
     fetchCollection();
   }, [search, fetchCollection])
+
+  console.log(`collectionData`, collectionData)
 
   return (
     <FiltersContext.Provider value={filtersContextValue}>
@@ -208,7 +210,7 @@ export default function Collection(props) {
 
 export async function getStaticPaths() {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const url = `https://api.hexag0n.io/collections?page=0&size=20&sort=name&chain=${chain}`
+  const url = `https://hexagon-api.onrender.com/collections?page=0&size=20&sort=name&chain=${chain}`
   const res = await fetch(url)
   const collections = await res?.json()
 
@@ -224,8 +226,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const { address } = params;
-  const url = `https://api.hexag0n.io/collections/${address}`;
-  const collectionUrl = `https://api.hexag0n.io/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
+  const url = `https://hexagon-api.onrender.com/collections/${address}`;
+  const collectionUrl = `https://hexagon-api.onrender.com/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
   const res = await fetch(url)
   const data = await res?.json()
   const nftsRes = await fetch(collectionUrl, {

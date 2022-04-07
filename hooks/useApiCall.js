@@ -11,7 +11,7 @@ export default function useApiCall() {
 
     setApiCallStatus(TRANSACTION_STATUS.IN_PROGRESS);
 
-    const response = await fetch(`https://api.hexag0n.io/${endpoint}`, {
+    const response = await fetch(`https://hexagon-api.onrender.com/${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

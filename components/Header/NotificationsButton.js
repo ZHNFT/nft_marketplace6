@@ -24,7 +24,7 @@ export default function NotificationsButton({ currentUserAddress }) {
   const unreadNotifications = notifications?.results?.filter(item => !item?.read)?.length;
 
   const fetchData = useCallback(async function() {
-    const url = `https://api.hexag0n.io/users/${currentUserAddress}/notifications`;
+    const url = `https://hexagon-api.onrender.com/users/${currentUserAddress}/notifications`;
     const res = await fetch(url)
     const data = await res?.json()
     setNotifications(data);
@@ -39,7 +39,7 @@ export default function NotificationsButton({ currentUserAddress }) {
   const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ owner: currentUserAddress, marketplaceAddress, ethersProvider, marketplaceContract, fetchData });
 
   // TODO implement mark as read for notifications
-  // https://api.hexag0n.io/notifications/623263eacf269d0412c40f16/mark-as-read
+  // https://hexagon-api.onrender.com/notifications/623263eacf269d0412c40f16/mark-as-read
   
   return (
     <Popover className="relative mr-[25px] lg:mr-0">

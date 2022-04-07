@@ -169,7 +169,7 @@ export default function AddCollectionModal(props) {
       currency: tokens.find(token => token.value === data.paymentTokens)?.data
     };
 
-    const response = await fetch(`https://api.hexag0n.io/collections`, {
+    const response = await fetch(`https://hexagon-api.onrender.com/collections`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
