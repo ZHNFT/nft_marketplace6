@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
@@ -127,17 +128,17 @@ export default function Activity({ tokenPriceUsd }) {
 
                     isMinting ?
                     "-" : 
-                    <a href={"/users/" + from}>
+                    <Link href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
-                    </a>
+                    </Link>
                   ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center mobile-only:hidden">
                   {/* To address */}
                   { to ? (
-                    <a href={"/users/" + to}>
+                    <Link href={"/users/" + to}>
                       { ellipseAddress(to, 4) }
-                    </a>
+                    </Link>
                    ) : '-'}
                 </Cell>
                 <Cell className="w-[120px] text-center sm:hidden">
@@ -146,16 +147,16 @@ export default function Activity({ tokenPriceUsd }) {
                     { from ? (
                       isMinting ?
                       "-" : 
-                      <a href={"/users/" + from}>
+                      <Link href={"/users/" + from}>
                         { ellipseAddress(from, 4) }
-                      </a>
+                      </Link>
                       ) : '-' }
                   </div>
                   <div className="mt-1">
                     { to ? (
-                      <a href={"/users/" + to}>
+                      <Link href={"/users/" + to}>
                         { ellipseAddress(to, 4) }
-                      </a>
+                      </Link>
                     ) : '-' }
                   </div>
                 </Cell>
