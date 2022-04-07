@@ -405,7 +405,7 @@ export default function AddCollectionModal(props) {
                   </h4>
                   
                   <p className="text-manatee text-xs mr-8 mb-2">
-                    If you have chosen a non-HNY currency, then the 2% Hexagon royalty will be deducted from the royalty percentage you choose below. For example, if you choose 8% then you would receive a net royalty of 6%.
+                  Choose the royalty percentage that you will receive from each transaction of your collection. Note that Hexagon’s marketplace fee is paid by the seller and is not deducted from your royalty percentage.
                   </p>
                   <p className="text-manatee text-xs mr-8 mb-2">
                     Caution: this percentage can’t be changed once the collection has been accepted.
