@@ -302,6 +302,7 @@ export default function Listing(props) {
                     component={PriceInputField}
                     label={values.type.value === 'fixed' ? 'Price' : 'Starting price'}
                     tokenPriceUsd={tokenPriceUsd}
+                    placeholder={`Enter amount - Min ${formatEther(minPrice)} hny`}
                   />
                   {/* <label htmlFor="price">
                     {values.type.value === 'fixed' ? 'Price' : 'Starting price'}

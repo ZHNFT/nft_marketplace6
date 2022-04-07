@@ -5,7 +5,7 @@ import { BeeIcon } from '../../icons';
 import { usdFormatter, formatter } from '../../../Utils/helper';
 
 export default function PriceInputField(props) {
-  const { field, form, label = "Price", showTokenBalance = false, tokenPriceUsd } = props;
+  const { field, form, label = "Price", showTokenBalance = false, tokenPriceUsd, placeholder = "Enter amount" } = props;
   const { state: { tokenBalance } } = useContext(Web3Context);
   return (
     <div className="mt-4 mb-8">
@@ -30,7 +30,7 @@ export default function PriceInputField(props) {
           inputMode="decimal"
           id="price"
           className="text-ink max-w-[235px] dark:text-white flex flex-1 focus:border-transparent focus:ring-0 bg-transparent border-transparent focus:outline-none placeholder:text-xs"
-          placeholder="Enter amount"
+          placeholder={placeholder}
           {...field}
         />
         <span className="p-2 text-sm w-[80px] text-right">
