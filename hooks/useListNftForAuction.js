@@ -27,12 +27,7 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       minBid: ethers.utils.parseEther(price).toString(),
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
-    }
-
-    const chainId = (await ethersProvider.getNetwork()).chainId;
-
-    if (chainId == 80001) {
-      auction["percentIncrement"] = 50
+      percentIncrement: 50
     }
 
     // handle approval

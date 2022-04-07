@@ -24,7 +24,7 @@ function percentage(number, percentage) {
   return (number/100)*percentage;
 }
 
-const validate = (values, activeModal, activeListing, activeAuction, tokenBalance) => {
+const validate = (values, activeModal, activeListing, activeAuction, tokenBalance, minPrice) => {
   const errors = {};
   if (!values.price) {
     errors.price = 'Required';
@@ -45,6 +45,8 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
   } else if (activeModal === NFT_MODALS.MAKE_OFFER) {
     if (Number(values.price) <= Number(formatEther(activeListing?.highestBid))) {
       errors.price = 'Must be greater than highest bid';
+    }  else if (Number(values.price) < Number(formatEther(minPrice))) {
+      errors.price = 'Must be greater than minimum price';
     }
   }
 
@@ -54,7 +56,7 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 export default function MakeOfferForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, owner, marketplaceContract, activeModal, activeListing, activeAuction, setShouldRefetch } = props;
+  const { minPrice, tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, owner, marketplaceContract, activeModal, activeListing, activeAuction, setShouldRefetch } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
@@ -101,7 +103,7 @@ export default function MakeOfferForm(props) {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       // https://formik.org/docs/guides/validation
-      validate={(values) => validate(values, activeModal, activeListing, activeAuction, tokenBalance)}
+      validate={(values) => validate(values, activeModal, activeListing, activeAuction, tokenBalance, minPrice)}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
@@ -171,7 +173,8 @@ export default function MakeOfferForm(props) {
                     }}
                     list={expirationOptions}
                   />
-                  <div className="flex flex-1">
+                  {/* TODO FIX TIME SEE SUBMIT FUNCTION */}
+                  {/* <div className="flex flex-1">
                     <label htmlFor="time" className="sr-only">Time</label>
                     <input
                       type="time"
@@ -182,7 +185,7 @@ export default function MakeOfferForm(props) {
                       onChange={handleChange}
                       required
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ) : null}
@@ -216,7 +219,8 @@ export default function MakeOfferForm(props) {
               >
                   Make Offer
               </PrimaryButton>
-              <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={() => console.log('convert')}>Convert HNY</PrimaryAltButton>
+              {/*  TODO CONVERT HNY? */}
+              {/* <PrimaryAltButton className="ml-4 max-w-[200px]" onClick={() => console.log('convert')}>Convert HNY</PrimaryAltButton> */}
             </div>
           </Form>
         )

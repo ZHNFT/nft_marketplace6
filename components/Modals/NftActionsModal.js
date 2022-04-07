@@ -41,6 +41,7 @@ export default function NftActionsModal(props) {
   const { isOpen, onClose, activeModal, tokenId, collectionId, address, ...rest } = props;
   const title = modalToTitleMap[activeModal];
   const [data, setData] = useState({});
+  const [collection, setCollection] = useState({});
 
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
@@ -50,6 +51,13 @@ export default function NftActionsModal(props) {
   // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
   const isOwner = activeAuction ? activeAuction.owner === address : data?.owner === address || false;
   const owner = activeAuction ? activeAuction?.owner : data?.owner;
+
+  const fetchCollection = useCallback(async function() {
+    const url = `https://api.hexag0n.io/collections/${collectionId}`;
+    const res = await fetch(url);
+    const data = await res?.json();
+    setCollection(data);
+  }, [collectionId])
 
   const fetchData = useCallback(async function() {
     const url = `https://api.hexag0n.io/collections/${collectionId}/token/${tokenId}`;
@@ -65,6 +73,12 @@ export default function NftActionsModal(props) {
     }
   }, [fetchData, collectionId, tokenId])
 
+  useEffect(() => {
+    if (collectionId) {
+    fetchCollection();
+    }
+  }, [fetchCollection, collectionId])
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       {activeModal ? cloneElement(modalToFormMap[activeModal], {
@@ -78,6 +92,7 @@ export default function NftActionsModal(props) {
         collectionId: collectionId,
         tokenId: tokenId,
         address,
+        minPrice: collection?.minPrice,
         ...rest,
       }) : null}
     </Modal>
