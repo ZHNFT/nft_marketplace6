@@ -14,7 +14,7 @@ export default function useCancelListing({ marketplaceContract }) {
           contractAddress: listing?.contractAddress || listing?.collectionId,
           userAddress: listing.userAddress,
           tokenId: listing.tokenId,
-          pricePerItem: listing.pricePerItem.toString(),
+          pricePerItem: BigInt(listing?.pricePerItem).toString(),
           quantity: listing.quantity,
           expiry: listing.expiry,
           nonce: listing.nonce,
