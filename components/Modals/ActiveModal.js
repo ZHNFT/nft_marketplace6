@@ -68,8 +68,6 @@ export default function ActiveModal(props) {
     }
   }, [fetchCollection, collectionId])
 
-  console.log(`activeListing`, activeListing)
-
   return cloneElement(modalToFormMap[activeModal], {
     handleClose: onClose,
     activeModal,
