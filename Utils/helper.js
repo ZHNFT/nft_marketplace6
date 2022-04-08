@@ -29,7 +29,11 @@ const usdFormatter = new Intl.NumberFormat('en-US', {
 // https://docs.ethers.io/v5/api/utils/bignumber/
 const formatEther = (value) => {
   if (!value) return;
-  const valueString = typeof value === 'number' ? ethers.BigNumber.from(BigInt(value).toString()) : typeof value === 'string' ? ethers.BigNumber.from(value) : ethers.BigNumber.from(value?.toString());
+  const valueString = typeof value === 'number' 
+    ? ethers.BigNumber.from((value).toLocaleString('fullwide', { useGrouping:false })) 
+    : typeof value === 'string' 
+      ? ethers.BigNumber.from(value)
+      : ethers.BigNumber.from(value?.toString());
   return ethers.utils.formatEther(valueString);
 }
 
