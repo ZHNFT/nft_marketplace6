@@ -8,6 +8,7 @@ export default function useCancelListing({ marketplaceContract }) {
 
     // For the owner of the NFT to cancel their listing
     const handleCancelListing = useCallback(async function (listing) {
+      console.log(`listing`, listing)
       try {
         setCancellationStatus(TRANSACTION_STATUS.IN_PROGRESS);
         const tx = await marketplaceContract.CancelListing({
