@@ -13,7 +13,7 @@ export default function PriceInputField(props) {
       <label htmlFor="price" className='text-[#969EAB] text-xs'>{label}</label>
       {showTokenBalance ? (
       <div className="mt-1 text-xs text-right text-[#969EAB]">
-        Balace: <span className='text-white'>{tokenBalance ? formatter.format(tokenBalance) : 0}</span>
+        Balance: <span className='text-white'>{tokenBalance ? formatter.format(tokenBalance) : 0}</span>
       </div>) : null}
     </div>
     <div className="mt-1 relative">

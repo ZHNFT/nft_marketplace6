@@ -27,7 +27,6 @@ export default function useListNftForAuction({ ethersProvider, marketplaceAddres
       minBid: ethers.utils.parseEther(price).toString(),
       highestBid: 0,
       highestBidder: '0x0000000000000000000000000000000000000000',
-      percentIncrement: 50
     }
 
     // handle approval
