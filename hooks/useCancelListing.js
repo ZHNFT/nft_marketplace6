@@ -14,7 +14,7 @@ export default function useCancelListing({ marketplaceContract }) {
           contractAddress: listing?.contractAddress || listing?.collectionId,
           userAddress: listing.userAddress,
           tokenId: listing.tokenId,
-          pricePerItem: (listing?.pricePerItem).toLocaleString('fullwide', { useGrouping:false }),
+          pricePerItem: (listing?.pricePerItem).toLocaleString('fullwide', { useGrouping: false }),
           quantity: listing.quantity,
           expiry: listing.expiry,
           nonce: listing.nonce,

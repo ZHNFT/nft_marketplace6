@@ -99,7 +99,7 @@ export default function Nft(props) {
         contractAddress: offer?.contractAddress || offer?.collectionId,
         userAddress: offer.userAddress,
         tokenId: offer.tokenId,
-        pricePerItem: offer.pricePerItem.toString(),
+        pricePerItem: (offer?.pricePerItem).toLocaleString('fullwide', { useGrouping: false }),
         quantity: offer.quantity,
         expiry: offer.expiry,
         nonce: offer.nonce,
