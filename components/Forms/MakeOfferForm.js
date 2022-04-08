@@ -198,12 +198,13 @@ export default function MakeOfferForm(props) {
               ) : (
                 <div className='flex flex-col'>
                   <ItemPrice
-                    label="Highest Bid"
+                    label="Highest Bid:"
+                    inline={true}
                     value={activeAuction?.highestBid}
                   />
-                  <span>{`Percentage to increase 5%`}</span>
+                  <span>{`Percentage to increase: 5%`}</span>
                   <span>
-                    {`Minimum bid ${activeAuction?.highestBid ? 
+                    {`Minimum bid: ${activeAuction?.highestBid ? 
                       Number(formatEther(activeAuction?.highestBid)) + percentage(Number(formatEther(activeAuction?.highestBid)), 5)
                     : formatEther(activeAuction?.minBid)}`}
                   </span>
