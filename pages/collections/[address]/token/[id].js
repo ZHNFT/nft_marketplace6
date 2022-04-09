@@ -444,7 +444,7 @@ export default function Nft(props) {
 
                 {/* Properties tab */}
                 <Tab.Panel as="dl">
-                  <TraitsTable traits={data?.traits} />
+                  <TraitsTable collectionId={data?.collectionId} traits={data?.traits} />
                 </Tab.Panel>
 
                 {/* Offers tab */}

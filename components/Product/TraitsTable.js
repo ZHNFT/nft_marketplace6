@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
+import { stringify } from 'qs';
 import { Table, RowHeading, Row, Cell } from '../Table';
 import { DiamondIcon, SearchIcon } from '../icons';
 
-export default function TraitsTable({ traits }) {
+export default function TraitsTable({ collectionId, traits }) {
   const router = useRouter();
   return (
     <Table className="text-xs mt-2">
@@ -22,8 +23,10 @@ export default function TraitsTable({ traits }) {
         {
           traits?.map((row, index) => {
             const { trait_type: type, value, rarityScore, rarityPercent } = row;
+            const traitFilters = { stringTraits: [{ name: type, values: [value] }] };
+            const query = { address: collectionId, search: stringify(traitFilters, { encode: false, arrayFormat: 'indices' }) };
             return (
-              <Row key={`${type}-${index}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
+              <Row key={`${type}-${index}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push({ pathname: '/collections/[address]', query })}>
                 <Cell className="w-[150px]">
                   <p className="text-manatee text-xxs capitalize">{ type }</p>
                   <p className="capitalize">{ value }</p>
