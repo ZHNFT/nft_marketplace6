@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import clsx from "clsx";
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
 
 // Components
 import Seo from "./seo";
@@ -56,6 +57,18 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
                   ...child.props,
                 });
               })}
+              <ToastContainer
+                position="bottom-left"
+                autoClose={6000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={"dark"}
+              />
               {/* Sidemenu filters for mobile */}
               <MobileFilters
                 filters={pageProps?.collection?.traits}

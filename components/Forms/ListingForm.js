@@ -4,6 +4,7 @@ import { ellipseAddress } from '../../Utils';
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { add, getUnixTime } from 'date-fns';
+import { formatEther, usdFormatter } from '../../Utils/helper';
 import Dropdown from '../Dropdown/Dropdown';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import TransactionList from '../Transactions/TransactionList';
@@ -31,12 +32,14 @@ const durations = [
   { label: '6 months', value: { unit: 'months', number: 6 } }
 ];
 
-const validate = (values) => {
+const validate = (values, minPrice) => {
   const errors = {};
   if (!values.price) {
     errors.price = 'Required';
   } else if (!/^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$/i.test(values.price)) {
     errors.price = 'Invalid amount';
+  } else if (Number(values.price) < Number(formatEther(minPrice))) {
+    errors.price = 'Must be greater than minimum price';
   }
 
   if (!values.percent) {
@@ -50,7 +53,7 @@ const validate = (values) => {
 
 export default function Listing(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { tokenPriceUsd, fetchData, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, handleClose, name, owner, imageUrl } = props;
+  const { minPrice, tokenPriceUsd, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
@@ -96,7 +99,7 @@ export default function Listing(props) {
     currency: currencies[0],
     price: '',
     duration: durations[0],
-    percent: 5,
+    percent: 50,
   };
 
   const hasError = approvalError || signatureError || apiError || auctionApprovalError || auctionSignatureError || auctionApiError || transactionError;
@@ -121,18 +124,16 @@ export default function Listing(props) {
 
   useEffect(() => {
     if (!hasError && formSubmittingDone && (auctionTx || apiResponse)) {
-      fetchData();
-      handleClose();
+      setShouldRefetch(true);
     }
-
-  }, [hasError, handleClose, fetchData, formSubmittingDone, auctionTx, apiResponse]);
+  }, [hasError, formSubmittingDone, auctionTx, apiResponse, setShouldRefetch]);
 
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
       // https://formik.org/docs/guides/validation
-      validate={validate}
+      validate={(values) => validate(values, minPrice)}
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, touched, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
@@ -301,6 +302,7 @@ export default function Listing(props) {
                     component={PriceInputField}
                     label={values.type.value === 'fixed' ? 'Price' : 'Starting price'}
                     tokenPriceUsd={tokenPriceUsd}
+                    placeholder={`Enter amount - Min ${formatEther(minPrice)} hny`}
                   />
                   {/* <label htmlFor="price">
                     {values.type.value === 'fixed' ? 'Price' : 'Starting price'}

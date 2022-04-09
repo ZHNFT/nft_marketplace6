@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import { ellipseAddress } from '../../Utils';
 import { Table, RowHeading, Row, Cell } from '../Table';
@@ -73,12 +74,10 @@ export default function Activity({ tokenPriceUsd }) {
             let blockchainViewer;
 
             if(chain == "mumbai") {
-              blockchainViewer = "https://mumbai.polygonscan.com/tx"
+              blockchainViewer = "https://mumbai.polygonscan.com/tx/"
             } else {
-              blockchainViewer = "https://polygonscan.com/tx"
+              blockchainViewer = "https://polygonscan.com/tx/"
             }
-
-            const link = blockchainViewer + transactionHash;
 
             let isMinting = false;
             if(activityType == "transfer") {
@@ -129,17 +128,17 @@ export default function Activity({ tokenPriceUsd }) {
 
                     isMinting ?
                     "-" : 
-                    <a href={"/users/" + from}>
+                    <Link href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
-                    </a>
+                    </Link>
                   ) : '-'}
                 </Cell>
                 <Cell className="w-[100px] text-center mobile-only:hidden">
                   {/* To address */}
                   { to ? (
-                    <a href={"/users/" + to}>
+                    <Link href={"/users/" + to}>
                       { ellipseAddress(to, 4) }
-                    </a>
+                    </Link>
                    ) : '-'}
                 </Cell>
                 <Cell className="w-[120px] text-center sm:hidden">
@@ -148,16 +147,16 @@ export default function Activity({ tokenPriceUsd }) {
                     { from ? (
                       isMinting ?
                       "-" : 
-                      <a href={"/users/" + from}>
+                      <Link href={"/users/" + from}>
                         { ellipseAddress(from, 4) }
-                      </a>
+                      </Link>
                       ) : '-' }
                   </div>
                   <div className="mt-1">
                     { to ? (
-                      <a href={"/users/" + to}>
+                      <Link href={"/users/" + to}>
                         { ellipseAddress(to, 4) }
-                      </a>
+                      </Link>
                     ) : '-' }
                   </div>
                 </Cell>
@@ -171,9 +170,14 @@ export default function Activity({ tokenPriceUsd }) {
                   </div>
                 </Cell>
                 <Cell className="w-[50px] text-right">
-                  <a href={link} target="_blank" rel="noreferrer">
-                    <LinkIcon className="w-[12px]" />
-                  </a>
+                  {
+                    transactionHash && (
+                      <a href={`${blockchainViewer}${transactionHash}`} target="_blank" rel="noreferrer">
+                        <span className="sr-only">View transaction in blockchain explorer</span>
+                        <LinkIcon className="w-[12px]" />
+                      </a>
+                    )
+                  }
                 </Cell>
               </Row>
             );

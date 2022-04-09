@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { Disclosure, Transition } from '@headlessui/react'
 import clsx from 'clsx';
 import SecondaryButton from '../Buttons/SecondaryButton';
@@ -12,10 +13,31 @@ const listTypes = [
 ];
 
 export default function ListingFilter({ isReset, onChange }) {
+  const { query, isReady: isRouterReady } = useRouter();
+  const { filter } = query;
   const defaultValue = useMemo(
     () => ({ listed: false, auctions: false, unlisted: false, 'has-bids': false })
   , []);
   const [selected, setSelected] = useState(defaultValue);
+
+  useEffect(() => {
+    // initialize filters from query params on initial page load
+    if(!isRouterReady || !filter) return;
+
+    if (Array.isArray(filter)) {
+      const updated = {...selected, [value]: !selected[value]};
+      setSelected(filter.reduce((acc, key) => {
+        acc[key] = true;
+        return acc;
+      }, { ...selected }));
+      return;
+    }
+
+    setSelected({
+      ...selected,
+      [filter]: true
+    });
+  }, [isRouterReady]);
 
   useEffect(() => {
     if (isReset) {

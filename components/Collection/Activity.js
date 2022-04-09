@@ -35,6 +35,7 @@ export default function Activity({ tokenPriceUsd }) {
       <RowHeading>
         <Cell className="w-[30px] mobile-only:hidden" />
         <Cell className="w-[100px]">Type</Cell>
+        <Cell className="w-[100px]">Id</Cell>
         {/* <Cell className="w-[200px]">Item</Cell> */}
         <Cell className="w-[100px] text-center">Price</Cell>
         <Cell className="w-[100px] text-center mobile-only:hidden">From</Cell>
@@ -50,7 +51,6 @@ export default function Activity({ tokenPriceUsd }) {
       </RowHeading>
       {
         activities?.results?.map(row => {
-
           const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain, timestamp } = row;
           const price = activityType === 'sale' ? value : activityType === 'bid' || activityType === 'listing' ?  pricePerItem : minBid;
           const from = activityType === 'bid' ? userAddress : activityType === 'sale' ? seller : fromAddress;
@@ -71,8 +71,6 @@ export default function Activity({ tokenPriceUsd }) {
             blockchainViewer = "https://polygonscan.com/tx/"
           }
 
-          const link = blockchainViewer + transactionHash;
-
           let isMinting = false;
           if(activityType == "transfer") {
             if(fromAddress == "0x0000000000000000000000000000000000000000") {
@@ -80,9 +78,7 @@ export default function Activity({ tokenPriceUsd }) {
             }
           }
           return (
-
-            <Link key={_id} href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-            <Row className="cursor-pointer">
+            <Row key={_id}>
               <Cell className="w-[30px] mobile-only:hidden">
               {activityType == "transfer" ? isMinting ?
 
@@ -103,6 +99,13 @@ export default function Activity({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px]">
                 <span className="block capitalize">{isMinting ? "mint" : activityType}</span>
+              </Cell>
+              <Cell className="w-[100px]">
+                <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
+                  <a className='text-cornflower hover:underline'>
+                    #{tokenId}
+                  </a>
+                </Link>
               </Cell>
               {/* <Cell className="w-[200px]">
                 <div className="flex items-center">
@@ -136,17 +139,17 @@ export default function Activity({ tokenPriceUsd }) {
                 { from ? (
                   isMinting ?
                   "-" :
-                  <a href={"/users/" + from}>
+                  <Link href={"/users/" + from}>
                     { ellipseAddress(from, 4) }
-                  </a>
+                  </Link>
                 ) : '-' }
               </Cell>
               <Cell className="w-[100px] text-center mobile-only:hidden">
                 {/* To address */}
                 { to ? (
-                  <a href={"/users/" + to}>
+                  <Link href={"/users/" + to}>
                     { ellipseAddress(to, 4) }
-                  </a>
+                  </Link>
                   ) : '-' }
               </Cell>
               <Cell className="w-[120px] text-center sm:hidden">
@@ -155,16 +158,16 @@ export default function Activity({ tokenPriceUsd }) {
                   { from ? (
                     isMinting ?
                     "-" :
-                    <a href={"/users/" + from}>
+                    <Link href={"/users/" + from}>
                       { ellipseAddress(from, 4) }
-                    </a>
+                    </Link>
                   ) : '-'}
                 </div>
                 <div>
                   { to ? (
-                  <a href={"/users/" + to}>
+                  <Link href={"/users/" + to}>
                     { ellipseAddress(to, 4) }
-                  </a>
+                  </Link>
                   ) : '-' }
                 </div>
               </Cell>
@@ -178,13 +181,16 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell>
               <Cell className="w-[50px] text-right">
-                <a href={link} target="_blank" rel="noreferrer" >
-                  <span className="sr-only">View transaction in blockchain explorer</span>
-                  <LinkIcon className="w-[12px]" />
-                </a>
+                {
+                  transactionHash && (
+                    <a href={`${blockchainViewer}${transactionHash}`} target="_blank" rel="noreferrer" >
+                      <span className="sr-only">View transaction in blockchain explorer</span>
+                      <LinkIcon className="w-[12px] text-cornflower" />
+                    </a>
+                  )
+                }
               </Cell>
             </Row>
-            </Link>
           );
         })
       }

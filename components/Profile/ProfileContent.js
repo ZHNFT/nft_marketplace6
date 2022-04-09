@@ -20,5 +20,5 @@ export default function ProfileContent({ data, offers, tokenPriceUsd }) {
   }
 
   // default content
-  return <InfiniteGallery collectionData={data} />;
+  return <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionData={data} />;
 }

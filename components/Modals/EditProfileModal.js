@@ -10,9 +10,11 @@ import { useContext } from "react";
 import Web3Context from "../../contexts/Web3Context";
 import Web3Token from "web3-token";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
+import { resolveBunnyLink } from '../../Utils';
 import { transformUserData, uploadToIpfs } from "../../Utils/helper";
 import { Formik } from "formik";
 import { PencilIcon } from "@heroicons/react/outline";
+import Spinner from '../Spinner/Spinner';
 
 const textFields = [
   { id: "username", label: "Username", isRequired: true },
@@ -41,6 +43,7 @@ export default function EditProfileModal(props) {
   } = useContext(Web3Context);
   const [images, setImages] = useState({});
   const [preview, setPreview] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSelectImage = event => {
     const name = event.target.name;
@@ -50,17 +53,27 @@ export default function EditProfileModal(props) {
   };
 
   async function saveUserDetails(data) {
+    setIsLoading(true);
+
     const signer = ethersProvider.getSigner();
-    const token = await Web3Token.sign(
-      async (msg) => await signer.signMessage(msg),
-      "1d"
-    );
+
+    let token;
+    try {
+      token = await Web3Token.sign(
+        async (msg) => await signer.signMessage(msg),
+        "1d"
+      );
+    } catch(error) {
+      setIsLoading(false);
+      return;
+    }
+    
     
     // upload images to ipfs
-    const [profileImageUrl, coverImageUrl] = await Promise.all([
-      images.profileImage ? uploadToIpfs(images.profileImage) : Promise.resolve(null),
-      images.coverImage ? await uploadToIpfs(images.coverImage) : Promise.resolve(null)
-    ]);
+    const files = [];
+    if (images.profileImage) files.push(images.profileImage);
+    if (images.coverImage) files.push(images.coverImage);
+    const { results: uploadedFiles } = files.length > 0 ? await uploadToIpfs(files) : { results: []};
 
     const transformedData = {
       username: data["username"],
@@ -80,8 +93,8 @@ export default function EditProfileModal(props) {
         },
       ],
       images: {
-        profile: profileImageUrl || data.images?.profile,
-        banner: coverImageUrl || data.images?.banner
+        profile: uploadedFiles?.[0]?.ipfsUrl || data.images?.profile,
+        banner: uploadedFiles?.[1]?.ipfsUrl || data.images?.banner
       }
     };
 
@@ -101,6 +114,7 @@ export default function EditProfileModal(props) {
     // update the user object with the updated fields
     const updatedUser = await response.json();
     setUser({ ...user, ...updatedUser });
+    setIsLoading(false);
 
     // close the modal
     onClose();
@@ -122,7 +136,7 @@ export default function EditProfileModal(props) {
                     <span className="sr-only">Change profile image</span>
                     <Image
                       className="aspect-w-1 object-cover object-center justify-center rounded-full overflow-hidden"
-                      src={preview.profileImage || values.images?.profile || DefaultLogo}
+                      src={preview.profileImage || resolveBunnyLink(values.images?.profile) || DefaultLogo}
                       alt={values["username"]}
                       layout="fill" 
                     />
@@ -188,11 +202,12 @@ export default function EditProfileModal(props) {
             </div>
             <div className="px-4">
               <PrimaryButton
-                className="text-xs px-6 min-w-[85px] text-center block ml-auto mt-4"
+                className="relative text-xs px-6 min-w-[85px] text-center block ml-auto mt-4"
                 size="sm"
                 type="submit"
               >
                 Save
+                { isLoading && <Spinner className="absolute w-[21px] right-1.5 top-[6px]" /> }
               </PrimaryButton>
             </div>
           </form>

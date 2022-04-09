@@ -18,6 +18,7 @@ import { ArrowAltIcon } from '../../../components/icons';
 import CollectionTab from '../../../components/Tabs/CollectionTab';
 import PrimaryButton from '../../../components/Buttons/PrimaryButton';
 import { formatEther } from '../../../Utils/helper';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const url = `https://api.hexag0n.io`;
 
@@ -63,12 +64,12 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
-  const { pathname, query, asPath } = router;
+  const { pathname, query, asPath, isReady: isRouterReady } = router;
   const { search, address, sort, filter, tab, priceFrom, priceTo, rarityFrom, rarityTo } = query;
-  const [collectionData, setData] = useState(data);
+  const [collectionData, setData] = useState();
   const [selectedItemsFilter, setSelectedItemsFilter] = useState(itemsFilterList[0]);
   const [showFilters, setShowFilters] = useState();
   const tabs = [
@@ -106,8 +107,23 @@ export default function Collection(props) {
   }, []);
 
   useEffect(() => {
+    // make sure initial API fetch is called only once when router params are ready to be read
+    if(!isRouterReady) return;
+
     fetchCollection();
-  }, [search, fetchCollection])
+  }, [isRouterReady, fetchCollection]);
+
+  useEffect(() => {
+    let timer;
+    if (shouldRefetch) {
+      timer = setTimeout(() => {
+        fetchCollection();
+        setShouldRefetch(false)
+        handleCloseModal();
+      }, 4000)
+    }
+    return () => clearTimeout(timer);
+  }, [shouldRefetch, fetchCollection, handleCloseModal, setShouldRefetch])
 
   return (
     <FiltersContext.Provider value={filtersContextValue}>
@@ -181,9 +197,19 @@ export default function Collection(props) {
                 </div>
               )
               : (
-                <div className={clsx('mobile-only:w-full')}>
+                <div className={clsx('w-full sm:ml-10 md:ml-20 lg:ml-6')}>
                   <FiltersTags />
-                  <InfiniteGallery collectionData={collectionData} />
+                  {
+                    !collectionData || collectionData.total === 0
+                      ? (
+                        <div className="flex justify-center mt-[100px] lg:mt-[150px]">
+                          {
+                            !collectionData ? <Spinner className="w-[40px]" /> : <p className="text-sm">No items found</p>
+                          }
+                        </div>
+                      )
+                      : <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionData={collectionData} />
+                  }
                 </div>
               )
           }
@@ -225,16 +251,11 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { address } = params;
   const url = `https://api.hexag0n.io/collections/${address}`;
-  const collectionUrl = `https://api.hexag0n.io/collections/${address}/tokens?page=0&sort=tokenId&size=20`;
-  const res = await fetch(url)
-  const data = await res?.json()
-  const nftsRes = await fetch(collectionUrl, {
-    method: 'POST'
-  });
-  const nfts = await nftsRes?.json();
+  const res = await fetch(url);
+  const data = await res?.json();
 
   return { 
-    props: { data: nfts, collection: data },
+    props: { collection: data },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every 10 seconds

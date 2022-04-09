@@ -24,7 +24,7 @@ const validate = (values) => {
 
 export default function ChangePriceForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, fetchData } = props;
+  const { tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
@@ -55,10 +55,9 @@ export default function ChangePriceForm(props) {
 
   useEffect(() => {
     if (!hasError && formSubmittingDone && apiResponse) {
-      fetchData();
-      handleClose();
+      setShouldRefetch(true)
     }
-  }, [hasError, handleClose, fetchData, formSubmittingDone, apiResponse]);
+  }, [hasError, setShouldRefetch, formSubmittingDone, apiResponse]);
 
   return (
     <Formik

@@ -15,9 +15,9 @@ export default function RangeField(props) {
   useEffect(() => {
     if(isReset) {
       setIsDefaultValues(true);
-      setValues(initialValues);
+      setValues([min, max]);
     }
-  }, [isReset, initialValues]);
+  }, [isReset, min, max]);
 
   useEffect(() => {
     if (didMount && debouncedValue && !isDefaultValues) {

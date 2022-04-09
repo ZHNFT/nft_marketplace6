@@ -3,13 +3,12 @@ import { useRouter } from 'next/router';
 import clsx from "clsx";
 import { Tab } from '@headlessui/react'
 import Link from 'next/link';
+import { toast } from "react-toastify";
 import { BeeIcon } from '../../../../components/icons';
-import { resolveBunnyLink } from '../../../../Utils';
 import { NFT_MODALS, NFT_LISTING_STATE } from '../../../../constants/nft';
 import { usdFormatter, formatEther } from '../../../../Utils/helper';
 import PrimaryButton from '../../../../components/Buttons/PrimaryButton';
 import SecondaryButton from '../../../../components/Buttons/SecondaryButton';
-import NftActionsModal from '../../../../components/Modals/NftActionsModal';
 import ProductPreview from '../../../../components/Product/ProductPreview';
 import ProductDetailsHeader from '../../../../components/Product/ProductDetailsHeader';
 import ProductDetails from '../../../../components/Product/ProductDetails';
@@ -28,7 +27,21 @@ import useAcceptBid from '../../../../hooks/useAcceptBid';
 // This will be the Single Asset of a collection (Single NFT)
 // Route: http://localhost:3000/collection/[address]/[id]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35/198
-export default function Nft({ data: serverData, collection, nfts, chainIdHex, chainId, address, connect, ethersProvider, marketplaceContract, tokenContract, tokenBalance, tokenData, loadBalance }) {
+export default function Nft(props) {
+  const {
+    data: serverData,
+    collection,
+    nfts,
+    address,
+    ethersProvider,
+    marketplaceContract,
+    tokenData,
+    setNftData,
+    handleModal,
+    shouldRefetch,
+    handleCloseModal,
+    setShouldRefetch
+  } = props;
   const [data, setData] = useState(serverData)
 
   // there can only be one active listing or auction for a token at the same time
@@ -45,8 +58,6 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
   const owner = activeAuction ? activeAuction?.owner : data?.owner;
 
   const marketplaceAddress = marketplaceContract?.address;
-
-  const [activeModal, setActiveModal] = useState(null);
 
   const PRODUCT_TABS = [
     { id: 'properties', label: 'Properties', active: true },
@@ -78,18 +89,17 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
     )
   }, [data?._id])
 
-  const handleModal = modal => address ? setActiveModal(modal) : connect();
-
   const { handleAcceptBid, acceptBidTx, acceptBidStatus, acceptBidError } = useAcceptBid({ marketplaceContract, fetchData, ethersProvider, marketplaceAddress, owner });
 
   // For non-owners to cancel their bid
   const handleCancelBid = useCallback(async function (offer) {
+    let id;
     try {
       const tx = await marketplaceContract.CancelBid({
         contractAddress: offer?.contractAddress || offer?.collectionId,
         userAddress: offer.userAddress,
         tokenId: offer.tokenId,
-        pricePerItem: offer.pricePerItem.toString(),
+        pricePerItem: (offer?.pricePerItem).toLocaleString('fullwide', { useGrouping: false }),
         quantity: offer.quantity,
         expiry: offer.expiry,
         nonce: offer.nonce,
@@ -97,66 +107,64 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
         s: offer.s,
         v: offer.v,
       });
+      id = toast.loading("Processing transaction, please bee patient!");
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
       if (txResult) {
-        fetchData()
+        setTimeout(fetchData(), 4000);
+        toast.update(id, { render: "Transaction succesfull", type: "success", isLoading: false });
       }
     } catch (error) {
-      alert(error?.data?.message || error?.message)
+      id 
+        ? toast.update(id, { render: error?.data?.message || error?.message, type: "error", isLoading: false })
+        : toast.error(error?.data?.message || error?.message);
     }
   }, [marketplaceContract, fetchData])
 
   // Conclude an auction, expects collectionAddress, tokenId and owner
   const handleConcludeAuction = useCallback(async function (auction) {
+    let id;
     try {
+      id = toast.loading("Processing transaction, please bee patient!");
       const tx = await marketplaceContract.concludeAuction(
         auction?.collectionAddress || auction?.contractAddress || auction?.collectionId,
         auction?.tokenId,
         auction?.owner,
-      );
+        );
       const txResult = await tx?.wait();
       console.log(`txResult`, txResult)
       if (txResult) {
-        fetchData()
+        setTimeout(fetchData(), 4000);
+        toast.update(id, { render: "Transaction succesfull", type: "success", isLoading: false });
       }
     } catch (error) {
-      alert(error?.data?.message || error?.message)
+      id 
+      ? toast.update(id, { render: error?.data?.message || error?.message, type: "error", isLoading: false })
+      : toast.error(error?.data?.message || error?.message);
     }
   }, [fetchData, marketplaceContract])
 
-  const handleCloseModal = useCallback(function (){
-    setActiveModal(null)
-  }, [])
+  useEffect(() => {
+    setNftData({
+      tokenId: data?.tokenId,
+      collectionId: data?.collectionId
+    })
+  }, [data?.tokenId, data?.collectionId, setNftData]);
 
   useEffect(() => {
-    setData(serverData);
-  }, [serverData]);
+    let timer;
+    if (shouldRefetch) {
+      timer = setTimeout(() => {
+        fetchData();
+        setShouldRefetch(false)
+        handleCloseModal();
+      }, 4000)
+    }
+    return () => clearTimeout(timer);
+  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch])
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
-      <NftActionsModal
-        isOpen={activeModal !== null}
-        onClose={handleCloseModal}
-        activeModal={activeModal}
-        marketplaceAddress={marketplaceAddress}
-        marketplaceContract={marketplaceContract}
-        address={address}
-        tokenContract={tokenContract}
-        chainId={chainId}
-        ethersProvider={ethersProvider}
-        tokenId={data?.tokenId}
-        collectionId={data?.collectionId}
-        name={data?.name}
-        owner={owner}
-        imageUrl={resolveBunnyLink(data?.imageHosted)}
-        fetchData={fetchData}
-        activeListing={{ ...activeListing, highestBid: data?.highestBid }}
-        activeAuction={activeAuction}
-        tokenPriceUsd={tokenData?.priceUsd}
-        tokenBalance={tokenBalance}
-        loadBalance={loadBalance}
-      />
       <div className="mx-auto py-16 sm:py-24 sm:px-6 lg:max-w-6xl">
         {/* Product */}
         <div className="lg:grid lg:grid-cols-8 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
@@ -199,7 +207,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                       <div className="ml-auto">
                         <SecondaryButton
                           className="border-cornflower min-w-[98px] text-ink dark:text-white"
-                          onClick={() => handleModal(NFT_MODALS.LIST)}
+                          onClick={() => {
+                            handleModal(NFT_MODALS.LIST)
+                          }}
                         >
                           List item
                         </SecondaryButton>
@@ -217,7 +227,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           <button
                             type="button"
                             className="font-light text-xs text-cornflower"
-                            onClick={() => handleModal(NFT_MODALS.CHANGE_PRICE)}
+                            onClick={() => {
+                              handleModal(NFT_MODALS.CHANGE_PRICE)
+                            }}
                           >
                             Change
                           </button>
@@ -232,7 +244,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         <button
                           type="button"
                           className="font-light text-xs text-cornflower mr-4"
-                          onClick={() => handleModal(NFT_MODALS.UNLIST)}
+                          onClick={() => {
+                            handleModal(NFT_MODALS.UNLIST)
+                          }}
                         >
                           Remove listing
                         </button>
@@ -268,7 +282,13 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                       </div>
                       <div>
                         {getUnixTime(new Date()) >= activeAuction?.expiry ? (
-                          <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleConcludeAuction(activeAuction)}>
+                          <PrimaryButton
+                            className="mr-4 !px-4"
+                            size="sm"
+                            onClick={() => {
+                              handleConcludeAuction(activeAuction)
+                            }}
+                          >
                             Conclude auction
                           </PrimaryButton>
                         ) : null}
@@ -285,7 +305,9 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         <div className="ml-auto">
                           <SecondaryButton
                             className="border-manatee text-ink dark:text-white"
-                            onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}
+                            onClick={() => {
+                              handleModal(NFT_MODALS.MAKE_OFFER)
+                            }}
                           >
                             Make offer
                           </SecondaryButton>
@@ -313,13 +335,21 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                           </div>
                         </div>
                         <div className="ml-auto flex">
-                          <PrimaryButton className="mr-4 !px-4" size="sm" onClick={() => handleModal(NFT_MODALS.BUY_NOW)}>
+                          <PrimaryButton
+                            className="mr-4 !px-4"
+                            size="sm"
+                            onClick={() => {
+                              handleModal(NFT_MODALS.BUY_NOW)
+                            }}
+                            >
                             Buy now
                           </PrimaryButton>
                           <div className="flex relative">
                             <SecondaryButton
                               className="border-manatee text-ink dark:text-white"
-                              onClick={() => handleModal(NFT_MODALS.MAKE_OFFER)}
+                              onClick={() => {
+                                handleModal(NFT_MODALS.MAKE_OFFER)
+                              }}
                             >
                               Make offer
                             </SecondaryButton>
@@ -365,7 +395,13 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                         </div>
                         <div className="mobile-only:w-full mobile-only:mt-2 mobile-only:mb-1">
                           {!(getUnixTime(new Date()) >= activeAuction?.expiry) ? (
-                            <PrimaryButton className="mr-4 !px-4 mobile-only:w-full" size="sm" onClick={() => handleModal(NFT_MODALS.PLACE_BID)}>
+                            <PrimaryButton 
+                              className="mr-4 !px-4 mobile-only:w-full" 
+                              size="sm" 
+                              onClick={() => {
+                                handleModal(NFT_MODALS.PLACE_BID)
+                              }}
+                            >
                               Place Bid
                             </PrimaryButton>
                           ) : null}
@@ -418,7 +454,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                     tokenPriceUsd={tokenData?.priceUsd}
                     onCancelBid={handleCancelBid}
                     onAcceptBid={handleAcceptBid}
-                    currentUser={address}
+                    currentUser={address?.toLowerCase()}
                     isOwner={isOwner}
                   />
                 </Tab.Panel>
@@ -427,7 +463,7 @@ export default function Nft({ data: serverData, collection, nfts, chainIdHex, ch
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductBids
                     bids={activeAuctionbids}
-                    currentUser={address}
+                    currentUser={address?.toLowerCase()}
                     isOwner={isOwner}
                     tokenPriceUsd={tokenData?.priceUsd}
                   />

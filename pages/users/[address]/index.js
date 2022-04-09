@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import ProfileHeader from "../../../components/Profile/ProfileHeader";
 import ProfileContent from "../../../components/Profile/ProfileContent";
@@ -25,9 +25,10 @@ const sortList = [
 ];
 
 export default function UserAssets(props) {
-  const { chainIdHex, data, tokenData } = props;
+  const { chainIdHex, data: serverData, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch } = props;
   const router = useRouter();
   const { address, tab } = router.query;
+  const [data, setData] = useState(serverData)
 
   const tabs = [
     { href: "", name: "NFTs" },
@@ -46,6 +47,26 @@ export default function UserAssets(props) {
     }
     getUserData()
   }, [address]);
+
+  const fetchData = useCallback(async function() {
+    const url = `https://api.hexag0n.io/users/${address}/tokens`;
+    const res = await fetch(url)
+    const data = await res?.json()
+
+    setData(data);
+  }, [address])
+
+  useEffect(() => {
+    let timer;
+    if (shouldRefetch) {
+      timer = setTimeout(() => {
+        fetchData();
+        setShouldRefetch(false)
+        handleCloseModal();
+      }, 4000)
+    }
+    return () => clearTimeout(timer);
+  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch])
 
   return (
     <>

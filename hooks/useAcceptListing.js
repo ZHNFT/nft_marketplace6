@@ -23,7 +23,7 @@ export default function useAcceptListing({ marketplaceContract, tokenContract, m
         contractAddress: listing?.contractAddress || listing?.collectionId,
         userAddress: listing.userAddress,
         tokenId: listing.tokenId,
-        pricePerItem: listing.pricePerItem.toString(),
+        pricePerItem: (listing?.pricePerItem).toLocaleString('fullwide', { useGrouping: false }),
         quantity: listing.quantity,
         expiry: listing.expiry,
         nonce: listing.nonce,

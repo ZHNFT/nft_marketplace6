@@ -37,7 +37,7 @@ const tokens = [
   {
     label: 'HNY',
     value: 'hny',
-    icon: () => <BeeIcon className="h-[15px] -mt-[4px] -mb-[7px]" />,
+    icon: () => <BeeIcon className="h-[15px]" />,
     data: {
       contract: '0x1fa2f83ba2df61c3d370071d61b17be01e224f3a',
       symbol: 'HNY',
@@ -69,7 +69,7 @@ const tokens = [
   }
 ];
 
-const validate = values => {
+const validate = ({ values, images }) => {
   const errors = {};
   if (!values.name) {
     errors.name = 'Collection name is required';
@@ -89,6 +89,14 @@ const validate = values => {
 
   if (!values.payoutAddress) {
     errors.address = 'Payout address is required';
+  }
+
+  if (!images?.profileImage) {
+    errors.profileImage = 'Profile image is required'
+  }
+
+  if (!images?.featuredImage) {
+    errors.featuredImage = 'Featured image is required'
   }
 
   return errors;
@@ -137,10 +145,11 @@ export default function AddCollectionModal(props) {
     setError(null);
     setIsLoading(true);
     const platforms = ['website', 'instagram', 'telegram', 'twitter', 'discord'];
-    const [profileImageUrl, coverImageUrl, featuredImageUrl] = await Promise.all([
-      images.profileImage ? uploadToIpfs(images.profileImage) : Promise.resolve(null),
-      images.coverImage ? await uploadToIpfs(images.coverImage) : Promise.resolve(null),
-      images.featuredImage ? await uploadToIpfs(images.featuredImage) : Promise.resolve(null)
+
+    // upload files
+    const [{ results: profileImageResult }, { results: featuredImageResult }] = await Promise.all([
+      images.profileImage ? uploadToIpfs([images.profileImage]) : Promise.resolve({ results: []}),
+      images.featuredImage ? await uploadToIpfs([images.featuredImage]) : Promise.resolve({ results: []})
     ]);
     
     const payload = {
@@ -151,9 +160,9 @@ export default function AddCollectionModal(props) {
       category: [data.category?.value],
       description: data.description,
       images: {
-        logo: profileImageUrl,
-        banner: coverImageUrl,
-        featured: featuredImageUrl
+        logo: profileImageResult?.[0]?.ipfsUrl,
+        banner: '',
+        featured: featuredImageResult?.[0]?.ipfsUrl
       },
       socials: getSocials({ platforms, data }),
       royaltyPercent: data.royaltyPercent,
@@ -193,7 +202,7 @@ export default function AddCollectionModal(props) {
           <Formik
             initialValues={initialValues}
             onSubmit={handleSubmit}
-            validate={validate}
+            validate={values => validate({ values, images })}
           >
             {({ values, handleSubmit, errors, setFieldValue, handleChange }) => {
               return (
@@ -313,6 +322,7 @@ export default function AddCollectionModal(props) {
                           </label>
                          </div>*/}
                       </div>
+                      { errors.profileImage && <p className="mt-2 text-xxs text-red-600">{ errors.profileImage }</p> }
                     </div>
                     <div className="basis-5/12 ml-6">
                       <p className="text-xs text-manatee flex items-center mb-2">
@@ -342,6 +352,7 @@ export default function AddCollectionModal(props) {
                           </div>
                         </label>
                       </div>
+                      { errors.featuredImage && <p className="mt-2.5 text-xxs text-red-600">{ errors.featuredImage }</p> }
                     </div>
                   </div>
 
@@ -368,15 +379,10 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
 
-                  <h4 className="mt-8 mb-4 text-base">Currency Selection</h4>
-                  <p className="text-manatee text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process.</p>
-                  
-                  <p className="text-xs text-manatee flex items-center mt-4 mb-2">
-                    Payment tokens
-                    <span className="text-cornflower ml-1">*</span>
-                  </p>
-                  <p className="text-manatee text-xs mr-8">Choose the currency in which you will be listing your collection. Note that listing in HNY means you will not have to pay any royalty fees to Hexagon – additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a royalty fee of 2%.</p>
-                  <p className='text-manatee text-xs mr-8'>Caution: Your currency choice can’t be changed once the collection has been accepted.</p>
+                  <h4 className="mt-8 mb-4 text-base">Currency Selection <span className="text-cornflower ml-1">*</span></h4>
+                
+                  <p className="text-manatee text-xs mr-8 mb-2">Choose the currency in which you will be listing your collection. Note that listing in HNY means sellers will not be charged any marketplace fees to Hexagon - additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a marketplace fee of 2%.</p>
+                  <p className='text-manatee text-xs mr-8'>Caution: Your currency choice cannot be changed once the collection has been accepted.</p>
                   
                   <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
                     {
@@ -393,17 +399,23 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
                   
-                  <h4 className="mt-8 mb-4 text-base">Royalty Percentage</h4>
-                 
+                  <h4 className="mt-8 mb-4 text-base">
+                    Royalty Percentage
                     <span className="text-cornflower ml-1">*</span>
+                  </h4>
                   
-                  <p className="text-manatee text-xs mr-8 mb-2">Caution: This can’t be changed once the collection has been accepted.</p>
+                  <p className="text-manatee text-xs mr-8 mb-2">
+                  Choose the royalty percentage that you will receive from each transaction of your collection. Note that Hexagon’s marketplace fee is paid by the seller and is not deducted from your royalty percentage.
+                  </p>
+                  <p className="text-manatee text-xs mr-8 mb-2">
+                    Caution: this percentage can’t be changed once the collection has been accepted.
+                  </p>
                   <div className="-mx-[6px]">
                     <RangeField
                       step={.1}
                       decimals={1}
                       initialValues={[2]}
-                      min={0}
+                      min={2}
                       max={10}
                       suffix="%"
                       onChange={() => {}}

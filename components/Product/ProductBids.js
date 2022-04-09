@@ -25,7 +25,7 @@ export default function ProductBids({ bids, tokenPriceUsd }) {
           bids.map(bid => {
             const { bidder, timestamp, value } = bid;
             return (
-              <Row key={`${bidder}-${timestamp}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push('#')}>
+              <Row key={`${bidder}-${timestamp}`} className="cursor-pointer text-xs !py-2">
                 <Cell className="w-[120px] flex items-center">
                   <span className="block bg-cornflower rounded-full w-[24px] h-[24px] mr-2"></span>
                   <span>{ ellipseAddress(bidder, 4) }</span>
@@ -42,6 +42,7 @@ export default function ProductBids({ bids, tokenPriceUsd }) {
                   { formatDistanceToNowStrict(fromUnixTime(timestamp), { addSuffix: true }) }
                 </Cell>
                 <Cell className="w-[20px] text-right text-manatee">
+                  {/* TODO LINK */}
                   <a href="#">
                     <LinkIcon className="w-[13px]" />
                   </a>

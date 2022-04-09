@@ -10,7 +10,7 @@ import {
   ChainIcon
 } from "../icons";
 import { getExplorer } from "../../config";
-import { ellipseAddress } from "../../Utils";
+import { ellipseAddress, resolveBunnyLink } from "../../Utils";
 import { formatEther, formatCompact } from "../../Utils/helper";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
@@ -36,7 +36,7 @@ export default function ProfileHeader({
 
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-32 mb-28">
+      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-20 lg:mt-32 mb-28">
 
       <SecondaryButton
           className="flex items-center absolute  -top-[70px] text-xs font-medium"
@@ -64,7 +64,7 @@ export default function ProfileHeader({
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
                 <Image
                   className="h-8 w-8"
-                  src={userData?.images?.profile || DefaultLogo}
+                  src={resolveBunnyLink(userData?.images?.profile) || DefaultLogo}
                   alt="Profile photo"
                   width={"100%"}
                   height={"100%"}
@@ -124,7 +124,7 @@ export default function ProfileHeader({
             </ul>
           </div>
         </div>
-        <div className="lg:col-span-5 pt-1.5">
+        <div className="lg:col-span-5 mobile-only:mt-3 pt-1.5">
           <ul className="flex text-center justify-between">
             <li>
               <h4 className="text-xs mb-1.5">Items</h4>
