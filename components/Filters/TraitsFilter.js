@@ -64,7 +64,7 @@ export default function TraitsFilter({ formValues, setFieldValue, filters, submi
                       value={selectedTraitType}
                       onChange={setSelectedTraitType}
                     >
-                      <div className="flex items-start mt-1">
+                      <div className="flex items-start h-full">
                         {filters.map((traitType, index) => (
                           <RadioGroup.Option
                             key={index}
@@ -72,21 +72,19 @@ export default function TraitsFilter({ formValues, setFieldValue, filters, submi
                             className={({ checked }) =>
                               `${
                                 (checked || selectedTraitType?.type === traitType.type) ? 'border-cornflower after:bg-cornflower after:block after:m-auto after:w-full after:h-[3px] after:absolute after:left-0 after:right-0 after:bottom-0' : 'border-white'
-                              } relative min-w-[50px] no-shrink w-auto overflow-hidden mx-1 first:ml-0 bg-black/[0.05] dark:bg-white/[0.05] text-ink dark:text-white last:mr-0 text-xs rounded-md px-3 py-2 cursor-pointer flex border-[0.5px] hover:border-cornflower`
+                              } h-full relative min-w-[50px] no-shrink w-auto overflow-hidden mx-1 first:ml-0 bg-black/[0.05] dark:bg-white/[0.05] text-ink dark:text-white last:mr-0 text-xs rounded-md px-3 py-2 cursor-pointer flex border-[0.5px] hover:border-cornflower`
                             }
                           >
                             {({ checked }) => (
-                              <>
-                                <div className="flex flex-col items-center w-full">
-                                  <RadioGroup.Label
-                                    as="p"
-                                    className="text-center font-medium leading-1"
-                                  >
-                                    { traitType.type }
-                                  </RadioGroup.Label>
-                                  <span className="text-manatee text-xs">{ traitType.traitCount }</span>
-                                </div>
-                              </>
+                              <div className="flex flex-col items-center w-full">
+                                <RadioGroup.Label
+                                  as="p"
+                                  className="text-center font-medium leading-1"
+                                >
+                                  { traitType.type }
+                                </RadioGroup.Label>
+                                <span className="text-manatee text-xs">{ traitType.traitCount }</span>
+                              </div>
                             )}
                           </RadioGroup.Option>
                         ))}
