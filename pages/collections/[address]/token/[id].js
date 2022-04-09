@@ -70,12 +70,12 @@ export default function Nft(props) {
   // refresh server side data
   const router = useRouter();
   const { address: contractAddress, id } = router.query;
+  const [currentPath, setCurrentPath] = useState(router.asPath);
 
   const fetchData = useCallback(async function() {
     const url = `https://api.hexag0n.io/collections/${contractAddress}/token/${id}`;
     const res = await fetch(url)
     const data = await res?.json()
-
     setData(data);
   }, [contractAddress, id])
 
@@ -150,6 +150,14 @@ export default function Nft(props) {
       collectionId: data?.collectionId
     })
   }, [data?.tokenId, data?.collectionId, setNftData]);
+
+  useEffect(() => {
+    // refetch data when address or token id in the pathname changes
+    if (currentPath !== router.asPath) {
+      fetchData();
+      setCurrentPath(router.asPath);
+    }
+  }, [fetchData, currentPath, router.asPath]);
 
   useEffect(() => {
     let timer;
