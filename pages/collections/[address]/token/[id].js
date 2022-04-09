@@ -165,7 +165,7 @@ export default function Nft(props) {
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
-      <div className="mx-auto py-16 sm:py-24 sm:px-6 lg:max-w-6xl">
+      <div className="mx-auto py-4 sm:py-10 sm:px-6 lg:max-w-6xl">
         {/* Product */}
         <div className="lg:grid lg:grid-cols-8 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
           {/* Product Image/Preview */}

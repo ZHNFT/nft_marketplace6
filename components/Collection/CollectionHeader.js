@@ -13,7 +13,7 @@ export default function CollectionHeader(props) {
   const [showEditModal, setShowEditModal] = useState(false);
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-10 lg:mt-32 mb-28">
+      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-8 mb-16">
        
         <SecondaryButton
           className="hidden flex items-center absolute right-0 -top-[70px] text-xs font-medium"
