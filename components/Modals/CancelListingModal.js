@@ -11,7 +11,8 @@ export default function CancelListingModal(props) {
     title,
     description,
     confirmLabel = 'OK',
-    setShouldRefetch
+    setShouldRefetch,
+    isRefetching
   } = props;
   const [isCanceling, setIsCancelling] = useState(false);
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
@@ -24,7 +25,7 @@ export default function CancelListingModal(props) {
     }
   }
 
-  if (isCanceling || cancellationError) {
+  if (isCanceling || cancellationError || isRefetching) {
     return (
       <TransactionList
         steps={[

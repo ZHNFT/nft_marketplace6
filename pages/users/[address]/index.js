@@ -25,7 +25,7 @@ const sortList = [
 ];
 
 export default function UserAssets(props) {
-  const { chainIdHex, data: serverData, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch } = props;
+  const { chainIdHex, data: serverData, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
   const router = useRouter();
   const { address, tab } = router.query;
   const [data, setData] = useState(serverData)
@@ -59,14 +59,16 @@ export default function UserAssets(props) {
   useEffect(() => {
     let timer;
     if (shouldRefetch) {
+      setIsRefetching(true);
       timer = setTimeout(() => {
         fetchData();
         setShouldRefetch(false)
+        setIsRefetching(false)
         handleCloseModal();
       }, 4000)
     }
     return () => clearTimeout(timer);
-  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch])
+  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch, setIsRefetching])
 
   return (
     <>

@@ -24,7 +24,7 @@ const validate = (values) => {
 
 export default function ChangePriceForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
+  const { isRefetching, tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
 
@@ -68,7 +68,7 @@ export default function ChangePriceForm(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting || hasError ? (
+        return isSubmitting || hasError || isRefetching ? (
           <TransactionList
             steps={[
               {

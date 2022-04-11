@@ -40,7 +40,8 @@ export default function Nft(props) {
     handleModal,
     shouldRefetch,
     handleCloseModal,
-    setShouldRefetch
+    setShouldRefetch,
+    setIsRefetching
   } = props;
   const [data, setData] = useState(serverData)
 
@@ -162,14 +163,16 @@ export default function Nft(props) {
   useEffect(() => {
     let timer;
     if (shouldRefetch) {
+      setIsRefetching(true);
       timer = setTimeout(() => {
         fetchData();
         setShouldRefetch(false)
         handleCloseModal();
+        setIsRefetching(false);
       }, 4000)
     }
     return () => clearTimeout(timer);
-  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch])
+  }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch, setIsRefetching])
 
   return (
     <div className='dark:bg-[#202225] dark:text-white'>

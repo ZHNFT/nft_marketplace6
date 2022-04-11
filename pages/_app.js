@@ -112,6 +112,7 @@ function MyApp({ Component, pageProps }) {
   const [activeModal, setActiveModal] = useState(null);
   const [nftData, setNftData] = useState({});
   const [shouldRefetch, setShouldRefetch] = useState(null);
+  const [isRefetching, setIsRefetching] = useState(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -297,8 +298,21 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   const globalContextValue = useMemo(
-    () => ({ showEditProfileModal, setShowEditProfileModal, user, setUser, nftData, setNftData, handleModal, activeModal, handleCloseModal, shouldRefetch }), 
-    [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch]
+    () => ({ 
+      showEditProfileModal, 
+      setShowEditProfileModal, 
+      user, 
+      setUser, 
+      nftData, 
+      setNftData, 
+      handleModal, 
+      activeModal, 
+      handleCloseModal, 
+      shouldRefetch, 
+      isRefetching,
+      setIsRefetching
+    }), 
+    [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch, setIsRefetching, isRefetching]
   );
 
   return (
@@ -318,6 +332,7 @@ function MyApp({ Component, pageProps }) {
               handleCloseModal={handleCloseModal}
               setShouldRefetch={setShouldRefetch}
               connect={connect}
+              setIsRefetching={setIsRefetching}
             />
             <NftActionsModal
               isOpen={activeModal !== null}
@@ -335,6 +350,7 @@ function MyApp({ Component, pageProps }) {
               tokenBalance={tokenBalance}
               loadBalance={loadBalance}
               setShouldRefetch={setShouldRefetch}
+              isRefetching={isRefetching}
             />
           </Layout>
         </AppGlobalContext.Provider>

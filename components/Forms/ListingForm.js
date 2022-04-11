@@ -53,7 +53,7 @@ const validate = (values, minPrice) => {
 
 export default function Listing(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { minPrice, tokenPriceUsd, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
+  const { isRefetching, minPrice, tokenPriceUsd, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
@@ -137,7 +137,7 @@ export default function Listing(props) {
     >
       {/* https://formik.org/docs/api/formik#props-1 */}
       {({ values, setSubmitting, handleSubmit, errors, touched, setFieldValue, handleChange, handleBlur, isSubmitting, isValid }) => {
-        return isSubmitting || hasError ? (
+        return isSubmitting || hasError || isRefetching ? (
           <div className="max-w-lg mt-5">
             <div className="flex justify-between mb-6">
               <div className="flex items-center">

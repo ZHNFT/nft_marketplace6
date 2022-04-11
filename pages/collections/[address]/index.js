@@ -64,7 +64,7 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
   const router = useRouter();
   const { pathname, query, asPath, isReady: isRouterReady } = router;
@@ -116,14 +116,16 @@ export default function Collection(props) {
   useEffect(() => {
     let timer;
     if (shouldRefetch) {
+      setIsRefetching(true);
       timer = setTimeout(() => {
         fetchCollection();
         setShouldRefetch(false)
+        setIsRefetching(false);
         handleCloseModal();
       }, 4000)
     }
     return () => clearTimeout(timer);
-  }, [shouldRefetch, fetchCollection, handleCloseModal, setShouldRefetch])
+  }, [shouldRefetch, fetchCollection, handleCloseModal, setShouldRefetch, setIsRefetching])
 
   return (
     <FiltersContext.Provider value={filtersContextValue}>
