@@ -207,7 +207,7 @@ export default function Offers({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px] text-center mobile-only:absolute mobile-only:right-0 mobile-only:-bottom-[12px]">
               {  
-                activityType == "offerReceived" && to === currentUserAddress.toLowerCase()
+                activityType == "offerReceived" && to === currentUserAddress.toLowerCase() && active
                   ? (
                     <div className="flex">
                       <div 
