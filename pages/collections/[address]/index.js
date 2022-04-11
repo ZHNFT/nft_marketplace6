@@ -36,9 +36,10 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
   const traits = [];
   activeFilters?.stringTraits?.forEach(traitType => traitType?.values?.forEach(
     trait => {
+      const value = traitType.name === 'Reward Rate' ? Number(trait) : trait;
       traits.push({
         trait_type: traitType.name,
-        value: trait
+        value: value
       })
     }
   ));
