@@ -198,8 +198,8 @@ export default function Nft(props) {
               isOwner={isOwner}
               address={address}
               lastSalePrice={data?.lastSalePrice}
-              rarity={data?.rarity}
-              maxRarity={collection?.rarity?.highest}
+              rarity={data?.rarityRank}
+              maxRarity={collection?.totalSupply}
               refreshMetaData={refreshMetaData}
             />
 
