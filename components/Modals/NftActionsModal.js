@@ -31,7 +31,7 @@ export default function NftActionsModal(props) {
           {...rest}
         />
         <span className="mt-1 text-sm text-manatee flex justify-between">
-          This modal will close automatically once all steps are completed.
+          This modal will close automatically once all steps are successfully completed.
         </span>
         </>
       )  : null}
