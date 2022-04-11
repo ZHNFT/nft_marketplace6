@@ -21,6 +21,7 @@ export default function NftActionsModal(props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       {activeModal ? (
+        <>
         <ActiveModal
           activeModal={activeModal}
           collectionId={collectionId}
@@ -29,6 +30,10 @@ export default function NftActionsModal(props) {
           address={address}
           {...rest}
         />
+        <span className="mt-1 text-sm text-manatee flex justify-between">
+          This modal will close automatically once all steps are completed.
+        </span>
+        </>
       )  : null}
     </Modal>
   );
