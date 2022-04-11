@@ -167,8 +167,8 @@ export default function Nft(props) {
       timer = setTimeout(() => {
         fetchData();
         setShouldRefetch(false)
-        handleCloseModal();
         setIsRefetching(false);
+        handleCloseModal();
       }, 4000)
     }
     return () => clearTimeout(timer);
