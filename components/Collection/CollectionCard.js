@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
+import { resolveBunnyLink } from "../../Utils";
 import { formatCompact, formatEther } from "../../Utils/helper";
 import DefaultLogo from "../../images/default-collection-logo.png";
 import HiveLogo from "../../images/collection-card-logo-hive.png";
 import HiveImage from "../../images/collection-card-image-hive.png";
+import PlaceholderImage from '../../images/placeholder-image.png';
 import nft1 from "../../images/nfts/nft1.png";
 import nft2 from "../../images/nfts/nft2.png";
 import nft3 from "../../images/nfts/nft3.png";
@@ -14,67 +16,100 @@ import { BeeIcon, ViewIcon } from "../icons";
 import SecondaryButton from "../Buttons/SecondaryButton";
 
 export default function CollectionCard({ collection }) {
-  const { id, name, description, author, address, ownerCount, volume, floorPrice, totalSupply, listed  } = collection
-
-  let totalVolume = volume?.total ? formatEther(volume?.total) : "0";
-  let formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
+  const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories } = collection
+  const totalVolume = volume?.total ? formatEther(volume?.total) : "0";
+  const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
+  const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
 
   return (
    <div className="mx-auto max-w-[378px] md:max-w-[555px] box-shadow-featuredCard rounded-xl bg-[#262a32]">
     <div className="relative w-[full] h-[300px] md:h-[439px] rounded-xl overflow-hidden">
       <Link href={`/collections/${address}`}>
         <a>
-          <Image
-            className="block w-full object-center object-cover"
-            //src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=555&aspect_ratio=1:1` : DefaultImage}
-            src={HiveImage}
-            alt={name}
-            layout="fill" 
-          />
+          {
+            slug === 'hive' || images?.featured
+              ? (
+                <Image
+                  className="block w-full object-center object-cover"
+                  src={images?.featured ? `${resolveBunnyLink(images.featured)}?optimizer=image&width=555&aspect_ratio=1:1` : HiveImage}
+                  alt={name}
+                  layout="fill" 
+                />
+              )
+              : (
+                <span className="flex justify-center items-center">
+                  <span>
+                    <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={67} height={75} />
+                  </span>
+                </span>
+              )
+          }
+          <span className="sr-only">{ name }</span>
         </a>
       </Link>
       <div className="absolute right-[12px] top-[12px] md:right-[18px] md:top-[18px] w-[66px] box-shadow-featuredCard backdrop-blur-md rounded-md bg-cardCaption py-1 px-2 flex flex-col">
         <ul>
-          <li className="relative w-[50px] h-[50px] my-2">
-            <Image alt={name} src={nft1} layout="fill" />
-          </li>
-          <li className="relative w-[50px] h-[50px] my-2">
-            <Image alt={name} src={nft2} layout="fill" />
-          </li>
-          <li className="relative w-[50px] h-[50px] my-2">
-            <Image alt={name} src={nft3} layout="fill" />
-          </li>
-          <li className="relative hidden md:block w-[50px] h-[50px] my-2">
-            <Image alt={name} src={nft4} layout="fill" />
-          </li>
-          <li className="relative hidden md:block w-[50px] h-[50px] my-2">
-            <Image alt={name} src={nft5} layout="fill" />
-          </li>
+          {
+            tokens?.map((token, index) => token.imageHosted && (
+              <li
+                key={`${address}_${token.tokenId}`}
+                className={clsx(
+                  'relative w-[50px] h-[50px] my-2',
+                  { 'hidden md:block': index > 2 }
+                )}
+              >
+                <Link href={`/collections/${address}/token/${token.tokenId}`}>
+                  <a>
+                    <Image
+                      alt={token.name}
+                      src={`${resolveBunnyLink(token.imageHosted)}?optimizer=image&width=100&aspect_ratio=1:1`}
+                      className="rounded-md"
+                      layout="fill"
+                    />
+                    <span className="sr-only">{ token.name }</span>
+                  </a>
+                </Link>
+              </li>
+            ))
+          }
         </ul>
         <p className="md:mt-1 mb-1 md:mb-2 text-center leading-[1.5]">
           <span className="font-medium text-xs">{ totalSupply }</span>
           <span className="block text-manatee text-xxs">Items</span>
         </p>
       </div>
-      <div className="flex absolute bottom-0 left-0 h-[46px] w-full bg-cardCaption backdrop-blur-md text-sm justify-center md:justify-between items-center rounded-xl">
-        <div className="ml-6 md:ml-[130px] flex flex-col md:flex-row text-center md:text-left leading-[1.25]">
-          <span className="font-light">Owners</span>
-          <span className="font-medium ml-2">{ formatCompact(ownerCount) }</span>
-        </div>
-        <div className="flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
-          <span className="mr-1 font-light">Volume</span>
-          <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
-            <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
-            <span className="font-medium">{totalVolume}</span>
-          </span>
-        </div>
-        <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
-          <span className="mr-1 font-light">Floor</span>
-          <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
-            <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
-            <span className="font-medium">{ formattedFloorPrice }</span>
-          </span>
-        </div>
+      <div className={clsx(
+        'flex absolute bottom-0 left-0 h-[46px] w-full backdrop-blur-md text-sm justify-center items-center rounded-xl',
+        pending === true ? 'blue-gradient opacity-85' : 'bg-cardCaption md:justify-between'
+      )}>
+        {
+          pending === true
+            ? (
+              <span className="font-medium">Pending approval</span>
+            )
+            : (
+              <>
+                <div className="ml-6 md:ml-[130px] flex flex-col md:flex-row text-center md:text-left leading-[1.25]">
+                  <span className="font-light">Owners</span>
+                  <span className="font-medium ml-2">{ formatCompact(ownerCount) }</span>
+                </div>
+                <div className="flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
+                  <span className="mr-1 font-light">Volume</span>
+                  <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
+                    <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
+                    <span className="font-medium">{totalVolume}</span>
+                  </span>
+                </div>
+                <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
+                  <span className="mr-1 font-light">Floor</span>
+                  <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
+                    <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
+                    <span className="font-medium">{ formattedFloorPrice }</span>
+                  </span>
+                </div>
+              </>
+            )
+        }
       </div>
     </div>
     <div className="pt-2 md:pt-4 px-5 pb-4 relative">
@@ -94,7 +129,11 @@ export default function CollectionCard({ collection }) {
           </div>
         </div>
         <div className="absolute -top-[287px] left-[12px] md:relative md:top-auto md:left-auto text-xxs">
-          <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3">Utility</span>
+          {
+            collectionCategories?.map((category, index) => (
+              <span key={`collection_category_${index}`} className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3">Utility</span>
+            ))
+          }
           {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
         </div>
       </div>

@@ -1,24 +1,20 @@
-//import styles from '../styles/Home.module.css'
+import { useState, useCallback, useEffect } from 'react';
+import { getCollectionsWithTokenSnippets } from '../Utils/helper';
 import Hero from '../components/Home/Hero';
 import HeroCards from '../components/Home/HeroCards';
-import CollectionCard from '../components/Collection/CollectionCard'
-import { useState, useCallback, useEffect } from 'react';
-
+import CollectionCard from '../components/Collection/CollectionCard';
+import Spinner from '../components/Spinner/Spinner';
 
 export default function Home(props) {
-
-
   const [featuredCollections, setCollections] = useState([]);
+  const [isCollectionLoading, setIsCollectionLoading] = useState(false);
 
   const fetchData = useCallback(async function() {
-    //TODO: quer multiple collections
-    const url = `https://api.hexag0n.io/collections/0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d`;
-    const res = await fetch(url)
-    const data = await res?.json()
-
-    let array = [data]
-    setCollections(array);
-
+    setIsCollectionLoading(true);
+    const chain = process.env.NEXT_PUBLIC_CHAIN;
+    const collectionsWithTokens = await getCollectionsWithTokenSnippets({ chain, size: 2 });
+    setCollections(collectionsWithTokens);
+    setIsCollectionLoading(false);
   }, [])
 
   useEffect(() => {
@@ -43,15 +39,25 @@ export default function Home(props) {
 
           <section className="mt-14 mb-10">
             <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
-            <ul role="list" className="grid grid-cols-1 gap-x-6 gap-y-8">
-                {featuredCollections?.map((collection, index) => (
-                  <li
-                    key={`${collection.address}_${index}`}
-                    className="mx-auto w-full">
-                    <CollectionCard collection={collection} />
-                  </li>
-                ))}
-            </ul>
+            {
+              isCollectionLoading
+                ? (
+                  <div className="flex justify-center items-center h-24">
+                    <Spinner className="w-[26px] text-white" />
+                  </div>
+                )
+                : (
+                  <ul role="list" className="grid grid-cols-2 gap-x-6 gap-y-8">
+                      {featuredCollections?.map((collection, index) => (
+                        <li
+                          key={`${collection.address}_${index}`}
+                          className="mx-auto w-full">
+                          <CollectionCard collection={collection} />
+                        </li>
+                      ))}
+                  </ul>
+                )
+            }
           </section>
         </div>
       </div>

@@ -54,21 +54,11 @@ export default function Header(props) {
                 <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <ul className="flex flex-1 justify-around">
-                      {/*<li>
-                        <a href="#" className="text-base hover:underline">
+                      <li>
+                        <a href="/collections" className="text-base hover:underline">
                           Collections
                         </a>
                       </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Marketplace
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Drops
-                        </a>
-                      </li>*/}
                     </ul>
                   </div>
                 </div>

@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { NFT_LISTING_STATE, TRANSACTION_STATUS } from '../constants/nft';
 import { ellipseAddress } from '.';
 import _ from "lodash";
-import { fileUploadUrl } from "../constants/url";
+import { fileUploadUrl, collectionsUrl, collectionTokenSnippetsUrl } from "../constants/url";
 
 const formatCurrency = ({ value }) => (
   '$' + value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -218,6 +218,33 @@ const uploadToIpfs = async files => {
   }  
 }
 
+// get collections with token snippets
+const getCollectionsWithTokenSnippets = async ({ chain, size, categories }) => {
+  const res = await fetch(collectionsUrl({ chain, size, categories: categories?.join(',') }));
+  const data = await res?.json();
+
+  if (data?.results) {
+    // get token snippets for each collection address
+    const tokenRequests = data.results.map(({ address }) => fetch(collectionTokenSnippetsUrl({ address })));
+    const tokenResponses = await Promise.all(tokenRequests);
+    const tokens = await Promise.all(tokenResponses.map(res => res?.json()));
+
+    // get a mapping of tokens by collectionId as the Object key
+    const tokensByCollection = tokens
+      .flatMap(({ results }) => results)
+      .reduce((acc, { collectionId, tokenId, imageHosted, name }) => ({
+        ...acc,
+        [collectionId]: [
+          ...(acc[collectionId] ? acc[collectionId] : []),
+          { tokenId, imageHosted, name }
+        ]
+      }), {});
+    return data.results.map(collection => ({ ...collection, tokens: tokensByCollection[collection.address] }));
+  }
+
+  return null;
+}
+
 export {
   formatCurrency,
   formatter,
@@ -233,5 +260,6 @@ export {
   formatEther,
   formatCompact,
   getUserOffers,
-  uploadToIpfs
+  uploadToIpfs,
+  getCollectionsWithTokenSnippets
 };
