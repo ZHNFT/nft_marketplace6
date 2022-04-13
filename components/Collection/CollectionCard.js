@@ -9,14 +9,18 @@ import HiveImage from "../../images/collection-card-image-hive.png";
 import PlaceholderImage from '../../images/placeholder-image.png';
 import { BeeIcon, ViewIcon } from "../icons";
 
-export default function CollectionCard({ collection }) {
+export default function CollectionCard({ collection, size }) {
   const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories } = collection
   const totalVolume = volume?.total ? formatEther(volume?.total) : "0";
   const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
   const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
+  const featuredImageWidth = size === 'sml' ? '480' : '555';
 
   return (
-   <div className="mx-auto max-w-[378px] md:max-w-[555px] box-shadow-featuredCard rounded-xl bg-[#262a32]">
+   <div className={clsx(
+     'mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl bg-[#262a32] h-full',
+     size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
+   )}>
     <div className="relative w-[full] h-[300px] md:h-[439px] rounded-xl overflow-hidden">
       <Link href={`/collections/${address}`}>
         <a>
@@ -25,7 +29,7 @@ export default function CollectionCard({ collection }) {
               ? (
                 <Image
                   className="block w-full object-center object-cover"
-                  src={images?.featured ? `${resolveBunnyLink(images.featured)}?optimizer=image&width=555&aspect_ratio=1:1` : HiveImage}
+                  src={images?.featured ? `${resolveBunnyLink(images.featured)}?optimizer=image&width=${featuredImageWidth}&aspect_ratio=1:1` : HiveImage}
                   alt={name}
                   layout="fill" 
                 />
