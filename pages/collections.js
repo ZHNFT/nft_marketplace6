@@ -55,7 +55,7 @@ export default function Collections(props) {
       <div className="w-full">
         <div className="flex flex-col">
           <section className="lg:mt-4 mb-10 w-full">
-            <div className="flex flex-wrap justify-between mb-4 -mx-2">
+            {/*<div className="flex flex-wrap justify-between mb-4 -mx-2">
               {
                 categories.map(({ name, icon }) => {
                   const value = name.toLowerCase();
@@ -76,7 +76,7 @@ export default function Collections(props) {
                   );
                 })
               }
-            </div>
+            </div>*/}
 
             {
               isCollectionLoading

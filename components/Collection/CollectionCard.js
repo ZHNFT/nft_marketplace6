@@ -62,7 +62,7 @@ export default function CollectionCard({ collection, size }) {
                     <Image
                       alt={token.name}
                       src={token.imageHosted ? `${resolveBunnyLink(token.imageHosted)}?optimizer=image&width=100&aspect_ratio=1:1` : DefaultImage}
-                      className="rounded-md"
+                      className="rounded-md hover:brightness-110"
                       layout="fill"
                     />
                     <span className="sr-only">{ token.name }</span>
@@ -94,14 +94,14 @@ export default function CollectionCard({ collection, size }) {
                 </div>
                 <div className="flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
                   <span className="mr-1 font-light">Volume</span>
-                  <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
-                    <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
+                  <span className="flex items-center relative -left-[6px] md:top-auto md:left-auto">
+                    <BeeIcon className="h-[14px] -top-[1px] relative pr-[5px]" />
                     <span className="font-medium">{totalVolume}</span>
                   </span>
                 </div>
                 <div className="mr-8 flex items-center flex-col md:flex-row text-center md:text-left leading-[1.25] h-[35px] ml-6">
                   <span className="mr-1 font-light">Floor</span>
-                  <span className="flex items-center relative -top-[4px] -left-[6px] md:top-auto md:left-auto">
+                  <span className="flex items-center relative -left-[6px] md:top-auto md:left-auto">
                     <BeeIcon className="h-[14px] relative -top-[1px] pr-[5px]" />
                     <span className="font-medium">{ formattedFloorPrice }</span>
                   </span>
