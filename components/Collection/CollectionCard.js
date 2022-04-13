@@ -3,17 +3,11 @@ import Link from "next/link";
 import clsx from "clsx";
 import { resolveBunnyLink } from "../../Utils";
 import { formatCompact, formatEther } from "../../Utils/helper";
-import DefaultLogo from "../../images/default-collection-logo.png";
+import DefaultImage from '../../images/No-Image-Placeholder.png';
 import HiveLogo from "../../images/collection-card-logo-hive.png";
 import HiveImage from "../../images/collection-card-image-hive.png";
 import PlaceholderImage from '../../images/placeholder-image.png';
-import nft1 from "../../images/nfts/nft1.png";
-import nft2 from "../../images/nfts/nft2.png";
-import nft3 from "../../images/nfts/nft3.png";
-import nft4 from "../../images/nfts/nft4.png";
-import nft5 from "../../images/nfts/nft5.png";
 import { BeeIcon, ViewIcon } from "../icons";
-import SecondaryButton from "../Buttons/SecondaryButton";
 
 export default function CollectionCard({ collection }) {
   const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories } = collection
@@ -50,7 +44,7 @@ export default function CollectionCard({ collection }) {
       <div className="absolute right-[12px] top-[12px] md:right-[18px] md:top-[18px] w-[66px] box-shadow-featuredCard backdrop-blur-md rounded-md bg-cardCaption py-1 px-2 flex flex-col">
         <ul>
           {
-            tokens?.map((token, index) => token.imageHosted && (
+            tokens?.map((token, index) => (
               <li
                 key={`${address}_${token.tokenId}`}
                 className={clsx(
@@ -62,7 +56,7 @@ export default function CollectionCard({ collection }) {
                   <a>
                     <Image
                       alt={token.name}
-                      src={`${resolveBunnyLink(token.imageHosted)}?optimizer=image&width=100&aspect_ratio=1:1`}
+                      src={token.imageHosted ? `${resolveBunnyLink(token.imageHosted)}?optimizer=image&width=100&aspect_ratio=1:1` : DefaultImage}
                       className="rounded-md"
                       layout="fill"
                     />

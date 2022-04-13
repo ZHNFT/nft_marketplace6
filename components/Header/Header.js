@@ -55,9 +55,11 @@ export default function Header(props) {
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <ul className="flex flex-1 justify-around">
                       <li>
-                        <a href="/collections" className="text-base hover:underline">
-                          Collections
-                        </a>
+                        <Link href="/collections">
+                          <a className="text-base hover:underline">
+                            Collections
+                          </a>
+                        </Link>
                       </li>
                     </ul>
                   </div>
