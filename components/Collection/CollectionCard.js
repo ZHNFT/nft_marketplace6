@@ -15,6 +15,7 @@ export default function CollectionCard({ collection, size }) {
   const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
   const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
   const featuredImageWidth = size === 'sml' ? '480' : '555';
+  const logoImage = images?.logo && images.logo.startsWith('ipfs:') ? `${resolveBunnyLink(images.logo)}?optimizer=image&width=76&aspect_ratio=1:1` : images?.logo;
 
   return (
    <div className={clsx(
@@ -118,7 +119,7 @@ export default function CollectionCard({ collection, size }) {
             "bg-[#262a32] rounded-full before:block before:w-[71px] before:h-[71px] md:before:w-[100px] md:before:h-[100px] before:absolute before:left-0 before:top-0"
           )}>
             <div className="relative w-[55px] h-[55px] md:w-[76px] md:h-[76px] rounded-full overflow-hidden">
-              <Image src={HiveLogo} alt={name} layout="fill" />
+              <Image src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
             </div>
           </div>
           <div className="ml-[70px] md:ml-[102px] leading-none">
