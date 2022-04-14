@@ -174,8 +174,6 @@ export default function Nft(props) {
     return () => clearTimeout(timer);
   }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch, setIsRefetching])
 
-  console.log(data);
-
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
       <div className="mx-auto py-4 sm:py-10 sm:px-6 lg:max-w-6xl">
