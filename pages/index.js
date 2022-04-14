@@ -67,7 +67,7 @@ export default function Home(props) {
 
 export async function getStaticProps() {
   const chain = process.env.NEXT_PUBLIC_CHAIN;
-  const url = `https://api.hexag0n.io/collections?page=0&size=2&sort=name&chain=${chain}`;
+  const url = `https://api.hexag0n.io/collections?page=0&size=2&chain=${chain}`;
   const res = await fetch(url)
   const data = await res?.json()
   return { props: { collections: data }, revalidate: 30 };
