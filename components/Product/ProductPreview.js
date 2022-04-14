@@ -12,7 +12,8 @@ const LISTING_LABELS = {
   [NFT_LISTING_STATE.FOR_SALE]: 'For sale'
 };
 
-export default function ProductPreview({ className, name, image, expiry, listingState }) {
+export default function ProductPreview({ className, name, image, imageHosted, expiry, listingState }) {
+  const imageOptimizer = image?.split('.').pop() === 'gif' ? 'gif' : 'image';
   return (
     <div className={className}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
@@ -42,7 +43,7 @@ export default function ProductPreview({ className, name, image, expiry, listing
         <div className="aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
           {image ? (
             <Image
-            src={`${resolveBunnyLink(image)}?optimizer=image&width=944&aspect_ratio=1:1`}
+            src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=944&aspect_ratio=1:1`}
             alt={name}
             className="object-center object-cover"
             layout="fill" 

@@ -174,6 +174,8 @@ export default function Nft(props) {
     return () => clearTimeout(timer);
   }, [shouldRefetch, fetchData, handleCloseModal, setShouldRefetch, setIsRefetching])
 
+  console.log(data);
+
   return (
     <div className='dark:bg-[#202225] dark:text-white'>
       <div className="mx-auto py-4 sm:py-10 sm:px-6 lg:max-w-6xl">
@@ -183,7 +185,8 @@ export default function Nft(props) {
           <ProductPreview
             className="lg:col-span-4 lg:max-w-[472px]"
             name={data?.name}
-            image={data?.imageHosted}
+            image={data?.image}
+            imageHosted={data?.imageHosted}
             expiry={activeAuction?.expiry || activeListing?.expiry}
             listingState={(() => {
               if (activeAuction) return NFT_LISTING_STATE.IN_AUCTION;

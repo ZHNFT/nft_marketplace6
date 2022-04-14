@@ -49,7 +49,7 @@ const formatCompact = value => {
 
 const transformGalleryItem = (item) => {
     // highestPrice/lowestPrice is only for listings
-    const { name, collectionId, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
+    const { name, collectionId, image, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
     // there can only be one active auction or listing for a token at the same time
     const activeAuction = item?.auctions?.find(auction => auction?.active);
     return {
@@ -57,7 +57,8 @@ const transformGalleryItem = (item) => {
       collectionName: ellipseAddress(collectionId, 4),
       tokenId,
       collectionId,
-      imageUrl: imageHosted,
+      imageUrl: image,
+      imageHostedUrl: imageHosted,
       owner,
       activeAuction,
       lastSalePrice,

@@ -13,7 +13,7 @@ import CountdownTimer from '../CountdownTimer';
 const GalleryItem = forwardRef((props, ref) => {
   const { item, showRarity, className } = props;
   const [isHovering, setIsHovering] = useState(false);
-  const { owner, name, collectionName, imageUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
+  const { owner, name, collectionName, imageUrl, imageHostedUrl, activeAuction, lastSalePrice, highestBid, highestPrice, lowestPrice, rarityRank  } = item;
   const { state: web3State } = useContext(Web3Context);
   const isOwner = owner?.toLowerCase() === web3State?.address?.toLowerCase() || false;
   const listingState = activeAuction ? NFT_LISTING_STATE.IN_AUCTION : lowestPrice !== 0 ? NFT_LISTING_STATE.FOR_SALE : NFT_LISTING_STATE.NOT_LISTED;
@@ -54,6 +54,7 @@ const GalleryItem = forwardRef((props, ref) => {
           isActive={isHovering}
           name={name}
           imageUrl={imageUrl}
+          imageHostedUrl={imageHostedUrl}
           listingState={listingState}
           listing={listing}
           tokenId={item?.tokenId}
