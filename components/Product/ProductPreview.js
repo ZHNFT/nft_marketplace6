@@ -6,6 +6,7 @@ import { NFT_LISTING_STATE } from '../../constants/nft';
 import { LISTING_END_DATE_FORMAT } from '../../constants/dates';
 import { ViewIcon, AuctionIcon } from '../icons';
 import NotFoundImage from '../../images/No-Image-Placeholder.png';
+import Spinner from '../Spinner/Spinner';
 
 const LISTING_LABELS = {
   [NFT_LISTING_STATE.IN_AUCTION]: 'Auction',
@@ -42,22 +43,25 @@ export default function ProductPreview({ className, name, image, imageHosted, ex
             </div>
           )
         }
-        <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">
-          {image ? (
-            <Image
-            src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=${imageWidth}&aspect_ratio=1:1`}
-            alt={name}
-            className="object-center object-contain"
-            layout="fill" 
-          /> 
-          ) : (
-            <Image
-              src={NotFoundImage}
+        <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden relative">
+          <>
+            <Spinner className="w-[26px] text-white m-auto" />
+            {image ? (
+              <Image
+              src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=${imageWidth}&aspect_ratio=1:1`}
               alt={name}
-              className="object-center object-cover"
+              className="object-center object-contain"
               layout="fill" 
             /> 
-          )}
+            ) : (
+              <Image
+                src={NotFoundImage}
+                alt={name}
+                className="object-center object-cover"
+                layout="fill" 
+              /> 
+            )}
+          </>
         </div>
       </div>
     </div>
