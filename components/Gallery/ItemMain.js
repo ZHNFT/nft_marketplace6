@@ -15,7 +15,8 @@ import AppGlobalContext from "../../contexts/AppGlobalContext";
 
 export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, imageHostedUrl, listing, tokenId, collectionId }) {
   const { handleModal, setNftData } = useContext(AppGlobalContext);
-  const imageOptimizer = imageUrl?.split('.').pop() === 'gif' ? 'gif' : 'image';
+  //const imageOptimizer = imageUrl?.split('.').pop() === 'gif' ? 'gif' : 'image';
+  const imageOptimizer = 'image';
 
   function setNft() {
     setNftData({
