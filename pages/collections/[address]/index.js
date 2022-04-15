@@ -78,8 +78,6 @@ export default function Collection(props) {
     { href: "?tab=activity", name: 'Activity' }
   ];
 
-  console.log(socials?.reduce((acc, { name, href }) => ({...acc, [name]: href }), {}));
-
   const minRarity = toFixedOptional({ value: 1, decimals: 0 });
   const maxRarity = toFixedOptional({ value: collection?.totalSupply, decimals: 0 });
 
