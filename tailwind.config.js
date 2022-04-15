@@ -52,7 +52,9 @@ module.exports = {
         'frame': 'url("/images/bg-frame.png")',
         'cardOutline1': 'url("/images/bg-card-outline.png")',
         'cardOutline2': 'url("/images/bg-card-outline-2.png")',
-        'cardOutline3': 'url("/images/bg-card-outline-3.png")'
+        'cardOutline3': 'url("/images/bg-card-outline-3.png")',
+        'buttonOutline': 'url("/images/bg-button-outline.png")',
+        'buttonOutlineHover': 'url("/images/bg-button-outline-hover.png")'
       },
       backgroundPosition: {
         'top-center': 'top center'

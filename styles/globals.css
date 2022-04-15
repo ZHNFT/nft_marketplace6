@@ -22,7 +22,7 @@
   padding: 4px 11px;
 }
 
-.btn {
+.btn, .blue-gradient {
   background: linear-gradient(90deg, #5095FF -0.26%, #6E85FF 99.86%);
 }
 

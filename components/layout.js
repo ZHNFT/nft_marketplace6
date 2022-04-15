@@ -16,9 +16,7 @@ import {
 import Web3Context from "../contexts/Web3Context";
 
 const navigation = [
-  { name: "Collections", href: "#", icon: HomeIcon, current: true },
-  { name: "Marketplace", href: "#", icon: FireIcon, current: false },
-  { name: "Drops", href: "#", icon: TrendingUpIcon, current: false },
+  { name: "Collections", href: "/collections", icon: HomeIcon, current: true }
 ];
 
 export default function Layout({ children, pageProps, connect, disconnect }) {

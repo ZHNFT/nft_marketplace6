@@ -35,6 +35,34 @@ const API_HOST = 'https://api.hexag0n.io';
 );
 
 /**
+ * Returns the URL for collections.
+ *
+ * @param {Object} obj - An object.
+ * @param {String} [obj.page] - The page number.
+ * @param {String} [obj.size] - The number of collections to return.
+ * @param {String} [obj.sort] - The sort property.
+ * @param {String} [obj.categories] - The categories filter. Ex: categories=utility,music
+ * @param {String} obj.chain - The chain where to get the collections from.
+ * @returns {String} The collections URL.
+ */
+ const collectionsUrl = ({ page = 0, size = 50, sort, categories, chain }) => (
+  `${API_HOST}/collections?page=${page}&size=${size}&sort=${sort}&chain=${chain}${categories ? `&categories=${categories}` : ''}`
+);
+
+/**
+ * Returns the URL for getting token snippets of a collection.
+ *
+ * @param {Object} obj - An object.
+ * @param {String} obj.address - The collection address.
+ * @param {Number} [obj.size] - The number of tonkens to get.
+ * @returns {String} The collection token snippets URL.
+ */
+ const collectionTokenSnippetsUrl = ({ address, size = 5 }) => (
+  `${API_HOST}/collections/${address}/tokens/snippet?size=${size}&fields=name,imageHosted,tokenId,collectionId`
+);
+
+
+/**
  * Returns the URL for searching a token.
  *
  * @param {Object} obj - An object.
@@ -99,6 +127,8 @@ const API_HOST = 'https://api.hexag0n.io';
 export {
   collectionUrl,
   nftUrl,
+  collectionsUrl,
+  collectionTokenSnippetsUrl,
   searchCollectionUrl,
   searchTokenUrl,
   searchUserUrl,

@@ -36,6 +36,11 @@ import DiscordIcon from './DiscordIcon';
 import DiscordFillIcon from './DiscordFillIcon';
 import TogaIcon from './TogaIcon';
 import MenuIcon from './MenuIcon';
+import HeadphoneIcon from './HeadphoneIcon';
+import PaintIcon from './PaintIcon';
+import StackedPaperIcon from './StackedPaperIcon';
+import WalletIcon from './WalletIcon';
+import WheelIcon from './WheelIcon';
 
 export {
   BeeIcon,
@@ -75,5 +80,10 @@ export {
   DiscordIcon,
   DiscordFillIcon,
   TogaIcon,
-  MenuIcon
+  MenuIcon,
+  HeadphoneIcon,
+  PaintIcon,
+  StackedPaperIcon,
+  WalletIcon,
+  WheelIcon
 }

@@ -76,9 +76,9 @@ export default function CollectionHeader(props) {
                   )
                 }
                  {
-                  socials?.link && (
+                  socials?.website && (
                     <li className="mr-6">
-                      <a href={socials.link} target="_blank" rel="noreferrer">
+                      <a href={socials.website} target="_blank" rel="noreferrer">
                         <LinkIcon className="w-[19px] mr-2" />
                       </a>
                     </li>

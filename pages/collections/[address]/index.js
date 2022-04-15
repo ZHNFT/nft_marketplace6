@@ -139,7 +139,7 @@ export default function Collection(props) {
           description={description}
           logo={images?.logo}
           totalSupply={totalSupply}
-          socials={socials} 
+          socials={socials?.reduce((acc, { name, href }) => ({...acc, [name]: href }), {})} 
           ownerCount={ownerCount}
           volume={volume?.total}
           floorPrice={floorPrice}

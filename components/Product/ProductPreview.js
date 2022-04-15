@@ -6,13 +6,17 @@ import { NFT_LISTING_STATE } from '../../constants/nft';
 import { LISTING_END_DATE_FORMAT } from '../../constants/dates';
 import { ViewIcon, AuctionIcon } from '../icons';
 import NotFoundImage from '../../images/No-Image-Placeholder.png';
+import Spinner from '../Spinner/Spinner';
 
 const LISTING_LABELS = {
   [NFT_LISTING_STATE.IN_AUCTION]: 'Auction',
   [NFT_LISTING_STATE.FOR_SALE]: 'For sale'
 };
 
-export default function ProductPreview({ className, name, image, expiry, listingState }) {
+export default function ProductPreview({ className, name, image, imageHosted, expiry, listingState }) {
+  const { imageOptimizer, imageWidth } = image?.split('.').pop() === 'gif'
+    ? { imageOptimizer: 'gif', imageWidth: 472 }
+    : { imageOptimizer: 'image', imageWidth: 944 };
   return (
     <div className={className}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
@@ -39,22 +43,25 @@ export default function ProductPreview({ className, name, image, expiry, listing
             </div>
           )
         }
-        <div className="aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
-          {image ? (
-            <Image
-            src={`${resolveBunnyLink(image)}?optimizer=image&width=944&aspect_ratio=1:1`}
-            alt={name}
-            className="object-center object-cover"
-            layout="fill" 
-          /> 
-          ) : (
-            <Image
-              src={NotFoundImage}
+        <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden relative">
+          <>
+            <Spinner className="w-[26px] text-white m-auto" />
+            {image ? (
+              <Image
+              src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=${imageWidth}&aspect_ratio=1:1`}
               alt={name}
-              className="object-center object-cover"
+              className="object-center object-contain"
               layout="fill" 
             /> 
-          )}
+            ) : (
+              <Image
+                src={NotFoundImage}
+                alt={name}
+                className="object-center object-cover"
+                layout="fill" 
+              /> 
+            )}
+          </>
         </div>
       </div>
     </div>

@@ -13,8 +13,10 @@ import CountdownTimer from '../CountdownTimer';
 import fromUnixTime from 'date-fns/fromUnixTime'
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 
-export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, listing, tokenId, collectionId }) {
+export default function ItemMain({ isOwner, isActive, name, listingState, imageUrl, imageHostedUrl, listing, tokenId, collectionId }) {
   const { handleModal, setNftData } = useContext(AppGlobalContext);
+  //const imageOptimizer = imageUrl?.split('.').pop() === 'gif' ? 'gif' : 'image';
+  const imageOptimizer = 'image';
 
   function setNft() {
     setNftData({
@@ -26,7 +28,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
     <div className="relative rounded-xl overflow-hidden aspect-w-1 aspect-h-1 w-[170px] md:w-[210px]">
       <Image
         className="block w-full object-center object-cover"
-        src={imageUrl ? `${resolveBunnyLink(imageUrl)}?optimizer=image&width=420&aspect_ratio=1:1` : DefaultImage}
+        src={imageHostedUrl ? `${resolveBunnyLink(imageHostedUrl)}?optimizer=${imageOptimizer}&width=420&aspect_ratio=1:1` : DefaultImage}
         alt={name}
         layout="fill" 
       />

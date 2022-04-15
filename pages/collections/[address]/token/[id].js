@@ -183,7 +183,8 @@ export default function Nft(props) {
           <ProductPreview
             className="lg:col-span-4 lg:max-w-[472px]"
             name={data?.name}
-            image={data?.imageHosted}
+            image={data?.image}
+            imageHosted={data?.imageHosted}
             expiry={activeAuction?.expiry || activeListing?.expiry}
             listingState={(() => {
               if (activeAuction) return NFT_LISTING_STATE.IN_AUCTION;

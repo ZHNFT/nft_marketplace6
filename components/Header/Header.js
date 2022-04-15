@@ -49,27 +49,20 @@ export default function Header(props) {
                     <div className="w-full">
                       <SearchInput />
                     </div>
+                    <ul className="hidden lg:flex ml-4 flex-1 justify-around">
+                      <li>
+                        <Link href="/collections">
+                          <a className="text-base hover:underline">
+                            Collections
+                          </a>
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                    <ul className="flex flex-1 justify-around">
-                      {/*<li>
-                        <a href="#" className="text-base hover:underline">
-                          Collections
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Marketplace
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#" className="text-base hover:underline">
-                          Drops
-                        </a>
-                      </li>*/}
-                    </ul>
+                    
                   </div>
                 </div>
                 <div className="flex lg:items-center lg:justify-end xl:col-span-4 justify-between lg:w-auto">
