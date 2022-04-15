@@ -13,7 +13,9 @@ const LISTING_LABELS = {
 };
 
 export default function ProductPreview({ className, name, image, imageHosted, expiry, listingState }) {
-  const imageOptimizer = image?.split('.').pop() === 'gif' ? 'gif' : 'image';
+  const { imageOptimizer, imageWidth } = image?.split('.').pop() === 'gif'
+    ? { imageOptimizer: 'gif', imageWidth: 472 }
+    : { imageOptimizer: 'image', imageWidth: 944 };
   return (
     <div className={className}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
@@ -40,12 +42,12 @@ export default function ProductPreview({ className, name, image, imageHosted, ex
             </div>
           )
         }
-        <div className="aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
+        <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">
           {image ? (
             <Image
-            src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=944&aspect_ratio=1:1`}
+            src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=${imageWidth}&aspect_ratio=1:1`}
             alt={name}
-            className="object-center object-cover"
+            className="object-center object-contain"
             layout="fill" 
           /> 
           ) : (
