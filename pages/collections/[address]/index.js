@@ -78,6 +78,8 @@ export default function Collection(props) {
     { href: "?tab=activity", name: 'Activity' }
   ];
 
+  console.log(socials?.reduce((acc, { name, href }) => ({...acc, [name]: href }), {}));
+
   const minRarity = toFixedOptional({ value: 1, decimals: 0 });
   const maxRarity = toFixedOptional({ value: collection?.totalSupply, decimals: 0 });
 
@@ -139,7 +141,7 @@ export default function Collection(props) {
           description={description}
           logo={images?.logo}
           totalSupply={totalSupply}
-          socials={socials} 
+          socials={socials?.reduce((acc, { name, href }) => ({...acc, [name]: href }), {})} 
           ownerCount={ownerCount}
           volume={volume?.total}
           floorPrice={floorPrice}

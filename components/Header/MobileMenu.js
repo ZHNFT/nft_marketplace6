@@ -11,7 +11,7 @@ export default function MobileMenu(props) {
   const { navigation, connect, address, children } = props;
 
   return (
-    <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
+    <Popover.Panel as="nav" className="lg:hidden relative" aria-label="Global">
       <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
         {navigation.map((item) => (
           <a
@@ -28,7 +28,9 @@ export default function MobileMenu(props) {
         ))}
       </div>
 
-      <div className="flex justify-center mt-4 max-w-3xl mx-auto px-4 sm:px-6">
+      <div className={clsx(
+        address ? 'flex justify-center mt-4 max-w-3xl mx-auto px-4 sm:px-6' : 'absolute right-6 top-2'
+      )}>
       {address ? (
         <div className="text-xs text-manatee mb-4 w-full">
           { children }
