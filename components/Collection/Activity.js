@@ -20,7 +20,7 @@ export default function Activity({ tokenPriceUsd }) {
   const [activities, setActivities] = useState([]);
 
   const fetchData = useCallback(async function() {
-    const url = `https://api.hexag0n.io/collections/${address}/activity?include=sales&include=listings&include=bids&include=transfers`;
+    const url = `https://api.hexag0n.io/collections/${address}/activity?include=sales&include=listings&include=bids`;
     const res = await fetch(url)
     const data = await res?.json()
     setActivities(data);
