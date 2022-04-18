@@ -32,7 +32,7 @@ export default function Home(props) {
   return (
     <div className="flex justify-center lg:max-w-6xl mx-auto">
 
-      <div>
+      <div className="w-full lg:max-w-[984px]">
         <div className="flex flex-col">
           <Hero />
           <HeroCards connect={connect} address={address} />
