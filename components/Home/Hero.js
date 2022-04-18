@@ -2,16 +2,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import useSWRImmutable from 'swr';
-import { fromUnixTime, format } from 'date-fns';
 import { resolveBunnyLink } from '../../Utils';
 import NotFoundImage from '../../images/No-Image-Placeholder.png';
 import { collectionUrl, nftUrl } from '../../constants/url';
 import { fetcher, getListingState } from '../../Utils/helper';
-import { NFT_LISTING_STATE } from '../../constants/nft';
-import { LISTING_END_DATE_FORMAT } from '../../constants/dates';
-import { TogaIcon, ViewIcon, AuctionIcon } from '../icons';
 import DefaultLogo from '../../images/default-collection-logo.png';
-import PrimaryButton from '../Buttons/PrimaryButton';
+import Spinner from '../Spinner/Spinner';
 
 export default function Hero() {
   // featured NFT
@@ -41,7 +37,7 @@ export default function Hero() {
           </p>
         </div>
         <span className="block mb-4">
-          <Link href="/collections/0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d">
+          <Link href="/collections">
             <a className="gradient-bg-blue rounded-[10px] text-xs text-white px-10 py-2.5 border-[0.5px] border-transparent hover:border-white">
               Explore
             </a>
@@ -72,7 +68,8 @@ export default function Hero() {
         </div>
         <div className="flex relative">
           <Link href={`/collections/${address}/token/${id}`} passHref>
-            <a className="hero-image w-full max-w-[439px] h-[439px] aspect-w-4 aspect-h-4 rounded-xl bg-gray-100 overflow-hidden">
+            <a className="hero-image w-full max-w-[439px] h-[439px] aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">
+              <Spinner className="w-[26px] text-white m-auto" />
               {
                 collection && nft && (
                   <>
