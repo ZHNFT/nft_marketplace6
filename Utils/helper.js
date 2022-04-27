@@ -226,7 +226,7 @@ const getCollectionsWithTokenSnippets = async ({ chain, size, categories }) => {
 
   if (data?.results) {
     // get token snippets for each collection address
-    const tokenRequests = data.results.map(({ address }) => fetch(collectionTokenSnippetsUrl({ address })));
+    const tokenRequests = data.results.map(({ address }) => fetch(collectionTokenSnippetsUrl({ address, size: 3 })));
     const tokenResponses = await Promise.all(tokenRequests);
     const tokens = await Promise.all(tokenResponses.map(res => res?.json()));
 
