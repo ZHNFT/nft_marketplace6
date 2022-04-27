@@ -12,7 +12,7 @@ export default function Home(props) {
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
     const chain = process.env.NEXT_PUBLIC_CHAIN;
-    const collectionsWithTokens = await getCollectionsWithTokenSnippets({ chain, size: 2 });
+    const collectionsWithTokens = await getCollectionsWithTokenSnippets({ chain, size: 3 });
     setCollections(collectionsWithTokens);
     setIsCollectionLoading(false);
   }, [])
@@ -47,7 +47,7 @@ export default function Home(props) {
                   </div>
                 )
                 : (
-                  <ul role="list" className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8">
+                  <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
                       {featuredCollections?.map((collection, index) => (
                         <li
                           key={`${collection.address}_${index}`}
