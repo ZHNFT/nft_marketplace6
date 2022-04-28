@@ -56,7 +56,7 @@ const validate = (values, activeModal, activeListing, activeAuction, tokenBalanc
 export default function MakeOfferForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { minPrice, tokenBalance, tokenPriceUsd, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, owner, marketplaceContract, activeModal, activeListing, activeAuction, setShouldRefetch, isRefetching } = props;
+  const { minPrice, tokenBalance, tokenPriceUsd, currencySymbol, ethersProvider, chainId, tokenId, tokenContract, collectionId, address, marketplaceAddress, owner, marketplaceContract, activeModal, activeListing, activeAuction, setShouldRefetch, isRefetching } = props;
   const { handlePlaceBid, allowanceStatus, allowanceError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = usePlaceBid({ tokenContract, marketplaceAddress, address, ethersProvider, chainId, tokenId, collectionId })
   const { handlePlaceAuctionBid, allowanceStatus: auctionAllowanceStatus, allowanceError: auctionAllowanceError, transactionStatus, transactionError, auctionTx } = usePlaceAuctionBid({ tokenContract, marketplaceAddress, address, marketplaceContract, tokenId, collectionId, owner })
   const date = new Date();
@@ -155,6 +155,8 @@ export default function MakeOfferForm(props) {
               component={PriceInputField}
               showTokenBalance={true}
               tokenPriceUsd={tokenPriceUsd}
+              tokenBalance={tokenBalance}
+              currencySymbol={currencySymbol}
             />
             {activeModal === NFT_MODALS.MAKE_OFFER ? (
               <div className="mt-4 mb-8">
@@ -194,6 +196,7 @@ export default function MakeOfferForm(props) {
                 <ItemPrice
                   label="Highest Bid"
                   value={activeListing?.highestBid}
+                  currency={currencySymbol}
                 />
               ) : (
                 <div className='flex flex-col'>
@@ -201,6 +204,7 @@ export default function MakeOfferForm(props) {
                     label="Highest Bid:"
                     inline={true}
                     value={activeAuction?.highestBid}
+                    currency={currencySymbol}
                   />
                   <span>{`Percentage to increase: 1%`}</span>
                   <span>

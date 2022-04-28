@@ -10,6 +10,7 @@ import nprogress from 'nprogress';
 import 'nprogress/nprogress.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { getUserDetails } from '../Utils/helper';
+import { CURRENCIES } from '../constants/currencies';
 import AppGlobalContext from '../contexts/AppGlobalContext';
 import NftActionsModal from '../components/Modals/NftActionsModal';
 
@@ -17,9 +18,10 @@ import NftActionsModal from '../components/Modals/NftActionsModal';
 import Layout from '../components/layout';
 
 // Config
-import HoneyToken from '../artifacts/contracts/HoneyTestToken.sol/HoneyTestToken.json'
 import { 
   honeyTokenAddress,
+  ethTokenAddress,
+  maticTokenAddress,
   marketplaceAddress, 
   networkConfigs,
   getChainById, 
@@ -27,7 +29,11 @@ import {
   marketPlaceTestABI, 
   TestErc20ABI, 
   mumbaiHoneyTokenAddress,
+  mumbaiEthTokenAddress,
+  mumbaiMaticTokenAddress,
   honeyAbi,
+  ethAbi,
+  maticAbi,
   marketplaceAbi
 } from '../config';
 
@@ -66,6 +72,8 @@ function reducer(state, action) {
         ethersProvider: action.ethersProvider,
         marketplaceContract: action.marketplaceContract,
         tokenContract: action.tokenContract,
+        ethTokenContract: action.ethTokenContract,
+        maticTokenContract: action.maticTokenContract
       }
     case 'SET_ADDRESS':
       return {
@@ -76,11 +84,15 @@ function reducer(state, action) {
       return {
         ...state,
         tokenBalance: action.tokenBalance,
+        ethTokenBalance: action.ethTokenBalance,
+        maticTokenBalance: action.maticTokenBalance
       }
     case 'SET_TOKEN_DATA':
       return {
         ...state,
         tokenData: action.tokenData,
+        ethTokenData: action.ethTokenData,
+        maticTokenData: action.maticTokenData
       }
     case 'SET_CHAIN_ID':
       return {
@@ -102,7 +114,23 @@ function MyApp({ Component, pageProps }) {
   const contextValue = useMemo(() => {
     return { state, dispatch };
   }, [state, dispatch]);
-  const { provider, web3Provider, address, chainId, tokenContract, ethersProvider, marketplaceContract, tokenData, tokenBalance } = state;
+  const {
+    provider,
+    web3Provider,
+    address,
+    chainId,
+    tokenContract,
+    ethTokenContract,
+    maticTokenContract,
+    ethersProvider,
+    marketplaceContract,
+    tokenData,
+    ethTokenData,
+    maticTokenData,
+    tokenBalance,
+    ethTokenBalance,
+    maticTokenBalance
+  } = state;
   const mainnetChainId = "0x89";
   const testnetChainId = "0x13881";
 
@@ -124,14 +152,20 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  const loadBalance = useCallback(async function(erc20TokenContract, address) {
-    if (!erc20TokenContract || !address) return;
-    let erc20TokenBalance = await erc20TokenContract?.balanceOf(address);
-    erc20TokenBalance = ethers.utils.formatEther(erc20TokenBalance.toString());
+  const loadBalance = useCallback(async function({ tokenContract, ethTokenContract, maticTokenContract, address }) {
+    if (!address) return;
+
+    const [tokenBalance, ethTokenBalance, maticTokenBalance] = await Promise.all([
+      tokenContract ? tokenContract.balanceOf(address) : Promise.resolve(0),
+      ethTokenContract ? ethTokenContract.balanceOf(address) : Promise.resolve(0),
+      maticTokenContract ? maticTokenContract.balanceOf(address) : Promise.resolve(0)
+    ]);
 
     dispatch({
       type: 'SET_BALANCE',
-      tokenBalance: erc20TokenBalance
+      tokenBalance: ethers.utils.formatEther(tokenBalance.toString()),
+      ethTokenBalance: ethers.utils.formatEther(ethTokenBalance.toString()),
+      maticTokenBalance: ethers.utils.formatEther(maticTokenBalance.toString())
     });
   }, []);
 
@@ -155,17 +189,23 @@ function MyApp({ Component, pageProps }) {
     
     let marketplaceContract;
     let erc20TokenContract;
+    let ethTokenContract;
+    let maticTokenContract;
 
     if (network.chainId === 80001) {
       marketplaceContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
       erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
+      ethTokenContract = new ethers.Contract(mumbaiEthTokenAddress, TestErc20ABI, ethersSigner);
+      maticTokenContract = new ethers.Contract(mumbaiMaticTokenAddress, TestErc20ABI, ethersSigner);
     }
     if (network.chainId === 137) {
       marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
       erc20TokenContract = new ethers.Contract(honeyTokenAddress, honeyAbi, ethersSigner);
+      ethTokenContract = new ethers.Contract(ethTokenAddress, ethAbi, ethersSigner);
+      maticTokenContract = new ethers.Contract(maticTokenAddress, maticAbi, ethersSigner);
     }
 
-    await loadBalance(erc20TokenContract, address);
+    await loadBalance({ tokenContract: erc20TokenContract, ethTokenContract, maticTokenContract, address });
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -181,6 +221,8 @@ function MyApp({ Component, pageProps }) {
           : null,
       marketplaceContract,
       tokenContract: erc20TokenContract,
+      ethTokenContract,
+      maticTokenContract
     })
 
     // Pull in user details once the user has connected
@@ -228,13 +270,13 @@ function MyApp({ Component, pageProps }) {
           type: 'SET_ADDRESS',
           address: accounts[0],
         })
-        loadBalance(tokenContract, accounts[0]);
+        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, address: accounts[0] });
       }
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
       const handleChainChanged = (_hexChainId) => {
         window.location.reload()
-        loadBalance(tokenContract, address);
+        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, address });
       }
 
       const handleDisconnect = (error) => {
@@ -256,7 +298,7 @@ function MyApp({ Component, pageProps }) {
         }
       }
     }
-  }, [provider, disconnect, loadBalance, tokenContract, address])
+  }, [provider, disconnect, loadBalance, tokenContract, ethTokenContract, maticTokenContract, address])
 
 
   // Will ask the user to switch chains if they are connected to the wrong chain
@@ -279,13 +321,21 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     async function fetchTokenData() {
-      const hnyAddress = '0x1FA2F83BA2DF61c3d370071d61B17Be01e224f3a';
-      const response = await fetch(`https://api.dexscreener.io/latest/dex/tokens/${hnyAddress}`);
-      const data = await response?.json()
-      const firstPair = data?.pairs[0];
+      const [honeyResponse, ethResponse, maticResponse] = await Promise.all([
+        fetch(`https://api.dexscreener.io/latest/dex/tokens/${honeyTokenAddress}`),
+        fetch(`https://api.dexscreener.io/latest/dex/tokens/${ethTokenAddress}`),
+        fetch(`https://api.dexscreener.io/latest/dex/tokens/${maticTokenAddress}`)
+      ]);
+      const [honeyData, ethData, maticData] = await Promise.all([
+        honeyResponse?.json(),
+        ethResponse?.json(),
+        maticResponse?.json()
+      ]);
       dispatch({
         type: 'SET_TOKEN_DATA',
-        tokenData: firstPair,
+        tokenData: honeyData?.pairs[0],
+        ethTokenData: ethData?.pairs[0],
+        maticTokenData: maticData?.pairs[0]
       })
     }
     fetchTokenData();
@@ -341,13 +391,13 @@ function MyApp({ Component, pageProps }) {
               marketplaceAddress={marketplaceContract?.address}
               marketplaceContract={marketplaceContract}
               address={address}
-              tokenContract={tokenContract}
+              contracts={{ [CURRENCIES.HNY]: tokenContract, [CURRENCIES.WETH]: ethTokenContract, [CURRENCIES.WMATIC]: maticTokenContract }}
               chainId={chainId}
               ethersProvider={ethersProvider}
               tokenId={nftData?.tokenId}
               collectionId={nftData?.collectionId}
-              tokenPriceUsd={tokenData?.priceUsd}
-              tokenBalance={tokenBalance}
+              tokenPrices={{ [CURRENCIES.HNY]: tokenData?.priceUsd, [CURRENCIES.WETH]: ethTokenData?.priceUsd, [CURRENCIES.WMATIC]: maticTokenData?.priceUsd }}
+              tokenBalances={{ [CURRENCIES.HNY]: tokenBalance, [CURRENCIES.WETH]: ethTokenBalance, [CURRENCIES.WMATIC]: maticTokenBalance }}
               loadBalance={loadBalance}
               setShouldRefetch={setShouldRefetch}
               isRefetching={isRefetching}

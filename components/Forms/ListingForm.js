@@ -53,7 +53,7 @@ const validate = (values, minPrice) => {
 
 export default function Listing(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { isRefetching, minPrice, tokenPriceUsd, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
+  const { isRefetching, minPrice, tokenPriceUsd, tokenBalance, currencySymbol, ethersProvider, chainId, tokenId, marketplaceContract, tokenContract, collectionId, address, marketplaceAddress, name, owner, imageUrl, setShouldRefetch } = props;
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
@@ -155,7 +155,7 @@ export default function Listing(props) {
               </div>
               <div>
                 <p className="text-sm text-manatee">Price</p>
-                <ItemPrice value={Number(values.price) * 10 ** 18} />
+                <ItemPrice value={Number(values.price) * 10 ** 18} currency={currencySymbol} />
               </div>
             </div>
             <div className="my-6">
@@ -302,6 +302,8 @@ export default function Listing(props) {
                     component={PriceInputField}
                     label={values.type.value === 'fixed' ? 'Price' : 'Starting price'}
                     tokenPriceUsd={tokenPriceUsd}
+                    tokenBalance={tokenBalance}
+                    currencySymbol={currencySymbol}
                     placeholder={`Enter amount - Min ${formatEther(minPrice)} hny`}
                   />
                   {/* <label htmlFor="price">

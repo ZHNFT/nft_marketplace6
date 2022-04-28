@@ -1,12 +1,10 @@
 import { useContext } from 'react';
-import Web3Context from '../../../contexts/Web3Context';
 import { ErrorMessage } from 'formik';
-import { BeeIcon } from '../../icons';
+import CurrencyIcon from '../../CurrencyIcon/CurrencyIcon';
 import { usdFormatter, formatter } from '../../../Utils/helper';
 
 export default function PriceInputField(props) {
-  const { field, form, label = "Price", showTokenBalance = false, tokenPriceUsd, placeholder = "Enter amount" } = props;
-  const { state: { tokenBalance } } = useContext(Web3Context);
+  const { field, form, label = "Price", showTokenBalance = false, tokenPriceUsd, tokenBalance, currencySymbol, placeholder = "Enter amount" } = props;
   return (
     <div className="mt-4 mb-8">
     <div className='flex justify-between'>
@@ -18,9 +16,12 @@ export default function PriceInputField(props) {
     </div>
     <div className="mt-1 relative">
       <div className="flex items-center rounded-lg bg-[#1F2225]">
-        <div className="py-2 pl-2 pr-4">
-          <BeeIcon className="h-[14px] pr-[5px]" />
-          <span className="text-xs">HNY</span>
+        <div className="py-2 pl-2 pr-4 flex">
+          <CurrencyIcon
+            currency={currencySymbol}
+            hnyClassName="h-[14px] pr-[5px] -mr-1"
+          />
+          <span className="text-xs ml-2">{ currencySymbol }</span>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" width="2" height="15" viewBox="0 0 2 15" fill="none">
           <path d="M1 1L1 14" stroke="#77808B" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"/>

@@ -28,9 +28,10 @@ const modalToFormMap = {
 }
 
 export default function ActiveModal(props) {
-  const { activeModal, collectionId, tokenId, onClose, address, ...rest } = props;
+  const { activeModal, collectionId, tokenId, onClose, address, contracts, tokenPrices, tokenBalances, ...rest } = props;
   const [data, setData] = useState({});
   const [collection, setCollection] = useState({});
+  const currencySymbol = collection?.currency?.symbol;
 
   // there can only be one active listing or auction for a token at the same time
   const activeListing = data?.listings?.find(listing => listing?.active);
@@ -80,6 +81,10 @@ export default function ActiveModal(props) {
     tokenId: tokenId,
     address,
     minPrice: collection?.minPrice,
+    currencySymbol,
+    tokenContract: contracts[currencySymbol],
+    tokenPriceUsd: tokenPrices[currencySymbol],
+    tokenBalance: tokenBalances[currencySymbol],
     ...rest,
   })
 }

@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import Image from 'next/image'
-import { ellipseAddress } from '../../Utils';
+import { ellipseAddress, resolveBunnyLink } from '../../Utils';
 import { formatEther } from '../../Utils/helper';
 import DefaultLogo from '../../images/default-collection-logo.png';
-import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, BeeIcon, EditIcon, DiscordIcon, TelegramIcon } from '../icons';
+import { LinkIcon, InstagramIcon, TwitterIcon, ShareIcon, EditIcon, DiscordIcon, TelegramIcon } from '../icons';
+import CurrencyIcon from '../CurrencyIcon/CurrencyIcon';
 import { getExplorer } from '../../config';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import EditCollectionModal from '../Modals/EditCollectionModal';
 
 export default function CollectionHeader(props) {
-  const { address, createdAt, name, description, logo, totalSupply, socials, chainIdHex, floorPrice, ownerCount, volume } = props;
+  const { address, createdAt, currency, name, description, logo, totalSupply, socials, chainIdHex, floorPrice, ownerCount, volume } = props;
   const [showEditModal, setShowEditModal] = useState(false);
   return (
     <>
@@ -26,7 +27,13 @@ export default function CollectionHeader(props) {
           <div className="mr-2.5">
             <div className="gradient-border relative p-2.5">
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
-                  <Image className="h-8 w-8" src={logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
+                  <Image
+                    className="h-8 w-8"
+                    src={logo ? `${resolveBunnyLink(logo)}?optimizer=image&width=54&aspect_ratio=1:1` : DefaultLogo}
+                    alt={name}
+                    width={"100%"}
+                    height={"100%"}
+                  />
               </div>
             </div>
           </div>
@@ -106,15 +113,15 @@ export default function CollectionHeader(props) {
                 <li>
                     <h4 className="text-xs mb-1.5">Volume</h4>
                     <span className="text-xl font-medium">
-                      <BeeIcon className="h-[18px] relative -top-[2px] pr-[5px]" />
-                      {volume ? formatEther(volume) : "0"}
+                      <CurrencyIcon currency={currency} hnyClassName="h-[18px] relative -top-[2px] pr-[5px] -mr-1" ethWidth={13} ethHeight={17} />
+                      <span className="ml-1">{volume ? formatEther(volume) : "0"}</span>
                     </span>
                 </li>
                 <li>
                     <h4 className="text-xs mb-1.5">Floor</h4>
                     <span className="text-xl font-medium">
-                      <BeeIcon className="h-[18px] relative -top-[2px] pr-[5px]" />
-                      {floorPrice ? formatEther(floorPrice) : "0"}
+                      <CurrencyIcon currency={currency} hnyClassName="h-[18px] relative -top-[2px] pr-[5px] -mr-1" ethWidth={13} ethHeight={17} />
+                      <span className="ml-1">{floorPrice ? formatEther(floorPrice) : "0"}</span>
                     </span>
                 </li>
             </ul>

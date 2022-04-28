@@ -148,9 +148,10 @@ export default function Nft(props) {
   useEffect(() => {
     setNftData({
       tokenId: data?.tokenId,
-      collectionId: data?.collectionId
+      collectionId: data?.collectionId,
+      currency: collection?.currency
     })
-  }, [data?.tokenId, data?.collectionId, setNftData]);
+  }, [data?.tokenId, data?.collectionId, collection?.currency, setNftData]);
 
   useEffect(() => {
     // refetch data when address or token id in the pathname changes
@@ -196,7 +197,7 @@ export default function Nft(props) {
           {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
-              collection={{ name: collection?.name, logo: collection?.images?.logo, address: collection?.address }}
+              collection={{ name: collection?.name, logo: collection?.images?.logo, address: collection?.address, currency: collection?.currency?.symbol }}
               name={data?.name}
               owner={owner}
               isOwner={isOwner}
@@ -325,7 +326,7 @@ export default function Nft(props) {
                           </SecondaryButton>
                           {
                             !!data?.highestBid && (
-                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid} /></p>
+                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid} currency={collection?.currency?.symbol} /></p>
                             )
                           }
                         </div>
@@ -368,7 +369,7 @@ export default function Nft(props) {
                             {
                               !!data?.highestBid && (
                                 <p className="text-center absolute left-0 right-0 -bottom-[12px] text-xxs h-[12px]">
-                                  <ItemPrice label="Highest" value={data?.highestBid} />
+                                  <ItemPrice label="Highest" value={data?.highestBid} currency={collection?.currency?.symbol} />
                                 </p>
                               )
                             }

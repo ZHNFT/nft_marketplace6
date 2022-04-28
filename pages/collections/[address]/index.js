@@ -66,8 +66,7 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
   const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
-  console.log(collection);
-  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
+  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity, currency } = collection;
   const router = useRouter();
   const { pathname, query, asPath, isReady: isRouterReady } = router;
   const { search, address, sort, filter, tab, priceFrom, priceTo, rarityFrom, rarityTo } = query;
@@ -87,6 +86,8 @@ export default function Collection(props) {
 
   maxPrice = parseFloat(maxPrice);
   minPrice = parseFloat(minPrice)
+
+  console.log(collection);
 
   const fetchCollection = useCallback(async function() {
     const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
@@ -144,6 +145,7 @@ export default function Collection(props) {
           ownerCount={ownerCount}
           volume={volume?.total}
           floorPrice={floorPrice}
+          currency={currency?.symbol}
         />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
           <div className="flex col-span-12 lg:col-span-7 items-center ml-5">
