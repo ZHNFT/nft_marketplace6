@@ -12,6 +12,8 @@ import EditCollectionModal from '../Modals/EditCollectionModal';
 export default function CollectionHeader(props) {
   const { address, createdAt, currency, name, description, logo, totalSupply, socials, chainIdHex, floorPrice, ownerCount, volume } = props;
   const [showEditModal, setShowEditModal] = useState(false);
+  const logoImage = logo && logo.startsWith('ipfs:') ? `${resolveBunnyLink(logo)}?optimizer=image&width=54&aspect_ratio=1:1` : logo;
+
   return (
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-8 mb-16">
@@ -29,7 +31,7 @@ export default function CollectionHeader(props) {
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
                   <Image
                     className="h-8 w-8"
-                    src={logo ? `${resolveBunnyLink(logo)}?optimizer=image&width=54&aspect_ratio=1:1` : DefaultLogo}
+                    src={logoImage || DefaultLogo}
                     alt={name}
                     width={"100%"}
                     height={"100%"}

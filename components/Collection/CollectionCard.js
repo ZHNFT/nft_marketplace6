@@ -16,7 +16,7 @@ export default function CollectionCard({ collection, size }) {
   const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
   const featuredImageWidth = size === 'sml' ? '480' : '555';
   const logoImage = images?.logo && images.logo.startsWith('ipfs:') ? `${resolveBunnyLink(images.logo)}?optimizer=image&width=76&aspect_ratio=1:1` : images?.logo;
-  console.log(collection);
+  
   return (
    <div className={clsx(
      'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl bg-[#262a32] h-full',

@@ -8,6 +8,8 @@ import ProgressHexagon from '../ProgressHexagon/ProgressHexagon';
 
 export default function ProductDetailsHeader(props) {
   const { className, collection, name, owner, isOwner, address, rarity, maxRarity, lastSalePrice, refreshMetaData } = props;
+  const logoImage = collection?.logo && collection.logo.startsWith('ipfs:') ? `${resolveBunnyLink(collection?.logo)}?optimizer=image&width=26&aspect_ratio=1:1` : collection?.logo;
+
   return (
     <div className={className}>
       <div className="flex justify-between items-center text-xs">
@@ -17,7 +19,7 @@ export default function ProductDetailsHeader(props) {
               <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
                 <Image
                   className="h-8 w-8"
-                  src={collection?.logo ? `${resolveBunnyLink(collection.logo)}?optimizer=image&width=26&aspect_ratio=1:1` : DefaultLogo}
+                  src={logoImage || DefaultLogo}
                   alt={name}
                   width={"100%"}
                   height={"100%"}
