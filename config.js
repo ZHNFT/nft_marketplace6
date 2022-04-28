@@ -1,11 +1,11 @@
 
-import TestToken from "./contracts/TestToken.json";
-import TestMarketplace from "./contracts/TestMarketplace.json";
-import Marketplace from "./contracts/Marketplace.json";
-import NftCollection from "./contracts/NftCollection.json";
-import HoneyToken from "./contracts/Honey.json";
-import wEthToken from "./contracts/wEth.json";
-import wMaticToken from "./contracts/wMatic.json";
+import TestToken from "./contracts/TestToken";
+import TestMarketplace from "./contracts/TestMarketplace";
+import Marketplace from "./contracts/Marketplace";
+import NftCollection from "./contracts/NftCollection";
+import HoneyToken from "./contracts/Honey";
+import wEthToken from "./contracts/wEth";
+import wMaticToken from "./contracts/wMatic";
 
 export const mumbaiMarketplaceAddress = TestMarketplace.address;
 export const mumbaiHoneyTokenAddress = TestToken.address;
