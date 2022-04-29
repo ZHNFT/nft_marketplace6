@@ -47,7 +47,7 @@ const formatCompact = value => {
   if (value >= 1e12) return + (value / 1e12).toFixed(1) + 'T';
 }
 
-const transformGalleryItem = (item) => {
+const transformGalleryItem = ({ item, collectionLogo }) => {
     // highestPrice/lowestPrice is only for listings
     const { name, collectionId, image, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
     // there can only be one active auction or listing for a token at the same time
@@ -55,6 +55,7 @@ const transformGalleryItem = (item) => {
     return {
       name,
       collectionName: ellipseAddress(collectionId, 4),
+      collectionLogo,
       tokenId,
       collectionId,
       imageUrl: image,

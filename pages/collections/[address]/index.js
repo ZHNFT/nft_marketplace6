@@ -214,7 +214,7 @@ export default function Collection(props) {
                           }
                         </div>
                       )
-                      : <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionData={collectionData} />
+                      : <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionLogo={collection?.images?.logo} collectionData={collectionData} />
                   }
                 </div>
               )

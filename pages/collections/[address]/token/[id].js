@@ -527,7 +527,7 @@ export default function Nft(props) {
             </a>
           </Link>
         </div>
-        <CollectionSlider items={nfts} />
+        <CollectionSlider items={nfts} collectionLogo={collection?.images?.logo} />
       </div>
     </div>
   );
