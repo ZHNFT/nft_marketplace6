@@ -87,8 +87,6 @@ export default function Collection(props) {
   maxPrice = parseFloat(maxPrice);
   minPrice = parseFloat(minPrice)
 
-  console.log(collection);
-
   const fetchCollection = useCallback(async function() {
     const json = await fetchData({ asPath, page: 0, search, filter, sort, priceFrom, priceTo, rarityFrom, rarityTo, method: 'POST' });
     setData(json);

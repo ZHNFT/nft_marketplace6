@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { resolveBunnyLink } from '../../../Utils';
 import { Table, RowHeading, Row, Cell } from '../../Table';
-import { BeeIcon } from '../../icons';
+import CurrencyIcon from '../../CurrencyIcon/CurrencyIcon';
 import DefaultLogo from "../../../images/default-collection-logo.png";
 
 export default function Collections({ results }) {
@@ -19,21 +20,24 @@ export default function Collections({ results }) {
       <div className="h-[240px] overflow-y-auto scroller">
         {
           results?.map((row, index) => {
-            const { id, address, symbol, name, images, floor, totalSupply } = row;
+            const { id, address, symbol, name, images, floor, totalSupply, currency } = row;
+            const logo = images?.logo && images?.logo.startsWith('ipfs:') ? `${resolveBunnyLink(images?.logo)}?optimizer=image&width=24&aspect_ratio=1:1` : images?.logo;
             return (
               <Link key={`collection_results_${index}`} href="/collections/[address]" as={`/collections/${address}`} passHref>
                 <a>
                   <Row className="cursor-pointer text-xs !py-2">
                     <Cell className="w-[280px] flex items-center">
-                      <Image className="rounded-xl" src={images?.logo || DefaultLogo} alt={name} height="24" width="24" />
+                      <Image className="rounded-xl" src={logo || DefaultLogo} alt={name} height="24" width="24" />
                       <div className="ml-3">
                         <span className="text-manatee text-xxs">{ symbol }</span>
                         <p className="text-white">{ name }</p>
                       </div>
                     </Cell>
                     <Cell className="w-[100px] flex flex-col justify-center items-center">
-                      <span className="relative -left-[5px] text-white">
-                        <BeeIcon className="h-[14px] relative -top-[2px] pr-[5px]" />
+                      <span className="relative -left-[5px] text-white flex items-center">
+                        <span className="inline-block mr-1.5 min-w-[11px]">
+                          <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] relative -top-[1px] -mr-1 pr-[5px]" />
+                        </span>
                         { floor ? floor : "0" }
                       </span>
                     </Cell>
