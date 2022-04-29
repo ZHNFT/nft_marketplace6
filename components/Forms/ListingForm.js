@@ -19,10 +19,6 @@ const listTypes = [
   { label: 'Timed Auction', value: 'auction' }
 ];
 
-const currencies = [
-  { label: 'HNY', value: 'hny' }
-];
-
 const durations = [
   { label: '1 day', value: { unit: 'days', number: 1 } },
   { label: '3 days', value: { unit: 'days', number: 3 } },
@@ -58,6 +54,10 @@ export default function Listing(props) {
   const { handleCreateAuction, approvalStatus: auctionApprovalStatus, approvalError: auctionApprovalError, apiStatus: auctionApiStatus, apiError: auctionApiError, signatureStatus: auctionSignatureStatus, signatureError: auctionSignatureError, transactionStatus, transactionError, auctionTx } = useListNftForAuction({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, marketplaceContract });
   const [fees, setFees] = useState({ "marketplaceFee": "0", "royaltyFee": "0" });
 
+  const currencies = [
+    { label: currencySymbol, value: currencySymbol }
+  ];
+  
   const fetchFees = useCallback(async function () {
     let collection = await marketplaceContract.getCollectionInfo(collectionId);
     let royaltyFee = collection.royaltyFee;

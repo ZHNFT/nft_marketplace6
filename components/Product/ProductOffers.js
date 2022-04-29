@@ -2,12 +2,13 @@ import { useRouter } from 'next/router';
 import { ellipseAddress } from '../../Utils';
 import { formatEther, usdFormatter } from '../../Utils/helper';
 import { Table, RowHeading, Row, Cell } from '../Table';
-import { BeeIcon, LinkIcon } from '../icons';
+import { LinkIcon } from '../icons';
+import CurrencyIcon from '../CurrencyIcon/CurrencyIcon';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import fromUnixTime from 'date-fns/fromUnixTime'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 
-export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOwner, onCancelBid, onAcceptBid, }) {
+export default function ProductOffers({ offers, currency, tokenPriceUsd, currentUser, isOwner, onCancelBid, onAcceptBid, }) {
   const router = useRouter();
 
   if (!offers || offers.length === 0) {
@@ -34,9 +35,9 @@ export default function ProductOffers({ offers, tokenPriceUsd, currentUser, isOw
                   <span>{ ellipseAddress(userAddress, 4) }</span>
                 </Cell>
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
-                  <span className="relative -left-[5px]">
-                    <BeeIcon className="h-[18px] relative -top-[2px]" />
-                    { formatEther(pricePerItem) }
+                  <span className="relative -left-[5px] flex">
+                    <CurrencyIcon currency={currency} hnyClassName="h-[18px] relative -top-[2px]" />
+                    <span className="ml-1">{ formatEther(pricePerItem) }</span>
                   </span>
                   <span className="text-manatee text-xxs">{pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(pricePerItem)) * tokenPriceUsd) : null}</span>
                 </Cell>

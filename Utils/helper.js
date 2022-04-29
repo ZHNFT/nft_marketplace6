@@ -15,7 +15,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 
   // These options are needed to round to whole numbers if that's what you want.
   minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  maximumFractionDigits: 2 // (causes 2500.99 to be printed as $2,501)
+  maximumFractionDigits: 4 // (causes 2500.99 to be printed as $2,501)
 });
 
 const usdFormatter = new Intl.NumberFormat('en-US', {
@@ -70,11 +70,6 @@ const transformGalleryItem = ({ item, collectionLogo }) => {
       rarityRank,
     };
   };
-
-const convertToUsd = ({ value }) => (
-  // hardcoded rate for testing
-  formatter.format(value * 1.5)
-)
 
 const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
   if (transactionCount === null) {
@@ -251,7 +246,6 @@ export {
   formatCurrency,
   formatter,
   transformGalleryItem,
-  convertToUsd,
   getTransactionStatus,
   toFixedOptional,
   fetcher,

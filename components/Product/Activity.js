@@ -16,7 +16,7 @@ import ItemPrice from '../ItemPrice/ItemPrice';
 import Tooltip from '../Tooltip/Tooltip';
 import { format, isValid, formatDistance, formatRelative, subDays, formatDistanceToNowStrict } from 'date-fns'
 
-export default function Activity({ tokenPriceUsd }) {
+export default function Activity({ currency, tokenPriceUsd }) {
   const router = useRouter();
   const { address, id } = router.query;
   const [activities, setActivities] = useState([]);
@@ -56,7 +56,7 @@ export default function Activity({ tokenPriceUsd }) {
         </Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
-      <div className="max-h-[280px] overflow-y-auto scroller">
+      <div className="max-h-[280px] min-h-[82px] overflow-y-auto scroller">
         {
           activities?.results?.map(row => {
             const { activityType, fromAddress, toAddress, minBid, _id, expiry, pricePerItem, seller, buyer, value, blockNumber, blockTimestamp, transactionHash, userAddress, tokenId, chain, timestamp } = row;
@@ -113,9 +113,9 @@ export default function Activity({ tokenPriceUsd }) {
                   <span className="block capitalize">{isMinting ? "Mint" : activityType}</span>
                 </Cell>
                 <Cell className="w-[100px] text-center leading-none">
-                  <span className="-ml-[8px]">
+                  <span className="-ml-[8px] inline-block">
                     {price ? (
-                      <ItemPrice value={price} />
+                      <ItemPrice currency={currency} value={price} />
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">

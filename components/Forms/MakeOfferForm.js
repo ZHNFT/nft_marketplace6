@@ -111,7 +111,7 @@ export default function MakeOfferForm(props) {
           <TransactionList
             steps={activeModal === NFT_MODALS.MAKE_OFFER ? [
               {
-                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
+                title: `Increase Allowance / Approval to transfer ${values?.price} ${currencySymbol}`,
                 status: allowanceStatus,
                 isDefaultOpen: true,
                 description: allowanceError ? allowanceError : ''
@@ -132,7 +132,7 @@ export default function MakeOfferForm(props) {
               }
             ] : [
               {
-                title: `Increase Allowance / Approval to transfer ${values?.price} HNY`,
+                title: `Increase Allowance / Approval to transfer ${values?.price} ${currencySymbol}`,
                 status: auctionAllowanceStatus,
                 isDefaultOpen: true,
                 description: auctionAllowanceError ? auctionAllowanceError : ''

@@ -7,9 +7,7 @@ import PriceInputField from './Fields/PriceInputField';
 import useCancelListing from '../../hooks/useCancelListing';
 import useListNft from '../../hooks/useListNft';
 
-const currencies = [
-  { label: 'HNY', value: 'hny' }
-];
+
 
 const validate = (values) => {
   const errors = {};
@@ -27,6 +25,10 @@ export default function ChangePriceForm(props) {
   const { isRefetching, tokenPriceUsd, tokenBalance, currencySymbol, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+
+  const currencies = [
+    { label: currencySymbol, value: currencySymbol }
+  ];
 
   const initialValues = {
     currency: currencies[0],

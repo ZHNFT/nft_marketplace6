@@ -1,6 +1,7 @@
-import { HexagonBeeIcon, InstagramIcon, TwitterIcon, ChainIcon, BeeIcon } from '../icons';
+import { HexagonBeeIcon, InstagramIcon, TwitterIcon, ChainIcon } from '../icons';
+import CurrencyIcon from '../CurrencyIcon/CurrencyIcon';
 
-export default function ProductCollection({name, collectionId, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website, description }) {
+export default function ProductCollection({name, collectionId, currency, itemCount, ownerCount, volume, floorPrice, instagram, twitter, website, description }) {
   return (
     <div>
       <div className="flex justify-between items-center text-xs">
@@ -49,17 +50,17 @@ export default function ProductCollection({name, collectionId, itemCount, ownerC
           </div>
           <div className="relative">
             <span className="text-manatee text-xs font-medium">Volume</span>
-            <span className="block flex text-base font-medium">
-              <BeeIcon className="h-[14px] relative top-[4px] pr-[5px]" />
-              { volume ? volume : "0" }
+            <span className="block flex items-center justify-center text-base font-medium">
+              <CurrencyIcon currency={currency} hnyClassName="h-[14px] relative pr-[5px] -mr-1" />
+              <span className="ml-1">{ volume ? volume : "0" }</span>
             </span> 
             <span className="text-manatee text-xxs absolute block flex w-[74px]">Last 30 days</span>
           </div>
           <div>
             <span className="text-manatee text-xs font-medium">Floor</span>
-            <span className="block flex text-base font-medium">
-              <BeeIcon className="h-[14px] relative top-[4px] pr-[5px]" />
-             { floorPrice ? floorPrice : "0" }
+            <span className="block flex items-center justify-center text-base font-medium">
+             <CurrencyIcon currency={currency} hnyClassName="h-[14px] relative pr-[5px] -mr-1" />
+             <span className="ml-1">{ floorPrice ? floorPrice : "0" }</span>
             </span> 
           </div>
         </div>

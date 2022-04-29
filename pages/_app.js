@@ -347,6 +347,16 @@ function MyApp({ Component, pageProps }) {
     setActiveModal(null)
   }, [])
 
+  const getTokenPriceUsd = useCallback(function ({ currency }) {
+    if (currency === CURRENCIES.WETH) {
+      return ethTokenData?.priceUsd;
+    }
+    if (currency === CURRENCIES.WMATIC) {
+      return maticTokenData?.priceUsd;
+    }
+    return tokenData?.priceUsd;
+  }, [tokenData?.priceUsd, ethTokenData?.priceUsd, maticTokenData?.priceUsd]);
+
   const globalContextValue = useMemo(
     () => ({ 
       showEditProfileModal, 
@@ -360,9 +370,10 @@ function MyApp({ Component, pageProps }) {
       handleCloseModal, 
       shouldRefetch, 
       isRefetching,
-      setIsRefetching
+      setIsRefetching,
+      getTokenPriceUsd
     }), 
-    [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch, setIsRefetching, isRefetching]
+    [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch, setIsRefetching, isRefetching, getTokenPriceUsd]
   );
 
   return (

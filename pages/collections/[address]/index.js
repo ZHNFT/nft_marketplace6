@@ -65,7 +65,7 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, getTokenPriceUsd, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
   const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity, currency } = collection;
   const router = useRouter();
   const { pathname, query, asPath, isReady: isRouterReady } = router;
@@ -187,6 +187,7 @@ export default function Collection(props) {
                 minRarity={minRarity}
                 maxRarity={maxRarity}
                 filters={collection?.traits}
+                currency={collection?.currency?.symbol}
                 total={collectionData?.total}
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -197,7 +198,7 @@ export default function Collection(props) {
             tab === 'activity'
               ? (
                 <div className='flex flex-1 justify-center'>
-                  <Activity tokenPriceUsd={tokenData?.priceUsd} />
+                  <Activity currency={currency?.symbol} tokenPriceUsd={getTokenPriceUsd({ currency: currency?.symbol })} />
                 </div>
               )
               : (
