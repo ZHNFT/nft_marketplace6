@@ -6,7 +6,7 @@ import GalleryItem from './GalleryItem';
 import { transformGalleryItem } from '../../Utils/helper'
 import { fetchData } from '../../pages/collections/[address]' 
 
-export default function InfiniteGallery({ className, collectionData }) {
+export default function InfiniteGallery({ className, collectionLogo, collectionData }) {
   const { pathname, query, asPath } = useRouter();
   const { search, address, sort, tab, filter, priceFrom, priceTo, rarityFrom, rarityTo } = query;
   const [data, setData] = useState(collectionData);
@@ -58,7 +58,7 @@ export default function InfiniteGallery({ className, collectionData }) {
           <GalleryItem
             ref={index === results.length - 1 ? observe : null}
             key={index}
-            item={transformGalleryItem(item)}
+            item={transformGalleryItem({ item, collectionLogo })}
             showRarity={true}
           />
         ))

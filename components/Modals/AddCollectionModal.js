@@ -155,7 +155,7 @@ export default function AddCollectionModal(props) {
     const payload = {
       address: data.address,
       chain: 'polygon',
-      payoutAddress: data.payoutAddress,
+      royaltyRecipient: data.payoutAddress,
       name: data.name,
       category: [data.category?.value],
       description: data.description,
@@ -165,7 +165,7 @@ export default function AddCollectionModal(props) {
         featured: featuredImageResult?.[0]?.ipfsUrl
       },
       socials: getSocials({ platforms, data }),
-      royaltyPercent: data.royaltyPercent,
+      royaltyFee: data.royaltyPercent,
       currency: tokens.find(token => token.value === data.paymentTokens)?.data
     };
 

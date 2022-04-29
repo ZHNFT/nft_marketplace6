@@ -7,19 +7,19 @@ import DefaultImage from '../../images/No-Image-Placeholder.png';
 import HiveLogo from "../../images/collection-card-logo-hive.png";
 import HiveImage from "../../images/collection-card-image-hive.png";
 import PlaceholderImage from '../../images/placeholder-image.png';
-import { BeeIcon, ViewIcon } from "../icons";
+import CurrencyIcon from "../CurrencyIcon/CurrencyIcon";
 
 export default function CollectionCard({ collection, size }) {
-  const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories } = collection
+  const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories, currency } = collection
   const totalVolume = volume?.total ? formatEther(volume?.total) : "0";
   const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
   const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
   const featuredImageWidth = size === 'sml' ? '480' : '555';
   const logoImage = images?.logo && images.logo.startsWith('ipfs:') ? `${resolveBunnyLink(images.logo)}?optimizer=image&width=76&aspect_ratio=1:1` : images?.logo;
-  console.log(collection);
+  
   return (
    <div className={clsx(
-     'mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl bg-[#262a32] h-full',
+     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl bg-[#262a32] h-full',
      size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className="relative w-[full] h-[300px] rounded-xl overflow-hidden">
@@ -91,15 +91,15 @@ export default function CollectionCard({ collection, size }) {
                 <div className="flex items-center flex-row text-center leading-[1.25] h-[35px] ml-6">
                   <span className="mr-3 font-light">Volume</span>
                   <span className="flex items-center relative -left-[6px]">
-                    <BeeIcon className="h-[14px] -top-[0px] relative pr-[5px]" />
-                    <span className="font-medium">{totalVolume}</span>
+                    <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] -top-[0px] relative pr-[5px] -mr-1" />
+                    <span className="font-medium ml-1">{totalVolume}</span>
                   </span>
                 </div>
                 <div className="pr-8 flex items-center flex-row text-center leading-[1.25] h-[35px] ml-4">
                   <span className="mr-3 font-light">Floor</span>
                   <span className="flex items-center relative -left-[6px]">
-                    <BeeIcon className="h-[14px] relative -top-[0px] pr-[5px]" />
-                    <span className="font-medium">{ formattedFloorPrice }</span>
+                    <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] relative -top-[0px] pr-[5px] -mr-1" />
+                    <span className="font-medium ml-1">{ formattedFloorPrice }</span>
                   </span>
                 </div>
               </>
@@ -132,18 +132,18 @@ export default function CollectionCard({ collection, size }) {
           {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
         </div>
       </div>
-      <div className="flex flex-col mt-8 mb-1.5 align-center">
+      <div className="flex flex-col mt-8 mb-1.5 lg:mb-12 align-center">
         <p className="text-manatee text-xxs">
           { description }
         </p>
-        <div className="hidden lg:block mt-4 text-right">
-          <Link href={`/collections/${address}`}>
-            <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] border-white hover:border-cornflower hover:bg-white/[0.15]">
-              View collection
-            </a>
-          </Link>
-        </div>
       </div>
+    </div>
+    <div className="hidden lg:block absolute right-4 bottom-5">
+      <Link href={`/collections/${address}`}>
+        <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] border-white hover:border-cornflower hover:bg-white/[0.15]">
+          View collection
+        </a>
+      </Link>
     </div>
    </div>
   );

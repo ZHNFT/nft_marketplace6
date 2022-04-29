@@ -4,11 +4,11 @@ import { ellipseAddress } from '../../Utils';
 import { usdFormatter, formatEther } from '../../Utils/helper';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import TransactionList from '../Transactions/TransactionList';
-import { BeeIcon } from '../icons';
+import CurrencyIcon from '../CurrencyIcon/CurrencyIcon';
 import useAcceptListing from '../../hooks/useAcceptListing';
 
 export default function BuyNowForm(props) {
-  const { isRefetching, imageUrl, name, collectionId, marketplaceContract, activeListing, tokenPriceUsd, tokenContract, marketplaceAddress, address, setShouldRefetch } = props;
+  const { isRefetching, imageUrl, name, collectionId, marketplaceContract, currencySymbol, activeListing, tokenPriceUsd, tokenContract, marketplaceAddress, address, setShouldRefetch } = props;
   const [isConfirming, setIsConfirming] = useState(false);
   const { handleAcceptListing, acceptationTx: transaction, acceptationStatus, acceptationError, allowanceStatus, allowanceError } = useAcceptListing({ marketplaceContract, tokenContract, marketplaceAddress, address });
   const price = activeListing?.pricePerItem;
@@ -72,7 +72,7 @@ export default function BuyNowForm(props) {
             description: allowanceError ? allowanceError : ''
           },
           {
-            title: `Approval to transfer ${formatEther(price)} HNY`,
+            title: `Approval to transfer ${formatEther(price)} ${currencySymbol}`,
             status: acceptationStatus,
             isDefaultOpen: true,
             description: acceptationError ? acceptationError : ''
@@ -101,13 +101,13 @@ export default function BuyNowForm(props) {
             <div className="leading-none">
               <a href="#" className="text-sm text-cornfllower">{ellipseAddress(collectionId, 4)}</a>
               <p className="leading-2 mb-1">{name}</p>
-              <p className="text-[11px] text-manatee">{"Creator Fees:" + fees.royaltyFee + "%"}</p>
+              <p className="text-[11px] text-manatee">{"Creator Fees: " + fees.royaltyFee + "%"}</p>
             </div>
           </div>
           <div className="text-right">
             <div>
-              <BeeIcon className="h-[14px] -top-[2px] relative pr-[5px]" />
-              <span>{price ? formatEther(price) : "0"}</span>
+              <CurrencyIcon currency={currencySymbol} hnyClassName="h-[14px] -top-[2px] -mr-1 relative pr-[5px]" ethWidth={9} ethHeight={13} />
+              <span className="ml-1">{price ? formatEther(price) : "0"}</span>
             </div>
             <p className="text-manatee text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
           </div>
@@ -119,8 +119,8 @@ export default function BuyNowForm(props) {
           <p className="font-medium text-xl">Total</p>
           <div className="text-right">
             <div>
-              <BeeIcon className="h-[16px] -top-[3px] relative pr-[5px]" />
-              <span className="font-medium text-xl text-cornflower">{price ? formatEther(price) : "0"}</span>
+              <CurrencyIcon currency={currencySymbol} hnyClassName="h-[16px] -mr-1 -top-[3px] relative pr-[5px]" />
+              <span className="font-medium text-xl text-cornflower ml-1">{price ? formatEther(price) : "0"}</span>
             </div>
             <p className="text-manatee text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
           </div>

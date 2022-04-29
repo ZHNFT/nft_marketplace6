@@ -14,7 +14,7 @@ import { format, isValid, formatDistanceToNowStrict } from 'date-fns'
 import Link from 'next/link';
 
 
-export default function Activity({ tokenPriceUsd }) {
+export default function Activity({ currency, tokenPriceUsd }) {
   const router = useRouter();
   const { address } = router.query;
   const [activities, setActivities] = useState([]);
@@ -125,9 +125,9 @@ export default function Activity({ tokenPriceUsd }) {
                 </div>
               </Cell> */}
                 <Cell className="w-[100px] text-center leading-none">
-                  <span className="-ml-[8px]">
+                  <span className="-ml-[8px] inline-block">
                     {price ? (
-                      <ItemPrice value={price} />
+                      <ItemPrice currency={currency} value={price} />
                     ) : '-'}
                   </span>
                   <span className="block text-[10px] text-manatee">

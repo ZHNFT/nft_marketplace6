@@ -65,9 +65,8 @@ export async function fetchData({asPath, page = 0, search, filter, sort, priceFr
 // Route: http://localhost:3000/collection/[address]
 // Example: http://localhost:3000/collection/0xdbe147fc80b49871e2a8d60cc89d51b11bc88b35
 export default function Collection(props) {
-  const { collection, setMobileFiltersOpen, data, chainIdHex, tokenData, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
-  console.log(collection);
-  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity } = collection;
+  const { collection, setMobileFiltersOpen, data, chainIdHex, getTokenPriceUsd, shouldRefetch, handleCloseModal, setShouldRefetch, setIsRefetching } = props;
+  const { createdAt, name, description, images, totalSupply, traits, ownerCount, volume, floorPrice, socials, rarity, currency } = collection;
   const router = useRouter();
   const { pathname, query, asPath, isReady: isRouterReady } = router;
   const { search, address, sort, filter, tab, priceFrom, priceTo, rarityFrom, rarityTo } = query;
@@ -144,6 +143,7 @@ export default function Collection(props) {
           ownerCount={ownerCount}
           volume={volume?.total}
           floorPrice={floorPrice}
+          currency={currency?.symbol}
         />
         <section className="flex flex-col lg:flex-row lg:grid lg:grid-cols-12 mb-8">
           <div className="flex col-span-12 lg:col-span-7 items-center ml-5">
@@ -187,6 +187,7 @@ export default function Collection(props) {
                 minRarity={minRarity}
                 maxRarity={maxRarity}
                 filters={collection?.traits}
+                currency={collection?.currency?.symbol}
                 total={collectionData?.total}
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -197,7 +198,7 @@ export default function Collection(props) {
             tab === 'activity'
               ? (
                 <div className='flex flex-1 justify-center'>
-                  <Activity tokenPriceUsd={tokenData?.priceUsd} />
+                  <Activity currency={currency?.symbol} tokenPriceUsd={getTokenPriceUsd({ currency: currency?.symbol })} />
                 </div>
               )
               : (
@@ -212,7 +213,7 @@ export default function Collection(props) {
                           }
                         </div>
                       )
-                      : <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionData={collectionData} />
+                      : <InfiniteGallery className="grid-cols-2 lg:grid-cols-4 xl:grid-cols-5" collectionLogo={collection?.images?.logo} collectionData={collectionData} />
                   }
                 </div>
               )

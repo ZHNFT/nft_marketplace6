@@ -69,7 +69,7 @@ export default function ItemMain({ isOwner, isActive, name, listingState, imageU
                       }
                       <div className="relative flex flex-col ml-[6px]">
                         <SecondaryButton
-                          className="h-[30px]"
+                          className="h-[30px] mb-1"
                           size="xs"
                           onClick={(event) => {
                             event.preventDefault();

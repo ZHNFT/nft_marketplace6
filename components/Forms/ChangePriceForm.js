@@ -7,9 +7,7 @@ import PriceInputField from './Fields/PriceInputField';
 import useCancelListing from '../../hooks/useCancelListing';
 import useListNft from '../../hooks/useListNft';
 
-const currencies = [
-  { label: 'HNY', value: 'hny' }
-];
+
 
 const validate = (values) => {
   const errors = {};
@@ -24,9 +22,13 @@ const validate = (values) => {
 
 export default function ChangePriceForm(props) {
   const [formSubmittingDone, setFormSubmittingDone] = useState(false);
-  const { isRefetching, tokenPriceUsd, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
+  const { isRefetching, tokenPriceUsd, tokenBalance, currencySymbol, handleClose, activeListing, marketplaceContract, tokenContract, collectionId, tokenId, ethersProvider, marketplaceAddress, owner, chainId, setShouldRefetch } = props;
   const { handleCancelListing, cancellationTx: transaction, cancellationStatus, cancellationError } = useCancelListing({ marketplaceContract })
   const { handleList, approvalStatus, approvalError, apiStatus, apiError, signatureStatus, signatureError, apiResponse } = useListNft({ ethersProvider, collectionId, tokenId, tokenContract, marketplaceAddress, owner, chainId });
+
+  const currencies = [
+    { label: currencySymbol, value: currencySymbol }
+  ];
 
   const initialValues = {
     currency: currencies[0],
@@ -106,6 +108,8 @@ export default function ChangePriceForm(props) {
              name="price"
              component={PriceInputField}
              tokenPriceUsd={tokenPriceUsd}
+             tokenBalance={tokenBalance}
+             currencySymbol={currencySymbol}
            />
             {/* <div className="mt-4 mb-6">
               <label htmlFor="price" className="sr-only">Price</label>

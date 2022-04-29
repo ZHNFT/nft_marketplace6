@@ -15,7 +15,7 @@ const formatter = new Intl.NumberFormat('en-US', {
 
   // These options are needed to round to whole numbers if that's what you want.
   minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-  maximumFractionDigits: 2 // (causes 2500.99 to be printed as $2,501)
+  maximumFractionDigits: 4 // (causes 2500.99 to be printed as $2,501)
 });
 
 const usdFormatter = new Intl.NumberFormat('en-US', {
@@ -47,7 +47,7 @@ const formatCompact = value => {
   if (value >= 1e12) return + (value / 1e12).toFixed(1) + 'T';
 }
 
-const transformGalleryItem = (item) => {
+const transformGalleryItem = ({ item, collectionLogo }) => {
     // highestPrice/lowestPrice is only for listings
     const { name, collectionId, image, imageHosted, tokenId, owner, lastSalePrice, highestBid, highestPrice, lowestBid, lowestPrice, rarityRank } = item;
     // there can only be one active auction or listing for a token at the same time
@@ -55,6 +55,7 @@ const transformGalleryItem = (item) => {
     return {
       name,
       collectionName: ellipseAddress(collectionId, 4),
+      collectionLogo,
       tokenId,
       collectionId,
       imageUrl: image,
@@ -69,11 +70,6 @@ const transformGalleryItem = (item) => {
       rarityRank,
     };
   };
-
-const convertToUsd = ({ value }) => (
-  // hardcoded rate for testing
-  formatter.format(value * 1.5)
-)
 
 const getTransactionStatus = ({ transactionStepNumber, transactionCount }) => {
   if (transactionCount === null) {
@@ -250,7 +246,6 @@ export {
   formatCurrency,
   formatter,
   transformGalleryItem,
-  convertToUsd,
   getTransactionStatus,
   toFixedOptional,
   fetcher,

@@ -35,13 +35,13 @@ export default function Nft(props) {
     address,
     ethersProvider,
     marketplaceContract,
-    tokenData,
     setNftData,
     handleModal,
     shouldRefetch,
     handleCloseModal,
     setShouldRefetch,
-    setIsRefetching
+    setIsRefetching,
+    getTokenPriceUsd
   } = props;
   const [data, setData] = useState(serverData)
 
@@ -72,6 +72,7 @@ export default function Nft(props) {
   const router = useRouter();
   const { address: contractAddress, id } = router.query;
   const [currentPath, setCurrentPath] = useState(router.asPath);
+  const tokenPriceUsd = getTokenPriceUsd({ currency: collection?.currency?.symbol });
 
   const fetchData = useCallback(async function() {
     const url = `https://api.hexag0n.io/collections/${contractAddress}/token/${id}`;
@@ -148,9 +149,10 @@ export default function Nft(props) {
   useEffect(() => {
     setNftData({
       tokenId: data?.tokenId,
-      collectionId: data?.collectionId
+      collectionId: data?.collectionId,
+      currency: collection?.currency
     })
-  }, [data?.tokenId, data?.collectionId, setNftData]);
+  }, [data?.tokenId, data?.collectionId, collection?.currency, setNftData]);
 
   useEffect(() => {
     // refetch data when address or token id in the pathname changes
@@ -196,7 +198,7 @@ export default function Nft(props) {
           {/* Product Details Header */}
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-4 w-full">
             <ProductDetailsHeader
-              collection={{ name: collection?.name, logo: collection?.images?.logo, address: collection?.address }}
+              collection={{ name: collection?.name, logo: collection?.images?.logo, address: collection?.address, currency: collection?.currency?.symbol }}
               name={data?.name}
               owner={owner}
               isOwner={isOwner}
@@ -249,7 +251,7 @@ export default function Nft(props) {
                         <div className="flex items-baseline relative">
                           <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]" />
                           <span className="text-base font-medium">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0"}</span>
-                          <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenData?.priceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd)) : null}</span>
+                          <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null}</span>
                         </div>
                       </div>
                       <div className="ml-auto items-center flex">
@@ -279,7 +281,7 @@ export default function Nft(props) {
                             <div className="flex items-baseline relative">
                               <BeeIcon className="relative h-[12px] top-[1px] pr-[5px]" />
                               <span className="text-base font-medium">{activeAuction.highestBid ? formatEther(activeAuction?.highestBid) : "0"}</span>
-                              <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenData?.priceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd)) : null }</span>
+                              <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null }</span>
                             </div>
                           </div>
                         ) : (
@@ -325,7 +327,7 @@ export default function Nft(props) {
                           </SecondaryButton>
                           {
                             !!data?.highestBid && (
-                              <p className="text-center text-xxs relative h-[12px]"><ItemPrice label="Highest" value={data?.highestBid} /></p>
+                              <p className="text-center text-xxs relative h-[12px] mt-0.5"><ItemPrice label="Highest" value={data?.highestBid} currency={collection?.currency?.symbol} /></p>
                             )
                           }
                         </div>
@@ -343,7 +345,7 @@ export default function Nft(props) {
                           <div className="flex items-baseline relative">
                             <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]" />
                             <span className="text-base font-medium">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0" }</span>
-                            <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenData?.priceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenData?.priceUsd)) : null }</span>
+                            <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null }</span>
                           </div>
                         </div>
                         <div className="ml-auto flex">
@@ -368,7 +370,7 @@ export default function Nft(props) {
                             {
                               !!data?.highestBid && (
                                 <p className="text-center absolute left-0 right-0 -bottom-[12px] text-xxs h-[12px]">
-                                  <ItemPrice label="Highest" value={data?.highestBid} />
+                                  <ItemPrice label="Highest" value={data?.highestBid} currency={collection?.currency?.symbol} />
                                 </p>
                               )
                             }
@@ -390,7 +392,7 @@ export default function Nft(props) {
                               <div className="flex items-baseline relative">
                                 <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]]" />
                                 <span className="text-base font-medium">{formatEther(activeAuction?.highestBid)}</span>
-                                <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenData?.priceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenData?.priceUsd)) : null}</span>
+                                <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null}</span>
                               </div>
                             </div>
                           ) : (
@@ -463,7 +465,8 @@ export default function Nft(props) {
                 <Tab.Panel className="pt-7" as="dl">
                   <ProductOffers
                     offers={activeBids}
-                    tokenPriceUsd={tokenData?.priceUsd}
+                    currency={collection?.currency?.symbol}
+                    tokenPriceUsd={tokenPriceUsd}
                     onCancelBid={handleCancelBid}
                     onAcceptBid={handleAcceptBid}
                     currentUser={address?.toLowerCase()}
@@ -477,7 +480,7 @@ export default function Nft(props) {
                     bids={activeAuctionbids}
                     currentUser={address?.toLowerCase()}
                     isOwner={isOwner}
-                    tokenPriceUsd={tokenData?.priceUsd}
+                    tokenPriceUsd={tokenPriceUsd}
                   />
                 </Tab.Panel>
 
@@ -486,6 +489,7 @@ export default function Nft(props) {
                   <ProductCollection
                     name={collection?.name}
                     collectionId={data?.collectionId}
+                    currency={collection?.currency?.symbol}
                     itemCount={collection?.totalSupply}
                     ownerCount={collection?.ownerCount}
                     volume={formatEther(collection?.volume?.total)}
@@ -514,9 +518,7 @@ export default function Nft(props) {
         </div>
 
         <h2 className="mt-12 mb-4">Activity</h2>
-        <Activity
-          tokenPriceUsd={tokenData?.priceUsd}
-        />
+        <Activity currency={collection?.currency?.symbol} tokenPriceUsd={tokenPriceUsd} />
 
         <div className="mt-12 flex justify-between items-center">
           <h2>More from this collection</h2>
@@ -526,7 +528,7 @@ export default function Nft(props) {
             </a>
           </Link>
         </div>
-        <CollectionSlider items={nfts} />
+        <CollectionSlider items={nfts} collectionLogo={collection?.images?.logo} />
       </div>
     </div>
   );

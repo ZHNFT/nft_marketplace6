@@ -8,7 +8,7 @@ import RangeField from '../Forms/RangeField';
 import ListingFilter from './ListingFilter';
 import TraitsFilter from './TraitsFilter';
 
-export default function Filters({ minRarity = 0, maxRarity = 100, filters, total, placement, minPrice = 0, maxPrice = 100 }) {
+export default function Filters({ minRarity = 0, maxRarity = 100, filters, currency, total, placement, minPrice = 0, maxPrice = 100 }) {
   const { push, query, pathname, isReady: isRouterReady } = useRouter();
   const { search, priceFrom, priceTo, rarityFrom, rarityTo, filter } = query;
   const [initialPrice, setInitialPrice] = useState();
@@ -130,8 +130,8 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, total
                 <div className="mt-10 text-xs flex justify-between">
                   <span className="font-medium">Price</span>
                   <div>
-                    <button type="button" className="font-medium">$HNY</button>
-                    <button type="button" className="text-manatee ml-4">USD</button>
+                    <button type="button" className="font-medium">${currency}</button>
+                    {/* <button type="button" className="text-manatee ml-4">USD</button> */}
                   </div>
                 </div>
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ellipseAddress } from '../../Utils';
+import { ellipseAddress, resolveBunnyLink } from '../../Utils';
 import { RefreshIcon, ShareIcon } from '../icons';
 import DefaultLogo from '../../images/default-collection-logo.png';
 import ItemPrice from '../ItemPrice/ItemPrice';
@@ -8,6 +8,8 @@ import ProgressHexagon from '../ProgressHexagon/ProgressHexagon';
 
 export default function ProductDetailsHeader(props) {
   const { className, collection, name, owner, isOwner, address, rarity, maxRarity, lastSalePrice, refreshMetaData } = props;
+  const logoImage = collection?.logo && collection.logo.startsWith('ipfs:') ? `${resolveBunnyLink(collection?.logo)}?optimizer=image&width=26&aspect_ratio=1:1` : collection?.logo;
+
   return (
     <div className={className}>
       <div className="flex justify-between items-center text-xs">
@@ -15,7 +17,13 @@ export default function ProductDetailsHeader(props) {
           <Link href={`/collections/${collection.address}`} passHref>
             <a className="flex items-center cursor-pointer">
               <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
-                <Image className="h-8 w-8" src={collection?.logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
+                <Image
+                  className="h-8 w-8"
+                  src={logoImage || DefaultLogo}
+                  alt={name}
+                  width={"100%"}
+                  height={"100%"}
+                />
               </span>
               <span className="text-manatee font-medium hover:underline">{collection.name}</span>
             </a>
@@ -52,8 +60,8 @@ export default function ProductDetailsHeader(props) {
             </a>
           </Link>
         </p>
-        <div className="relative -top-[4px]">
-          <ItemPrice label="Last sale" value={lastSalePrice} />
+        <div className="relative -top-[3px]">
+          <ItemPrice label="Last sale" value={lastSalePrice} currency={collection?.currency} />
         </div>
       </div>
     </div>
