@@ -39,7 +39,7 @@ export default function MobileMenu(props) {
         <button
           type="button"
           onClick={connect}
-          className="mb-6 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm dark:text-white"
+          className="mb-6 border dark:border-white border-ink rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm dark:text-white"
         >
           Connect
         </button>
