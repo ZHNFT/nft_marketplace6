@@ -19,7 +19,7 @@ export default function CollectionCard({ collection, size }) {
   
   return (
    <div className={clsx(
-     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] border-[0.5px] border-manatee h-full',
+     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] border-[0.5px] dark:border-transparent border-manatee h-full',
      size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className="relative w-[full] h-[300px] rounded-xl overflow-hidden">

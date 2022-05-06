@@ -44,7 +44,7 @@ export default function CollectionHeader(props) {
             <ul className="flex justify-start items-center text-xs pt-1">
                 <li className="mr-6">
                     <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} 
-                      className="rounded pt-1 pb-0.5 px-2.5 dark:bg-white bg-opacity-10 bg-ink">
+                      className="rounded pt-1 pb-0.5 px-2.5 dark:bg-white dark:bg-opacity-10 bg-ink bg-opacity-10">
                       { ellipseAddress(address, 4) }
                       <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
                     </a>

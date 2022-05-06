@@ -50,7 +50,7 @@ export default function HeroCards( {connect, address }) {
         CARDS.map(({ title, description, button, buttonClass, action }, index) => (
           <li key={index} className={clsx(
             'flex flex-col justify-between bg-cover px-4 pt-9 dark:shadow-featuredCard dark:hover:shadow-none hover:shadow-featuredCardLight rounded-[20px] mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0 transition duration-300',
-            'dark:border-transparent border-[#a7b1bd] border-[0.5px]',
+            'dark:border-0 border-[#a7b1bd] border-[0.5px]',
             CARD_CLASSES[index],
             
             
@@ -62,8 +62,8 @@ export default function HeroCards( {connect, address }) {
             <p className="dark:text-manatee text-ink text-xs">{description}</p>
             <div className="mt-auto">
               <button className={clsx(
-                'mt-8 mb-9 font-medium text-xs rounded-[10px] py-2 px-8 border-[0.5px] dark:border-transparent border-cobalt',
-                { 'bg-white/[0.1] border-white hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cornflower/[0.15]': buttonClass === 'secondary' },
+                'mt-8 mb-9 font-medium text-xs rounded-[10px] py-2 px-8 border-[0.5px] dark:border-white border-cobalt',
+                { 'bg-white/[0.1] border-white dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cornflower/[0.15]': buttonClass === 'secondary' },
                 { 'gradient-bg-blue hover:border-white': buttonClass === 'primary' }
               )} onClick={ () => {
                   action();
