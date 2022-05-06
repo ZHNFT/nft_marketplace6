@@ -41,15 +41,15 @@ export default function ProfileMenu({ address, disconnect }) {
   }
   
   return (
-    <>
+    <div className="dark:text-manatee text-ink">
       <h4 className="font-medium">Current balance</h4>
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
-          <span className="font-medium text-white text-base">
+          <span className="font-medium text-base text-pitch dark:text-white">
             {balance} HNY
           </span>
           <button
-            className="block hover:text-white"
+            className="block dark:hover:text-white hover:text-cobalt"
             type="button"
             onClick={() => navigator.clipboard.writeText(address)}
           >
@@ -59,11 +59,11 @@ export default function ProfileMenu({ address, disconnect }) {
         </div>
         <div>
           <div className="text-right flex items-center justify-end">
-            <button type="button" className="hover:text-white">
+            <button type="button" className="dark:hover:text-white hover:text-cobalt">
               <span className="sr-only">Refresh</span>
               <RefreshIcon className="w-[13px]" />
             </button>
-            <button type="button" className="ml-2.5 hover:text-white">
+            <button type="button" className="ml-2.5 dark:hover:text-white hover:text-cobalt">
               <span className="sr-only">Add</span>
               <PlusIcon className="w-[14px]" />
             </button>
@@ -71,7 +71,7 @@ export default function ProfileMenu({ address, disconnect }) {
           <button
             type="button"
             onClick={disconnect}
-            className="text-cornflower mt-1.5"
+            className="dark:text-cornflower text-cobalt hover:underline mt-1.5"
           >
             Disconnect
           </button>
@@ -82,22 +82,22 @@ export default function ProfileMenu({ address, disconnect }) {
       <ul>
         <li className="my-3">
           <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-            <a className="flex items-center hover:text-white">
+            <a className="flex items-center dark:hover:text-white hover:text-cobalt">
               <ProfileIcon className="w-[12px]" />
-              <span className="text-white ml-4">My portfolio</span>
+              <span className="dark:text-white ml-4">My portfolio</span>
             </a>
           </Link>
         </li>
         <li className="my-3">
           <button
             type="button"
-            className="flex items-center hover:text-white"
+            className="flex items-center dark:hover:text-white hover:text-cobalt"
             onClick={() => {
               setShowEditProfileModal(true);
             }}
           >
             <EditIcon className="w-[12px]" />
-            <span className="text-white ml-4">Edit profile</span>
+            <span className="dark:text-white ml-4">Edit profile</span>
           </button>
         </li>
         <li className="my-3">
@@ -106,9 +106,9 @@ export default function ProfileMenu({ address, disconnect }) {
             as={`/users/${address}?tab=activity`}
             passHref
           >
-            <a className="flex items-center hover:text-white">
+            <a className="flex items-center dark:hover:text-white hover:text-cobalt">
               <FolderIcon className="w-[14px]" />
-              <span className="text-white ml-4">Activity</span>
+              <span className="dark:text-white ml-4">Activity</span>
             </a>
           </Link>
         </li>
@@ -118,9 +118,9 @@ export default function ProfileMenu({ address, disconnect }) {
             as={`/users/${address}?tab=offers`}
             passHref
           >
-            <a className="flex items-center hover:text-white">
+            <a className="flex items-center dark:hover:text-white hover:text-cobalt">
               <ReceiveIcon className="w-[17px] relative -left-[1px]" />
-              <span className="text-white ml-4">Offers</span>
+              <span className="dark:text-white ml-4">Offers</span>
             </a>
           </Link>
         </li>
@@ -131,20 +131,18 @@ export default function ProfileMenu({ address, disconnect }) {
             as={`/users/${address}?tab=collections`}
             passHref
           >
-            <a className="flex items-center hover:text-white">
+            <a className="flex items-center dark:hover:text-white">
               <FilesIcon className="w-[14px]" />
-              <span className="text-white ml-4">My collections</span>
+              <span className="dark:text-white ml-4">My collections</span>
             </a>
           </Link>
           </li>*/}
 
       </ul>
       
-      {/*
-        <div className="mt-4 text-right">
-          <DarkModeSwitch />
-        </div>
-      */}
-    </>
+      <div className="mt-4 text-right">
+        {/*<DarkModeSwitch />*/}
+      </div>
+    </div>
   );
 }

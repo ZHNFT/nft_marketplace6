@@ -22,7 +22,7 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
       {
         description && (
           <>
-            <h3 className="text-manatee">Description</h3>
+            <h3 className="dark:text-manatee text-frost">Description</h3>
             <div className="mb-7 font-medium">
               <ReactMarkdown
                 className='mt-6 whitespace-pre-line'
@@ -39,7 +39,7 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
         )
       }
       <div className="flex justify-between my-2">
-        <span className="text-manatee">Contract address</span>
+        <span className="dark:text-manatee text-frost">Contract address</span>
         <span className="font-medium">
           
           <a target="_blank" href={blockChainViewerAddress} rel="noreferrer" className="hover:underline flex">
@@ -50,19 +50,19 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
       </div>
 
       <div className="flex justify-between my-2">
-        <span className="text-manatee">Token ID</span>
+        <span className="dark:text-manatee text-frost">Token ID</span>
         <span className="font-medium">{ tokenId }</span>
       </div>
 
       <div className="flex justify-between my-2">
-        <span className="text-manatee">Token Standard</span>
+        <span className="dark:text-manatee text-frost">Token Standard</span>
         <span className="font-medium">{ tokenStandard }</span>
       </div>
 
       { 
         blockchain && (
           <div className="flex justify-between my-2">
-            <span className="text-manatee">Blockchain</span>
+            <span className="dark:text-manatee text-frost">Blockchain</span>
             <span className="font-medium">{ blockchain }</span>
           </div>
         )

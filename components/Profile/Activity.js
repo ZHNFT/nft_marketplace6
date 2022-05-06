@@ -55,7 +55,7 @@ export default function Activity({ tokenPriceUsd }) {
         </Cell>
         <Cell className="w-[50px]" />
       </RowHeading>
-      { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div> }
+      { isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] dark:text-white text-ink" /></div> }
       {
         !isLoading && activities?.results?.map((row, index) => {
 

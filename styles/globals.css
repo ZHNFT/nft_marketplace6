@@ -16,7 +16,7 @@
   height: 100%;
 }
 
-.input-field, .select-field {
+.dark .input-field, .dark .select-field {
   background: linear-gradient(142.25deg, #1E2024 20.17%, #202225 78.18%);
   box-shadow: 2px 4px 15px rgba(21, 23, 26, 0.05);
   padding: 4px 11px;
@@ -31,9 +31,13 @@
 }
 
 .scroller::-webkit-scrollbar-track {
-  background-color: #77808B;
+  background-color: #ededed;
   -webkit-border-radius: 10px;
   border-radius: 10px;
+}
+
+.dark .scroller::-webkit-scrollbar-track {
+  background-color: #77808B;
 }
 
 .scroller::-webkit-scrollbar-thumb {
@@ -43,16 +47,21 @@
 }
 
 .popover-container {
+  background: #fff;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.dark .popover-container {
   background: linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%);
   box-shadow: 2px 4px 15px rgba(21, 23, 26, 0.05);
 }
 
-.tag {
+.dark .tag {
   background: linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%);  
   box-shadow: 2px 4px 15px rgba(21, 23, 26, 0.05);
 }
 
-.gradient-heading {
+.dark .gradient-heading {
   background: linear-gradient(91.13deg, #F5F9FF 0.71%, #6E85FF 165.41%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -60,7 +69,7 @@
   text-fill-color: transparent;
 }
 
-.gradient-text {
+.dark .gradient-text {
   background: linear-gradient(91.37deg, #F5F9FF 0.86%, #A5B3FF 251.95%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -77,4 +86,8 @@
   background: rgba(32, 34, 37, 0.3);
   box-shadow: inset 11px 10px 20px rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(15px);
+}
+
+.dark .tab-container {
+  background: linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%);
 }

@@ -23,9 +23,8 @@ export default function Header(props) {
       <Popover
         as="header"
         className={({ open }) =>
-          clsx("relative lg:overflow-y-visible", {
-            "fixed inset-0 z-40 overflow-y-auto": open,
-            "border-b dark:border-header": withBorder,
+          clsx("relative lg:overflow-y-visible shadow-md", {
+            "fixed inset-0 z-40 overflow-y-auto": open
           })
         }
       >
@@ -37,35 +36,30 @@ export default function Header(props) {
                   <div className="flex-shrink-0 flex items-center w-full">
                     <Link href="/">
                       <a className="flex items-center mr-[25px]">
-                        <Image
-                          className="block h-8 w-auto"
-                          src={Logo}
-                          alt="Hive Investments"
-                          width="34"
-                          height="38"
-                        />
+                        <span className="dark:bg-logo-white bg-logo-blue bg-cover w-[32px] h-[36px]" />
+                        <span className="font-medium text-lg ml-3">Hexagon</span>
                       </a>
                     </Link>
-                    <div className="w-full">
-                      <SearchInput />
-                    </div>
-                    <ul className="hidden lg:flex ml-4 flex-1 justify-around">
-                      <li>
-                        <Link href="/collections">
-                          <a className="text-base hover:underline">
-                            Collections
-                          </a>
-                        </Link>
-                      </li>
-                    </ul>
                   </div>
                 </div>
                 <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
-                  <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                    
+                  <div className="flex items-center px-6 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+                    <div className="w-full">
+                      <SearchInput />
+                    </div>
                   </div>
                 </div>
                 <div className="flex lg:items-center lg:justify-end xl:col-span-4 justify-between lg:w-auto">
+                  <ul className="hidden lg:flex ml-4 flex-1 justify-around">
+                    <li>
+                      <Link href="/collections">
+                        <a className="text-base hover:underline">
+                          Collections
+                        </a>
+                      </Link>
+                    </li>
+                  </ul>
+
                   <NotificationsButton currentUserAddress={address} />
 
                   <div className="hidden lg:block">
@@ -86,7 +80,7 @@ export default function Header(props) {
                     <button
                       type="button"
                       onClick={connect}
-                      className="ml-5 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
+                      className="ml-5 border dark:border-white border-ink rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm dark:text-white text-ink"
                     >
                       Connect
                     </button>
@@ -97,7 +91,7 @@ export default function Header(props) {
                     {/* Mobile menu button */}
                     <Popover.Button className="-mx-2 rounded-md p-2 inline-flex items-center justify-center">
                       <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
-                      <MenuIcon className={clsx('block h-6 w-6', open ? 'text-white' : 'text-manatee')} aria-hidden="true" />
+                      <MenuIcon className={clsx('block h-6 w-6', open ? 'text-pitch dark:text-white' : 'text-manatee')} aria-hidden="true" />
                     </Popover.Button>
                   </div>
                 </div>

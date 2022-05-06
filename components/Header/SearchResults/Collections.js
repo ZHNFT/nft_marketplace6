@@ -11,7 +11,7 @@ export default function Collections({ results }) {
   }
 
   return (
-    <Table className="text-xs">
+    <Table className="text-xs dark:text-manatee text-ink">
       <RowHeading>
         <Cell className="w-[280px]"></Cell>
         <Cell className="w-[100px] text-center">Floor</Cell>
@@ -29,19 +29,19 @@ export default function Collections({ results }) {
                     <Cell className="w-[280px] flex items-center">
                       <Image className="rounded-xl" src={logo || DefaultLogo} alt={name} height="24" width="24" />
                       <div className="ml-3">
-                        <span className="text-manatee text-xxs">{ symbol }</span>
-                        <p className="text-white">{ name }</p>
+                        <span className="dark:text-manatee text-frost text-xxs">{ symbol }</span>
+                        <p className="dark:text-white text-ink">{ name }</p>
                       </div>
                     </Cell>
                     <Cell className="w-[100px] flex flex-col justify-center items-center">
-                      <span className="relative -left-[5px] text-white flex items-center">
+                      <span className="relative -left-[5px] dark:text-white text-malibu flex items-center">
                         <span className="inline-block mr-1.5 min-w-[11px]">
                           <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] relative -top-[1px] -mr-1 pr-[5px]" />
                         </span>
                         { floor ? floor : "0" }
                       </span>
                     </Cell>
-                    <Cell className="w-[80px] text-center leading-none text-white">
+                    <Cell className="w-[80px] text-center leading-none dark:text-white text-malibu">
                       { totalSupply }
                     </Cell>
                   </Row>

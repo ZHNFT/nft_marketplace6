@@ -9,7 +9,7 @@ export default function ProductCollection({name, collectionId, currency, itemCou
           <HexagonBeeIcon className="w-[26px] mr-1.5" />
           <span className="font-medium">{name}</span>
         </div>
-        <div className="flex items-center text-manatee shrink-0 ml-1 mr-2">
+        <div className="flex items-center dark:text-manatee text-frost shrink-0 ml-1 mr-2">
           {
             instagram && (
               <a href={instagram} target="_blank" rel="noreferrer" className="hover:text-cornflower" >
@@ -41,30 +41,30 @@ export default function ProductCollection({name, collectionId, currency, itemCou
       <div className="max-h-[200px] mt-4 overflow-y-scroll">
         <div className="flex items-top justify-between mx-4 text-center">
           <div>
-            <span className="text-manatee text-xs font-medium">Items</span>
+            <span className="dark:text-manatee text-frost text-xs font-medium">Items</span>
             <span className="block text-base font-medium">{ itemCount }</span> 
           </div>
           <div>
-            <span className="text-manatee text-xs font-medium">Owners</span>
+            <span className="dark:text-manatee text-frost text-xs font-medium">Owners</span>
             <span className="block text-base font-medium">{ ownerCount }</span> 
           </div>
           <div className="relative">
-            <span className="text-manatee text-xs font-medium">Volume</span>
+            <span className="dark:text-manatee text-frost text-xs font-medium">Volume</span>
             <span className="block flex items-center justify-center text-base font-medium">
               <CurrencyIcon currency={currency} hnyClassName="h-[14px] relative pr-[5px] -mr-1" />
               <span className="ml-1">{ volume ? volume : "0" }</span>
             </span> 
-            <span className="text-manatee text-xxs absolute block flex w-[74px]">Last 30 days</span>
+            <span className="dark:text-manatee text-frost text-xxs absolute block flex w-[74px]">Last 30 days</span>
           </div>
           <div>
-            <span className="text-manatee text-xs font-medium">Floor</span>
+            <span className="dark:text-manatee text-frost text-xs font-medium">Floor</span>
             <span className="block flex items-center justify-center text-base font-medium">
              <CurrencyIcon currency={currency} hnyClassName="h-[14px] relative pr-[5px] -mr-1" />
              <span className="ml-1">{ floorPrice ? floorPrice : "0" }</span>
             </span> 
           </div>
         </div>
-        <div className="text-xxs text-manatee mt-8">
+        <div className="text-xxs dark:text-manatee text-frost mt-8">
           {description}
         </div>
       </div>

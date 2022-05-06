@@ -36,7 +36,7 @@ export default function ProfileHeader({
 
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-20 lg:mt-32 mb-28">
+      <section className="lg:grid lg:grid-cols-12 flex relative dark:text-white justify-between flex-col lg:flex-row mt-20 lg:mt-32 mb-28">
 
       <SecondaryButton
           className="flex items-center absolute  -top-[70px] text-xs font-medium"

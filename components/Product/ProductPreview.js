@@ -45,7 +45,7 @@ export default function ProductPreview({ className, name, image, imageHosted, ex
         }
         <div className="aspect-w-4 aspect-h-4 rounded-xl overflow-hidden relative">
           <>
-            <Spinner className="w-[26px] text-white m-auto" />
+            <Spinner className="w-[26px] dark:text-white text-ink m-auto" />
             {image ? (
               <Image
               src={`${resolveBunnyLink(imageHosted)}?optimizer=${imageOptimizer}&width=${imageWidth}&aspect_ratio=1:1`}

@@ -82,7 +82,7 @@ export default function Collections(props) {
               isCollectionLoading
                 ? (
                   <div className="flex justify-center items-center h-[380px]">
-                    <Spinner className="w-[26px] text-white" />
+                    <Spinner className="w-[26px] dark:text-white text-ink" />
                   </div>
                 )
                 : (

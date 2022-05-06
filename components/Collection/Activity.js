@@ -130,7 +130,7 @@ export default function Activity({ currency, tokenPriceUsd }) {
                       <ItemPrice currency={currency} value={price} />
                     ) : '-'}
                   </span>
-                  <span className="block text-[10px] text-manatee">
+                  <span className="block text-[10px] dark:text-manatee text-frost">
                     { price ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null }
                   </span>
                 </Cell>

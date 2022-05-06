@@ -140,10 +140,10 @@ export default function EditProfileModal(props) {
                       alt={values["username"]}
                       layout="fill" 
                     />
-                    <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                    <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 dark:border-[#2b3441] border-white border-[2px] rounded-full overflow-hidden">
                       <CameraIcon className="text-white w-[13px]" />
                     </span>
-                    <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center text-white">
                       <PencilIcon className="w-5 h-5" />
                     </div>
                   </label>
@@ -164,7 +164,7 @@ export default function EditProfileModal(props) {
                   {textFields.map(({ id, label, icon, isRequired }) => (
                     <div key={id}>
                       <label
-                        className="text-xxs text-manatee flex items-center mb-2"
+                        className="text-xxs dark:text-manatee text-frost flex items-center mb-2"
                         htmlFor={id}
                       >
                         {icon && icon()}
@@ -184,7 +184,7 @@ export default function EditProfileModal(props) {
 
                 <div className="w-full mt-3">
                   <label
-                    className="text-xxs text-manatee mb-2"
+                    className="text-xxs dark:text-manatee text-frost mb-2"
                     htmlFor="description"
                   >
                     Description

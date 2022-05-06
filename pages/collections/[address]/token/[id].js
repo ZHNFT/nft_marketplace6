@@ -217,7 +217,7 @@ export default function Nft(props) {
                 { // Owner & not listed
                   !activeListing && !activeAuction && (
                     <>
-                      <p className="text-manatee font-medium">This item is not currently listed</p>
+                      <p className="dark:text-manatee text-frost font-medium">This item is not currently listed</p>
                       <div className="ml-auto">
                         <SecondaryButton
                           className="border-cornflower min-w-[98px] text-ink dark:text-white"
@@ -237,7 +237,7 @@ export default function Nft(props) {
                     <>
                       <div>
                         <p className="mb-1">
-                          <span className="text-xs text-manatee mr-2.5 font-medium">Price</span>
+                          <span className="text-xs dark:text-manatee text-frost mr-2.5 font-medium">Price</span>
                           <button
                             type="button"
                             className="font-light text-xs text-cornflower"
@@ -251,7 +251,7 @@ export default function Nft(props) {
                         <div className="flex items-baseline relative">
                           <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]" />
                           <span className="text-base font-medium">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0"}</span>
-                          <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null}</span>
+                          <span className="text-xs dark:text-manatee text-frost ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null}</span>
                         </div>
                       </div>
                       <div className="ml-auto items-center flex">
@@ -276,16 +276,16 @@ export default function Nft(props) {
                         {activeAuction?.highestBid ? (
                           <div>
                             <p className="mb-1">
-                              <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
+                              <span className="text-xs dark:text-manatee text-frost mr-2.5 font-medium">Current bid</span>
                             </p>
                             <div className="flex items-baseline relative">
                               <BeeIcon className="relative h-[12px] top-[1px] pr-[5px]" />
                               <span className="text-base font-medium">{activeAuction.highestBid ? formatEther(activeAuction?.highestBid) : "0"}</span>
-                              <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null }</span>
+                              <span className="text-xs dark:text-manatee text-frost ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null }</span>
                             </div>
                           </div>
                         ) : (
-                          <p className="text-xs text-manatee">No bids yet</p>
+                          <p className="text-xs dark:text-manatee text-frost">No bids yet</p>
                         )}
                       </div>
                       <div className='flex flex-col'>
@@ -315,7 +315,7 @@ export default function Nft(props) {
                   { // Not owner & not listed
                     !activeListing && !activeAuction && (
                       <>
-                        <p className="text-manatee font-medium">This item is not currently listed</p>
+                        <p className="dark:text-manatee text-frost font-medium">This item is not currently listed</p>
                         <div className="ml-auto">
                           <SecondaryButton
                             className="border-manatee text-ink dark:text-white"
@@ -340,12 +340,12 @@ export default function Nft(props) {
                       <>
                         <div>
                           <p className="mb-1">
-                            <span className="text-xs text-manatee mr-2.5 font-medium">Price</span>
+                            <span className="text-xs dark:text-manatee text-frost mr-2.5 font-medium">Price</span>
                           </p>
                           <div className="flex items-baseline relative">
                             <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]" />
                             <span className="text-base font-medium">{activeListing.pricePerItem ? formatEther(activeListing?.pricePerItem) : "0" }</span>
-                            <span className="text-xs text-manatee ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null }</span>
+                            <span className="text-xs dark:text-manatee text-frost ml-2">{activeListing.pricePerItem && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeListing?.pricePerItem)) * Number(tokenPriceUsd)) : null }</span>
                           </div>
                         </div>
                         <div className="ml-auto flex">
@@ -387,16 +387,16 @@ export default function Nft(props) {
                           {activeAuction?.highestBid ? (
                             <div>
                               <p className="mb-1">
-                                <span className="text-xs text-manatee mr-2.5 font-medium">Current bid</span>
+                                <span className="text-xs dark:text-manatee text-frost mr-2.5 font-medium">Current bid</span>
                               </p>
                               <div className="flex items-baseline relative">
                                 <BeeIcon className="relative h-[15px] top-[1px] pr-[5px]]" />
                                 <span className="text-base font-medium">{formatEther(activeAuction?.highestBid)}</span>
-                                <span className="text-xs text-manatee ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null}</span>
+                                <span className="text-xs dark:text-manatee text-frost ml-2">{activeAuction.highestBid && tokenPriceUsd ? usdFormatter.format(Number(formatEther(activeAuction?.highestBid)) * Number(tokenPriceUsd)) : null}</span>
                               </div>
                             </div>
                           ) : (
-                            <p className="text-xs text-manatee">No bids yet</p>
+                            <p className="text-xs dark:text-manatee text-frost">No bids yet</p>
                           )}
                         </div>
                         <div className='flex flex-col'>
@@ -434,7 +434,7 @@ export default function Nft(props) {
 
             <Tab.Group as="div">
               <div className="mt-4">
-                <Tab.List className="-mb-px flex items-center justify-between space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)' }}>
+                <Tab.List className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab shadow-switchLight tab-container rounded-tab h-[38px]">
                   {
                     PRODUCT_TABS.filter(tab => tab.active).map(({ id, label }) => (
                       <Tab
@@ -442,9 +442,9 @@ export default function Nft(props) {
                         className={({ selected }) =>
                           clsx(
                             selected
-                              ? 'bg-tabButton shadow-tabButton rounded-tab'
-                              : 'text-[#969EAB] hover:text-white',
-                            'whitespace-nowrap font-medium text-xs w-[115px] h-[34px]'
+                              ? 'dark:bg-tabButton bg-cobalt dark:shadow-tabButton text-white shadow-md rounded-tab'
+                              : 'dark:text-[#969EAB] text-ink dark:hover:text-white hover:text-cobalt',
+                            'whitespace-nowrap font-medium px-2 text-xs w-[115px] h-[37px]'
                           )
                         }
                       >
