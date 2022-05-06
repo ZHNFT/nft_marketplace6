@@ -19,7 +19,7 @@ export default function MobileMenu(props) {
             href={item.href}
             aria-current={item.current ? 'page' : undefined}
             className={clsx(
-              'text-white text-xl hover:bg-white/[0.05]',
+              'text-xl hover:bg-white/[0.05]',
               'block rounded-md py-2 px-3'
             )}
           >
@@ -39,7 +39,7 @@ export default function MobileMenu(props) {
         <button
           type="button"
           onClick={connect}
-          className="mb-6 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm text-white"
+          className="mb-6 border rounded-full flex items-center py-2 px-8 focus:outline-none focus:ring-2 focus:ring-malibu text-sm dark:text-white"
         >
           Connect
         </button>

@@ -195,7 +195,7 @@ export default function AddCollectionModal(props) {
     <Modal isOpen={isOpen} onClose={onClose} paddingX={0} title="Add a collection" className="!max-w-[900px]" titleClassname="text-[22px]">
       <div className="px-4">
         <div className="max-h-[430px] overflow-y-auto scroller">
-          <p className="text-manatee text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process. </p>
+          <p className="dark:text-manatee text-frost text-xs mr-8">Fill in the details below to submit your collection for vetting. Our team will review your application and contact you if you pass the review process. </p>
           
           <h4 className="mt-5 mb-4 text-base">Collection details</h4>
           
@@ -210,7 +210,7 @@ export default function AddCollectionModal(props) {
                   <div className="flex items-start justify-between px-0.5">
                     <div className="basis-5/12">
                       <div className="mb-6">
-                        <label className="text-xs text-manatee flex items-center mb-2" htmlFor="name">
+                        <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="name">
                           Collection name 
                           <span className="text-cornflower ml-1">*</span>
                         </label>
@@ -226,7 +226,7 @@ export default function AddCollectionModal(props) {
                       </div>
 
                       <div className="my-2">
-                        <label className="text-xs text-manatee flex items-center mb-2">
+                        <label className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                           Category
                           <span className="text-cornflower ml-1">*</span>
                         </label>
@@ -242,7 +242,7 @@ export default function AddCollectionModal(props) {
                       </div>
 
                       <div className="my-6">
-                        <label className="text-xs text-manatee flex items-center mb-2" htmlFor="website">
+                        <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="website">
                           <ChainIcon className="w-[10px] mr-2" />
                           Website
                         </label>
@@ -257,7 +257,7 @@ export default function AddCollectionModal(props) {
                     </div>
 
                     <div className="flex-1 ml-10">
-                      <label className="text-xs text-manatee mb-2 flex" htmlFor="description">
+                      <label className="text-xs dark:text-manatee text-frost mb-2 flex" htmlFor="description">
                         Description
                         <span className="text-cornflower ml-1">*</span>
                       </label>
@@ -274,7 +274,7 @@ export default function AddCollectionModal(props) {
                   </div>
 
                   <div className="my-2">
-                    <label className="text-xs text-manatee flex items-center mb-2" htmlFor="address">
+                    <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="address">
                       Contract address
                       <span className="text-cornflower ml-1">*</span>
                     </label>
@@ -293,11 +293,11 @@ export default function AddCollectionModal(props) {
 
                   <div className="flex items-start justify-between px-0.5">
                     <div className="flex-1">
-                      <p className="text-xs text-manatee flex items-center mb-2">
+                      <p className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                         Profile image
                         <span className="text-cornflower ml-1">*</span>
                       </p>
-                      <p className="text-xs text-manatee">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo. The cover photo will be part of a future update.</p>
+                      <p className="text-xs dark:text-manatee text-frost">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo. The cover photo will be part of a future update.</p>
                       <div className="relative mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
                         { preview?.coverImage && <Image className="aspect-w-1 object-cover object-center justify-center overflow-hidden" src={preview.coverImage} alt={name} layout="fill" /> }
 
@@ -306,10 +306,10 @@ export default function AddCollectionModal(props) {
                             <input type="file" name="profileImage" className="hidden" accept="image/*" onChange={onSelectImage} />
                             <span className="sr-only">Change profile image</span>
                             <Image className="aspect-w-1 object-cover object-center justify-center rounded-full overflow-hidden" src={preview?.profileImage || PlaceholderImage} alt={name} layout="fill" />
-                            <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                            <span className="bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute bottom-[8px] right-0 z-10 dark:border-[#2b3441] border-white border-[2px] rounded-full overflow-hidden">
                               <CameraIcon className="text-white w-[13px]" />
                             </span>
-                            <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                            <div className="opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] rounded-full absolute top-0 left-0 w-full h-full flex justify-center items-center text-white">
                               <PencilIcon className="w-5 h-5" />
                             </div>
                           </label>
@@ -325,11 +325,11 @@ export default function AddCollectionModal(props) {
                       { errors.profileImage && <p className="mt-2 text-xxs text-red-600">{ errors.profileImage }</p> }
                     </div>
                     <div className="basis-5/12 ml-6">
-                      <p className="text-xs text-manatee flex items-center mb-2">
+                      <p className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                         Featured image
                         <span className="text-cornflower ml-1">*</span>
                       </p>
-                      <p className="text-xs text-manatee">Recommended size 1,100px x 880px. This will be used on collection cards.</p>
+                      <p className="text-xs dark:text-manatee text-frost">Recommended size 1,100px x 880px. This will be used on collection cards.</p>
                       <div className="relative mt-4">
                         <label className="group flex items-center justify-center block cursor-pointer w-full h-[240px] bg-white/[0.02] border-[1px] border-dashed border-malibu rounded-md p-[1.5px] overflow-hidden">
                           { 
@@ -344,10 +344,10 @@ export default function AddCollectionModal(props) {
                           <div>
                             <Image className="h-8 w-8" src={PlaceholderImage} alt={name} width={67} height={75} />
                           </div>
-                          <span className="z-30 bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 border-[#2b3441] border-[2px] rounded-full overflow-hidden">
+                          <span className="z-30 bg-[#6589ff] w-[23px] h-[23px] flex items-center justify-center absolute -bottom-[10px] mx-auto left-0 right-0 z-10 dark:border-[#2b3441] border-white border-[2px] rounded-full overflow-hidden">
                             <CameraIcon className="text-white w-[13px]" />
                           </span>
-                          <div className="z-20 opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                          <div className="z-20 opacity-0 group-hover:opacity-100 transition-all bg-black/[0.4] absolute top-0 left-0 w-full h-full flex justify-center items-center text-white">
                             <PencilIcon className="w-5 h-5" />
                           </div>
                         </label>
@@ -362,7 +362,7 @@ export default function AddCollectionModal(props) {
                     {
                       socialMediaFields.map(({ id, label, placeholder, icon }) => (
                         <div key={id}>
-                          <label className="text-xs text-manatee flex items-center mb-2" htmlFor={id}>
+                          <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor={id}>
                             { icon && icon() }
                             { label }
                           </label>
@@ -381,8 +381,8 @@ export default function AddCollectionModal(props) {
 
                   <h4 className="mt-8 mb-4 text-base">Currency Selection <span className="text-cornflower ml-1">*</span></h4>
                 
-                  <p className="text-manatee text-xs mr-8 mb-2">Choose the currency in which you will be listing your collection. Note that listing in HNY means sellers will not be charged any marketplace fees to Hexagon - additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a marketplace fee of 2%.</p>
-                  <p className='text-manatee text-xs mr-8'>Caution: Your currency choice cannot be changed once the collection has been accepted.</p>
+                  <p className="dark:text-manatee text-frost text-xs mr-8 mb-2">Choose the currency in which you will be listing your collection. Note that listing in HNY means sellers will not be charged any marketplace fees to Hexagon - additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a marketplace fee of 2%.</p>
+                  <p className='dark:text-manatee text-frost text-xs mr-8'>Caution: Your currency choice cannot be changed once the collection has been accepted.</p>
                   
                   <div role="group" className="mt-4 flex justify-between" aria-labelledby="radio-group">
                     {
@@ -404,10 +404,10 @@ export default function AddCollectionModal(props) {
                     <span className="text-cornflower ml-1">*</span>
                   </h4>
                   
-                  <p className="text-manatee text-xs mr-8 mb-2">
+                  <p className="dark:text-manatee text-frost text-xs mr-8 mb-2">
                   Choose the royalty percentage that you will receive from each transaction of your collection. Note that Hexagon’s marketplace fee is paid by the seller and is not deducted from your royalty percentage.
                   </p>
-                  <p className="text-manatee text-xs mr-8 mb-2">
+                  <p className="dark:text-manatee text-frost text-xs mr-8 mb-2">
                     Caution: this percentage can’t be changed once the collection has been accepted.
                   </p>
                   <div className="-mx-[6px]">
@@ -423,7 +423,7 @@ export default function AddCollectionModal(props) {
                   </div>
 
                   <div className="mt-10 mb-4">
-                    <label className="text-xs text-manatee flex items-center mb-2" htmlFor="payoutAddress">
+                    <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="payoutAddress">
                       Payout address
                       <span className="text-cornflower ml-1">*</span>
                     </label>

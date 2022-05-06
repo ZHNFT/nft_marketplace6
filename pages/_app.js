@@ -377,7 +377,7 @@ function MyApp({ Component, pageProps }) {
   );
 
   return (
-    <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
+    <ThemeProvider enableSystem={true} attribute="class" defaultTheme="light">
       <Web3Context.Provider value={contextValue}>
         <AppGlobalContext.Provider value={globalContextValue}>
           <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>

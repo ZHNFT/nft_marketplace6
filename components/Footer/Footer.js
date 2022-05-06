@@ -6,7 +6,7 @@ export default function Footer() {
     <div className="w-full mt-20 pb-14 max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
       <ul className="flex">
         <li>
-          <a href="https://twitter.com/hiveinvestments" target="_blank" rel="noreferrer">
+          <a href="https://twitter.com/hexagon_market" target="_blank" rel="noreferrer">
             <TwitterFillIcon className="w-[18px] text-malibu" />
             <span className="sr-only">Twitter</span>
           </a>

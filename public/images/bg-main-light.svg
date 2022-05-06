@@ -1,0 +1,75 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 4154" width="1440" height="4154">
+	<title>bg-main-light-svg</title>
+	<defs>
+		<filter x="-50%" y="-50%" width="200%" height="200%" id="f1"> <feGaussianBlur stdDeviation="52.5"/> </filter>
+		<linearGradient id="g1" x1="1012.5" y1="225.8" x2="1200.7" y2="225.8" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#5095ff"/>
+			<stop offset="1" stop-color="#fb7fc9"/>
+		</linearGradient>
+		<filter x="-50%" y="-50%" width="200%" height="200%" id="f2"> <feGaussianBlur stdDeviation="100"/> </filter>
+		<linearGradient id="g2" x1="-149.3" y1="801.8" x2="349.3" y2="801.8" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#5095ff"/>
+			<stop offset="1" stop-color="#fb7fc9"/>
+		</linearGradient>
+		<radialGradient id="g3" cx="513" cy="481" r="920" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#5095ff"/>
+			<stop offset="1" stop-color="#5095ff" stop-opacity="0"/>
+		</radialGradient>
+		<filter x="-50%" y="-50%" width="200%" height="200%" id="f3"> <feGaussianBlur stdDeviation="75"/> </filter>
+		<linearGradient id="g4" x1="1474.3" y1="1028.8" x2="975.7" y2="1028.8" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#6e85ff"/>
+			<stop offset="1" stop-color="#fb7fc9"/>
+		</linearGradient>
+		<radialGradient id="g5" cx="-7" cy="3458" r="891" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#6e85ff"/>
+			<stop offset="1" stop-color="#6e85ff" stop-opacity="0"/>
+		</radialGradient>
+		<radialGradient id="g6" cx="513" cy="4455" r="920" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#5095ff"/>
+			<stop offset="1" stop-color="#5095ff" stop-opacity="0"/>
+		</radialGradient>
+		<radialGradient id="g7" cx="129.5" cy="485.5" r="1450.5" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+			<stop offset="1" stop-color="#5095ff" stop-opacity="0"/>
+		</radialGradient>
+		<radialGradient id="g8" cx="-90.5" cy="4246.5" r="1450.5" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+			<stop offset="1" stop-color="#5095ff" stop-opacity="0"/>
+		</radialGradient>
+	</defs>
+	<style>
+		.s0 { filter: url(#f1);fill: url(#g1) } 
+		.s1 { filter: url(#f2);fill: url(#g2) } 
+		.s2 { opacity: .1;fill: url(#g3) } 
+		.s3 { filter: url(#f3);fill: #ffffff } 
+		.s4 { filter: url(#f2);fill: url(#g4) } 
+		.s5 { opacity: .1;fill: url(#g5) } 
+		.s6 { filter: url(#f2);fill: #ffffff } 
+		.s7 { opacity: .1;fill: url(#g6) } 
+		.s8 { fill: url(#g7) } 
+		.s9 { fill: url(#g8) } 
+	</style>
+	<g id="Layer" style="opacity: .8">
+		<path id="Layer" class="s0" d="m1107 131l81.4 47.3v94.5l-81.4 47.2-81.4-47.3v-94.5z"/>
+	</g>
+	<g id="Layer" style="opacity: .5">
+		<path id="Layer" class="s1" d="m101 551l215.6 125v250l-215.6 125-215.6-125v-250z"/>
+	</g>
+	<circle id="Layer" class="s2" cx="513" cy="481" r="920"/>
+	<g id="Layer">
+		<path id="Layer" class="s3" d="m393.5 180l282.8 163.3v326.4l-282.8 163.3-282.8-163.3v-326.4z"/>
+	</g>
+	<g id="Layer" style="opacity: .4">
+		<path id="Layer" class="s4" d="m1439.6 903v250l-215.6 125-215.6-125v-250l215.6-125z"/>
+	</g>
+	<circle id="Layer" class="s5" cx="884" cy="2567" r="891"/>
+	<g id="Layer">
+		<path id="Layer" class="s6" d="m1610.3 2240.3v326.4l-282.8 163.3-282.8-163.3v-326.5l282.8-163.2z"/>
+	</g>
+	<circle id="Layer" class="s7" cx="513" cy="4455" r="920"/>
+	<g id="Layer">
+		<path id="Layer" class="s3" d="m393.5 4154l282.8 163.3v326.4l-282.8 163.3-282.8-163.3v-326.4z"/>
+	</g>
+	<circle id="Layer" class="s8" cx="129.5" cy="485.5" r="1450.5"/>
+	<circle id="Layer" class="s9" cx="-90.5" cy="4246.5" r="1450.5"/>
+</svg>

@@ -32,7 +32,7 @@ export default function Hero() {
           Welcome to Hexagon
         </h1>
         <div className="mb-10 lg:max-w-sm">
-          <p className="text-manatee text-lg">
+          <p className="dark:text-manatee text-gunmetal text-lg">
             Polygon&apos;s Premier NFT Marketplace
           </p>
         </div>
@@ -61,7 +61,7 @@ export default function Hero() {
               <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
                 <Image className="h-8 w-8" src={collection?.images?.logo || DefaultLogo} alt={name} width={"100%"} height={"100%"} />
               </span>
-              <span className="text-white text-xs hover:underline">{collection?.name}</span>
+              <span className="dark:text-white text-black text-xs hover:underline">{collection?.name}</span>
             </a>
           </Link>
           <span className="text-sm mr-1">{name}</span>
@@ -69,7 +69,7 @@ export default function Hero() {
         <div className="flex relative">
           <Link href={`/collections/${address}/token/${id}`} passHref>
             <a className="hero-image w-full max-w-[439px] h-[439px] aspect-w-4 aspect-h-4 rounded-xl overflow-hidden">
-              <Spinner className="w-[26px] text-white m-auto" />
+              <Spinner className="w-[26px] dark:text-white text-gunmetal m-auto" />
               {
                 collection && nft && (
                   <>

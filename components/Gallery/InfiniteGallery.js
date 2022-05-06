@@ -63,7 +63,7 @@ export default function InfiniteGallery({ className, collectionLogo, collectionD
           />
         ))
       }
-       <div>{loading && 'Loading...'}</div>
+       <div className="dark:text-white text-gunmetal">{loading && 'Loading...'}</div>
     </div>
   );
 }

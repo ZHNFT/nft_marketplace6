@@ -11,7 +11,7 @@ export default function TextareaField({ value, name, placeholder, required, clas
         onChange={onChange}
         maxLength={maxLength}
         className={clsx(
-          'input-field placeholder:text-manatee rounded-md text-white border-0 w-full !py-4 resize-none',
+          'input-field bg-lightShade placeholder:text-manatee rounded-md dark:text-white text-ink border-0 w-full !py-4 resize-none',
           size === 'sm' ? 'text-sm' : '',
           height
         )}
@@ -19,7 +19,7 @@ export default function TextareaField({ value, name, placeholder, required, clas
       { 
         maxLength && (
           <p className="absolute right-2 -bottom-3.75 text-xxs">
-            {value?.length || 0} of {maxLength} <span className="text-manatee">characters used</span>
+            {value?.length || 0} of {maxLength} <span className="dark:text-manatee text-frost">characters used</span>
           </p>
         )
       }

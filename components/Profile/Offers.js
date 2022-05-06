@@ -58,7 +58,7 @@ export default function Offers({ tokenPriceUsd }) {
         <Cell className="w-[100px] text-center">Expires</Cell>
         <Cell className="w-[100px] text-center mobile-only:hidden">Options</Cell>
       </RowHeading>
-      {isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] text-white" /></div>}
+      {isLoading && <div className="flex flex-1 justify-center my-20"><Spinner className="w-[26px] dark:text-white text-ink" /></div>}
       {
         !isLoading && offers?.results?.map((offer, index) => {
 

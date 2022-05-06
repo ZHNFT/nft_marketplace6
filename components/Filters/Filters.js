@@ -120,7 +120,7 @@ export default function Filters({ minRarity = 0, maxRarity = 100, filters, curre
       {({ submitForm, values, setFieldValue }) => (
         <form className={clsx(placement === 'desktop' ? "" : 'mt-4 border-t border-gray-200')}>
           <h2 className="text-base font-medium leading-0">Filter</h2>
-          <span className="text-xs text-manatee font-medium">
+          <span className="text-xs dark:text-manatee text-frost font-medium">
             { total } { total === 1 ? 'item' : 'items' }
           </span>
           

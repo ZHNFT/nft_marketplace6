@@ -74,8 +74,8 @@ export default function SearchInput() {
               <input
                 id="search"
                 name="search"
-                className="block w-full dark:bg-search text-ink dark:text-white lg:max-w-[268px] rounded-full py-2 pl-4 pr-3 border-transparent text-sm dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu sm:text-sm"
-                placeholder="Explore"
+                className="block w-full dark:bg-search text-ink dark:text-white border-rhino dark:border-transparent rounded-full py-3 pl-4 pr-3 border-transparent text-sm sm:text-md dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu"
+                placeholder="Search projects and items"
                 type="search"
                 autoComplete="off"
                 value={searchTerm}
@@ -116,14 +116,16 @@ export default function SearchInput() {
                           {
                             !searchTerm 
                               ? <p>Please enter your search terms</p>
-                              : <Spinner className="text-white w-[40px]" />
+                              : <Spinner className="dark:text-white text-ink w-[40px]" />
                           }
                         </div>
                       )
                       : (
                         <Tab.Group as="div">
                           <div className="mb-4">
-                            <Tab.List className="-mb-px flex items-center justify-between space-x-8 shadow-tab rounded-tab h-[38px]" style={{ background: 'linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%)'}}>
+                            <Tab.List
+                              className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab shadow-switchLight rounded-tab h-[38px] tab-container"
+                            >
                               {
                                 SEARCH_TABS.map(({ id, label }) => (
                                   <Tab
@@ -131,9 +133,9 @@ export default function SearchInput() {
                                     className={({ selected }) =>
                                       clsx(
                                         selected
-                                          ? 'bg-tabButton shadow-tabButton rounded-tab'
-                                          : 'text-[#969EAB] hover:text-white',
-                                        'whitespace-nowrap font-medium text-xs text-white px-5 w-[115px] h-[34px]'
+                                          ? 'dark:bg-tabButton bg-cobalt dark:shadow-tabButton shadow-md rounded-tab'
+                                          : 'dark:text-[#969EAB] text-ink dark:hover:text-white hover:text-cobalt',
+                                        'whitespace-nowrap font-medium text-xs text-white px-5 w-[115px] h-[37px]'
                                       )
                                     }
                                   >

@@ -43,7 +43,7 @@ export default function TraitsTable({ collectionId, traits }) {
             return (
               <Row key={`${type}-${index}`} className="cursor-pointer text-xs !py-2" onClick={() => router.push({ pathname: '/collections/[address]', query })}>
                 <Cell className="w-[150px]">
-                  <p className="text-manatee text-xxs capitalize">{ type }</p>
+                  <p className="dark:text-manatee text-frost text-xxs capitalize">{ type }</p>
                   <p className="capitalize">{ value }</p>
                 </Cell>
                 <Cell className="w-[75px]">
@@ -52,7 +52,7 @@ export default function TraitsTable({ collectionId, traits }) {
                 <Cell className="w-[100px] text-center leading-none">
                   { rarityPercent?.toFixed(2) }%
                 </Cell>
-                <Cell className="w-[50px] text-right text-manatee">
+                <Cell className="w-[50px] text-right dark:text-manatee text-frost">
                   <a href="#">
                     <SearchIcon className="w-[13px]" />
                   </a>

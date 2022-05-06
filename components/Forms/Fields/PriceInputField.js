@@ -8,14 +8,14 @@ export default function PriceInputField(props) {
   return (
     <div className="mt-4 mb-8">
     <div className='flex justify-between'>
-      <label htmlFor="price" className='text-[#969EAB] text-xs'>{label}</label>
+      <label htmlFor="price" className='dark:text-manatee text-ink text-xs'>{label}</label>
       {showTokenBalance ? (
-      <div className="mt-1 text-xs text-right text-[#969EAB]">
-        Balance: <span className='text-white'>{tokenBalance ? formatter.format(tokenBalance) : 0}</span>
+      <div className="mt-1 text-xs text-right dark:text-manatee text-ink">
+        Balance: <span className='dark:text-white text-ink'>{tokenBalance ? formatter.format(tokenBalance) : 0}</span>
       </div>) : null}
     </div>
     <div className="mt-1 relative">
-      <div className="flex items-center rounded-lg bg-[#1F2225]">
+      <div className="flex items-center rounded-lg dark:bg-[#1F2225] bg-lightShade">
         <div className="py-2 pl-2 pr-4 flex">
           <CurrencyIcon
             currency={currencySymbol}

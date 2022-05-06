@@ -16,7 +16,7 @@ export default function CollectionHeader(props) {
 
   return (
     <>
-      <section className="lg:grid lg:grid-cols-12 flex relative text-white justify-between flex-col lg:flex-row mt-8 mb-16">
+      <section className="lg:grid lg:grid-cols-12 flex relative dark:text-white justify-between flex-col lg:flex-row mt-8 mb-16">
        
         <SecondaryButton
           className="hidden flex items-center absolute right-0 -top-[70px] text-xs font-medium"
@@ -43,7 +43,8 @@ export default function CollectionHeader(props) {
             <h1 className="text-2xl lg:text-4xl xl:text-6xl mb-2">{ name }</h1>
             <ul className="flex justify-start items-center text-xs pt-1">
                 <li className="mr-6">
-                    <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} className="rounded pt-1 pb-0.5 px-2.5 bg-white bg-opacity-10">
+                    <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} 
+                      className="rounded pt-1 pb-0.5 px-2.5 dark:bg-white bg-opacity-10 bg-ink">
                       { ellipseAddress(address, 4) }
                       <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
                     </a>
@@ -52,7 +53,7 @@ export default function CollectionHeader(props) {
                   socials?.instagram && (
                     <li className="mr-6">
                       <a href={socials.instagram} target="_blank" rel="noreferrer" >
-                        <InstagramIcon className="w-[18px] mr-2" />
+                        <InstagramIcon className="w-[18px] mr-2 dark:text-white text-frost" />
                       </a>
                     </li>
                   )
@@ -61,7 +62,7 @@ export default function CollectionHeader(props) {
                   socials?.twitter && (
                     <li className="mr-6">
                       <a href={socials.twitter} target="_blank" rel="noreferrer">
-                        <TwitterIcon className="w-[19px] mr-2" />
+                        <TwitterIcon className="w-[19px] mr-2 dark:text-white text-frost" />
                       </a>
                     </li>
                   )
@@ -70,7 +71,7 @@ export default function CollectionHeader(props) {
                   socials?.discord && (
                     <li className="mr-6">
                       <a href={socials.discord} target="_blank" rel="noreferrer">
-                        <DiscordIcon className="w-[19px] mr-2" />
+                        <DiscordIcon className="w-[19px] mr-2 dark:text-white text-frost" />
                       </a>
                     </li>
                   )
@@ -79,7 +80,7 @@ export default function CollectionHeader(props) {
                   socials?.telegram && (
                     <li className="mr-6">
                       <a href={socials.telegram} target="_blank" rel="noreferrer">
-                        <TelegramIcon className="w-[19px] mr-2" />
+                        <TelegramIcon className="w-[19px] mr-2 dark:text-white text-frost" />
                       </a>
                     </li>
                   )
@@ -88,7 +89,7 @@ export default function CollectionHeader(props) {
                   socials?.website && (
                     <li className="mr-6">
                       <a href={socials.website} target="_blank" rel="noreferrer">
-                        <LinkIcon className="w-[19px] mr-2" />
+                        <LinkIcon className="w-[19px] mr-2 dark:text-white text-frost" />
                       </a>
                     </li>
                   )
@@ -127,7 +128,7 @@ export default function CollectionHeader(props) {
                     </span>
                 </li>
             </ul>
-            <p className='text-manatee text-xs pt-3'>{description}</p>
+            <p className='dark:text-manatee text-frost text-xs pt-3'>{description}</p>
         </div>
       </section>
       <EditCollectionModal

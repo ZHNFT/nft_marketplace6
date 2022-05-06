@@ -149,12 +149,12 @@ export default function Listing(props) {
                   )
                 }
                 <div className="leading-none">
-                  <p className="text-sm text-manatee">{ellipseAddress(collectionId, 4)}</p>
+                  <p className="text-sm dark:text-manatee text-frost">{ellipseAddress(collectionId, 4)}</p>
                   <p>{name}</p>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-manatee">Price</p>
+                <p className="text-sm dark:text-manatee text-frost">Price</p>
                 <ItemPrice value={Number(values.price) * 10 ** 18} currency={currencySymbol} />
               </div>
             </div>
@@ -361,11 +361,11 @@ export default function Listing(props) {
 
                 <div className="my-6">
                   <p>Fees</p>
-                  <div className="mt-1 text-sm text-manatee flex justify-between">
+                  <div className="mt-1 text-sm dark:text-manatee text-frost flex justify-between">
                     <span>Service Fee</span>
                     <span>{fees.marketplaceFee + "%"}</span>
                   </div>
-                  <div className="text-sm text-manatee flex justify-between">
+                  <div className="text-sm dark:text-manatee text-frost flex justify-between">
                     <span>Creator Fee</span>
                     <span>{fees.royaltyFee + "%"}</span>
                   </div>

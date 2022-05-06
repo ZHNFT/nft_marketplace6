@@ -26,7 +26,8 @@ const GalleryItem = forwardRef((props, ref) => {
     <Link href="/collections/[address]/token/[id]" as={`/collections/${item?.collectionId}/token/${item?.tokenId}`} passHref>
       <div 
         className={clsx(
-          'relative cursor-pointer w-[170px] h-[290px] md:w-[210px] md:h-[316px] text-[10px] font-normal bg-white dark:bg-gunmetal rounded-xl my-4',
+          'relative cursor-pointer w-[170px] h-[290px] md:w-[210px] md:h-[316px] text-[10px] font-normal bg-lightShade dark:bg-gunmetal rounded-xl my-4',
+          'border-[0.5px] border-transparent dark:border-transparent',
           className
         )}
         onMouseEnter={() => setIsHovering(true)}

@@ -30,38 +30,41 @@ export default function Home(props) {
   }
 
   return (
-    <div className="flex justify-center lg:max-w-6xl mx-auto">
+    <>
+      {/*<div className="dark:hidden -z-10 bg-gradient-to-b from-[#507384] to-[#fff] w-full h-[700px] absolute top-[55px] left-0"></div>*/}
+      <div className="flex justify-center lg:max-w-6xl mx-auto">
 
-      <div className="w-full lg:max-w-[984px]">
-        <div className="flex flex-col">
-          <Hero />
-          <HeroCards connect={connect} address={address} />
+        <div className="w-full lg:max-w-[984px]">
+          <div className="flex flex-col">
+            <Hero />
+            <HeroCards connect={connect} address={address} />
 
-          <section className="mt-14 mb-10">
-            <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
-            {
-              isCollectionLoading
-                ? (
-                  <div className="flex justify-center items-center h-24">
-                    <Spinner className="w-[26px] text-white" />
-                  </div>
-                )
-                : (
-                  <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-                      {featuredCollections?.map((collection, index) => (
-                        <li
-                          key={`${collection.address}_${index}`}
-                          className="mx-auto w-full h-full">
-                          <CollectionCard collection={collection} size="sml" />
-                        </li>
-                      ))}
-                  </ul>
-                )
-            }
-          </section>
+            <section className="mt-14 mb-10">
+              <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
+              {
+                isCollectionLoading
+                  ? (
+                    <div className="flex justify-center items-center h-24">
+                      <Spinner className="w-[26px] dark:text-white text-ink" />
+                    </div>
+                  )
+                  : (
+                    <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+                        {featuredCollections?.map((collection, index) => (
+                          <li
+                            key={`${collection.address}_${index}`}
+                            className="mx-auto w-full h-full">
+                            <CollectionCard collection={collection} size="sml" />
+                          </li>
+                        ))}
+                    </ul>
+                  )
+              }
+            </section>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

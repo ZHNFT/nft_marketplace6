@@ -19,7 +19,7 @@ export default function CollectionCard({ collection, size }) {
   
   return (
    <div className={clsx(
-     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl bg-[#262a32] h-full',
+     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] border-[0.5px] border-manatee h-full',
      size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className="relative w-[full] h-[300px] rounded-xl overflow-hidden">
@@ -46,7 +46,7 @@ export default function CollectionCard({ collection, size }) {
           <span className="sr-only">{ name }</span>
         </a>
       </Link>
-      <div className="absolute right-[12px] top-[12px] w-[66px] box-shadow-featuredCard backdrop-blur-md rounded-md bg-cardCaption py-1 px-2 flex flex-col">
+      <div className="absolute text-white right-[12px] top-[12px] w-[66px] box-shadow-featuredCard backdrop-blur-md rounded-md bg-cardCaption py-1 px-2 flex flex-col">
         <ul>
           {
             tokens?.map((token, index) => (
@@ -78,7 +78,7 @@ export default function CollectionCard({ collection, size }) {
         </p>
       </div>
       <div className={clsx(
-        'flex absolute bottom-0 left-0 pl-[60px] h-[46px] w-full backdrop-blur-md text-xs justify-between items-center rounded-xl',
+        'flex absolute bottom-0 left-0 pl-[60px] h-[46px] text-white w-full backdrop-blur-md text-xs justify-between items-center rounded-xl',
         pending === true ? 'blue-gradient opacity-85' : 'bg-cardCaption'
       )}>
         {
@@ -112,7 +112,7 @@ export default function CollectionCard({ collection, size }) {
         <div className="flex items-center">
           <div className={clsx(
             "absolute -top-[19px] left-[10px] w-[71px] h-[71px] rounded-full overflow-hidden flex items-center justify-center",
-            "bg-[#262a32] rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
+            "dark:bg-[#262a32] bg-white rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
           )}>
             <div className="relative w-[55px] h-[55px] rounded-full overflow-hidden">
               <Image src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
@@ -126,21 +126,21 @@ export default function CollectionCard({ collection, size }) {
         <div className="absolute -top-[287px] left-[12px] text-xxs">
           {
             collectionCategories?.map((category, index) => (
-              <span key={`collection_category_${index}`} className="rounded-xl bg-tagDark py-1 px-3">Utility</span>
+              <span key={`collection_category_${index}`} className="rounded-xl bg-tagDark text-white py-1 px-3">{ category }</span>
             ))
           }
           {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
         </div>
       </div>
       <div className="flex flex-col mt-8 mb-1.5 lg:mb-12 align-center">
-        <p className="text-manatee text-xxs">
+        <p className="dark:text-manatee text-ink text-xxs">
           { description }
         </p>
       </div>
     </div>
     <div className="hidden lg:block absolute right-4 bottom-5">
       <Link href={`/collections/${address}`}>
-        <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] border-white hover:border-cornflower hover:bg-white/[0.15]">
+        <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cornflower/[0.15]">
           View collection
         </a>
       </Link>

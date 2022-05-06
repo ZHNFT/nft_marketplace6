@@ -101,7 +101,7 @@ export default function BuyNowForm(props) {
             <div className="leading-none">
               <a href="#" className="text-sm text-cornfllower">{ellipseAddress(collectionId, 4)}</a>
               <p className="leading-2 mb-1">{name}</p>
-              <p className="text-[11px] text-manatee">{"Creator Fees: " + fees.royaltyFee + "%"}</p>
+              <p className="text-[11px] dark:text-manatee text-frost">{"Creator Fees: " + fees.royaltyFee + "%"}</p>
             </div>
           </div>
           <div className="text-right">
@@ -109,7 +109,7 @@ export default function BuyNowForm(props) {
               <CurrencyIcon currency={currencySymbol} hnyClassName="h-[14px] -top-[2px] -mr-1 relative pr-[5px]" ethWidth={9} ethHeight={13} />
               <span className="ml-1">{price ? formatEther(price) : "0"}</span>
             </div>
-            <p className="text-manatee text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
+            <p className="dark:text-manatee text-frost text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function BuyNowForm(props) {
               <CurrencyIcon currency={currencySymbol} hnyClassName="h-[16px] -mr-1 -top-[3px] relative pr-[5px]" />
               <span className="font-medium text-xl text-cornflower ml-1">{price ? formatEther(price) : "0"}</span>
             </div>
-            <p className="text-manatee text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
+            <p className="dark:text-manatee text-frost text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
           </div>
         </div>
       </div>

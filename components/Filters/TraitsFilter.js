@@ -44,7 +44,7 @@ export default function TraitsFilter({ formValues, setFieldValue, filters, submi
         <>
           <Disclosure.Button className="text-xs w-full text-left pb-4 flex justify-between items-start">
             Traits
-            <ArrowIcon type={ open ? 'up' : 'down' } className="text-manatee w-[8px] mr-1.5 relative bottom-0.5" />
+            <ArrowIcon type={ open ? 'up' : 'down' } className="dark:text-manatee text-frost w-[8px] mr-1.5 relative bottom-0.5" />
           </Disclosure.Button>
 
           <Transition
@@ -83,7 +83,7 @@ export default function TraitsFilter({ formValues, setFieldValue, filters, submi
                                 >
                                   { traitType.type }
                                 </RadioGroup.Label>
-                                <span className="text-manatee text-xs">{ traitType.traitCount }</span>
+                                <span className="dark:text-manatee text-frost text-xs">{ traitType.traitCount }</span>
                               </div>
                             )}
                           </RadioGroup.Option>
@@ -100,7 +100,7 @@ export default function TraitsFilter({ formValues, setFieldValue, filters, submi
                             <span className="sr-only">Rarity</span>
                             <DiamondIcon className="w-[15px] relative -left-[2px]" />
                           </div>
-                          <div className="w-[30px] text-center text-manatee ml-1">
+                          <div className="w-[30px] text-center dark:text-manatee text-frost ml-1">
                             <button type="button">
                               <span className="sr-only">count</span> #
                               <span className="inline-block w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[5px] border-t-manatee mb-[1px] ml-1" />

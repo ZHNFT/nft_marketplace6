@@ -10,15 +10,15 @@ export default function Dropdown({ className, buttonClassName, label, isSelectFi
         <div className="relative">
           <Listbox.Button className={clsx(
             'cursor-pointer relative w-full focus:outline-none focus-visible:border-malibu',
-            isSelectField ? 'select-field rounded-md text-white border-[0.5px] border-transparent focus:border-malibu text-left !text-sm' : 'py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none font-medium border-[0.5px] border-rhino',
+            isSelectField ? 'select-field rounded-md text-white border-[0.5px] border-transparent focus:border-malibu text-left !text-sm' : 'py-2.5 pl-3 pr-10 text-center rounded-[20px] focus:outline-none font-medium border-[0.5px] dark:border-rhino border-ink',
             isDisabled ? 'opacity-50' : '',
             size === 'sml' ? 'text-xs' : 'text-base',
             buttonClassName
           )}>
-            <span className={clsx('block truncate', !selected.value ? 'text-manatee' : '')}>{selected.label}</span>
+            <span className={clsx('block truncate', !selected.value ? 'dark:text-manatee text-ink' : '')}>{selected.label}</span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               <ChevronDownIcon
-                className={clsx('text-ink pr-1', isSelectField ? 'w-[14px] text-malibu' : 'w-[16px] dark:text-white')}
+                className={clsx('text-ink pr-1', isSelectField ? 'w-[14px] text-malibu' : 'w-[16px] dark:text-white text-ink')}
                 aria-hidden="true"
               />
             </span>

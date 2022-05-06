@@ -14,7 +14,7 @@ export default function Profiles({ results }) {
   }
 
   return (
-    <Table className="text-xs">
+    <Table className="text-xs dark:text-manatee text-ink">
       <RowHeading>
         <Cell className="w-[230px]"></Cell>
         <Cell className="w-[100px] text-center">Transactions</Cell>
@@ -28,15 +28,15 @@ export default function Profiles({ results }) {
               <Row key={id} className="cursor-pointer text-xs !py-2" onClick={() => router.push(`/users/${address}`)}>
                 <Cell className="w-[230px] flex items-center">
                   <Image className="rounded-full" src={resolveBunnyLink(images?.profile) || DefaultLogo} alt={username} height="24" width="24" />
-                  <span className="text-white ml-3">{ username }</span>
+                  <span className="dark:text-white text-ink ml-3">{ username }</span>
                 </Cell>
                 <Cell className="w-[100px] flex flex-col justify-center items-center">
-                  <span className="relative -left-[5px] text-white">
+                  <span className="relative -left-[5px] dark:text-white text-malibu">
                     <BeeIcon className="h-[14px] relative -top-[2px] pr-[5px]" />
                     { sales?.total }
                   </span>
                 </Cell>
-                <Cell className="w-[80px] text-center leading-none text-white">
+                <Cell className="w-[80px] text-center leading-none dark:text-white text-malibu">
                   { volume?.total ? formatEther(volume?.total) : '0' }
                 </Cell>
               </Row>
