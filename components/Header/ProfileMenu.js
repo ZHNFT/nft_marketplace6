@@ -141,7 +141,7 @@ export default function ProfileMenu({ address, disconnect }) {
       </ul>
       
       <div className="mt-4 text-right">
-        <DarkModeSwitch />
+        {/*<DarkModeSwitch />*/}
       </div>
     </div>
   );
