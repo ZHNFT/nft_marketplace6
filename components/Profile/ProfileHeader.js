@@ -11,7 +11,7 @@ import {
 } from "../icons";
 import { getExplorer } from "../../config";
 import { ellipseAddress, resolveBunnyLink } from "../../Utils";
-import { formatEther, formatCompact } from "../../Utils/helper";
+import { formatEther, formatCompact, sanitizeUrl } from "../../Utils/helper";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import DefaultLogo from "../../images/default-collection-logo.png";
@@ -94,21 +94,21 @@ export default function ProfileHeader({
 
                 {userData?.website && (
                 <li className="mr-6">
-                  <a href={userData.website} target="_blank" rel="noreferrer">
+                  <a href={sanitizeUrl(userData.website)} target="_blank" rel="noreferrer">
                     <LinkIcon className="w-[18px] mr-2" />
                   </a>
                 </li>
               )}
               {userData?.instagram && (
                 <li className="mr-6">
-                  <a href={userData.instagram} target="_blank" rel="noreferrer">
+                  <a href={sanitizeUrl(userData.instagram)} target="_blank" rel="noreferrer">
                     <InstagramIcon className="w-[18px] mr-2" />
                   </a>
                 </li>
               )}
               {userData?.twitter && (
                 <li className="mr-6">
-                  <a href={userData.twitter} target="_blank" rel="noreferrer">
+                  <a href={sanitizeUrl(userData.twitter)} target="_blank" rel="noreferrer">
                     <TwitterIcon className="w-[19px] mr-2" />
                   </a>
                 </li>
