@@ -4,6 +4,7 @@ import Image from 'next/image';
 import CollectionCard from '../Collection/CollectionCard';
 import { collectionUrl, nftUrl, collectionTokenSnippetsUrl } from '../../constants/url';
 import HiveImage from "../../images/collection-card-image-hive.png";
+import DefaultLogo from '../../images/default-collection-logo.png';
 import Spinner from '../Spinner/Spinner';
 
 export default function Hero({ address }) {
@@ -65,7 +66,7 @@ export default function Hero({ address }) {
             <Link href={`/collections/${address}`} passHref>
               <a className="flex items-center cursor-pointer">
                 <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
-                  
+                  { collection && <Image className="h-8 w-8" src={collection?.images?.logo || DefaultLogo} alt={collection?.name} width={"100%"} height={"100%"} /> }
                 </span>
                 <span className="dark:text-white text-black text-xs hover:underline">{collection?.name}</span>
               </a>
