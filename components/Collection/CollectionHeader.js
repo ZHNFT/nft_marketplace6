@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Image from 'next/image'
+import Linkify from 'react-linkify';
 import { ellipseAddress, resolveBunnyLink } from '../../Utils';
 import { formatEther, sanitizeUrl } from '../../Utils/helper';
 import DefaultLogo from '../../images/default-collection-logo.png';
@@ -128,7 +129,15 @@ export default function CollectionHeader(props) {
                     </span>
                 </li>
             </ul>
-            <p className='dark:text-manatee text-frost text-xs pt-3'>{description}</p>
+            <p className='dark:text-manatee text-frost text-xs pt-3'>
+              <Linkify componentDecorator={(decoratedHref, decoratedText, key) => (
+                  <a target="blank" className="dark:text-malibu text-cobalt hover:underline" href={decoratedHref} key={key}>
+                      {decoratedText}
+                  </a>
+              )}>
+                {description}
+              </Linkify>
+            </p>
         </div>
       </section>
       <EditCollectionModal

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
+import Linkify from 'react-linkify';
 import { resolveBunnyLink } from "../../Utils";
 import { formatCompact, formatEther } from "../../Utils/helper";
 import DefaultImage from '../../images/No-Image-Placeholder.png';
@@ -134,7 +135,13 @@ export default function CollectionCard({ collection, size }) {
       </div>
       <div className="flex flex-col mt-8 mb-1.5 lg:mb-12 align-center">
         <p className="dark:text-manatee text-ink text-xxs">
-          { description }
+          <Linkify componentDecorator={(decoratedHref, decoratedText, key) => (
+              <a target="blank" className="dark:text-malibu text-cobalt hover:underline" href={decoratedHref} key={key}>
+                  {decoratedText}
+              </a>
+          )}>
+            {description}
+          </Linkify>
         </p>
       </div>
     </div>
