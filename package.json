@@ -50,6 +50,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@iconify/react": "^3.2.1",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
     "@nomiclabs/hardhat-etherscan": "^3.0.1",
     "autoprefixer": "^10.4.2",

@@ -24,8 +24,9 @@ export default function Footer() {
           </a>
         </li>
       </ul>
-      <div>
-        {/* <DarkModeSwitch /> */}
+      <div className="flex flex-row items-center">
+        <DarkModeSwitch />
+        <p className="ml-6 text-xs">&copy; 2022 Hexagon</p>
       </div>
     </div>
   );

@@ -41,6 +41,8 @@ import PaintIcon from './PaintIcon';
 import StackedPaperIcon from './StackedPaperIcon';
 import WalletIcon from './WalletIcon';
 import WheelIcon from './WheelIcon';
+import LowDollarIcon from './LowDollarIcon';
+import CheckedRibbonIcon from './CheckedRibbonIcon';
 
 export {
   BeeIcon,
@@ -85,5 +87,7 @@ export {
   PaintIcon,
   StackedPaperIcon,
   WalletIcon,
-  WheelIcon
+  WheelIcon,
+  LowDollarIcon,
+  CheckedRibbonIcon
 }

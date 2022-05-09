@@ -219,7 +219,7 @@ const uploadToIpfs = async files => {
 
 // get collections with token snippets
 const getCollectionsWithTokenSnippets = async ({ chain, size, categories }) => {
-  const res = await fetch(collectionsUrl({ chain, size, categories: categories?.join(',') }));
+  const res = await fetch(collectionsUrl({ chain, size, sort: 'createdAt', categories: categories?.join(',') }));
   const data = await res?.json();
 
   if (data?.results) {

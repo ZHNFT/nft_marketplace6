@@ -2,7 +2,6 @@ import Image from "next/image";
 import { resolveBunnyLink } from "../../Utils";
 
 export default function Banner({ name, image }) {
-  console.log('KKKK', image);
   if (!image) return null;
 
   const bannerImage = image.startsWith('ipfs:') ? `${resolveBunnyLink(image)}?optimizer=image&width=1000` : image;

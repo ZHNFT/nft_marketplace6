@@ -91,3 +91,7 @@
 .dark .tab-container {
   background: linear-gradient(161.6deg, #1E2024 -76.8%, #2A2F37 104.4%);
 }
+
+.light-mask {
+  -webkit-mask: linear-gradient(rgb(255, 255, 255), transparent);
+}

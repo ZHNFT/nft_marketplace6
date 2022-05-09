@@ -131,11 +131,11 @@ export default function Collection(props) {
 
   return (
     <FiltersContext.Provider value={filtersContextValue}>
-      {/*
+      {
         (images?.banner || images?.featured) && (
           <Banner name={name} image={images?.banner || images?.featured} />
         )
-      */}
+      }
       <div className="lg:max-w-6xl mx-auto">
         <CollectionHeader
           chainIdHex={chainIdHex}

@@ -17,7 +17,7 @@ module.exports = {
       cornflower: '#6e85ff',
       cobalt: '#3280f8',
       blade: '#1f2225',
-      ink: '#4a4a4a',
+      ink: '#04111E',
       rhino: '#c8c8c8',
       pitch: '#262b31',
       gunmetal: '#282d34',
@@ -25,7 +25,8 @@ module.exports = {
       whiteLilac: '#f7f9fc',
       silver: '#77808b',
       frost: '#757f87',
-      lightShade: '#ededed'
+      lightShade: '#ededed',
+      lightGray: '#5d5d5d'
     },
     extend: {
       borderRadius: {
@@ -40,6 +41,7 @@ module.exports = {
         header: 'rgba(255, 255, 255, 0.25)',
         tabButton: "#202225",
         cardCaption: 'rgba(32, 34, 37, 0.3)',
+        featuredLogo: 'rgba(0, 0, 0, 0.1)',
         tagDark: 'rgba(32, 34, 37, 0.3)'
       },
       boxShadow: {
