@@ -31,7 +31,7 @@ export default function CollectionHeader(props) {
             <div className="gradient-border relative p-2.5">
               <div className="rounded-full border border-white overflow-hidden w-[54px] h-[54px]">
                   <Image
-                    className="h-8 w-8"
+                    className="h-8 w-8 bg-white"
                     src={logoImage || DefaultLogo}
                     alt={name}
                     width={"100%"}

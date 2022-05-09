@@ -116,7 +116,7 @@ export default function CollectionCard({ collection, size }) {
             "dark:bg-[#262a32] bg-white rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
           )}>
             <div className="relative w-[55px] h-[55px] rounded-full overflow-hidden">
-              <Image src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
+              <Image className="bg-white" src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
             </div>
           </div>
           <div className="ml-[70px] leading-none">
@@ -124,10 +124,10 @@ export default function CollectionCard({ collection, size }) {
             <span className="text-manatee text-xs">{ author }</span>
           </div>
         </div>
-        <div className="absolute -top-[287px] left-[12px] text-xxs">
+        <div className="absolute -top-[287px] left-[12px] text-xxs flex">
           {
             collectionCategories?.map((category, index) => (
-              <span key={`collection_category_${index}`} className="rounded-xl bg-tagDark text-white py-1 px-3">{ category }</span>
+              <span key={`collection_category_${index}`} className="first:ml-0 ml-2 rounded-xl inline-block bg-tagDark text-white py-1 px-3 capitalize">{ category }</span>
             ))
           }
           {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}

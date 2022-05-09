@@ -42,7 +42,7 @@ const GalleryItem = forwardRef((props, ref) => {
                   ? (
                     <span className="mr-1.5 rounded-full grayscale border-white border block overflow-hidden flex">
                       <Image
-                        className="h-8 w-8"
+                        className="h-8 w-8 bg-white"
                         src={collectionLogoImage}
                         alt={name}
                         width="27"

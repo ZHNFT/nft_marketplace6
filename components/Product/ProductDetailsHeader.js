@@ -18,7 +18,7 @@ export default function ProductDetailsHeader(props) {
             <a className="flex items-center cursor-pointer">
               <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
                 <Image
-                  className="h-8 w-8"
+                  className="h-8 w-8 bg-white"
                   src={logoImage || DefaultLogo}
                   alt={name}
                   width={"100%"}

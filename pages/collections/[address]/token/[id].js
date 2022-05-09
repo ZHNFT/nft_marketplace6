@@ -193,6 +193,7 @@ export default function Nft(props) {
               if (activeListing) return NFT_LISTING_STATE.FOR_SALE;
               return NFT_LISTING_STATE.NOT_LISTED;
             })()}
+            collectionCategories={collection?.categories}
           />
 
           {/* Product Details Header */}
@@ -489,6 +490,7 @@ export default function Nft(props) {
                   <ProductCollection
                     name={collection?.name}
                     collectionId={data?.collectionId}
+                    logo={collection?.images?.logo}
                     currency={collection?.currency?.symbol}
                     itemCount={collection?.totalSupply}
                     ownerCount={collection?.ownerCount}

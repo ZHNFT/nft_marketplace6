@@ -13,7 +13,7 @@ const LISTING_LABELS = {
   [NFT_LISTING_STATE.FOR_SALE]: 'For sale'
 };
 
-export default function ProductPreview({ className, name, image, imageHosted, expiry, listingState }) {
+export default function ProductPreview({ className, name, image, imageHosted, expiry, listingState, collectionCategories }) {
   const { imageOptimizer, imageWidth } = image?.split('.').pop() === 'gif'
     ? { imageOptimizer: 'gif', imageWidth: 472 }
     : { imageOptimizer: 'image', imageWidth: 944 };
@@ -21,7 +21,11 @@ export default function ProductPreview({ className, name, image, imageHosted, ex
     <div className={className}>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
         <div className="flex text-xxs">
-          <span className="rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3">Utility</span>
+          {
+            collectionCategories?.map((category, index) => (
+              <span key={`collection_category_${index}`} className="first:ml-0 ml-2 rounded-xl inline-block rounded-xl dark:bg-white/[0.05] bg-black/[0.05] py-1 px-3 capitalize">{ category }</span>
+            ))
+          }
         </div>
         {
           expiry && (
