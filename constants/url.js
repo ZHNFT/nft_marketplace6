@@ -41,12 +41,13 @@ const API_HOST = 'https://api.hexag0n.io';
  * @param {String} [obj.page] - The page number.
  * @param {String} [obj.size] - The number of collections to return.
  * @param {String} [obj.sort] - The sort property.
+ * @param {String} [obj.filter] - The filter property.
  * @param {String} [obj.categories] - The categories filter. Ex: categories=utility,music
  * @param {String} obj.chain - The chain where to get the collections from.
  * @returns {String} The collections URL.
  */
- const collectionsUrl = ({ page = 0, size = 50, sort, categories, chain }) => (
-  `${API_HOST}/collections?page=${page}&size=${size}&sort=${sort}&chain=${chain}${categories ? `&categories=${categories}` : ''}`
+ const collectionsUrl = ({ page = 0, size = 50, sort, filter, categories, chain }) => (
+  `${API_HOST}/collections?page=${page}&size=${size}&sort=${sort}&chain=${chain}${filter ? `&filter=${filter}` : ''}${categories ? `&categories=${categories}` : ''}`
 );
 
 /**

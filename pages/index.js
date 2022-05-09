@@ -33,7 +33,7 @@ export default function Home(props) {
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
     const chain = process.env.NEXT_PUBLIC_CHAIN;
-    const res = await fetch(collectionsUrl({ chain, size: 3 }));
+    const res = await fetch(collectionsUrl({ chain, size: 3, filter: 'featured' }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);
@@ -88,7 +88,7 @@ export default function Home(props) {
                   )
                   : (
                     <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-8">
-                        {featuredCollections?.map((collection, index) => collection.address !== '0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d' && (
+                        {featuredCollections?.map((collection, index) => (
                           <li
                             key={`${collection.address}_${index}`}
                             className="mx-auto w-full h-full">
