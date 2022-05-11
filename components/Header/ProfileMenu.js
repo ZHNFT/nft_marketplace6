@@ -13,13 +13,13 @@ import {
   FilesIcon,
 } from "../icons";
 import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
-import { formatter } from "../../Utils/helper";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
+import { CHAINS } from "../../constants/chains";
 
 export default function ProfileMenu({ address, disconnect }) {
   const { user, setShowEditProfileModal } = useContext(AppGlobalContext);
   const {
-    state: { tokenBalance },
+    state: { tokenBalance, chainId },
   } = useContext(Web3Context);
 
   let balance = tokenBalance;
@@ -46,7 +46,7 @@ export default function ProfileMenu({ address, disconnect }) {
       <div className="relative mt-2 mb-10 flex justify-between after:block after:m-auto after:w-[98%] after:absolute after:left-0 after:right-0 after:border-b-[0.5px] after:border-silver after:-bottom-[14px]">
         <div>
           <span className="font-medium text-base text-pitch dark:text-white">
-            {balance} HNY
+            {balance} { CHAINS[chainId]?.mainTokenTicker }
           </span>
           <button
             className="block dark:hover:text-white hover:text-cobalt"

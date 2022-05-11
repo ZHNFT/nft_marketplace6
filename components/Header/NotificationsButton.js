@@ -46,7 +46,7 @@ export default function NotificationsButton({ currentUserAddress }) {
       {({ open }) => (
         <>
           <Popover.Button
-            className="ml-5 flex-shrink-0 rounded-full p-1 hover:text-cornflower dark:border-[0.5px] w-[38px] h-[38px] border-manatee relative"
+            className="ml-4 flex-shrink-0 rounded-full p-1 hover:text-cornflower dark:border-[0.5px] w-[38px] h-[38px] border-manatee relative"
           >
             <span className="sr-only">View notifications</span>
             <BellIcon className="w-[24px] pb-1.5 absolute mx-auto top-0 left-[8px]" />

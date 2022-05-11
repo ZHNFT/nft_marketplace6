@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
+import { useRouter } from "next/router";
 import clsx from 'clsx';
 import { collectionsUrl } from "../constants/url";
 import Hero from '../components/Home/Hero';
@@ -7,6 +8,8 @@ import CollectionCard from '../components/Collection/CollectionCard';
 import Spinner from '../components/Spinner/Spinner';
 import { LowDollarIcon, CheckedRibbonIcon } from '../components/icons';
 import { Icon } from '@iconify/react';
+import Web3Context from '../contexts/Web3Context';
+import { CHAINS } from '../constants/chains';
 
 const HIGHLIGHTS = [
   {
@@ -27,31 +30,28 @@ const HIGHLIGHTS = [
 ];
 
 export default function Home(props) {
+  const { state: { appInit, chainId } } = useContext(Web3Context);
   const [featuredCollections, setCollections] = useState([]);
   const [isCollectionLoading, setIsCollectionLoading] = useState(false);
 
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
-    const chain = process.env.NEXT_PUBLIC_CHAIN;
+    const chain = CHAINS[chainId]?.name || 'polygon';
     const res = await fetch(collectionsUrl({ chain, size: 3, filter: 'featured' }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);
-  }, [])
+  }, [chainId]);
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    if (appInit) {
+      fetchData();
+    }
+  }, [appInit, fetchData]);
 
-  const { collections, connect, address } = props;
+  const { connect, address } = props;
 
-  if (!collections && !collections?.length) {
-    return  (
-      <h1 className='px-20 py-10 text-3xl'>No items in Marketplace</h1>
-    )
-  }
-
-  return (
+  return !!appInit && (
     <>
       <div className="flex justify-center lg:max-w-6xl mx-auto">
         <div className="w-full">
@@ -62,7 +62,7 @@ export default function Home(props) {
         </div>
       </div>
 
-      <div className="-mx-8 dark:bg-lightGray/[0.1] bg-silver/[0.05]">
+      <div className="absolute left-0 w-full dark:bg-lightGray/[0.1] bg-silver/[0.05]">
         <div className="flex justify-center lg:max-w-6xl mx-auto">
           <div className="w-full">
             <div className="flex flex-col">
@@ -87,7 +87,7 @@ export default function Home(props) {
         </div>
       </div>
             
-      <div className="flex justify-center lg:max-w-6xl mx-auto mt-24 mb-10">
+      <div className="flex justify-center lg:max-w-6xl mx-auto mt-[750px] sm:mt-[660px] md:mt-[410px] mb-10">
         <div className="w-full">
           <div className="flex flex-col">
             <section>
@@ -99,16 +99,28 @@ export default function Home(props) {
                       <Spinner className="w-[26px] dark:text-white text-ink" />
                     </div>
                   )
-                  : (
-                    <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-8">
-                        {featuredCollections?.map((collection, index) => (
-                          <li
-                            key={`${collection.address}_${index}`}
-                            className="mx-auto w-full h-full">
-                            <CollectionCard collection={collection} size="sml" />
-                          </li>
-                        ))}
-                    </ul>
+                  : !!featuredCollections && (
+                    <>
+                      {
+                        featuredCollections.length > 0
+                          ? (
+                            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-8">
+                                {featuredCollections?.map((collection, index) => (
+                                  <li
+                                    key={`${collection.address}_${index}`}
+                                    className="mx-auto w-full h-full">
+                                    <CollectionCard collection={collection} size="sml" />
+                                  </li>
+                                ))}
+                            </ul>
+                          )
+                          : (
+                            <div className="flex justify-center items-center h-24">
+                              <p className="text-sm">No collections found in { CHAINS[chainId]?.label } network.</p>
+                            </div>
+                          )
+                      }
+                    </>
                   )
               }
             </section>

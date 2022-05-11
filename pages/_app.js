@@ -13,6 +13,8 @@ import { getUserDetails } from '../Utils/helper';
 import { CURRENCIES } from '../constants/currencies';
 import AppGlobalContext from '../contexts/AppGlobalContext';
 import NftActionsModal from '../components/Modals/NftActionsModal';
+import { CHAIN_IDS, CHAINS} from '../constants/chains';
+import { useRouter } from "next/router";
 
 // Components
 import Layout from '../components/layout';
@@ -22,6 +24,8 @@ import {
   honeyTokenAddress,
   ethTokenAddress,
   maticTokenAddress,
+  ethMainTokenAddress,
+  avaxTokenAddress,
   marketplaceAddress, 
   networkConfigs,
   getChainById, 
@@ -61,6 +65,11 @@ router.events.on('routeChangeError', () => nprogress.done());
 
 function reducer(state, action) {
   switch (action.type) {
+    case 'INIT_APP':
+      return {
+        ...state,
+        appInit: true
+      }
     case 'SET_WEB3_PROVIDER':
       return {
         ...state,
@@ -122,6 +131,8 @@ function MyApp({ Component, pageProps }) {
     tokenContract,
     ethTokenContract,
     maticTokenContract,
+    ethMainTokenContract,
+    avaxTokenContract,
     ethersProvider,
     marketplaceContract,
     tokenData,
@@ -152,21 +163,50 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  const loadBalance = useCallback(async function({ tokenContract, ethTokenContract, maticTokenContract, address }) {
+  const loadBalance = useCallback(async function({ tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address }) {
     if (!address) return;
 
-    const [tokenBalance, ethTokenBalance, maticTokenBalance] = await Promise.all([
-      tokenContract ? tokenContract.balanceOf(address) : Promise.resolve(0),
-      ethTokenContract ? ethTokenContract.balanceOf(address) : Promise.resolve(0),
-      maticTokenContract ? maticTokenContract.balanceOf(address) : Promise.resolve(0)
-    ]);
+    if (tokenContract) {
+      // polygon
+      const [tokenBalance, ethTokenBalance, maticTokenBalance] = await Promise.all([
+        tokenContract ? tokenContract.balanceOf(address) : Promise.resolve(0),
+        ethTokenContract ? ethTokenContract.balanceOf(address) : Promise.resolve(0),
+        maticTokenContract ? maticTokenContract.balanceOf(address) : Promise.resolve(0)
+      ]);
+  
+      dispatch({
+        type: 'SET_BALANCE',
+        tokenBalance: ethers.utils.formatEther(tokenBalance.toString()),
+        ethTokenBalance: ethers.utils.formatEther(ethTokenBalance.toString()),
+        maticTokenBalance: ethers.utils.formatEther(maticTokenBalance.toString())
+      });
 
-    dispatch({
-      type: 'SET_BALANCE',
-      tokenBalance: ethers.utils.formatEther(tokenBalance.toString()),
-      ethTokenBalance: ethers.utils.formatEther(ethTokenBalance.toString()),
-      maticTokenBalance: ethers.utils.formatEther(maticTokenBalance.toString())
-    });
+      return;
+    }
+
+    if (ethMainTokenContract) {
+      // ethereum
+      const ethMainTokenBalance = await ethMainTokenContract.balanceOf(address);
+  
+      dispatch({
+        type: 'SET_BALANCE',
+        tokenBalance: ethers.utils.formatEther(ethMainTokenBalance.toString())
+      });
+
+      return;
+    }
+
+    if (avaxTokenContract) {
+      // avax
+      const avaxTokenBalance = await avaxTokenContract.balanceOf(address);
+  
+      dispatch({
+        type: 'SET_BALANCE',
+        tokenBalance: ethers.utils.formatEther(avaxTokenBalance.toString())
+      });
+
+      return;
+    }
   }, []);
 
   const connect = useCallback(async function () {
@@ -177,35 +217,40 @@ function MyApp({ Component, pageProps }) {
     // We plug the initial `provider` into ethers.js and get back
     // a Web3Provider. This will add on methods from ethers.js and
     // event listeners such as `.on()` will be different.
-    const web3Provider = new providers.Web3Provider(provider)
+    const web3Provider = new providers.Web3Provider(provider, 'any')
 
     const signer = web3Provider.getSigner()
     const address = await signer.getAddress()
 
     const network = await web3Provider.getNetwork()
 
-    const ethersProvider = new ethers.providers.Web3Provider(provider)
+    const ethersProvider = new ethers.providers.Web3Provider(provider, 'any')
     const ethersSigner = ethersProvider.getSigner();
     
     let marketplaceContract;
     let erc20TokenContract;
     let ethTokenContract;
     let maticTokenContract;
+    let ethMainTokenContract;
+    let avaxTokenContract;
 
     if (network.chainId === 80001) {
       marketplaceContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
       erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
       ethTokenContract = new ethers.Contract(mumbaiEthTokenAddress, TestErc20ABI, ethersSigner);
       maticTokenContract = new ethers.Contract(mumbaiMaticTokenAddress, TestErc20ABI, ethersSigner);
-    }
-    if (network.chainId === 137) {
+    } else if (network.chainId === 137) {
       marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
       erc20TokenContract = new ethers.Contract(honeyTokenAddress, honeyAbi, ethersSigner);
       ethTokenContract = new ethers.Contract(ethTokenAddress, ethAbi, ethersSigner);
       maticTokenContract = new ethers.Contract(maticTokenAddress, maticAbi, ethersSigner);
+    } else if (network.chainId === 1) {
+      ethMainTokenContract = new ethers.Contract(ethMainTokenAddress, ethAbi, ethersSigner);
+    } else if (network.chainId === 43114) {
+      avaxTokenContract = new ethers.Contract(avaxTokenAddress, ethAbi, ethersSigner);
     }
 
-    await loadBalance({ tokenContract: erc20TokenContract, ethTokenContract, maticTokenContract, address });
+    await loadBalance({ tokenContract: erc20TokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address });
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -214,16 +259,14 @@ function MyApp({ Component, pageProps }) {
       ethersProvider,
       address: address,
       chainId: network.chainId,
-      chainIdHex: network.chainId === 137 
-        ? mainnetChainId 
-        : network.chainId === 80001 
-          ? testnetChainId 
-          : null,
+      chainIdHex: `0x${Number(network.chainId).toString(16)}`,
       marketplaceContract,
       tokenContract: erc20TokenContract,
       ethTokenContract,
       maticTokenContract
     })
+
+    dispatch({ type: 'INIT_APP' });
 
     // Pull in user details once the user has connected
     // and we have their address.
@@ -255,6 +298,8 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if (window !== 'undefined' && web3Modal.cachedProvider) {
       connect()
+    } else {
+      dispatch({ type: 'INIT_APP' });
     }
   }, [connect]);
 
@@ -270,13 +315,12 @@ function MyApp({ Component, pageProps }) {
           type: 'SET_ADDRESS',
           address: accounts[0],
         })
-        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, address: accounts[0] });
+        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, ethMainaddress: accounts[0] });
       }
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
       const handleChainChanged = (_hexChainId) => {
         window.location.reload()
-        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, address });
       }
 
       const handleDisconnect = (error) => {
@@ -298,22 +342,15 @@ function MyApp({ Component, pageProps }) {
         }
       }
     }
-  }, [provider, disconnect, loadBalance, tokenContract, ethTokenContract, maticTokenContract, address])
+  }, [provider, disconnect, loadBalance, tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address])
 
 
   // Will ask the user to switch chains if they are connected to the wrong chain
   useEffect(() => {
-    if (provider && chainId !== 80001 && chain === 'mumbai') {
+    if (provider && !CHAIN_IDS.includes(chainId)) {
       provider?.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: testnetChainId }],
-      });
-      return
-    }
-    if (provider && chainId !== 137 && chain === 'polygon') {
-      provider?.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: mainnetChainId }],
+        params: [{ chainId: chain === 'polygon' ? mainnetChainId : testnetChainId }],
       });
       return
     }
@@ -376,8 +413,10 @@ function MyApp({ Component, pageProps }) {
     [showEditProfileModal, user, nftData, handleModal, activeModal, handleCloseModal, shouldRefetch, setIsRefetching, isRefetching, getTokenPriceUsd]
   );
 
+  const { asPath } = useRouter();
+
   return (
-    <ThemeProvider enableSystem={true} attribute="class" defaultTheme="light">
+    <ThemeProvider enableSystem={true} attribute="class" defaultTheme="dark">
       <Web3Context.Provider value={contextValue}>
         <AppGlobalContext.Provider value={globalContextValue}>
           <Layout pageProps={pageProps} connect={connect} disconnect={disconnect} {...contextValue.state}>
@@ -389,6 +428,7 @@ function MyApp({ Component, pageProps }) {
               {...pageProps}
               {...globalContextValue}
               {...contextValue.state}
+              key={asPath}
               shouldRefetch={shouldRefetch}
               handleCloseModal={handleCloseModal}
               setShouldRefetch={setShouldRefetch}

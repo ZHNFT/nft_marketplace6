@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 import { collectionsUrl } from "../constants/url";
 import CollectionCard from '../components/Collection/CollectionCard';
 import Spinner from '../components/Spinner/Spinner';
 import { PaintIcon, StackedPaperIcon, HeadphoneIcon, CameraIcon, WheelIcon, WalletIcon } from '../components/icons';
-import clsx from 'clsx';
+import Web3Context from '../contexts/Web3Context';
+import { CHAINS } from '../constants/chains';
 
 const categories = [
   {
@@ -32,26 +33,29 @@ const categories = [
   }
 ];
 
-export default function Collections(props) {
+export default function Collections() {
+  const { state: { appInit, chainId } } = useContext(Web3Context);
   const [collections, setCollections] = useState([]);
   const [isCollectionLoading, setIsCollectionLoading] = useState(false);
   const [categoryButtons, setCategoryButtons] = useState({});
 
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
-    const chain = process.env.NEXT_PUBLIC_CHAIN;
+    const chain = CHAINS[chainId]?.name || 'polygon';
     const selectedCategories = Object.keys(categoryButtons).filter(key => !!categoryButtons[key]);
     const res = await fetch(collectionsUrl({ chain, sort: 'createdAt', categories: selectedCategories }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);
-  }, [categoryButtons]);
+  }, [categoryButtons, chainId]);
 
   useEffect(() => {
-    fetchData()
-  }, [categoryButtons]);
+    if (appInit) {
+      fetchData();
+    }
+  }, [appInit, fetchData]);
 
-  return (
+  return !!appInit && (
     <div className="flex justify-center lg:max-w-6xl mx-auto">
       <div className="w-full">
         <div className="flex flex-col">
@@ -86,16 +90,28 @@ export default function Collections(props) {
                     <Spinner className="w-[26px] dark:text-white text-ink" />
                   </div>
                 )
-                : (
-                  <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
-                      {collections?.map((collection, index) => (
-                        <li
-                          key={`${collection.address}_${index}`}
-                          className="mx-auto w-full">
-                          <CollectionCard collection={collection} />
-                        </li>
-                      ))}
-                  </ul>
+                : !!collections && (
+                  <>
+                    {
+                      collections.length > 0
+                        ? (
+                          <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
+                              {collections.map((collection, index) => (
+                                <li
+                                  key={`${collection.address}_${index}`}
+                                  className="mx-auto w-full">
+                                  <CollectionCard collection={collection} />
+                                </li>
+                              ))}
+                          </ul>
+                        )
+                        : (
+                          <div className="flex justify-center items-center h-[380px]">
+                            <p className="text-sm">No collections found in { CHAINS[chainId]?.label } network.</p>
+                          </div>
+                        )
+                    }
+                  </>
                 )
             }
           </section>

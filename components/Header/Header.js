@@ -12,6 +12,7 @@ import Logo from "../../images/hive-logo.png";
 import EditProfileModal from "../Modals/EditProfileModal";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import { MenuIcon } from "../icons";
+import ChainSwitcher from './ChainSwitcher';
 
 export default function Header(props) {
   const { navigation, connect, disconnect, address, withBorder } = props;
@@ -42,15 +43,15 @@ export default function Header(props) {
                     </Link>
                   </div>
                 </div>
-                <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-4">
+                <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-3">
                   <div className="flex items-center px-6 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <div className="w-full">
                       <SearchInput />
                     </div>
                   </div>
                 </div>
-                <div className="flex lg:items-center lg:justify-end xl:col-span-4 justify-between lg:w-auto">
-                  <ul className="hidden lg:flex ml-4 flex-1 justify-around">
+                <div className="flex lg:items-center lg:justify-end xl:col-span-5 justify-between lg:w-auto">
+                  <ul className="hidden lg:flex ml-4 mr-2 flex-1 justify-end">
                     <li>
                       <Link href="/collections">
                         <a className="text-base hover:underline">
@@ -60,7 +61,14 @@ export default function Header(props) {
                     </li>
                   </ul>
 
-                  <NotificationsButton currentUserAddress={address} />
+                  {
+                    address && (
+                      <>
+                        <ChainSwitcher />
+                        <NotificationsButton currentUserAddress={address} />
+                      </>
+                    )
+                  }
 
                   <div className="hidden lg:block">
                   {/* Profile dropdown */}
