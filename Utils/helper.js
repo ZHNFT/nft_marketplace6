@@ -34,7 +34,9 @@ const formatEther = (value) => {
     : typeof value === 'string' 
       ? ethers.BigNumber.from(value)
       : ethers.BigNumber.from(value?.toString());
-  return ethers.utils.formatEther(valueString);
+  const formattedValue = ethers.utils.formatEther(valueString);
+  const fixedCount = formattedValue < 1 ? 4 : 2;
+  return (+formattedValue).toFixed(fixedCount);
 }
 
 // formats number to K, M, B, T format eg. 16700 to 16.7k
