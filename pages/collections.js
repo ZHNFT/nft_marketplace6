@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { getCollectionsWithTokenSnippets } from '../Utils/helper';
+import { collectionsUrl } from "../constants/url";
 import CollectionCard from '../components/Collection/CollectionCard';
 import Spinner from '../components/Spinner/Spinner';
 import { PaintIcon, StackedPaperIcon, HeadphoneIcon, CameraIcon, WheelIcon, WalletIcon } from '../components/icons';
@@ -41,8 +41,9 @@ export default function Collections(props) {
     setIsCollectionLoading(true);
     const chain = process.env.NEXT_PUBLIC_CHAIN;
     const selectedCategories = Object.keys(categoryButtons).filter(key => !!categoryButtons[key]);
-    const collectionWithTokens = await getCollectionsWithTokenSnippets({ chain, categories: selectedCategories });
-    setCollections(collectionWithTokens);
+    const res = await fetch(collectionsUrl({ chain, categories: selectedCategories }));
+    const collections = await res?.json();
+    setCollections(collections?.results);
     setIsCollectionLoading(false);
   }, [categoryButtons]);
 
