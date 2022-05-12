@@ -20,9 +20,8 @@ export default function CollectionCard({ collection, size, hideDescription }) {
   
   return (
    <div className={clsx(
-     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] border-[0.5px] dark:border-0 h-full',
-     size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]',
-     hideDescription ? 'border-0' : 'border-manatee'
+     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] bg-silver/[0.05] h-full',
+     size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className={clsx(
       "relative w-[full] rounded-xl overflow-hidden",
@@ -152,7 +151,7 @@ export default function CollectionCard({ collection, size, hideDescription }) {
               </div>
             </div>
             <div className="flex flex-col mt-8 mb-1.5 lg:mb-12 align-center">
-              <p className="dark:text-manatee text-ink text-xxs">
+              <p className="dark:text-manatee text-frost text-xs">
                 <Linkify componentDecorator={(decoratedHref, decoratedText, key) => (
                     <a target="blank" className="dark:text-malibu text-cobalt hover:underline" href={decoratedHref} key={key}>
                         {decoratedText}

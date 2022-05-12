@@ -43,6 +43,7 @@ import WalletIcon from './WalletIcon';
 import WheelIcon from './WheelIcon';
 import LowDollarIcon from './LowDollarIcon';
 import CheckedRibbonIcon from './CheckedRibbonIcon';
+import MoneyBagIcon from './MoneyBagIcon';
 
 export {
   BeeIcon,
@@ -89,5 +90,6 @@ export {
   WalletIcon,
   WheelIcon,
   LowDollarIcon,
-  CheckedRibbonIcon
+  CheckedRibbonIcon,
+  MoneyBagIcon
 }

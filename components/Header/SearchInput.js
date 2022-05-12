@@ -9,6 +9,7 @@ import Collections from './SearchResults/Collections';
 import Items from './SearchResults/Items';
 import Profiles from './SearchResults/Profiles';
 import Spinner from '../Spinner/Spinner';
+import { SearchIcon } from '../icons';
 
 const SEARCH_TABS = [
   { id: 'collections', label: 'Collections' },
@@ -70,11 +71,12 @@ export default function SearchInput() {
       <Popover className="relative">
         {({ open }) => (
           <>
-            <div className="relative">
+            <div className="relative flex">
+              <SearchIcon className="w-4 absolute left-[14px] top-[15px] dark:text-white text-frost" />
               <input
                 id="search"
                 name="search"
-                className="block w-full dark:bg-search text-ink dark:text-white border-rhino dark:border-transparent rounded-full py-3 pl-4 pr-3 border-transparent text-sm sm:text-md dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu"
+                className="block w-full dark:bg-search text-ink dark:text-white border-rhino dark:border-transparent rounded-full py-3 pl-10 pr-3 border-transparent text-sm sm:text-md dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu"
                 placeholder="Search projects and items"
                 type="search"
                 autoComplete="off"

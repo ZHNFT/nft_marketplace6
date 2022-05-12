@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useContext } from 'react';
 import { useRouter } from "next/router";
+import Image from 'next/image';
 import clsx from 'clsx';
 import { collectionsUrl } from "../constants/url";
 import Hero from '../components/Home/Hero';
@@ -7,23 +8,23 @@ import HeroCards from '../components/Home/HeroCards';
 import CollectionCard from '../components/Collection/CollectionCard';
 import Spinner from '../components/Spinner/Spinner';
 import { LowDollarIcon, CheckedRibbonIcon } from '../components/icons';
-import { Icon } from '@iconify/react';
 import Web3Context from '../contexts/Web3Context';
 import { CHAINS } from '../constants/chains';
+import { Icon } from '@iconify/react';
 
 const HIGHLIGHTS = [
   {
-    icon: <LowDollarIcon className="text-5xl dark:text-malibu text-cobalt" />,
+    icon: <LowDollarIcon className="text-5xl dark:text-white text-ink" />,
     title: 'Low Transaction Fees',
     description: '0% fees for all collections utilizing HNY and 2% fees for all non-HNY collections'
   },
   {
-    icon: <CheckedRibbonIcon className="text-5xl dark:text-malibu text-cobalt" />,
+    icon: <CheckedRibbonIcon className="text-5xl dark:text-white text-ink" />,
     title: 'High Quality Collections',
     description: 'Each collection on Hexagon is hand-vetted by our curation team to ensure quality'
   },
   {
-    icon: <Icon icon="healthicons:money-bag-outline" className="text-5xl dark:text-malibu text-cobalt" />,
+    icon: <Icon icon="healthicons:money-bag-outline" className="text-5xl dark:text-white text-ink" />,
     title: 'Passive Income NFTs',
     description: 'No restrictions on trading passive income NFTs, unlike larger marketplace like OpenSea'
   }
@@ -68,13 +69,24 @@ export default function Home(props) {
             <div className="flex flex-col">
               <section className="pt-12 pb-4 rounded-xl">
                 <h2 className="text-center text-3xl font-semibold gradient-heading">Why Hexagon?</h2>
-                <ul className="mt-10 flex flex-col md:flex-row justify-between">
+                <ul className="mt-10 mx-8 md:mx-0 flex flex-col md:flex-row justify-between">
                   {
-                    HIGHLIGHTS.map(({ icon, title, description }, index) => (
+                    HIGHLIGHTS.map(({ icon, image, title, description }, index) => (
                       <li key={`highlight_${index}`} className={clsx(
-                        'flex flex-col justify-between items-center mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0'
+                        'flex flex-col w-full border-[0.5px] border-transparent justify-between items-center mb-8 text-center md:mx-2 lg:mx-8 first:ml-0 last:mr-0'
                       )}>
                         { icon }
+                        {
+                          image && (
+                            <Image
+                              src={image}
+                              alt={title}
+                              className="text-cobalt"
+                              width="48"
+                              height="48"
+                            />
+                          )
+                        }
                         <h3 className="mt-2 gradient-text text-ink text-lg mb-4 font-medium">{title}</h3>
                         <p className="dark:text-manatee text-lightGray text-sm px-10">{description}</p>
                       </li>
@@ -91,7 +103,7 @@ export default function Home(props) {
         <div className="w-full">
           <div className="flex flex-col">
             <section>
-              <h2 className="text-center text-[22px] font-medium mb-6 gradient-text">Featured collections</h2>
+              <h2 className="text-center text-3xl font-semibold mb-6 gradient-text">Featured collections</h2>
               {
                 isCollectionLoading
                   ? (
@@ -104,7 +116,7 @@ export default function Home(props) {
                       {
                         featuredCollections.length > 0
                           ? (
-                            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-8">
+                            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
                                 {featuredCollections?.map((collection, index) => (
                                   <li
                                     key={`${collection.address}_${index}`}

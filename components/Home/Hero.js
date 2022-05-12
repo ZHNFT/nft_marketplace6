@@ -25,7 +25,7 @@ export default function Hero({ address }) {
   
   return (
     <>
-      <div className="w-full h-[542px] absolute top-[56px] lg:top-[62px] left-0">
+      <div className="w-full h-[700px] absolute top-[56px] lg:top-[62px] left-0">
         <Image
           className="block w-full object-center object-cover opacity-50 blur light-mask"
           src={HiveImage}
@@ -46,7 +46,7 @@ export default function Hero({ address }) {
           <span className="block mb-4">
             <Link href="/collections">
               <a className="gradient-bg-blue rounded-[10px] text-sm md:text-md text-white px-10 py-2.5 border-[0.5px] border-transparent hover:border-white">
-                Explore
+                Discover
               </a>
             </Link>
 
