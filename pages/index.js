@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { getCollectionsWithTokenSnippets } from '../Utils/helper';
+import { collectionsUrl } from "../constants/url";
 import Hero from '../components/Home/Hero';
 import HeroCards from '../components/Home/HeroCards';
 import CollectionCard from '../components/Collection/CollectionCard';
@@ -12,8 +12,9 @@ export default function Home(props) {
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
     const chain = process.env.NEXT_PUBLIC_CHAIN;
-    const collectionsWithTokens = await getCollectionsWithTokenSnippets({ chain, size: 3 });
-    setCollections(collectionsWithTokens);
+    const res = await fetch(collectionsUrl({ chain, size: 3 }));
+    const collections = await res?.json();
+    setCollections(collections?.results);
     setIsCollectionLoading(false);
   }, [])
 
