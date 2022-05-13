@@ -120,7 +120,7 @@ export default function BuyNowForm(props) {
           <div className="text-right">
             <div>
               <CurrencyIcon currency={currencySymbol} hnyClassName="h-[16px] -mr-1 -top-[3px] relative pr-[5px]" />
-              <span className="font-medium text-xl text-cornflower ml-1">{price ? formatEther(price) : "0"}</span>
+              <span className="font-medium text-xl dark:text-cornflower text-cobalt ml-1">{price ? formatEther(price) : "0"}</span>
             </div>
             <p className="dark:text-manatee text-frost text-sm">{price && tokenPriceUsd ? usdFormatter.format(Number(formatEther(price)) * Number(tokenPriceUsd)) : null}</p>
           </div>

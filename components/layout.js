@@ -44,7 +44,7 @@ export default function Layout({ children, pageProps, connect, disconnect }) {
         />
         <div className="py-10 h-full">
           <div className="mx-auto sm:px-6 lg:max-w-8xl px-4 lg:px-8">
-            <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white text-black">
+            <main className="lg:col-span-9 xl:col-span-10 text-ink dark:text-white">
               {React.Children.map(children, (child) => {
                 if (!React.isValidElement(child)) {
                   return null;

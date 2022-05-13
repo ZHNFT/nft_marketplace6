@@ -106,7 +106,7 @@ export default function NotificationsButton({ currentUserAddress }) {
                                     <p>
                                       <span>{message}</span>
                                       {/* <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
-                                        <a className="text-cornflower hover:underline">{ name }</a>
+                                        <a className="dark:text-cornflower text-cobalt hover:underline">{ name }</a>
                                       </Link> */}
                                     </p>
                                     <p>

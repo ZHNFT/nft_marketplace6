@@ -102,7 +102,7 @@ export default function Activity({ currency, tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px]">
                 <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-                  <a className='text-cornflower hover:underline'>
+                  <a className='dark:text-cornflower text-cobalt hover:underline'>
                     #{tokenId}
                   </a>
                 </Link>
@@ -185,7 +185,7 @@ export default function Activity({ currency, tokenPriceUsd }) {
                   transactionHash && (
                     <a href={`${blockchainViewer}${transactionHash}`} target="_blank" rel="noreferrer" >
                       <span className="sr-only">View transaction in blockchain explorer</span>
-                      <LinkIcon className="w-[12px] text-cornflower" />
+                      <LinkIcon className="w-[12px] dark:text-cornflower text-cobalt" />
                     </a>
                   )
                 }

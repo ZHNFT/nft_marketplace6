@@ -52,7 +52,7 @@ export default function TraitsTable({ collectionId, traits }) {
                 <Cell className="w-[100px] text-center leading-none">
                   { rarityPercent?.toFixed(2) }%
                 </Cell>
-                <Cell className="w-[50px] text-right dark:text-manatee text-frost">
+                <Cell className="w-[50px] text-right dark:text-manatee text-cobalt">
                   <a href="#">
                     <SearchIcon className="w-[13px]" />
                   </a>

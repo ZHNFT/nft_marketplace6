@@ -145,7 +145,7 @@ export default function CollectionCard({ collection, size, hideDescription }) {
               <div className="absolute -top-[287px] left-[12px] text-xxs">
                 {
                   collectionCategories?.map((category, index) => (
-                    <span key={`collection_category_${index}`} className="rounded-xl bg-tagDark text-white py-1 px-3">{ category }</span>
+                    <span key={`collection_category_${index}`} className="inline-block first:ml-0 ml-2 rounded-xl bg-tagDark text-white py-1 px-3 capitalize">{ category }</span>
                   ))
                 }
                 {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
@@ -165,7 +165,7 @@ export default function CollectionCard({ collection, size, hideDescription }) {
           </div>
           <div className="hidden lg:block absolute right-4 bottom-5">
             <Link href={`/collections/${address}`}>
-              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent bg-white/[0.05] dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cornflower/[0.15]">
+              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent dark:bg-white/[0.05] bg-cobalt/[0.8] text-white dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt">
                 View collection
               </a>
             </Link>

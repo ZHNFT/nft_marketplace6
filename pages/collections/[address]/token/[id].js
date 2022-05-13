@@ -62,8 +62,8 @@ export default function Nft(props) {
 
   const PRODUCT_TABS = [
     { id: 'properties', label: 'Properties', active: true },
-    { id: 'offers', label: 'Offers', active: true }, // set active to true for testing
-    { id: 'bids', label: 'Bids', active: true },  // set active to true for testing
+    { id: 'offers', label: 'Offers', active: activeBids?.length > 0 },
+    { id: 'bids', label: 'Bids', active: activeAuctionbids?.length > 0 },
     { id: 'collection', label: 'Collection', active: true },
     { id: 'details', label: 'Details', active: true }
   ];
@@ -241,7 +241,7 @@ export default function Nft(props) {
                           <span className="text-xs dark:text-manatee text-frost mr-2.5 font-medium">Price</span>
                           <button
                             type="button"
-                            className="font-light text-xs text-cornflower"
+                            className="font-light text-xs dark:text-cornflower text-cobalt"
                             onClick={() => {
                               handleModal(NFT_MODALS.CHANGE_PRICE)
                             }}
@@ -258,7 +258,7 @@ export default function Nft(props) {
                       <div className="ml-auto items-center flex">
                         <button
                           type="button"
-                          className="font-light text-xs text-cornflower mr-4"
+                          className="font-light text-xs dark:text-cornflower text-cobalt mr-4"
                           onClick={() => {
                             handleModal(NFT_MODALS.UNLIST)
                           }}
@@ -435,7 +435,7 @@ export default function Nft(props) {
 
             <Tab.Group as="div">
               <div className="mt-4">
-                <Tab.List className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab shadow-switchLight tab-container rounded-tab h-[38px]">
+                <Tab.List className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab dark:bg-none bg-cobalt/[0.1] tab-container rounded-tab h-[38px]">
                   {
                     PRODUCT_TABS.filter(tab => tab.active).map(({ id, label }) => (
                       <Tab
@@ -443,7 +443,7 @@ export default function Nft(props) {
                         className={({ selected }) =>
                           clsx(
                             selected
-                              ? 'dark:bg-tabButton bg-cobalt dark:shadow-tabButton text-white shadow-md rounded-tab'
+                              ? 'dark:bg-tabButton bg-cobalt/[0.9] dark:shadow-tabButton text-white shadow-md rounded-tab'
                               : 'dark:text-[#969EAB] text-ink dark:hover:text-white hover:text-cobalt',
                             'whitespace-nowrap font-medium px-2 text-xs w-[115px] h-[37px]'
                           )
@@ -462,28 +462,34 @@ export default function Nft(props) {
                   <TraitsTable collectionId={data?.collectionId} traits={data?.traits} />
                 </Tab.Panel>
 
-                {/* Offers tab */}
-                <Tab.Panel className="pt-7" as="dl">
-                  <ProductOffers
-                    offers={activeBids}
-                    currency={collection?.currency?.symbol}
-                    tokenPriceUsd={tokenPriceUsd}
-                    onCancelBid={handleCancelBid}
-                    onAcceptBid={handleAcceptBid}
-                    currentUser={address?.toLowerCase()}
-                    isOwner={isOwner}
-                  />
-                </Tab.Panel>
+                { /* Offers tab */
+                  activeBids?.length > 0 && (
+                    <Tab.Panel className="pt-7" as="dl">
+                      <ProductOffers
+                        offers={activeBids}
+                        currency={collection?.currency?.symbol}
+                        tokenPriceUsd={tokenPriceUsd}
+                        onCancelBid={handleCancelBid}
+                        onAcceptBid={handleAcceptBid}
+                        currentUser={address?.toLowerCase()}
+                        isOwner={isOwner}
+                      />
+                    </Tab.Panel>
+                  )
+                }
 
-                {/* Bids tab */}
-                <Tab.Panel className="pt-7" as="dl">
-                  <ProductBids
-                    bids={activeAuctionbids}
-                    currentUser={address?.toLowerCase()}
-                    isOwner={isOwner}
-                    tokenPriceUsd={tokenPriceUsd}
-                  />
-                </Tab.Panel>
+                { /* Bids tab */
+                  activeAuctionbids?.length > 0 && (
+                    <Tab.Panel className="pt-7" as="dl">
+                      <ProductBids
+                        bids={activeAuctionbids}
+                        currentUser={address?.toLowerCase()}
+                        isOwner={isOwner}
+                        tokenPriceUsd={tokenPriceUsd}
+                      />
+                    </Tab.Panel>
+                  )
+                }
 
                 {/* Collection tab */}
                 <Tab.Panel className="pt-7" as="dl">
@@ -525,7 +531,7 @@ export default function Nft(props) {
         <div className="mt-12 flex justify-between items-center">
           <h2>More from this collection</h2>
           <Link href={`/collections/${data?.collectionId}`} passHref>
-            <a className="text-xs text-cornflower hover:underline ml-1">
+            <a className="text-xs dark:text-cornflower text-cobalt hover:underline ml-1">
               View collection
             </a>
           </Link>

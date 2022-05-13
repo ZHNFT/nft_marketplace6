@@ -40,7 +40,7 @@ export default function ProductPreview({ className, name, image, imageHosted, ex
         {
           LISTING_LABELS[listingState] && (
             <div
-              className="absolute right-[10px] top-[10px] z-10 text-xs text-cornflower font-medium rounded-xl py-1 px-2 backdrop-blur-md"
+              className="absolute right-[10px] top-[10px] z-10 text-xs dark:text-cornflower text-cobalt font-medium rounded-xl py-1 px-2 backdrop-blur-md"
               style={{ background: 'rgba(32, 34, 37, 0.5)'}}
             >
               { LISTING_LABELS[listingState] }

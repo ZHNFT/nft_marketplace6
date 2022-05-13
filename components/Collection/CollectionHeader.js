@@ -45,7 +45,7 @@ export default function CollectionHeader(props) {
             <ul className="flex justify-start items-center text-xs pt-1">
                 <li className="mr-6">
                     <a href={chainIdHex ? `${getExplorer(chainIdHex)}address/${address}` : `https://polygon-rpc.com/address/${address}`} 
-                      className="rounded pt-1 pb-0.5 px-2.5 dark:bg-white dark:bg-opacity-10 bg-ink bg-opacity-10">
+                      className="rounded pt-1 pb-0.5 px-2.5 dark:bg-white/[0.1] bg-cobalt/[0.8] hover:bg-cobalt text-white">
                       { ellipseAddress(address, 4) }
                       <LinkIcon className="w-[11px] ml-2 relative -top-[1px]" />
                     </a>
@@ -54,7 +54,7 @@ export default function CollectionHeader(props) {
                   socials?.instagram && (
                     <li className="mr-6">
                       <a href={sanitizeUrl(socials.instagram)} target="_blank" rel="noreferrer" >
-                        <InstagramIcon className="w-[18px] mr-2 dark:text-white text-frost" />
+                        <InstagramIcon className="w-[18px] mr-2 dark:text-white text-cobalt" />
                       </a>
                     </li>
                   )
@@ -63,7 +63,7 @@ export default function CollectionHeader(props) {
                   socials?.twitter && (
                     <li className="mr-6">
                       <a href={sanitizeUrl(socials.twitter)} target="_blank" rel="noreferrer">
-                        <TwitterIcon className="w-[19px] mr-2 dark:text-white text-frost" />
+                        <TwitterIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
                     </li>
                   )
@@ -72,7 +72,7 @@ export default function CollectionHeader(props) {
                   socials?.discord && (
                     <li className="mr-6">
                       <a href={sanitizeUrl(socials.discord)} target="_blank" rel="noreferrer">
-                        <DiscordIcon className="w-[19px] mr-2 dark:text-white text-frost" />
+                        <DiscordIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
                     </li>
                   )
@@ -81,7 +81,7 @@ export default function CollectionHeader(props) {
                   socials?.telegram && (
                     <li className="mr-6">
                       <a href={sanitizeUrl(socials.telegram)} target="_blank" rel="noreferrer">
-                        <TelegramIcon className="w-[19px] mr-2 dark:text-white text-frost" />
+                        <TelegramIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
                     </li>
                   )
@@ -90,7 +90,7 @@ export default function CollectionHeader(props) {
                   socials?.website && (
                     <li className="mr-6">
                       <a href={sanitizeUrl(socials.website)} target="_blank" rel="noreferrer">
-                        <LinkIcon className="w-[19px] mr-2 dark:text-white text-frost" />
+                        <LinkIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
                     </li>
                   )
@@ -107,22 +107,22 @@ export default function CollectionHeader(props) {
         <div className="lg:col-span-5 mobile-only:mt-3 pt-1.5 lg:ml-8">
             <ul className="flex text-center justify-between">
                 <li>
-                    <h4 className="text-xs mb-1.5">Items</h4>
+                    <h4 className="text-xs mb-1.5 dark:text-white text-frost">Items</h4>
                     <span className="text-xl font-medium">{ totalSupply }</span>
                 </li>
                 <li>
-                    <h4 className="text-xs mb-1.5">Owners</h4>
+                    <h4 className="text-xs mb-1.5 dark:text-white text-frost">Owners</h4>
                     <span className="text-xl font-medium">{ownerCount}</span>
                 </li>
                 <li>
-                    <h4 className="text-xs mb-1.5">Volume</h4>
+                    <h4 className="text-xs mb-1.5 dark:text-white text-frost">Volume</h4>
                     <span className="text-xl font-medium">
                       <CurrencyIcon currency={currency} hnyClassName="h-[18px] relative -top-[2px] pr-[5px] -mr-1" ethWidth={13} ethHeight={17} />
                       <span className="ml-1">{volume ? formatEther(volume) : "0"}</span>
                     </span>
                 </li>
                 <li>
-                    <h4 className="text-xs mb-1.5">Floor</h4>
+                    <h4 className="text-xs mb-1.5 dark:text-white text-frost">Floor</h4>
                     <span className="text-xl font-medium">
                       <CurrencyIcon currency={currency} hnyClassName="h-[18px] relative -top-[2px] pr-[5px] -mr-1" ethWidth={13} ethHeight={17} />
                       <span className="ml-1">{floorPrice ? formatEther(floorPrice) : "0"}</span>

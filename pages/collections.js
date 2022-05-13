@@ -41,7 +41,7 @@ export default function Collections(props) {
     setIsCollectionLoading(true);
     const chain = process.env.NEXT_PUBLIC_CHAIN;
     const selectedCategories = Object.keys(categoryButtons).filter(key => !!categoryButtons[key]);
-    const res = await fetch(collectionsUrl({ chain, categories: selectedCategories }));
+    const res = await fetch(collectionsUrl({ chain, sort: 'createdAt', categories: selectedCategories }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);

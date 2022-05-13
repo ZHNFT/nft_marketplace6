@@ -124,7 +124,7 @@ export default function SearchInput() {
                         <Tab.Group as="div">
                           <div className="mb-4">
                             <Tab.List
-                              className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab shadow-switchLight rounded-tab h-[38px] tab-container"
+                              className="-mb-px flex items-center justify-between space-x-8 dark:shadow-tab dark:bg-none bg-cobalt/[0.1] rounded-tab h-[38px] tab-container"
                             >
                               {
                                 SEARCH_TABS.map(({ id, label }) => (
@@ -133,9 +133,9 @@ export default function SearchInput() {
                                     className={({ selected }) =>
                                       clsx(
                                         selected
-                                          ? 'dark:bg-tabButton bg-cobalt dark:shadow-tabButton shadow-md rounded-tab'
+                                          ? 'dark:bg-tabButton bg-cobalt/[0.9] dark:shadow-tabButton text-white shadow-md rounded-tab'
                                           : 'dark:text-[#969EAB] text-ink dark:hover:text-white hover:text-cobalt',
-                                        'whitespace-nowrap font-medium text-xs text-white px-5 w-[115px] h-[37px]'
+                                        'whitespace-nowrap font-medium text-xs px-5 w-[115px] h-[37px]'
                                       )
                                     }
                                   >

@@ -25,13 +25,13 @@ export default function ProductDetailsHeader(props) {
                   height={"100%"}
                 />
               </span>
-              <span className="dark:text-manatee text-frost font-medium hover:underline">{collection.name}</span>
+              <span className="dark:text-manatee text-cobalt font-medium hover:underline">{collection.name}</span>
             </a>
           </Link>
         </div>
         <div className="flex items-center">
           <button type="button" className="mr-3 flex" onClick={refreshMetaData}>
-            <span className="text-cornflower mr-2">Refresh</span>
+            <span className="text-cobalt mr-2">Refresh</span>
             <RefreshIcon className="w-[12px]" />
           </button>
           <button type="button" className="py-1 pl-1 flex">
@@ -42,7 +42,7 @@ export default function ProductDetailsHeader(props) {
       </div>
       <div className="flex justify-between items-top mt-1">
         <h1 className="text-2xl tracking-tight sm:text-3xl">{ name || 'Unnamed' }</h1>
-        <div className="text-xs shrink-0">
+        <div className="text-xs shrink-0 -mt-1">
           <span className="dark:text-manatee text-frost mr-2">Rarity rank</span>
           <div className="relative inline-block -right-[2px]">
             <ProgressHexagon width="35" height="35" percent={100 - ((rarity/maxRarity) * 100)} />
@@ -55,7 +55,7 @@ export default function ProductDetailsHeader(props) {
           {/* Could also link to profile/account within the market place instead of blockexplorer */}
           <span className="dark:text-manatee text-frost">Owner</span>
           <Link href="/users/[address]" as={`/users/${owner}`} passHref>
-            <a className="hover:text-indigo-600 dark:text-white font-medium text-black hover:underline ml-1">
+            <a className="hover:text-indigo-600 dark:text-white text-cobalt font-medium text-ink hover:underline ml-1">
               {isOwner ? 'You' : `${ellipseAddress(owner, 4)}`}
             </a>
           </Link>

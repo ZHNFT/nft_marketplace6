@@ -58,13 +58,13 @@ export default function Slider({ className, arrowSize, children }) {
           <button
             onClick={event => { event.preventDefault(); movePrev(); }}
             className={clsx(
-              'dark:text-white text-ink h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
+              'text-white h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
               arrowSize === 'sml' ? 'w-6' : 'w-10'
             )}
             disabled={isDisabled('prev')}
           >
             <span className={clsx(
-              'flex justify-center items-center bg-black/[0.2] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower rounded-full',
+              'flex justify-center items-center bg-cobalt/[0.8] dark:bg-white/[0.05] hover:bg-cobalt dark:hover:bg-cornflower rounded-full',
               arrowSize === 'sml' ? 'w-[24px] h-[24px]' : 'w-[38px] h-[38px]'
             )}>
               <ArrowIcon className={clsx(arrowSize === 'sml' ? 'w-[6px]' : 'w-[11px]')} type="left" />
@@ -74,13 +74,13 @@ export default function Slider({ className, arrowSize, children }) {
           <button
             onClick={event => { event.preventDefault(); moveNext(); }}
             className={clsx(
-              'dark:text-white text-ink w-10 h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
+              'text-white w-10 h-full text-center disabled:opacity-0 z-10 p-0 m-0 transition-all ease-in-out duration-300',
               arrowSize === 'sml' ? 'w-6' : 'w-10'
             )}
             disabled={isDisabled('next')}
           >
             <span className={clsx(
-              'flex justify-center items-center bg-black/[0.2] dark:bg-white/[0.05] hover:bg-cornflower dark:hover:bg-cornflower rounded-full',
+              'flex justify-center items-center bg-cobalt/[0.8] dark:bg-white/[0.05] hover:bg-cobalt dark:hover:bg-cornflower rounded-full',
               arrowSize === 'sml' ? 'w-[24px] h-[24px]' : 'w-[38px] h-[38px]'
             )}>
               <ArrowIcon className={clsx(arrowSize === 'sml' ? 'w-[6px]' : 'w-[11px]')} />

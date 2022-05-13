@@ -68,7 +68,7 @@ export default function Hero({ address }) {
                 <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
                   { collection && <Image className="h-8 w-8" src={collection?.images?.logo || DefaultLogo} alt={collection?.name} width={"100%"} height={"100%"} /> }
                 </span>
-                <span className="dark:text-white text-black text-xs hover:underline">{collection?.name}</span>
+                <span className="dark:text-white text-ink text-xs hover:underline">{collection?.name}</span>
               </a>
             </Link>
             {/*<span className="text-sm mr-1">{name}</span>*/}

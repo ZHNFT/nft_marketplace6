@@ -13,7 +13,7 @@ export default function Footer() {
         </li>
         {/* <li className="ml-6">
           <a href="" target="_blank" rel="noreferrer">
-            <TelegramFillIcon className="w-[17px] text-cornflower" />
+            <TelegramFillIcon className="w-[17px] dark:text-cornflower text-cobalt" />
             <span className="sr-only">Telegram</span>
           </a>
         </li> */}

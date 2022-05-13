@@ -98,7 +98,7 @@ export default function Activity({ tokenPriceUsd }) {
               </Cell>
               <Cell className="w-[100px]">
                 <Link href="/collections/[address]/token/[id]" as={`/collections/${address}/token/${tokenId}`} passHref>
-                  <a className='text-cornflower hover:underline'>
+                  <a className='dark:text-cornflower text-cobalt hover:underline'>
                     #{tokenId}
                   </a>
                 </Link>

@@ -24,9 +24,10 @@ module.exports = {
       manatee: '#969eab',
       whiteLilac: '#f7f9fc',
       silver: '#77808b',
+      lightSilver: '#f6f7f9',
       frost: '#757f87',
       lightShade: '#ededed',
-      lightGray: '#5d5d5d'
+      lightGray: '#5d5d5d',
     },
     extend: {
       borderRadius: {

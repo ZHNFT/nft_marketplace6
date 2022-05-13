@@ -212,7 +212,7 @@ export default function AddCollectionModal(props) {
                       <div className="mb-6">
                         <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="name">
                           Collection name 
-                          <span className="text-cornflower ml-1">*</span>
+                          <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                         </label>
                         <InputField
                           type="text"
@@ -228,7 +228,7 @@ export default function AddCollectionModal(props) {
                       <div className="my-2">
                         <label className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                           Category
-                          <span className="text-cornflower ml-1">*</span>
+                          <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                         </label>
                         <Dropdown
                           label="Category"
@@ -259,7 +259,7 @@ export default function AddCollectionModal(props) {
                     <div className="flex-1 ml-10">
                       <label className="text-xs dark:text-manatee text-frost mb-2 flex" htmlFor="description">
                         Description
-                        <span className="text-cornflower ml-1">*</span>
+                        <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                       </label>
                       <TextareaField
                         value={values?.description || ''}
@@ -276,7 +276,7 @@ export default function AddCollectionModal(props) {
                   <div className="my-2">
                     <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="address">
                       Contract address
-                      <span className="text-cornflower ml-1">*</span>
+                      <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                     </label>
                     <InputField
                       type="text"
@@ -295,7 +295,7 @@ export default function AddCollectionModal(props) {
                     <div className="flex-1">
                       <p className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                         Profile image
-                        <span className="text-cornflower ml-1">*</span>
+                        <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                       </p>
                       <p className="text-xs dark:text-manatee text-frost">Recommended size 350px x 350px. This image will also be used as a cover if you do not upload a cover photo. The cover photo will be part of a future update.</p>
                       <div className="relative mt-4 flex items-center bg-white/[0.02] flex justify-between rounded-md py-6 px-8">
@@ -327,7 +327,7 @@ export default function AddCollectionModal(props) {
                     <div className="basis-5/12 ml-6">
                       <p className="text-xs dark:text-manatee text-frost flex items-center mb-2">
                         Featured image
-                        <span className="text-cornflower ml-1">*</span>
+                        <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                       </p>
                       <p className="text-xs dark:text-manatee text-frost">Recommended size 1,100px x 880px. This will be used on collection cards.</p>
                       <div className="relative mt-4">
@@ -379,7 +379,7 @@ export default function AddCollectionModal(props) {
                     }
                   </div>
 
-                  <h4 className="mt-8 mb-4 text-base">Currency Selection <span className="text-cornflower ml-1">*</span></h4>
+                  <h4 className="mt-8 mb-4 text-base">Currency Selection <span className="dark:text-cornflower text-cobalt ml-1">*</span></h4>
                 
                   <p className="dark:text-manatee text-frost text-xs mr-8 mb-2">Choose the currency in which you will be listing your collection. Note that listing in HNY means sellers will not be charged any marketplace fees to Hexagon - additionally, all royalties generated from your collection will be exempt from our sales tax. For all non-HNY currencies, there will be a marketplace fee of 2%.</p>
                   <p className='dark:text-manatee text-frost text-xs mr-8'>Caution: Your currency choice cannot be changed once the collection has been accepted.</p>
@@ -401,7 +401,7 @@ export default function AddCollectionModal(props) {
                   
                   <h4 className="mt-8 mb-4 text-base">
                     Royalty Percentage
-                    <span className="text-cornflower ml-1">*</span>
+                    <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                   </h4>
                   
                   <p className="dark:text-manatee text-frost text-xs mr-8 mb-2">
@@ -425,7 +425,7 @@ export default function AddCollectionModal(props) {
                   <div className="mt-10 mb-4">
                     <label className="text-xs dark:text-manatee text-frost flex items-center mb-2" htmlFor="payoutAddress">
                       Payout address
-                      <span className="text-cornflower ml-1">*</span>
+                      <span className="dark:text-cornflower text-cobalt ml-1">*</span>
                     </label>
                     <InputField
                       type="text"

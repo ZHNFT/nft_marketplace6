@@ -135,7 +135,7 @@ export default function ChangePriceForm(props) {
             </div> */}
 
             <p className="text-justify mt-10 max-w-[440px] text-xs text-[#969EAB]">
-              You must pay an additional gas fee if you want to cancel this listing at a later point. <a href="#" className="text-cornflower">Learn more about canceling listings.</a>
+              You must pay an additional gas fee if you want to cancel this listing at a later point. <a href="#" className="dark:text-cornflower text-cobalt">Learn more about canceling listings.</a>
             </p>
 
             <div className="flex justify-center mt-10 my-4">

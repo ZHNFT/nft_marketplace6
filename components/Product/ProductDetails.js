@@ -28,7 +28,7 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
                 className='mt-6 whitespace-pre-line'
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  a: ({node, ...props}) => <a {...props} className="text-cornflower hover:underline" />,
+                  a: ({node, ...props}) => <a {...props} className="dark:text-cornflower text-cobalt hover:underline" />,
                   p: ({node, ...props}) => <p {...props} />
                 }}
               >
@@ -42,7 +42,7 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
         <span className="dark:text-manatee text-frost">Contract address</span>
         <span className="font-medium">
           
-          <a target="_blank" href={blockChainViewerAddress} rel="noreferrer" className="hover:underline flex">
+          <a target="_blank" href={blockChainViewerAddress} rel="noreferrer" className="dark:text-white text-cobalt hover:underline flex">
             { ellipseAddress(address, 4) }
             <LinkIcon className="w-[12px] ml-2" />
           </a>
@@ -51,19 +51,19 @@ export default function ProductDetails({ description, address, tokenId, tokenSta
 
       <div className="flex justify-between my-2">
         <span className="dark:text-manatee text-frost">Token ID</span>
-        <span className="font-medium">{ tokenId }</span>
+        <span className="font-medium dark:text-white text-cobalt">{ tokenId }</span>
       </div>
 
       <div className="flex justify-between my-2">
         <span className="dark:text-manatee text-frost">Token Standard</span>
-        <span className="font-medium">{ tokenStandard }</span>
+        <span className="font-medium dark:text-white text-cobalt">{ tokenStandard }</span>
       </div>
 
       { 
         blockchain && (
           <div className="flex justify-between my-2">
             <span className="dark:text-manatee text-frost">Blockchain</span>
-            <span className="font-medium">{ blockchain }</span>
+            <span className="font-medium dark:text-white text-cobalt">{ blockchain }</span>
           </div>
         )
       }
