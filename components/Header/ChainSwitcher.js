@@ -5,10 +5,8 @@ import { toast } from "react-toastify";
 import clsx from 'clsx';
 import Web3Context from '../../contexts/Web3Context';
 import { ChevronDownIcon } from '../icons';
-import AvalancheLogo from "../../images/logo-avalanche.svg";
-import EthereumLogo from "../../images/logo-ethereum.svg";
-import PolygonLogo from "../../images/logo-polygon.svg";
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import { CHAINS } from '../../constants/chains';
 
 const networks = {
   polygon: {
@@ -43,18 +41,23 @@ const networks = {
     },
     rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
     blockExplorerUrls: ["https://snowtrace.io"]
+  },
+  binanceSmartChain: {
+    chainId: `0x${Number(56).toString(16)}`,
+    chainName: "Binance Smart Chain Mainnet",
+    nativeCurrency: {
+      name: "Binance Chain Native Token",
+      symbol: "BNB",
+      decimals: 18
+    },
+    rpcUrls: ["https://bsc-dataseed1.binance.org"],
+    blockExplorerUrls: ["https://bscscan.com"]
   }
-};
-
-const networkOptions = {
-  137: { id: 'polygon', label: 'Polygon', logo: PolygonLogo },
-  1: { id: 'ethereum', label: 'Ethereum', logo: EthereumLogo },
-  43114: { id: 'avalanche', label: 'Avalanche', logo: AvalancheLogo }
 };
 
 export default function ChainSwitcher() {
   const { state: { provider, chainId } } = useContext(Web3Context);
-  const [selectedNetwork, setSelectedNetwork] = useState(networkOptions?.[chainId]);
+  const [selectedNetwork, setSelectedNetwork] = useState(CHAINS[chainId]);
 
   const changeNetwork = async({ network }) => {
     try {
@@ -90,7 +93,7 @@ export default function ChainSwitcher() {
         value={selectedNetwork}
         label="Change Network"
         onChange={async option => {
-          await changeNetwork({ network: option.id });
+          await changeNetwork({ network: option.name });
         }}
       >
         <div className="relative">
@@ -137,8 +140,8 @@ export default function ChainSwitcher() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute z-10 w-[150px] md:w-[180px] py-1 mt-2.5 overflow-auto text-sm rounded-[12px] max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm bg-white dark:bg-pitch">
-              {Object.values(networkOptions).map((item, itemIdx) => (
+            <Listbox.Options className="absolute z-10 w-[150px] md:w-[162px] py-1 mt-2.5 overflow-auto text-sm rounded-[12px] max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm bg-white dark:bg-pitch">
+              {Object.values(CHAINS).filter(({ hide }) => !hide).map((item, itemIdx) => (
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>

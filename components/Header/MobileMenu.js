@@ -11,7 +11,7 @@ export default function MobileMenu(props) {
   const { navigation, connect, address, children } = props;
 
   return (
-    <Popover.Panel as="nav" className="lg:hidden relative" aria-label="Global">
+    <Popover.Panel as="nav" className="lg:hidden relative dark:bg-[#1b2029] bg-[#f7faff]" aria-label="Global">
       <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
         {navigation.map((item) => (
           <a

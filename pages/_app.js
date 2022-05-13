@@ -24,12 +24,8 @@ import {
   honeyTokenAddress,
   ethTokenAddress,
   maticTokenAddress,
-  ethMainTokenAddress,
-  avaxTokenAddress,
-  marketplaceAddress, 
   networkConfigs,
   getChainById, 
-  mumbaiMarketplaceAddress,
   marketPlaceTestABI, 
   TestErc20ABI, 
   mumbaiHoneyTokenAddress,
@@ -131,8 +127,6 @@ function MyApp({ Component, pageProps }) {
     tokenContract,
     ethTokenContract,
     maticTokenContract,
-    ethMainTokenContract,
-    avaxTokenContract,
     ethersProvider,
     marketplaceContract,
     tokenData,
@@ -163,10 +157,10 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
-  const loadBalance = useCallback(async function({ tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address }) {
+  const loadBalance = useCallback(async function({ tokenContract, ethTokenContract, maticTokenContract, address }) {
     if (!address) return;
 
-    if (tokenContract) {
+    if (ethTokenContract && maticTokenContract) {
       // polygon
       const [tokenBalance, ethTokenBalance, maticTokenBalance] = await Promise.all([
         tokenContract ? tokenContract.balanceOf(address) : Promise.resolve(0),
@@ -184,29 +178,12 @@ function MyApp({ Component, pageProps }) {
       return;
     }
 
-    if (ethMainTokenContract) {
-      // ethereum
-      const ethMainTokenBalance = await ethMainTokenContract.balanceOf(address);
-  
-      dispatch({
-        type: 'SET_BALANCE',
-        tokenBalance: ethers.utils.formatEther(ethMainTokenBalance.toString())
-      });
-
-      return;
-    }
-
-    if (avaxTokenContract) {
-      // avax
-      const avaxTokenBalance = await avaxTokenContract.balanceOf(address);
-  
-      dispatch({
-        type: 'SET_BALANCE',
-        tokenBalance: ethers.utils.formatEther(avaxTokenBalance.toString())
-      });
-
-      return;
-    }
+    // other chains
+    const mainTokenBalance = await tokenContract.balanceOf(address);
+    dispatch({
+      type: 'SET_BALANCE',
+      tokenBalance: ethers.utils.formatEther(mainTokenBalance.toString())
+    });
   }, []);
 
   const connect = useCallback(async function () {
@@ -228,29 +205,28 @@ function MyApp({ Component, pageProps }) {
     const ethersSigner = ethersProvider.getSigner();
     
     let marketplaceContract;
-    let erc20TokenContract;
+    let mainTokenContract;
     let ethTokenContract;
     let maticTokenContract;
-    let ethMainTokenContract;
-    let avaxTokenContract;
+    const marketplaceAddress = CHAINS[network.chainId]?.marketplaceAddress;
+    const mainTokenAddress = CHAINS[network.chainId]?.mainTokenAddress;
 
     if (network.chainId === 80001) {
-      marketplaceContract = new ethers.Contract(mumbaiMarketplaceAddress, marketPlaceTestABI, ethersSigner);
-      erc20TokenContract = new ethers.Contract(mumbaiHoneyTokenAddress, TestErc20ABI, ethersSigner);
+      marketplaceContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
+      mainTokenContract = new ethers.Contract(mainTokenAddress, TestErc20ABI, ethersSigner);
       ethTokenContract = new ethers.Contract(mumbaiEthTokenAddress, TestErc20ABI, ethersSigner);
       maticTokenContract = new ethers.Contract(mumbaiMaticTokenAddress, TestErc20ABI, ethersSigner);
     } else if (network.chainId === 137) {
       marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
-      erc20TokenContract = new ethers.Contract(honeyTokenAddress, honeyAbi, ethersSigner);
+      mainTokenContract = new ethers.Contract(mainTokenAddress, honeyAbi, ethersSigner);
       ethTokenContract = new ethers.Contract(ethTokenAddress, ethAbi, ethersSigner);
       maticTokenContract = new ethers.Contract(maticTokenAddress, maticAbi, ethersSigner);
-    } else if (network.chainId === 1) {
-      ethMainTokenContract = new ethers.Contract(ethMainTokenAddress, ethAbi, ethersSigner);
-    } else if (network.chainId === 43114) {
-      avaxTokenContract = new ethers.Contract(avaxTokenAddress, ethAbi, ethersSigner);
+    } else {
+      marketplaceContract = new ethers.Contract(marketplaceAddress, marketplaceAbi, ethersSigner);
+      mainTokenContract = new ethers.Contract(mainTokenAddress, ethAbi, ethersSigner);
     }
 
-    await loadBalance({ tokenContract: erc20TokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address });
+    await loadBalance({ tokenContract: mainTokenContract, ethTokenContract, maticTokenContract, address });
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -261,7 +237,7 @@ function MyApp({ Component, pageProps }) {
       chainId: network.chainId,
       chainIdHex: `0x${Number(network.chainId).toString(16)}`,
       marketplaceContract,
-      tokenContract: erc20TokenContract,
+      tokenContract: mainTokenContract,
       ethTokenContract,
       maticTokenContract
     })
@@ -315,7 +291,7 @@ function MyApp({ Component, pageProps }) {
           type: 'SET_ADDRESS',
           address: accounts[0],
         })
-        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, ethMainaddress: accounts[0] });
+        loadBalance({ tokenContract, ethTokenContract, maticTokenContract, ethMainaddress: accounts[0] });
       }
 
       // https://docs.ethers.io/v5/concepts/best-practices/#best-practices--network-changes
@@ -342,7 +318,7 @@ function MyApp({ Component, pageProps }) {
         }
       }
     }
-  }, [provider, disconnect, loadBalance, tokenContract, ethTokenContract, maticTokenContract, ethMainTokenContract, avaxTokenContract, address])
+  }, [provider, disconnect, loadBalance, tokenContract, ethTokenContract, maticTokenContract, address])
 
 
   // Will ask the user to switch chains if they are connected to the wrong chain
