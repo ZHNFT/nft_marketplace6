@@ -7,10 +7,8 @@ const sortOptions = [
   { label: 'Token ID', sortBy: 'tokenId', current: true },
   { label: 'Price: Low to High', sortBy: 'lowestPrice', current: false },
   { label: 'Price: High to Low', sortBy: '-highestPrice', current: false },
-  { label: 'Bids: High to Low', sortBy: '-highestBid', current: false },
   { label: 'Bids: Low to High', sortBy: 'lowestBid', current: false },
-  { label: 'Rarity: Rarest to Common', sortBy: '-rarity', current: false },
-  { label: 'Rarity: Common to Rarest', sortBy: 'rarity', current: false },
+  { label: 'Bids: High to Low', sortBy: '-highestBid', current: false },
   { label: 'Recently Listed', sortBy: '-lastListedAt', current: false },
   { label: 'Recently Sold', sortBy: '-lastSoldAt', current: false },
 ]

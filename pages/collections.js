@@ -59,6 +59,9 @@ export default function Collections() {
       <div className="w-full">
         <div className="flex flex-col">
           <section className="lg:mt-4 mb-10 w-full">
+            <h1 className="text-center text-3xl font-semibold gradient-heading mb-12">
+              Discover Premium Collections
+            </h1>
             {/*<div className="flex flex-wrap justify-between mb-4 -mx-2">
               {
                 categories.map(({ name, icon }) => {

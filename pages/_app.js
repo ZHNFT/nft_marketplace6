@@ -7,14 +7,18 @@ import Web3Modal from "web3modal";
 import Web3Context from '../contexts/Web3Context';
 import router from 'next/router';
 import nprogress from 'nprogress';
-import 'nprogress/nprogress.css';
-import 'react-toastify/dist/ReactToastify.css';
 import { getUserDetails } from '../Utils/helper';
 import { CURRENCIES } from '../constants/currencies';
 import AppGlobalContext from '../contexts/AppGlobalContext';
 import NftActionsModal from '../components/Modals/NftActionsModal';
 import { CHAIN_IDS, CHAINS} from '../constants/chains';
 import { useRouter } from "next/router";
+
+// libray styles
+import 'nprogress/nprogress.css';
+import 'react-toastify/dist/ReactToastify.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 // Components
 import Layout from '../components/layout';

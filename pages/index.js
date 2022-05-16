@@ -1,16 +1,13 @@
 import { useState, useCallback, useEffect, useContext } from 'react';
-import { useRouter } from "next/router";
 import Image from 'next/image';
 import clsx from 'clsx';
 import { collectionsUrl } from "../constants/url";
 import Hero from '../components/Home/Hero';
 import HeroCards from '../components/Home/HeroCards';
-import CollectionCard from '../components/Collection/CollectionCard';
-import Spinner from '../components/Spinner/Spinner';
 import { LowDollarIcon, CheckedRibbonIcon } from '../components/icons';
 import Web3Context from '../contexts/Web3Context';
-import { CHAINS } from '../constants/chains';
 import { Icon } from '@iconify/react';
+import FeaturedCollections from '../components/Home/FeaturedCollections';
 
 const HIGHLIGHTS = [
   {
@@ -26,7 +23,7 @@ const HIGHLIGHTS = [
   {
     icon: <Icon icon="healthicons:money-bag-outline" className="text-5xl dark:text-white text-ink" />,
     title: 'Passive Income NFTs',
-    description: 'No restrictions on trading passive income NFTs, unlike larger marketplace like OpenSea'
+    description: 'No restrictions on trading passive income NFTs, unlike larger marketplaces'
   }
 ];
 
@@ -34,12 +31,13 @@ export default function Home(props) {
   const { state: { appInit, chainId } } = useContext(Web3Context);
   const [featuredCollections, setCollections] = useState([]);
   const [isCollectionLoading, setIsCollectionLoading] = useState(false);
+  const heroCollectionAddress = '0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d';
 
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
-    const res = await fetch(collectionsUrl({ chain: 'polygon', size: 3, filter: 'featured' }));
+    const res = await fetch(collectionsUrl({ chain: 'polygon', size: 9 }));
     const collections = await res?.json();
-    setCollections(collections?.results);
+    setCollections(collections?.results?.filter(({ address }) => address !== heroCollectionAddress));
     setIsCollectionLoading(false);
   }, []);
 
@@ -56,7 +54,7 @@ export default function Home(props) {
       <div className="flex justify-center lg:max-w-6xl mx-auto">
         <div className="w-full">
           <div className="flex flex-col">
-            <Hero address="0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d" />
+            <Hero address={heroCollectionAddress} />
             <HeroCards connect={connect} address={address} />
           </div>
         </div>
@@ -101,40 +99,7 @@ export default function Home(props) {
       <div className="flex justify-center lg:max-w-6xl mx-auto mt-[750px] sm:mt-[660px] md:mt-[410px] mb-10">
         <div className="w-full">
           <div className="flex flex-col">
-            <section>
-              <h2 className="text-center text-3xl font-semibold mb-6 gradient-text">Featured collections</h2>
-              {
-                isCollectionLoading
-                  ? (
-                    <div className="flex justify-center items-center h-24">
-                      <Spinner className="w-[26px] dark:text-white text-ink" />
-                    </div>
-                  )
-                  : !!featuredCollections && (
-                    <>
-                      {
-                        featuredCollections.length > 0
-                          ? (
-                            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
-                                {featuredCollections?.map((collection, index) => (
-                                  <li
-                                    key={`${collection.address}_${index}`}
-                                    className="mx-auto w-full h-full">
-                                    <CollectionCard collection={collection} size="sml" />
-                                  </li>
-                                ))}
-                            </ul>
-                          )
-                          : (
-                            <div className="flex justify-center items-center h-24">
-                              <p className="text-sm">No collections found in { CHAINS[chainId]?.label } network.</p>
-                            </div>
-                          )
-                      }
-                    </>
-                  )
-              }
-            </section>
+            <FeaturedCollections isLoading={isCollectionLoading} featuredCollections={featuredCollections} />
           </div>
         </div>
       </div>

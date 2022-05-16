@@ -59,7 +59,6 @@ export default function InfiniteGallery({ className, collectionLogo, collectionD
             ref={index === results.length - 1 ? observe : null}
             key={index}
             item={transformGalleryItem({ item, collectionLogo })}
-            showRarity={true}
           />
         ))
       }

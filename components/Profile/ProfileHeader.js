@@ -16,7 +16,6 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import DefaultLogo from "../../images/default-collection-logo.png";
 import HNYicon from "../../images/icon-hny.png";
-import AddCollectionModal from "../Modals/AddCollectionModal";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import Web3Context from "../../contexts/Web3Context";
 
@@ -31,8 +30,6 @@ export default function ProfileHeader({
     state: { tokenData },
   } = useContext(Web3Context);
   const tokenPriceUsd = tokenData?.priceUsd;
-
-  const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
 
   return (
     <>
@@ -52,10 +49,6 @@ export default function ProfileHeader({
           >
             Add collection
           </PrimaryButton>
-        <AddCollectionModal
-          isOpen={showAddCollectionModal}
-          onClose={() => setShowAddCollectionModal(false)}
-        />
           
         
         <div className="flex lg:col-span-7">

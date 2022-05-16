@@ -8,11 +8,14 @@ import DarkModeSwitch from '../DarkModeSwitch/DarkModeSwitch';
 import { ellipseAddress } from '../../Utils';
 
 export default function MobileMenu(props) {
-  const { navigation, connect, address, children } = props;
+  const { navigation, connect, address, children, onClickApply } = props;
 
   return (
     <Popover.Panel as="nav" className="lg:hidden relative dark:bg-[#1b2029] bg-[#f7faff]" aria-label="Global">
       <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
+        <button className="text-xl hover:bg-white/[0.05] block rounded-md py-2 px-3" onClick={onClickApply}>
+          Apply
+        </button>
         {navigation.map((item) => (
           <a
             key={item.name}

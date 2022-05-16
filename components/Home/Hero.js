@@ -42,7 +42,7 @@ export default function Hero({ address }) {
           </div>
           <span className="block mb-4">
             <Link href="/collections">
-              <a className="gradient-bg-blue rounded-[10px] text-sm md:text-md text-white px-10 py-2.5 border-[0.5px] border-transparent hover:border-white">
+              <a className="gradient-bg-blue rounded-[10px] text-sm md:text-md text-white px-10 py-2.5 border-[0.5px] border-transparent hover:contrast-150">
                 Discover
               </a>
             </Link>

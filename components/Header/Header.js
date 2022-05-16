@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,9 +13,11 @@ import EditProfileModal from "../Modals/EditProfileModal";
 import AppGlobalContext from "../../contexts/AppGlobalContext";
 import { MenuIcon } from "../icons";
 import ChainSwitcher from './ChainSwitcher';
+import AddCollectionModal from "../Modals/AddCollectionModal";
 
 export default function Header(props) {
   const { navigation, connect, disconnect, address, withBorder } = props;
+  const [showAddCollectionModal, setShowAddCollectionModal] = useState(false);
   const { showEditProfileModal, setShowEditProfileModal, user } =
     useContext(AppGlobalContext);
 
@@ -33,7 +35,7 @@ export default function Header(props) {
           <>
             <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8 py-2">
-                <div className="flex md:inset-y-0 lg:static col-span-4">
+                <div className="flex md:inset-y-0 lg:static col-span-3">
                   <div className="flex-shrink-0 flex items-center w-full">
                     <Link href="/">
                       <a className="flex items-center mr-[25px]">
@@ -44,15 +46,20 @@ export default function Header(props) {
                   </div>
                 </div>
                 <div className="hidden lg:block min-w-0 flex-1 md:px-8 lg:px-0 col-span-3">
-                  <div className="flex items-center px-6 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+                  <div className="flex items-center px-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <div className="w-full">
                       <SearchInput />
                     </div>
                   </div>
                 </div>
-                <div className="flex lg:items-center lg:justify-end xl:col-span-5 justify-between lg:w-auto">
+                <div className="flex lg:items-center lg:justify-end xl:col-span-6 justify-between lg:w-auto">
                   <ul className="hidden lg:flex ml-4 mr-2 flex-1 justify-end">
                     <li>
+                      <button className="text-base hover:underline" onClick={() => setShowAddCollectionModal(true)}>
+                          Apply
+                      </button>
+                    </li>
+                    <li className="ml-12 mr-4">
                       <Link href="/collections">
                         <a className="text-base hover:underline">
                           Collections
@@ -109,6 +116,7 @@ export default function Header(props) {
               navigation={navigation}
               connect={connect}
               address={address}
+              onClickApply={() => setShowAddCollectionModal(true)}
             >
               <ProfileMenu
                 user={user}
@@ -122,6 +130,10 @@ export default function Header(props) {
       <EditProfileModal
         isOpen={showEditProfileModal}
         onClose={() => setShowEditProfileModal(false)}
+      />
+      <AddCollectionModal
+        isOpen={showAddCollectionModal}
+        onClose={() => setShowAddCollectionModal(false)}
       />
     </>
   );

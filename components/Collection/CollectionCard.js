@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
 import Linkify from 'react-linkify';
+import { Icon } from '@iconify/react';
 import { resolveBunnyLink } from "../../Utils";
 import { formatCompact, formatEther } from "../../Utils/helper";
 import DefaultImage from '../../images/No-Image-Placeholder.png';
@@ -10,7 +11,7 @@ import HiveImage from "../../images/collection-card-image-hive.png";
 import PlaceholderImage from '../../images/placeholder-image.png';
 import CurrencyIcon from "../CurrencyIcon/CurrencyIcon";
 
-export default function CollectionCard({ collection, size, hideDescription }) {
+export default function CollectionCard({ collection, size, truncateDescription, hideDescription }) {
   const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories, currency } = collection
   const totalVolume = volume?.total ? formatEther(volume?.total) : "0";
   const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
@@ -136,8 +137,9 @@ export default function CollectionCard({ collection, size, hideDescription }) {
                     <Image className="bg-white" src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
                   </div>
                 </div>
-                <div className="ml-[70px] leading-none">
-                  <h4 className="font-medium text-sm">{ name }</h4>
+                <div className="ml-[70px] leading-none h-[40px]">
+                  <h4 className="font-medium text-sm inline">{ name }</h4>
+                  <Icon icon="octicon:verified-24" className="text-cobalt text-sm dark:text-cornflower inline ml-1 mb-0.5" />
                   <span className="text-manatee text-xs">{ author }</span>
                 </div>
               </div>
@@ -150,8 +152,14 @@ export default function CollectionCard({ collection, size, hideDescription }) {
                 {/* <span className="rounded-xl bg-tagDark md:dark:bg-white/[0.05] md:bg-black/[0.05] py-1 px-3 ml-2">{ listed }% listed</span> */}
               </div>
             </div>
-            <div className="flex flex-col mt-8 mb-1.5 lg:mb-12 align-center">
-              <p className="dark:text-manatee text-frost text-xs">
+            <div className={clsx(
+              'flex flex-col mt-4 mb-1.5 lg:mb-12 align-center',
+              { 'h-[54px]': truncateDescription }
+            )}>
+              <p className={clsx(
+                'dark:text-manatee text-frost text-xs',
+                { 'line-clamp': truncateDescription }
+              )}>
                 <Linkify componentDecorator={(decoratedHref, decoratedText, key) => (
                     <a target="blank" className="dark:text-malibu text-cobalt hover:underline" href={decoratedHref} key={key}>
                         {decoratedText}
@@ -164,7 +172,7 @@ export default function CollectionCard({ collection, size, hideDescription }) {
           </div>
           <div className="hidden lg:block absolute right-4 bottom-5">
             <Link href={`/collections/${address}`}>
-              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent dark:bg-white/[0.05] bg-cobalt text-white dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt">
+              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent dark:bg-white/[0.05] bg-cobalt text-white dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:contrast-150">
                 View collection
               </a>
             </Link>

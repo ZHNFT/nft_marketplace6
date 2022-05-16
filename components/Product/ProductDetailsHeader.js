@@ -42,13 +42,13 @@ export default function ProductDetailsHeader(props) {
       </div>
       <div className="flex justify-between items-top mt-1">
         <h1 className="text-2xl tracking-tight sm:text-3xl">{ name || 'Unnamed' }</h1>
-        <div className="text-xs shrink-0 -mt-1">
+        {/*<div className="text-xs shrink-0 -mt-1">
           <span className="dark:text-manatee text-frost mr-2">Rarity rank</span>
           <div className="relative inline-block -right-[2px]">
             <ProgressHexagon width="35" height="35" percent={100 - ((rarity/maxRarity) * 100)} />
             <span className="absolute inset-0 flex items-center justify-center font-medium text-xxs">{ rarity?.toFixed(0) }</span>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-between items-center text-xs mt-1">
         <p>

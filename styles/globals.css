@@ -103,3 +103,26 @@
 .light-mask {
   -webkit-mask: linear-gradient(rgb(255, 255, 255), transparent);
 }
+
+.line-clamp {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+}
+
+.slick-slider .slick-dots {
+  bottom: -35px;
+}
+
+.slick-slider .slick-dots li.slick-active button:before,
+.slick-slider .slick-dots li button:before {
+  color: #8989ff;
+}
+
+.dark .slick-slider .slick-dots li.slick-active button:before,
+.dark .slick-slider .slick-dots li button:before {
+  color: #6e85ff;
+}
+

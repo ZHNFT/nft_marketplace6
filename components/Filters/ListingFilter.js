@@ -7,9 +7,7 @@ import { ArrowIcon } from '../icons';
 
 const listTypes = [
   { value: 'listed', label: 'Buy now' },
-  { value: 'auctions', label: 'Auction' },
-  { value: 'unlisted', label: 'Not listed' },
-  { value: 'has-bids', label: 'Has offers' }
+  { value: 'auctions', label: 'Auction' }
 ];
 
 export default function ListingFilter({ isReset, onChange }) {
