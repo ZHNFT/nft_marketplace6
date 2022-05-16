@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import {
   LinkIcon,
@@ -35,22 +35,14 @@ export default function ProfileHeader({
     <>
       <section className="lg:grid lg:grid-cols-12 flex relative dark:text-white justify-between flex-col lg:flex-row mt-20 lg:mt-32 mb-28">
 
-      <SecondaryButton
+        <SecondaryButton
           className="flex items-center absolute  -top-[70px] text-xs font-medium"
           onClick={() => setShowEditProfileModal(true)}
         >
           <EditIcon className="w-[14px] mr-2" />
           Edit profile
         </SecondaryButton>
-      
-          <PrimaryButton
-            className="flex items-center absolute right-0 -top-[70px] text-xs font-medium"
-            onClick={() => setShowAddCollectionModal(true)}
-          >
-            Add collection
-          </PrimaryButton>
-          
-        
+
         <div className="flex lg:col-span-7">
           <div className="mr-2.5">
             <div className="gradient-border relative p-2.5">
