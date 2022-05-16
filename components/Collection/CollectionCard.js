@@ -79,7 +79,7 @@ export default function CollectionCard({ collection, size }) {
         </p>
       </div>
       <div className={clsx(
-        'flex absolute bottom-0 left-0 pl-[60px] h-[46px] text-white w-full backdrop-blur-md text-xs justify-between items-center rounded-xl',
+        'flex absolute bottom-0 left-0 pl-[60px] h-[46px] text-white w-full backdrop-blur-md text-xs justify-around items-center rounded-xl',
         pending === true ? 'blue-gradient opacity-85' : 'bg-cardCaption'
       )}>
         {
@@ -89,17 +89,17 @@ export default function CollectionCard({ collection, size }) {
             )
             : (
               <>
-                <div className="flex items-center flex-row text-center leading-[1.25] h-[35px] ml-6">
+                <div className="flex items-center flex-row text-center leading-[1.25] h-[35px] ml-4">
                   <span className="mr-3 font-light">Volume</span>
                   <span className="flex items-center relative -left-[6px]">
                     <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] -top-[0px] relative pr-[5px] -mr-1" />
                     <span className="font-medium ml-1">{totalVolume}</span>
                   </span>
                 </div>
-                <div className="pr-8 flex items-center flex-row text-center leading-[1.25] h-[35px] ml-4">
+                <div className="pr-8 shrink-0 flex items-center flex-row text-center leading-[1.25] h-[35px] ml-0.5">
                   <span className="mr-3 font-light">Floor</span>
-                  <span className="flex items-center relative -left-[6px]">
-                    <CurrencyIcon currency={currency?.symbol} hnyClassName="h-[14px] relative -top-[0px] pr-[5px] -mr-1" />
+                  <span className="flex items-center shrink-0 relative -left-[6px]">
+                    <CurrencyIcon currency={currency?.symbol} hnyClassName="shrink-0 h-[14px] relative -top-[0px] pr-[5px] -mr-1" />
                     <span className="font-medium ml-1">{ formattedFloorPrice }</span>
                   </span>
                 </div>
