@@ -69,7 +69,7 @@ export default function ListingFilter({ isReset, onChange }) {
                   listTypes.map(({ value, label }) => (
                     <SecondaryButton
                       key={value}
-                      className={clsx('text-ink dark:text-white', selected[value] ? '!bg-cobalt dark:!bg-cornflower !text-white' : '!bg-cobalt/[0.7] dark:!bg-white/[0.1] dark:hover:!bg-white/[0.1] hover:!bg-cobalt')}
+                      className={clsx('text-ink dark:text-white', selected[value] ? '!bg-cobalt dark:!bg-cornflower !text-white' : '!bg-cobalt dark:!bg-white/[0.1] dark:hover:!bg-white/[0.1] hover:!bg-cobalt')}
                       onClick={() => {
                         const updated = {...selected, [value]: !selected[value]};
                         setSelected(updated);

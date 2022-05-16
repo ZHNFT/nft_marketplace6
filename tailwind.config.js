@@ -15,7 +15,7 @@ module.exports = {
       ...colors,
       malibu: '#5095ff',
       cornflower: '#6e85ff',
-      cobalt: '#3280f8',
+      cobalt: '#8989ff',
       blade: '#1f2225',
       ink: '#04111E',
       rhino: '#c8c8c8',

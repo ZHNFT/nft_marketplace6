@@ -41,13 +41,12 @@ export default function Collections() {
 
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
-    const chain = CHAINS[chainId]?.name || 'polygon';
     const selectedCategories = Object.keys(categoryButtons).filter(key => !!categoryButtons[key]);
-    const res = await fetch(collectionsUrl({ chain, sort: 'createdAt', categories: selectedCategories }));
+    const res = await fetch(collectionsUrl({ chain: 'polygon', sort: 'createdAt', categories: selectedCategories }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);
-  }, [categoryButtons, chainId]);
+  }, [categoryButtons]);
 
   useEffect(() => {
     if (appInit) {

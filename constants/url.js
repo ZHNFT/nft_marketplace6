@@ -47,7 +47,7 @@ const API_HOST = 'https://api.hexag0n.io';
  * @returns {String} The collections URL.
  */
  const collectionsUrl = ({ page = 0, size = 50, sort, filter, categories, chain }) => (
-  `${API_HOST}/collections?page=${page}&size=${size}&sort=${sort}&chain=${chain}${filter ? `&filter=${filter}` : ''}${categories ? `&categories=${categories}` : ''}`
+  `${API_HOST}/collections?page=${page}&size=${size}&sort=${sort}${chain ? `&chain=${chain}` : ''}${filter ? `&filter=${filter}` : ''}${categories ? `&categories=${categories}` : ''}`
 );
 
 /**

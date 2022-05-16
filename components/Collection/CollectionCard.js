@@ -164,7 +164,7 @@ export default function CollectionCard({ collection, size, hideDescription }) {
           </div>
           <div className="hidden lg:block absolute right-4 bottom-5">
             <Link href={`/collections/${address}`}>
-              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent dark:bg-white/[0.05] bg-cobalt/[0.8] text-white dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt">
+              <a className="whitespace-nowrap font-medium text-xs rounded-[10px] py-2 px-4 border-[0.5px] border-transparent dark:bg-white/[0.05] bg-cobalt text-white dark:border-white border-cobalt dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt">
                 View collection
               </a>
             </Link>

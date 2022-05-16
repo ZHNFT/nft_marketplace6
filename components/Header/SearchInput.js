@@ -135,7 +135,7 @@ export default function SearchInput() {
                                     className={({ selected }) =>
                                       clsx(
                                         selected
-                                          ? 'dark:bg-tabButton bg-cobalt/[0.9] dark:shadow-tabButton text-white shadow-md rounded-tab'
+                                          ? 'dark:bg-tabButton bg-cobalt dark:shadow-tabButton text-white shadow-md rounded-tab'
                                           : 'dark:text-[#969EAB] text-ink dark:hover:text-white hover:text-cobalt',
                                         'whitespace-nowrap font-medium text-xs px-5 w-[115px] h-[37px]'
                                       )

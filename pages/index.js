@@ -37,12 +37,11 @@ export default function Home(props) {
 
   const fetchData = useCallback(async function() {
     setIsCollectionLoading(true);
-    const chain = CHAINS[chainId]?.name || 'polygon';
-    const res = await fetch(collectionsUrl({ chain, size: 3, filter: 'featured' }));
+    const res = await fetch(collectionsUrl({ chain: 'polygon', size: 3, filter: 'featured' }));
     const collections = await res?.json();
     setCollections(collections?.results);
     setIsCollectionLoading(false);
-  }, [chainId]);
+  }, []);
 
   useEffect(() => {
     if (appInit) {

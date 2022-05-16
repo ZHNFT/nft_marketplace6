@@ -82,8 +82,12 @@
 }
 
 .gradient-bg-blue {
-  background: linear-gradient(90deg, #5095FF -0.26%, #5095FF 49.28%, #6E85FF 99.86%);
+  background: linear-gradient(90deg, #8989ff -0.26%, #8989ff 49.28%, #8989ff 99.86%);
   box-shadow: 2px 10px 40px rgba(21, 23, 26, 0.5);
+}
+
+.dark .gradient-bg-blue {
+  background: linear-gradient(90deg, #5095FF -0.26%, #5095FF 49.28%, #6E85FF 99.86%);
 }
 
 .bg-shadow {

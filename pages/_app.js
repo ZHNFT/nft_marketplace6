@@ -105,7 +105,10 @@ function reducer(state, action) {
         chainId: action.chainId,
       }
     case 'RESET_WEB3_PROVIDER':
-      return initialState
+      return {
+        ...initialState,
+        appInit: true
+      }
     default:
       throw new Error()
   }
@@ -208,8 +211,8 @@ function MyApp({ Component, pageProps }) {
     let mainTokenContract;
     let ethTokenContract;
     let maticTokenContract;
-    const marketplaceAddress = CHAINS[network.chainId]?.marketplaceAddress;
-    const mainTokenAddress = CHAINS[network.chainId]?.mainTokenAddress;
+    const marketplaceAddress = CHAIN_IDS.includes(network.chainId) ? CHAINS[network.chainId]?.marketplaceAddress : CHAINS[137]?.marketplaceAddress;
+    const mainTokenAddress = CHAIN_IDS.includes(network.chainId) ? CHAINS[network.chainId]?.mainTokenAddress : CHAINS[137]?.mainTokenAddress;
 
     if (network.chainId === 80001) {
       marketplaceContract = new ethers.Contract(marketplaceAddress, marketPlaceTestABI, ethersSigner);
@@ -226,7 +229,9 @@ function MyApp({ Component, pageProps }) {
       mainTokenContract = new ethers.Contract(mainTokenAddress, ethAbi, ethersSigner);
     }
 
-    await loadBalance({ tokenContract: mainTokenContract, ethTokenContract, maticTokenContract, address });
+    if (CHAIN_IDS.includes(network.chainId)) {
+      await loadBalance({ tokenContract: mainTokenContract, ethTokenContract, maticTokenContract, address });
+    }
 
     dispatch({
       type: 'SET_WEB3_PROVIDER',
@@ -258,7 +263,7 @@ function MyApp({ Component, pageProps }) {
       }
       dispatch({
         type: 'RESET_WEB3_PROVIDER',
-      })
+      });
     },
     [provider]
   );

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import CollectionCard from '../Collection/CollectionCard';
-import { collectionUrl, nftUrl, collectionTokenSnippetsUrl } from '../../constants/url';
+import { collectionUrl } from '../../constants/url';
 import HiveImage from "../../images/collection-card-image-hive.png";
 import DefaultLogo from '../../images/default-collection-logo.png';
 import Spinner from '../Spinner/Spinner';
@@ -11,12 +11,9 @@ export default function Hero({ address }) {
   const [collection, setCollection] = useState();
 
   const fetchData = useCallback(async function() {
-    const [collectionResponse, nftsResponse] = await Promise.all([
-      fetch(collectionUrl({ address })),
-      fetch(collectionTokenSnippetsUrl({ address, size: 5 }))
-    ]);
-    const [collectionData, nftData] = await Promise.all([collectionResponse?.json(), nftsResponse?.json()]);
-    setCollection({ ...collectionData, tokens: nftData?.results });
+    const collectionResponse = await fetch(collectionUrl({ address }));
+    const collectionData = await collectionResponse?.json();
+    setCollection(collectionData);
   }, [address]);
 
   useEffect(() => {

@@ -78,7 +78,7 @@ export default function HeroCards( {connect, address }) {
             <div className="mt-auto">
               <button className={clsx(
                 'mt-8 mb-10 font-medium text-sm rounded-[10px] py-2 px-8 border-[0.5px] dark:border-white border-cobalt',
-                { 'dark:bg-white/[0.1] bg-cobalt/[0.8] text-white border-white dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt': buttonClass === 'secondary' },
+                { 'dark:bg-white/[0.1] bg-cobalt text-white border-white dark:hover:border-cornflower dark:hover:bg-white/[0.15] hover:bg-cobalt': buttonClass === 'secondary' },
                 { 'gradient-bg-blue hover:border-white': buttonClass === 'primary' }
               )} onClick={ () => {
                   action();
