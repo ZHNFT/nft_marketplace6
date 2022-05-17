@@ -139,7 +139,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
                 </div>
                 <div className="ml-[70px] leading-none h-[40px]">
                   <h4 className="font-medium text-sm inline">{ name }</h4>
-                  <Icon icon="octicon:verified-24" className="text-cobalt text-sm dark:text-cornflower inline ml-1 mb-0.5" />
+                  <Icon icon="ic:round-verified" className="text-cobalt text-sm dark:text-cornflower inline ml-1 mb-0.5" />
                   <span className="text-manatee text-xs">{ author }</span>
                 </div>
               </div>
