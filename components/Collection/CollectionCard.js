@@ -21,7 +21,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
   
   return (
    <div className={clsx(
-     'relative mx-auto max-w-[378px] z-10 box-shadow-featuredCard rounded-xl dark:bg-[#262a32] bg-silver/[0.05] h-full',
+     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] bg-silver/[0.05] h-full',
      size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className={clsx(
@@ -83,7 +83,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
         </p>
       </div>
       <div className={clsx(
-        'flex absolute bottom-0 left-0 h-[46px] text-white w-full backdrop-blur-md text-xs justify-between items-center',
+        'flex absolute bottom-0 left-0 h-[46px] text-white w-full text-xs justify-between items-center',
         pending === true ? 'blue-gradient opacity-85' : 'bg-cardCaption',
         hideDescription ? 'pl-[30px]' : 'pl-[60px] rounded-xl'
       )}>
@@ -126,11 +126,11 @@ export default function CollectionCard({ collection, size, truncateDescription, 
     {
       !hideDescription && (
         <>
-          <div className="pt-2 px-5 pb-4 relative z-20">
+          <div className="pt-2 px-5 pb-4 relative">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className={clsx(
-                  "z-20 absolute -top-[19px] left-[10px] w-[71px] h-[71px] rounded-full overflow-hidden flex items-center justify-center",
+                  "absolute -top-[19px] left-[10px] w-[71px] h-[71px] rounded-full overflow-hidden flex items-center justify-center",
                   "dark:bg-[#262a32] bg-white rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
                 )}>
                   <div className="relative w-[55px] h-[55px] rounded-full overflow-hidden">
