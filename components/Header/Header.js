@@ -43,7 +43,7 @@ export default function Header(props) {
                     <Link href="/">
                       <a className="flex items-center mr-[25px]">
                         <span className="dark:bg-logo-white bg-logo-blue bg-cover w-[32px] h-[36px]" />
-                        <span className="font-medium text-2xl ml-3">Hexagon</span>
+                        <span className="font-medium text-[1.4rem] ml-3">Hexagon</span>
                       </a>
                     </Link>
                   </div>
