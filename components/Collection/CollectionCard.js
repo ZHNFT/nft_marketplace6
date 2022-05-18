@@ -126,11 +126,11 @@ export default function CollectionCard({ collection, size, truncateDescription, 
     {
       !hideDescription && (
         <>
-          <div className="pt-2 px-5 pb-4 relative">
+          <div className="pt-2 px-5 pb-4 relative z-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className={clsx(
-                  "absolute -top-[19px] left-[10px] w-[71px] h-[71px] rounded-full overflow-hidden flex items-center justify-center",
+                  "z-20 absolute -top-[19px] left-[10px] w-[71px] h-[71px] rounded-full overflow-hidden flex items-center justify-center",
                   "dark:bg-[#262a32] bg-white rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
                 )}>
                   <div className="relative w-[55px] h-[55px] rounded-full overflow-hidden">
