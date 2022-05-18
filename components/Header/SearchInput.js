@@ -77,7 +77,7 @@ export default function SearchInput() {
                 id="search"
                 name="search"
                 className="block w-full dark:bg-search text-ink dark:text-white border-rhino dark:border-transparent rounded-full py-3 pl-10 pr-3 border-transparent text-sm sm:text-md dark:placeholder:text-white focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-malibu focus:border-malibu"
-                placeholder="Search projects and items"
+                placeholder="Explore collections, items, and profiles"
                 type="search"
                 autoComplete="off"
                 value={searchTerm}

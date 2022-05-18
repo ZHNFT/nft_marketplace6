@@ -332,7 +332,8 @@ function MyApp({ Component, pageProps }) {
 
   // Will ask the user to switch chains if they are connected to the wrong chain
   useEffect(() => {
-    if (provider && !CHAIN_IDS.includes(chainId)) {
+    //if (provider && !CHAIN_IDS.includes(chainId)) {
+    if (provider && chainId !== 137) {
       provider?.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: chain === 'polygon' ? mainnetChainId : testnetChainId }],

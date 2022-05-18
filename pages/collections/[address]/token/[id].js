@@ -54,6 +54,9 @@ export default function Nft(props) {
   // these are all bids on an item that are on auction
   const activeAuctionbids = activeAuction?.bids.reverse();
 
+  console.log(activeListing);
+  console.log(activeAuction);
+
   // if item is on auction the owner in the data object is the marketplace address so we need to take the owner from the active auction instead
   const isOwner = activeAuction ? activeAuction.owner === address?.toLowerCase() : data?.owner === address?.toLowerCase() || false;
   const owner = activeAuction ? activeAuction?.owner : data?.owner;
