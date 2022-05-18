@@ -11,17 +11,17 @@ import FeaturedCollections from '../components/Home/FeaturedCollections';
 
 const HIGHLIGHTS = [
   {
-    icon: <LowDollarIcon className="text-5xl dark:text-white text-ink" />,
+    icon: <LowDollarIcon className="text-5xl dark:text-malibu text-cobalt" />,
     title: 'Low Transaction Fees',
     description: '0% fees for all collections utilizing HNY and 2% fees for all non-HNY collections'
   },
   {
-    icon: <CheckedRibbonIcon className="text-5xl dark:text-white text-ink" />,
+    icon: <CheckedRibbonIcon className="text-5xl dark:text-malibu text-cobalt" />,
     title: 'High Quality Collections',
     description: 'Each collection on Hexagon is hand-vetted by our curation team to ensure quality'
   },
   {
-    icon: <Icon icon="healthicons:money-bag-outline" className="text-5xl dark:text-white text-ink" />,
+    icon: <Icon icon="healthicons:money-bag-outline" className="text-5xl dark:text-malibu text-cobalt" />,
     title: 'Passive Income NFTs',
     description: 'No restrictions on trading passive income NFTs, unlike larger marketplaces'
   }
