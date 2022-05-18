@@ -11,13 +11,18 @@ import HiveImage from "../../images/collection-card-image-hive.png";
 import PlaceholderImage from '../../images/placeholder-image.png';
 import CurrencyIcon from "../CurrencyIcon/CurrencyIcon";
 
+const getLogoUrl = logo => (
+  logo && logo.startsWith('ipfs:') ? `${resolveBunnyLink(logo)}?optimizer=image&width=76&aspect_ratio=1:1` : logo
+);
+
 export default function CollectionCard({ collection, size, truncateDescription, hideDescription }) {
+  const hiveCollections = ['0x19e46be2e3ad8968a6230c8fb140c4ccabc3ce0d', '0xd7bc20acfd116d620ecc284b104fe69f13203925'];
   const { name, slug, tokens, pending, description, author, address, ownerCount, volume, floorPrice, totalSupply, images, categories, currency } = collection
   const totalVolume = volume?.total ? formatEther(volume?.total) : "0";
   const formattedFloorPrice = floorPrice ? formatEther(floorPrice) : "0";
   const collectionCategories = slug === 'hive' ? ['Utility'] : categories;
   const featuredImageWidth = size === 'sml' ? '480' : '555';
-  const logoImage = images?.logo && images.logo.startsWith('ipfs:') ? `${resolveBunnyLink(images.logo)}?optimizer=image&width=76&aspect_ratio=1:1` : images?.logo;
+  const logoImage = hiveCollections.includes(address) ? HiveLogo : getLogoUrl(images?.logo);
   
   return (
    <div className={clsx(
@@ -134,7 +139,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
                   "dark:bg-[#262a32] bg-white rounded-full before:block before:w-[71px] before:h-[71px] before:absolute before:left-0 before:top-0"
                 )}>
                   <div className="relative w-[55px] h-[55px] rounded-full overflow-hidden">
-                    <Image className="bg-white" src={logoImage ? logoImage : HiveLogo} alt={name} layout="fill" />
+                    <Image className="bg-white" src={logoImage} alt={name} layout="fill" />
                   </div>
                 </div>
                 <div className="ml-[70px] leading-none h-[40px]">
