@@ -6,6 +6,7 @@ import CollectionCard from '../Collection/CollectionCard';
 import { collectionUrl } from '../../constants/url';
 import HiveImage from "../../images/collection-card-image-hive.png";
 import DefaultLogo from '../../images/default-collection-logo.png';
+import HiveLogo from "../../images/collection-card-logo-hive.png";
 import Spinner from '../Spinner/Spinner';
 
 const getLogoUrl = logo => (
@@ -20,8 +21,6 @@ export default function Hero({ address }) {
     const collectionData = await collectionResponse?.json();
     setCollection(collectionData);
   }, [address]);
-
-  console.log(collection);
 
   useEffect(() => {
     fetchData();
@@ -70,7 +69,7 @@ export default function Hero({ address }) {
             <Link href={`/collections/${address}`} passHref>
               <a className="flex items-center cursor-pointer">
                 <span className="inline-block rounded-full overflow-hidden w-[26px] h-[26px]  mr-1.5">
-                  { collection && <Image className="h-8 w-8" src={getLogoUrl(collection?.images?.logo) || DefaultLogo} alt={collection?.name} width={"100%"} height={"100%"} /> }
+                  { collection && <Image className="h-8 w-8" src={HiveLogo} alt={collection?.name} width={"100%"} height={"100%"} /> }
                 </span>
                 <span className="dark:text-white text-ink text-xs hover:underline">{collection?.name}</span>
               </a>
