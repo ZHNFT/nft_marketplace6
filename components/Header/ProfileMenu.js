@@ -10,6 +10,7 @@ import {
   RefreshIcon,
   FolderIcon,
   ReceiveIcon,
+  AuctionIcon,
   FilesIcon,
 } from "../icons";
 import DarkModeSwitch from "../DarkModeSwitch/DarkModeSwitch";
@@ -84,7 +85,7 @@ export default function ProfileMenu({ address, disconnect }) {
           <Link href={`/users/[address]`} as={`/users/${address}`} passHref>
             <a className="flex items-center dark:hover:text-white hover:text-cobalt">
               <ProfileIcon className="w-[12px]" />
-              <span className="dark:text-white ml-4">My portfolio</span>
+              <span className="dark:text-white ml-4">Profile</span>
             </a>
           </Link>
         </li>
@@ -97,7 +98,7 @@ export default function ProfileMenu({ address, disconnect }) {
             }}
           >
             <EditIcon className="w-[12px]" />
-            <span className="dark:text-white ml-4">Edit profile</span>
+            <span className="dark:text-white ml-4">Edit Profile</span>
           </button>
         </li>
         <li className="my-3">
@@ -120,7 +121,20 @@ export default function ProfileMenu({ address, disconnect }) {
           >
             <a className="flex items-center dark:hover:text-white hover:text-cobalt">
               <ReceiveIcon className="w-[17px] relative -left-[1px]" />
-              <span className="dark:text-white ml-4">Offers</span>
+              <span className="dark:text-white ml-3">Offers</span>
+            </a>
+          </Link>
+        </li>
+
+        <li className="my-3">
+          <Link
+            href={`/users/[address]?tab=auction`}
+            as={`/users/${address}?tab=auction`}
+            passHref
+          >
+            <a className="flex items-center dark:hover:text-white hover:text-cobalt">
+              <AuctionIcon className="w-[15px] relative -top-[2px] left-[2px]" />
+              <span className="dark:text-white ml-3.5">Auctions</span>
             </a>
           </Link>
         </li>

@@ -43,7 +43,7 @@ export default function Header(props) {
                     <Link href="/">
                       <a className="flex items-center mr-[25px]">
                         <span className="dark:bg-logo-white bg-logo-blue bg-cover w-[32px] h-[36px]" />
-                        <span className="font-medium text-lg ml-3">Hexagon</span>
+                        <span className="font-medium text-xl ml-3">Hexagon</span>
                       </a>
                     </Link>
                   </div>
@@ -81,7 +81,7 @@ export default function Header(props) {
                             <div>
                               <Menu.Item>
                                 <button
-                                  className="text-base dark:bgdark:hover:text-cornflower hover:text-cobalt px-4 py-2 w-full text-left"
+                                  className="text-base dark:bgdark:hover:text-cornflower hover:text-cobalt px-4 py-2 w-full text-center"
                                   onClick={() => router.push('/collections')}
                                 >
                                   Explore
@@ -91,7 +91,7 @@ export default function Header(props) {
                             <div>
                               <Menu.Item>
                                 <button
-                                  className="text-base dark:hover:text-cornflower hover:text-cobalt px-4 py-2 w-full text-left"
+                                  className="text-base dark:hover:text-cornflower hover:text-cobalt px-4 py-2 w-full text-center"
                                   onClick={() => setShowAddCollectionModal(true)}
                                 >
                                   Apply

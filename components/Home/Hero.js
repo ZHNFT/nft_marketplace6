@@ -38,7 +38,7 @@ export default function Hero({ address }) {
       </div>
       <div className="relative flex flex-col lg:flex-row lg:mt-12 mb-10 items-center">
         <div className="md:mr-12 lg:mr-22 mb-8 lg:mb-0 text-center lg:text-left">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-medium gradient-heading leading-normal mb-6 py-[10px]">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-medium gradient-heading leading-normal lg:leading-tight mb-6 py-[10px]">
             Welcome to Polygon&apos;s Premier NFT Marketplace
           </h1>
           <div className="mb-10 lg:max-w-xl">

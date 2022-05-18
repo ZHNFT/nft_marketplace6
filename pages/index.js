@@ -60,7 +60,7 @@ export default function Home(props) {
         </div>
       </div>
 
-      <div className="absolute left-0 w-full dark:bg-lightGray/[0.1] bg-silver/[0.05]">
+      <div className="absolute left-0 w-full dark:bg-lightGray/[0.1] bg-silver/[0.02]">
         <div className="flex justify-center lg:max-w-6xl mx-auto">
           <div className="w-full">
             <div className="flex flex-col">
