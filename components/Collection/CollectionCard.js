@@ -21,7 +21,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
   
   return (
    <div className={clsx(
-     'relative mx-auto max-w-[378px] box-shadow-featuredCard rounded-xl dark:bg-[#262a32] bg-silver/[0.05] h-full',
+     'relative mx-auto max-w-[378px] z-10 box-shadow-featuredCard rounded-xl dark:bg-[#262a32] bg-silver/[0.05] h-full',
      size === 'sml' ? 'md:max-w-[480px]' : 'md:max-w-[555px]'
    )}>
     <div className={clsx(
@@ -126,7 +126,7 @@ export default function CollectionCard({ collection, size, truncateDescription, 
     {
       !hideDescription && (
         <>
-          <div className="pt-2 px-5 pb-4 relative z-10">
+          <div className="pt-2 px-5 pb-4 relative z-20">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className={clsx(
