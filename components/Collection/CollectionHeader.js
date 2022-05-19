@@ -52,7 +52,7 @@ export default function CollectionHeader(props) {
                 </li>
                 {
                   socials?.instagram && (
-                    <li className="mr-6">
+                    <li className="mr-2">
                       <a href={sanitizeUrl(socials.instagram)} target="_blank" rel="noreferrer" >
                         <InstagramIcon className="w-[18px] mr-2 dark:text-white text-cobalt" />
                       </a>
@@ -61,7 +61,7 @@ export default function CollectionHeader(props) {
                 }
                 {
                   socials?.twitter && (
-                    <li className="mr-6">
+                    <li className="mr-2">
                       <a href={sanitizeUrl(socials.twitter)} target="_blank" rel="noreferrer">
                         <TwitterIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
@@ -70,7 +70,7 @@ export default function CollectionHeader(props) {
                 }
                  {
                   socials?.discord && (
-                    <li className="mr-6">
+                    <li className="mr-2">
                       <a href={sanitizeUrl(socials.discord)} target="_blank" rel="noreferrer">
                         <DiscordIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
@@ -79,7 +79,7 @@ export default function CollectionHeader(props) {
                 }
                 {
                   socials?.telegram && (
-                    <li className="mr-6">
+                    <li className="mr-2">
                       <a href={sanitizeUrl(socials.telegram)} target="_blank" rel="noreferrer">
                         <TelegramIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
@@ -88,7 +88,7 @@ export default function CollectionHeader(props) {
                 }
                  {
                   socials?.website && (
-                    <li className="mr-6">
+                    <li className="mr-2">
                       <a href={sanitizeUrl(socials.website)} target="_blank" rel="noreferrer">
                         <LinkIcon className="w-[19px] mr-2 dark:text-white text-cobalt" />
                       </a>
